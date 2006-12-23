@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<project name="JETM Five Minute Tutorial" default="compile" basedir=".">
+
+  <path id="jetm.classpath">
+    <fileset dir="lib" includes="**/*.jar"/>
+    <fileset dir="../../lib" includes="**/*.jar"/>
+  </path>
+
+
+  <target name="compile" depends="clean, init">
+    <javac destdir="classes"
+           srcdir="src/java"
+           classpathref="jetm.classpath"
+           debug="true"
+      />
+
+    <copy todir="classes">
+      <fileset dir="src/java" includes="**/*.xml"/>
+      <fileset dir="src/java" includes="**/*.properties"/>
+    </copy>
+
+  </target>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="init" depends="validate-runtime">
+    <mkdir dir="classes"/>
+  </target>
+
+  <target name="validate-runtime">
+    <available classname="etm.core.monitor.EtmMonitor"
+               property="etmcore.available"
+               classpathref="jetm.classpath"/>
+    <fail unless="etmcore.available">
+
+JETM core missing!
+Please ensure that jetm-${version}.jar is available at ../../lib.
+If you are running this demo from source please execute top level build.xml
+with target build-all first.
+    </fail>
+    <available classname="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
+               property="etmoptional.available"
+              classpathref="jetm.classpath"/>
+    <fail unless="etmoptional.available">
+
+JETM optional missing!
+Please ensure that jetm-optional-${version}.jar is available at ../../lib.
+If you are running this demo from source please execute top level build.xml
+with target build-all first.
+    </fail>
+  </target>
+
+
+</project>

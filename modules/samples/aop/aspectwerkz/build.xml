@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<project name="JETM AspectWerkz demo" default="help" basedir=".">
+
+  <path id="aspectwerkz.classpath">
+    <fileset dir="lib"/>
+  </path>
+
+  <path id="jetm.classpath">
+    <fileset dir="../../lib" includes="**/jetm*.jar"/>
+  </path>
+
+  <path id="weaving.classpath">
+    <path refid="aspectwerkz.classpath"/>
+    <path refid="jetm.classpath"/>
+  </path>
+
+  <target name="help" description="Shows a help message">
+    <echo>
+      This example demonstrates performance monitoring based on AspectWerkz.
+      The following two targets exist:
+
+      offline-weaving Weaves example classes offline and executes altered classes
+      loadtime-weaving Weaves example classes at loadtime during executions
+
+    </echo>
+  </target>
+
+  <target name="loadtime-weaving" depends="compile" description="Demonstrates performance monitoring using loadtime-weaving">
+
+    <path id="execution.classpath">
+      <path refid="weaving.classpath"/>
+      <pathelement location="classes"/>
+    </path>
+
+
+    <!-- Execute example that will be weaved at load time -->
+    <java
+      classpathref="execution.classpath"
+      fork="true"
+      classname="etm.samples.aop.aspectwerkz.AspectWerkzExample">
+      <jvmarg value="-javaagent:lib/aspectwerkz-jdk5-2.0.jar"/>
+    </java>
+
+  </target>
+
+  <target name="offline-weaving" depends="compile" description="Demonstrates performance monitoring using offline-weaving">
+    <path id="execution.classpath">
+      <path refid="weaving.classpath"/>
+      <pathelement location="classes"/>
+    </path>
+
+    <taskdef name="awc"
+             classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask"
+             classpathref="weaving.classpath"/>
+
+    <awc verbose="true"
+         definition="src/java/META-INF/aop.xml"
+         classpathref="weaving.classpath"
+         targetpath="classes"
+      />
+
+    <!--
+
+      Execute weaved example
+
+    -->
+
+    <java classpathref="execution.classpath"
+          fork="true"
+          classname="etm.samples.aop.aspectwerkz.AspectWerkzExample"/>
+  </target>
+
+
+  <target name="compile" depends="clean, init">
+    <javac destdir="classes"
+           srcdir="src/java"
+           classpathref="jetm.classpath"
+      />
+    <copy todir="classes">
+      <fileset dir="src/java" includes="**/META-INF/**"/>
+    </copy>
+
+  </target>
+
+  <target name="clean">
+    <delete dir="classes"/>
+  </target>
+
+  <target name="init" depends="validate-runtime">
+    <mkdir dir="classes"/>
+  </target>
+
+  <target name="validate-runtime">
+    <available classname="etm.core.monitor.EtmMonitor"
+               property="etmcore.available"
+               classpathref="jetm.classpath"/>
+    <fail unless="etmcore.available">
+
+JETM core missing!
+Please ensure that jetm-${version}.jar is available at ../../lib.
+If you are running this demo from source please execute top level build.xml
+with target build-all first.
+    </fail>
+    <available classname="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
+               property="etmoptional.available"
+              classpathref="jetm.classpath"/>
+    <fail unless="etmoptional.available">
+      
+JETM optional missing!
+Please ensure that jetm-optional-${version}.jar is available at ../../lib.
+If you are running this demo from source please execute top level build.xml
+with target build-all first.
+    </fail>
+  </target>
+
+
+</project>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project name="JETM One Minute Tutorial" default="help" basedir=".">
+
+  <path id="jetm.classpath">
+    <fileset dir="../../lib" includes="**/jetm*.jar"/>
+  </path>
+
+  <target name="help">
+    <echo>
+      This example demonstrates manual performance measurement code.
+
+      demo Demonstrates JETM console output.
+    </echo>
+  </target>
+
+  <target name="demo" depends="compile">
+    <path id="execution.classpath">
+      <path refid="jetm.classpath"/>
+      <pathelement location="classes"/>
+    </path>
+
+    <java classpathref="execution.classpath"
+          fork="true"
+          classname="etm.tutorial.oneminute.OneMinuteTest"/>
+  </target>
+
+  <target name="compile" depends="clean, init">
+    <javac destdir="classes"
+           srcdir="src"
+           classpathref="jetm.classpath"
+           debug="true"
+      />
+  </target>
+
+  <target name="clean">
+    <delete dir="classes"/>
+  </target>
+
+  <target name="init" depends="validate-runtime">
+    <mkdir dir="classes"/>
+  </target>
+
+<target name="validate-runtime">
+    <available classname="etm.core.monitor.EtmMonitor"
+               property="etmcore.available"
+               classpathref="jetm.classpath"/>
+    <fail unless="etmcore.available">
+
+JETM core missing!
+Please ensure that jetm-${version}.jar is available at ../../lib.
+If you are running this demo from source please execute top level build.xml
+with target build-all first.
+    </fail>
+    <available classname="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
+               property="etmoptional.available"
+              classpathref="jetm.classpath"/>
+    <fail unless="etmoptional.available">
+
+JETM optional missing!
+Please ensure that jetm-optional-${version}.jar is available at ../../lib.
+If you are running this demo from source please execute top level build.xml
+with target build-all first.
+    </fail>
+  </target>
+
+</project>

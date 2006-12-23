@@ -1,0 +1,21 @@
+<!DOCTYPE aspectwerkz PUBLIC "-//AspectWerkz//DTD 2.0//EN"
+  "http://aspectwerkz.codehaus.org/dtd/aspectwerkz2.dtd">
+
+<aspectwerkz>
+  <system id="weaving-example">
+
+    <aspect class="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
+            deployment-model="perJVM">
+
+      <pointcut name="etmExample" expression="
+          execution(public * etm.samples.aop.aspectwerkz.*Service.*(..))
+          OR
+          execution(public * etm.samples.aop.aspectwerkz.Dao+.*(..))
+      "/>
+
+      <advice name="monitor" type="around" bind-to="etmExample"/>
+
+    </aspect>
+
+  </system>
+</aspectwerkz>
