@@ -2,10 +2,12 @@
         depends="init-demo, build-jetm-contrib"
         description="Build JETM demo">
 
-  <copy todir="${module.demo.dest.lib}">
-    <fileset dir="${build.lib.dir}">
-      <include name="**/${release.name}-*${release.version}.jar"/>
-    </fileset>
+  <copy file="${build.lib.dir}/${release.name}-${release.version}.jar"
+        tofile="${module.demo.dest.lib}/${release.name}.jar">
+  </copy>
+
+  <copy file="${build.lib.dir}/${release.name}-optional-${release.version}.jar"
+        tofile="${module.demo.dest.lib}/${release.name}-optional.jar">
   </copy>
 
   <path id="demo.classpath">

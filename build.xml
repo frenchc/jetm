@@ -47,7 +47,7 @@
 
 
   <target name="dist-all"
-          depends="clean-all, build-all, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
+          depends="clean-all, build-all, test-jetm, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
     <!-- prepare site first -->
     <copy todir="${build.site.dir}" filtering="true">
       <fileset dir="${module.site.dir}">
