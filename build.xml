@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE project [
+  <!ENTITY core SYSTEM "file:etc/build/build-core.xml">
+  <!ENTITY contrib SYSTEM "file:etc/build/build-contrib.xml">
+  <!ENTITY samples SYSTEM "file:etc/build/build-samples.xml">
+  <!ENTITY demo SYSTEM "file:etc/build/build-demo.xml">
+  ]>
+
+
+<project name="JETM build Script" default="build-all" basedir=".">
+  <property file="build.properties"/>
+  <property environment="env"/>
+
+  <tstamp>
+    <format property="current.date" pattern="dd-MM-yyyy hh:mm:ss aa" locale="en"/>
+  </tstamp>
+
+  <path id="build.classpath">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  &core;
+  &contrib;
+  &samples;
+  &demo;
+
+  <target name="build-jetm" description="Builds all JETM core modules">
+    <antcall target="build-jetm-core"/>
+    <antcall target="build-jetm-contrib"/>
+  </target>
+
+  <target name="build-all" description="Builds all JETM modules">
+    <antcall target="build-jetm-core"/>
+    <antcall target="build-jetm-contrib"/>
+    <antcall target="build-samples"/>
+    <antcall target="build-demo"/>
+
+  </target>
+
+  <target name="test-jetm" depends="build-all" description="Tests all JETM modules">
+    <antcall target="test-jetm-core"/>
+    <antcall target="test-jetm-contrib"/>
+  </target>
+
+
+  <target name="dist-all"
+          depends="clean-all, build-all, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
+    <!-- prepare site first -->
+    <copy todir="${build.site.dir}" filtering="true">
+      <fileset dir="${module.site.dir}">
+        <include name="**/*.html"/>
+        <include name="**/*.css"/>
+        <include name="**/*.png"/>
+        <include name="**/*.ico"/>
+      </fileset>
+      <filterset>
+        <filter token="api" value="../api" />
+        <filter token="samples" value="../samples" />
+        <filter token="dtd" value="../dtd" />
+      </filterset>
+    </copy>
+    <tar destfile="${build.dist.dir}/${release.name}-${release.version}.tar.gz" compression="gzip">
+      <tarfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
+        <include name="**/*.jar"/>
+      </tarfileset>
+      <tarfileset prefix="${release.name}-${release.version}/doc" dir="${doc.dir}"/>
+      <tarfileset prefix="${release.name}-${release.version}/doc/api" dir="${build.javadoc.dir}"/>
+
+      <tarfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dir}"/>
+      <tarfileset prefix="${release.name}-${release.version}/doc/samples" dir="${module.samples.dir}">
+        <exclude name="**/classes/**"/>
+      </tarfileset>
+      <tarfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
+        <include name="**/*.dtd"/>
+      </tarfileset>
+    </tar>
+  </target>
+
+  <target name="maven2-bundle" depends="clean-jetm">
+    <antcall target="maven2-core-bundle"/>
+    <antcall target="maven2-contrib-bundle"/>
+  </target>
+
+  <target name="build-jetm-javadoc">
+    <mkdir dir="${build.javadoc.dir}"/>
+
+    <javadoc
+      destdir="${build.javadoc.dir}"
+      author="true"
+      version="true"
+      use="true"
+      windowtitle="Java Execution Measurement Library"
+      classpathref="build.classpath"
+      protected="true"
+      overview="${etc.dir}/javadoc/overview.html"
+      failonerror="true"
+      >
+
+      <fileset dir="${module.core.src.java}" defaultexcludes="yes">
+        <include name="etm/**/*.java"/>
+        <exclude name="**/test/**"/>
+      </fileset>
+
+      <fileset dir="${module.contrib.src.java}">
+        <include name="etm/**/*.java"/>
+        <exclude name="**/test/**"/>
+      </fileset>
+
+      <doctitle><![CDATA[<h1>Java(TM) Execution Time Measurement Library</h1>]]></doctitle>
+      <bottom><![CDATA[<i>Copyright &#169; 2004,2005, 2006 void.fm. All Rights Reserved.</i>]]></bottom>
+      <group title="Java Execution Time Measurement (JETM) Core" packages="etm.core*"/>
+      <group title="JETM - HTTP Console" packages="etm.contrib.console*"/>
+      <group title="JETM - AOP Support" packages="etm.contrib.aop*"/>
+      <group title="JETM - Framework Integrations" packages="etm.contrib.integration*"/>
+      <group title="JETM - Additional Aggregators" packages="etm.contrib.aggregation*"/>
+      <group title="JETM - Result Rendering Support" packages="etm.contrib.renderer*"/>
+      <group title="JETM - RRD Support" packages="etm.contrib.rrd*"/>
+    </javadoc>
+  </target>
+
+  <target name="clean-all" description="Cleanup JETM build system">
+    <antcall target="clean-jetm"/>
+    <antcall target="clean-samples"/>
+    <antcall target="clean-demo"/>
+  </target>
+
+  <target name="clean-jetm" description="Cleanup JETM library build">
+    <delete dir="${build.dir}"/>
+  </target>
+
+</project>

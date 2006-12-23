@@ -1,0 +1,2 @@
+JETM uses the spring framework for dynamic or static advice in order to
+enhance classes with performance monitoring capabilities.

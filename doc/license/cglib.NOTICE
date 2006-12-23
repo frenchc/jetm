@@ -1,0 +1,2 @@
+JETM uses cglib (indirectly via spring framework) for dynamic advice in order to 
+enhance classes with performance monitoring capabilities.

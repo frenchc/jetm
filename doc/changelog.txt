@@ -1,0 +1,71 @@
+Release 1.2.0
+ New features
+  - Activated JMX support again (deprecated old JMX MBeans)
+
+ Changes, Fixes and Improvements
+  - JETM now available via Maven 2 repository
+  - Five minute tutorial added
+  - Documentation improvements
+
+Release 1.1.1
+  Changes, Fixes and Improvements
+  - Switch to Thred context classloader.
+
+Release 1.1.0
+ New features
+ - AspectWerkz Support
+ - Generic Web App Integration Support
+ - Expanded/Collapsed HTTP Console result rendering
+ - Dump on shutdown plugin
+
+ Changes, Fixes and Improvements
+ - robots.txt for HTTP console added (disabled actions)
+ - EtmManager.getEtmMonitor() now returns a proxy, this allows
+   late EtmMonitor init.
+ - Removed auto referesh in HTTP console
+ - Added reset(MeasurementPointName) to EtmMonitor
+ - Improved SimpleTextRenderer layout
+ - Logging aggregators now support filtering
+
+Release 1.0.0
+ New features
+ - Spring based demo (currently available online only)
+
+ Changes, Fixes and Improvements
+ - Javadoc cleanup
+ - Fixed logging aggregator bugs
+
+Release 0.8.0
+ New features
+  - Enabled Plugin Support for XML Configuration
+  - Added HTTPConsoleServer Plugin
+
+ Changes, Fixes and Improvements
+  - EtmMonitor instances have now two states (required for plugin mechanism)
+  - HTTPConsoleServer Startup Thread fixes.
+  - Minor layout changes in SimpleHtmlRenderer
+  - Autostart for EtmManager configurations
+
+Release 0.7.0
+
+ New features
+  - Added spring support
+  - Added AOP Alliance support
+  - Added log framework abstractions
+  - Added log4j style configurators
+  - Added drop-in HTTP console
+
+ Changes, Fixes and Improvements
+  - Removed StaticMeasurementPoint and MonitorFactory and switched
+    to Log4J/Commons Loging type configuration for static monitoring
+  - Improved online documentation, javadoc and examples
+  - Aggregators now use mixed constructor/setter injection for required
+    and optional dependencies
+  - Minor API changes in monitor constructors
+  - Moved BufferedTimedAggregator to core package
+  - Moved Jdk14DumpAggregator to Jdk14LogAggregator (new package)
+  - Temporary disabled JBoss support
+
+For changelog prior to 0.7.0 see CVS
+
+

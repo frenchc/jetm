@@ -1,0 +1,122 @@
+<target name="build-jetm-core" depends="init-core">
+  <javac
+    srcdir="${module.core.src.java}"
+    excludes="**/SunHighResTimer.java,**/Java15NanoTimer.java"
+    destdir="${module.core.dest.classes}"
+    classpathref="build.classpath"
+    debug="true"
+    target="1.3"
+    source="1.3"
+    />
+
+  <copy todir="${module.core.dest.classes}">
+    <fileset dir="${module.core.src.java}">
+      <include name="**/*.xml"/>
+      <include name="**/*.dtd"/>
+    </fileset>
+  </copy>
+
+  <available property="timer.sun.misc.perf" classname="sun.misc.Perf"/>
+  <available property="timer.jdk15" classname="java.lang.Enum"/>
+
+  <antcall target="compile-jdk15-highres"/>
+  <antcall target="compile-sun-highres"/>
+
+  <jar jarfile="${build.lib.dir}/${release.name}-${release.version}.jar">
+    <fileset dir="${module.core.dest.classes}"
+             excludes="**/test/**"
+      />
+    <manifest>
+      <section name="JETM Core">
+        <attribute name="Version" value="${release.version}"/>
+        <attribute name="Date" value="${current.date}"/>
+      </section>
+    </manifest>
+  </jar>
+
+</target>
+
+<target name="compile-jdk15-highres" if="timer.jdk15">
+  <javac
+    srcdir="${module.core.src.java}"
+    includes="**/Java15NanoTimer.java"
+    destdir="${module.core.dest.classes}"
+    classpathref="build.classpath"
+    debug="true"
+    target="1.3"
+    source="1.3"
+    />
+</target>
+
+<target name="compile-sun-highres" if="timer.sun.misc.perf">
+  <javac
+    srcdir="${module.core.src.java}"
+    includes="**/SunHighResTimer.java"
+    destdir="${module.core.dest.classes}"
+    classpathref="build.classpath"
+    debug="true"
+    target="1.3"
+    source="1.3"
+    />
+</target>
+
+<target name="test-jetm-core" depends="build-jetm-core">
+  <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+    <classpath>
+      <path refid="build.classpath" />
+    </classpath>
+  </taskdef>
+
+  <junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
+    <classpath>
+      <pathelement location="${module.core.dest.classes}"/>
+      <path refid="build.classpath"/>
+    </classpath>
+
+    <formatter type="plain"/>
+    <test name="test.etm.core.monitor.SimpleFlatMonitorTest" todir="${module.core.dest.test}"/>
+    <test name="test.etm.core.monitor.SimpleNestedMonitorTest" todir="${module.core.dest.test}"/>
+    <test name="test.etm.core.monitor.ConcurrentFlatMonitorTest" todir="${module.core.dest.test}"/>
+    <test name="test.etm.core.monitor.ConcurrentNestedMonitorTest" todir="${module.core.dest.test}"/>
+
+    <test name="test.etm.core.aggregation.ConcurrentFlatThresholdAggregationTest" todir="${module.core.dest.test}"/>
+    <test name="test.etm.core.aggregation.ConcurrentNestedThresholdAggregationTest" todir="${module.core.dest.test}"/>
+
+    <test name="test.etm.core.renderer.SimpleTextRendererTest" todir="${module.core.dest.test}"/>
+
+    <test name="test.etm.core.configuration.BasicEtmConfiguratorTest" todir="${module.core.dest.test}"/>
+    <test name="test.etm.core.configuration.XmlEtmConfiguratorTest" todir="${module.core.dest.test}"/>
+
+  </junit>
+
+</target>
+
+
+<target name="maven2-core-bundle" depends="build-jetm-core">
+    <mkdir dir="${module.core.dest.maven2}" />
+    <copy todir="${module.core.dest.maven2}">
+      <fileset dir="${module.core.dir}/etc/maven2"/>
+      <filterset>
+        <filter token="version" value="${release.version}"/>
+      </filterset>
+    </copy>
+    <copy file="${doc.dir}/license.txt" tofile="${module.core.dest.maven2}/LICENSE.txt"/>
+
+    <copy file="${build.lib.dir}/${release.name}-${release.version}.jar"
+          todir="${module.core.dest.maven2}"/>
+
+    <jar destfile="${module.core.dest.maven2}/${release.name}-${release.version}-sources.jar">
+      <fileset dir="${module.core.src.java}" excludes="**/test/**"/>
+    </jar>
+
+    <jar destfile="${build.dist.dir}/${release.name}-${release.version}-bundle.jar">
+      <fileset dir="${module.core.dest.maven2}"/>
+    </jar>
+</target>
+
+<target name="init-core">
+  <mkdir dir="${build.lib.dir}"/>
+  <mkdir dir="${build.dist.dir}" />
+  <mkdir dir="${module.core.dest.classes}"/>
+  <mkdir dir="${module.core.dest.test}" />
+</target>

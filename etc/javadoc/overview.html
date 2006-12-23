@@ -1,0 +1,50 @@
+<html>
+  <body>
+    <p>
+      The <b>Java(TM) Execution Time Measurement Library</b> provides a small set of classes
+      to measure execution performance of existing J2SE or J2EE applications.
+    </p>
+
+    <p><b>What's the purpose of this library?</b></p>
+
+    <p>
+      In order to identify the root cause of bad application performance a fairly limited set
+      of data is needed. Usually it is enough to know
+      <ul>
+        <li>the names of the methods called within a test period,</li>
+        <li>the time spend within those methods (min/max/average) and</li>
+        <li>the number of method executions</li>
+      </ul>
+      to track down application hotspots. However collecting those data is either expensive (in terms
+      of budget or application side effects) or too low level or just highly proprietary. The Java(TM)
+      Execution Time Measurement Library tries to target these issues.
+    </p>
+
+    <p><b>How does it work?</b></p>
+
+    <p>
+      The main idea of this library is to collect the data mentioned as so called
+      <b>Named Measurement Points</b>, while an Measurement Point may be any abritary code segment such as
+      an method call, a constructor invocation or a limited set of Java instructions. Measurement
+      Points may be inserted into existing code either by hand or declarative with the help of Aspect
+      Oriented Programming (AOP) frameworks. Since Measurement Points might be nested within others
+      the library supports recording of nested Measurement Points and represent them as <b>Execution Path</b>.
+    </p>
+
+    <p>
+      For further details see <a href="http://jetm.void.fm/one_minute_tutorial.html">one minute</a>
+      and <a href="http://jetm.void.fm/five_minute_tutorial.html">five minute</a> tutorial.
+    </p>
+
+    <p>
+
+    </p>
+
+    <p>
+      <b>ATTENTION!</b><br>
+      Please note that it is not recommended to use this library for low level profiling. We highly encourage
+      everyone to use this library for high level performance analysis only. For low level optimization
+      please consider the use of an commercial or non commercial profiler.
+    </p>
+  </body>
+</html>

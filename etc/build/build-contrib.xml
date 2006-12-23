@@ -1,0 +1,109 @@
+<target name="build-jetm-contrib" depends="init-contrib, build-jetm-core">
+  <path id="contrib.classpath">
+    <path refid="build.classpath"/>
+    <path location="${module.core.dest.classes}"/>
+  </path>
+
+  <javac
+    srcdir="${module.contrib.src.java}"
+    destdir="${module.contrib.dest.classes}"
+    classpathref="contrib.classpath"
+    debug="true"
+    target="1.3"
+    source="1.3"
+    />
+
+  <copy todir="${module.contrib.dest.classes}">
+    <fileset dir="${module.contrib.src.java}">
+      <include name="**/*.ico"/>
+      <include name="**/*.css"/>
+      <include name="**/*.txt"/>
+      <include name="**/*.xml"/>
+
+    </fileset>
+  </copy>
+
+  <jar jarfile="${build.lib.dir}/${release.name}-optional-${release.version}.jar">
+    <fileset dir="${module.contrib.dest.classes}"
+             excludes="**/test/**"
+      />
+    <manifest>
+      <section name="JETM Optional">
+        <attribute name="Version" value="${release.version}"/>
+        <attribute name="Date" value="${current.date}"/>
+      </section>
+    </manifest>
+  </jar>
+</target>
+
+<target name="test-jetm-contrib" depends="build-jetm-contrib">
+  <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+    <classpath>
+      <path refid="build.classpath"/>
+    </classpath>
+  </taskdef>
+
+  <junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
+    <classpath>
+      <pathelement location="${module.core.dest.classes}"/>
+      <pathelement location="${module.contrib.dest.classes}"/>
+      <path refid="build.classpath"/>
+    </classpath>
+
+    <formatter type="plain"/>
+    <!-- Aggregation Tests -->
+    <test name="test.etm.contrib.aggregation.log.DefaultOutputFormatterTest" todir="${module.contrib.dest.test}"/>
+
+    <!-- AOp Tests -->
+    <test name="test.etm.contrib.aop.aopalliance.MethodCallInterceptorTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.aop.spring.AutoProxyBeanTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.aop.spring.ProxyFactoryBeanTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.aop.aspectwerkz.FunctionalAspectWerkzTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.aop.aspectwerkz.AspectWerkzWeavingTest" todir="${module.contrib.dest.test}"/>
+
+
+    <!-- Itegration Tests -->
+
+    <test name="test.etm.contrib.integration.web.EtmMonitorContextListenerTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.integration.web.HttpRequestPerformanceFilterTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.integration.web.SoapActionPerformanceFilterTest" todir="${module.contrib.dest.test}"/>
+
+    <!-- Rendering Tests -->
+    <test name="test.etm.contrib.renderer.SimpleHtmlRendererTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.console.HtmlConsoleServerTest" todir="${module.contrib.dest.test}"/>
+    <test name="test.etm.contrib.console.HtmlConsoleServerPluginTest" todir="${module.contrib.dest.test}"/>
+
+
+  </junit>
+</target>
+
+<target name="maven2-contrib-bundle" depends="build-jetm-contrib">
+    <mkdir dir="${module.contrib.dest.maven2}" />
+    <copy todir="${module.contrib.dest.maven2}">
+      <fileset dir="${module.contrib.dir}/etc/maven2"/>
+      <filterset>
+        <filter token="version" value="${release.version}"/>
+      </filterset>
+    </copy>
+    <copy file="${doc.dir}/license.txt" tofile="${module.contrib.dest.maven2}/LICENSE.txt"/>
+
+    <copy file="${build.lib.dir}/${release.name}-optional-${release.version}.jar"
+          todir="${module.contrib.dest.maven2}"/>
+
+    <jar destfile="${module.contrib.dest.maven2}/${release.name}-optional-${release.version}-sources.jar">
+      <fileset dir="${module.contrib.src.java}" excludes="**/test/**"/>
+    </jar>
+
+    <jar destfile="${build.dist.dir}/${release.name}-optional-${release.version}-bundle.jar">
+      <fileset dir="${module.contrib.dest.maven2}"/>
+    </jar>
+</target>
+
+
+
+<target name="init-contrib">
+  <mkdir dir="${build.lib.dir}"/>
+  <mkdir dir="${build.dist.dir}" />
+  <mkdir dir="${module.contrib.dest.classes}"/>
+  <mkdir dir="${module.contrib.dest.test}"/>
+</target>

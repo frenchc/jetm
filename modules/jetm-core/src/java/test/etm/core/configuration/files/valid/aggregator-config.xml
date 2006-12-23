@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN" "http://jetm.void.fm/dtd/jetm_config_1_0.dtd">
+<jetm-config>
+  <monitor-class>test.etm.core.configuration.mockup.TestMonitor</monitor-class>
+  <timer-class>test.etm.core.configuration.mockup.TestTimer</timer-class>
+  <aggregator-chain>
+    <chain-element>
+      <aggregator-class>test.etm.core.configuration.mockup.TestAggregator</aggregator-class>
+      <properties>
+        <property name="booleanTrue">true</property>
+        <property name="booleanFalse">false</property>
+        <property name="longValue">12124234324234</property>
+        <property name="intValue">12</property>
+        <property name="stringValue">testString</property>
+      </properties>
+    </chain-element>
+    <chain-root>
+      <aggregator-class>etm.core.aggregation.NestedAggregator</aggregator-class>
+    </chain-root>
+  </aggregator-chain>
+</jetm-config>

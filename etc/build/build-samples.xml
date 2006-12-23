@@ -1,0 +1,36 @@
+<target name="build-samples"
+        depends="init-samples, build-jetm-contrib"
+        description="Builds JETM samples">
+
+  <copy todir="${module.samples.dest.lib}">
+    <fileset dir="${build.lib.dir}">
+      <include name="**/${release.name}-*${release.version}.jar"/>
+    </fileset>
+  </copy>
+
+</target>
+
+<target name="dist-sample-sources">
+  <tar destfile="${build.lib.dir}/${release.name}-samples-${release.version}.tar.gz"
+       compression="gzip">
+    <tarfileset
+      prefix="${release.name}-samples-${release.version}"
+      dir="${module.samples.dir}"/>
+  </tar>
+  <zip destfile="${build.lib.dir}/${release.name}-samples-${release.version}.zip">
+    <zipfileset
+      prefix="${release.name}-samples-${release.version}"
+      dir="${module.samples.dir}"/>
+  </zip>
+</target>
+
+<target name="init-samples">
+  <mkdir dir="${module.samples.dest.lib}"/>
+</target>
+
+<target name="clean-samples">
+  <delete includeemptydirs="true">
+    <fileset dir="${module.samples.dir}" includes="**/classes/**"/>
+  </delete>
+  <delete dir="${module.samples.dest.lib}" quiet="true"/>
+</target>

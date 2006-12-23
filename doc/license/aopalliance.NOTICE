@@ -1,0 +1,2 @@
+JETM uses AOP Alliance API to provide means to enhance classes at
+runtime or compile time with performance monitoring capabilities.
