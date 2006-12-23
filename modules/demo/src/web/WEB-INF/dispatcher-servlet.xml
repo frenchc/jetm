@@ -1,0 +1,85 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+   "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+   <!--
+
+    Enable this import to enable JETM performance monitoring.
+    Removing this import will disable monitoring completly.
+    -->
+  <import resource="jetm-monitoring.xml"/>
+
+  <!--
+
+    Standard spring web support.
+   -->
+
+  <bean id="registrationController"
+        class="etm.demo.webapp.controller.RegistrationController"
+        autowire="constructor">
+    <property name="commandName">
+      <value>registration</value>
+    </property>
+    <property name="commandClass">
+      <value>etm.demo.webapp.controller.Registration</value>
+    </property>
+    <property name="formView">
+      <value>registrationForm</value>
+    </property>
+    <property name="successView">
+      <value>private</value>
+    </property>
+    <property name="validator">
+      <bean id="registrationValidator" class="etm.demo.webapp.controller.RegistrationValidator" autowire="constructor"/>
+    </property>
+  </bean>
+
+
+  <bean id="loginController" class="etm.demo.webapp.controller.LoginController" autowire="constructor">
+    <property name="sessionForm">
+      <value>false</value>
+    </property>
+    <property name="commandName">
+      <value>login</value>
+    </property>
+    <property name="commandClass">
+      <value>etm.demo.webapp.controller.Login</value>
+    </property>
+    <property name="formView">
+      <value>welcome</value>
+    </property>
+    <property name="successView">
+      <value>private</value>
+    </property>
+  </bean>
+
+  <bean id="consoleController" class="etm.demo.webapp.controller.ConsoleController" />
+
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/welcome.action">loginController</prop>
+        <prop key="/login.action">loginController</prop>
+        <prop key="/showRegistration.action">registrationController</prop>
+        <prop key="/registration.action">registrationController</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+
+  <bean id="userDao" class="etm.demo.webapp.dao.UserDaoImpl"/>
+
+  <bean id="userManagementService" class="etm.demo.webapp.service.UserManagementServiceImpl" autowire="constructor"/>
+
+  <bean id="messagingService" class="etm.demo.webapp.service.MessagingServiceImpl" autowire="constructor"/>
+
+</beans>

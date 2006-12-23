@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<project name="JETM online demo" default="create-war" basedir=".">
+
+  <target name="create-war" depends="clean, init">
+    <javac
+      srcdir="src/java"
+      destdir="build/classes"
+      classpathref="classpath"
+      debug="true"
+      target="1.4"
+      source="1.4"
+      />
+    <war destfile="dist/jetm-demo.war"
+         webxml="src/web/WEB-INF/web.xml">
+      <lib dir="src/web/WEB-INF/lib"/>
+      <classes dir="build/classes"/>
+      <classes dir="src/java" includes="**/*.xml" />
+
+      <fileset dir="src/web">
+        <exclude name="**/web.xml"/>
+        <exclude name="**/lib/**"/>
+      </fileset>
+    </war>    
+  </target>
+
+  <target name="init" depends="validate-runtime">
+    <mkdir dir="build/classes"/>
+    <mkdir dir="dist"/>
+
+    <path id="classpath">
+      <fileset dir="src/web/WEB-INF/lib">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="lib">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+  </target>
+
+  <target name="clean">
+    <delete dir="build"/>
+    <delete dir="dist"/>
+  </target>
+
+  <target name="validate-runtime">
+     <available classname="etm.core.monitor.EtmMonitor"
+                property="etmcore.available"
+                classpathref="jetm.classpath"/>
+     <fail unless="etmcore.available">
+
+ JETM core missing!
+ Please ensure that jetm-${version}.jar is available at ../../lib.
+ If you are running this demo from source please execute top level build.xml
+ with target build-all first.
+     </fail>
+     <available classname="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
+                property="etmoptional.available"
+               classpathref="jetm.classpath"/>
+     <fail unless="etmoptional.available">
+
+ JETM optional missing!
+ Please ensure that jetm-optional-${version}.jar is available at ../../lib.
+ If you are running this demo from source please execute top level build.xml
+ with target build-all first.
+     </fail>
+   </target>
+
+
+
+</project>
