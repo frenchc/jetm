@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+
+</head>
+
+<body>
+
+<div id="content">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+
+<div id="subheader">The swiss army knife of the poor</div>
+
+<div id="main">
+  <h3>JETM Advanced concepts</h3>
+
+  <p>
+    While <a href="basic_concepts.html">basic concepts</a> introduced the rationale behind JETM the following page
+    covers JETM from an architecural point of view. It will offer a detailed description of its main features
+    and extension points.
+  </p>
+
+  <h4>Bits and Pieces: MeasurementPoint, EtmMonitor, Aggregator</h4>
+
+  <p>
+    JETM uses a simple concept to measure and visualize application performance. With the help of an
+    MeasurementPoint an
+    EtmMonitor collects individual performance statistics and uses a chain of Aggregators to
+    process those raw results. This aggregator chain was introduced to support flexible multistaged processing of raw
+    performance data.
+  </p>
+
+  <p>
+    For example an aggregator chain could buffer raw performance data and aggregate them asynchronously. Or
+    simply log raw data and move the aggregation to an external process (e.g. <a
+    href="http://oss.oetiker.ch/mrtg/">MRTG</a>).
+    The chain may be configured at EtmMonitor construction time - see <a href="five_minute_tutorial.html">five minute
+    tutorial</a> -
+    or using the JETM <a href="../howto/etm_manager_configuration.html">static configuration mechanism</a>.
+  </p>
+
+  <p>
+    There are two different types of EtmMonitor available: The NestedMonitor collects performance data such
+    that nested MeasurementPoints will retain their execution path. The FlatMonitor however will identify
+    MeasurementPoints points by name and discard the execution path. Please note that nested collection
+    adds some overhead (due to the usage of ThreadLocals).
+  </p>
+
+  <h4>Static vs. Non-Static Usage</h4>
+
+  <p>
+    As seen in <a href="one_minute_tutorial.html">one minute tutorial</a> JETM can be easily used just like logging
+    frameworks.
+    The drawback of this strategy is that application code contains performance measurement code that can't be added or
+    removed
+    easily.
+  </p>
+
+  <p>
+    Therefore it is recommended to use <a href="monitoring_strategies.html#declarative">declarative</a> performance
+    monitoring
+    using AOP. One example is <a href="../howto/spring_integration.html">Springframework</a> based performance
+    monitoring
+    that removes the need to alter application code.
+  </p>
+
+  <h4>MeasurementRenderer - Rendering aggregated results</h4>
+
+  <p>
+    Usually the drop-in <a href="../howto/drop-in-console.html">HTTP console</a> will be sufficient to visualize
+    performance results. Nevertheless a JETM <a href="../@api@/etm/core/renderer/MeasurementRenderer.html">MeasurementRenderer</a>
+    can be used to access the current aggregated performance results by calling the EtmMonitor method
+    <i>render(MeasurementRenderer)</i>.
+  </p>
+
+  <p>
+    Currently JETM ships with three basic MeasurementRenderer implementations (Standard Out, HTML and Swing),
+    however implementing a custom rendering mechanism is pretty straight forward: A MeasurementRenderer requires
+    the implementation of the method <i>render(Map)</i> that provides access to all available performances
+    statistics.
+  </p>
+
+  <h4>Accessing raw measurement results</h4>
+
+  <p>
+    Even though JETM should be used to generate aggregated performance results raw data logging is supported
+    too.
+  </p>
+
+  <p>By addding a specific logging aggregator raw data can be written to any destination. JETM ships with adapters to
+    all major
+    Java&trade; logging frameworks (<i>commons-logging</i>, <i>log4j</i>
+    and <i>java.util.logging</i>) that can easily be added to an existing aggregator chain and thus enable raw data
+    logging transparently. One of the major advantage is that the log output will be consistent accross the application.
+  </p>
+
+  <p>
+    It is recommended to add an asynchronous buffering aggregator in front of an logging aggregator
+    in order to limit negative side effects (performancewise). A typical logging aggregator chain should look like this:
+  </p>
+  <center><i>BufferedTimedAggregator -> CommonsLoggingAggregator -> NestedAggregator</i></center>
+
+  <p>
+    The aggregator chain above will buffer raw performance results for a certain period of time (default is 5 seconds).
+    It will then flush those results, which means writing raw performance results to a commons logging destination
+    (default etm-raw-data) and aggregate them using nested aggregation.
+  </p>
+
+  <h4>Next...</h4>
+
+  <p>Now proceed to <a href="five_minute_tutorial.html"><b>five minute tutorial</b></a> to see some of theses features
+    at work.
+  </p>
+</div>
+
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../cvs.html">CVS</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+</div>
+
+</body>
+<!-- Last modified  $Date: 2006/10/30 01:35:09 $ -->
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+<body>
+
+<div id="content">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+<div id="subheader">The swiss army knife of the poor</div>
+<div id="main">
+<h3>JETM: One minute tutorial</h3>
+
+<p>
+  This short tutorial explains in one minute the basic features of JETM performance monitoring.
+  It assumes you read <a href="basic_concepts.html">basic concepts</a> before.
+  For more advanced features see <a href="advanced_concepts.html">advanced concepts</a> and
+  <a href="five_minute_tutorial.html">five minute tutorial</a>.
+</p>
+<h4>Step 1: Download dependencies</h4>
+
+<p>
+  This following demo requires JETM core that is available <a href="../files.html">here</a>. Download
+  the currently stable JETM release, expand it and add <i>lib/jetm.jar</i> to your project classpath.
+</p>
+
+<p>
+  Alternatively you can get the full JETM tutorial sources including its dependencies with
+  <a href="../files.html">JETM examples</a>. The sources are located at <i>tutorial/one-minute</i>.
+  Furthermore if you have a valid <i>ant</i> installation you can execute the tutorial examples from
+  the command line.
+</p>
+<h4>Step 2: Add measurement points to source code</h4>
+
+<p>
+  Lets assume you have service class called <i>BusinessService</i> you want to monitor performance whise.
+  The class contains the two public methods <i>someMethod</i> and <i>nestedMethod</i> whereas <i>nestedMethod</i> is
+  called from within <i>someMethod</i>. To monitor their execution performance we add two measurement
+  points manually: One around the business code in nestedMethod, the other around the business code
+  in someMethod.
+</p>
+
+<p>
+  The example below shows the resulting code fragment that is also available
+  <a href="../@samples@/tutorial/one-minute/src/java/etm/tutorial/oneminute/BusinessService.java"><i>here</i></a>.
+</p>
+
+<div class="code"><pre><span class="java-keyword">public class</span> BusinessService {
+
+  <span class="java-keyword">private static final</span> EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+
+  <span class="java-keyword">public void</span> someMethod() {
+
+    <b>MeasurementPoint point = new MeasurementPoint(etmMonitor, "BusinessService:someMethod");</b>
+
+    <span class="java-keyword">try</span> {
+
+      <span class="java-quote">//
+      // some business code
+      //</span>
+
+      nestedMethod();
+
+    } <span class="java-keyword">finally</span> {
+      <b>point.collect();</b>
+    }
+  }
+
+  <span class="java-keyword">public void</span> nestedMethod() {
+
+    <b>MeasurementPoint point = new MeasurementPoint(etmMonitor, "BusinessService:nestedMethod");</b>
+
+    <span class="java-keyword">try</span> {
+
+      <span class="java-quote">//
+      // some business code
+      //</span>
+
+    } <span class="java-keyword">finally</span> {
+      <b>point.collect();</b>
+    }
+  }
+}
+</pre>
+</div>
+
+<p>The JETM class <a href="../@api@/etm/core/monitor/MeasurementPoint.html">MeasurementPoint</a> takes two arguments:
+  an instance of EtmMonitor and the name of the measurement point itself. A MeasurementPoint will use the given
+  EtmMonitor reference to collect execution statistics under the given name. There are serveral ways to access
+  an EtmMonitor instance. The example above uses an EtmManager which pretty much works like log4j Logger or
+  commons-logging LogFactory.
+</p>
+<h4>Step 3: Run business code and visualize results</h4>
+
+<p>We just extended our <i>BusinessService</i> with Measurement Points, so we are ready to analyse
+  its performance. Therefore we need some code that calls BusinessService methods:
+</p>
+
+<div class="code"><pre><span class="java-keyword">public class</span> OneMinuteTest {
+
+  <span class="java-keyword">private static</span> EtmMonitor monitor;
+
+  ...
+
+  <span class="java-keyword">public static void</span> main(<span class="java-keyword">String[]</span> args) {
+    <span class="java-quote">// configure measurement framework</span>
+    setup();
+
+    <span class="java-quote">// instantiate business service</span>
+    BusinessService service = new BusinessService();
+
+    <span class="java-quote">// execute business logic</span>
+
+    service.someMethod();
+    service.someMethod();
+    service.someMethod();
+    service.nestedMethod();
+
+    <span class="java-quote">// visualize results</span>
+    etmMonitor.render(new SimpleTextRenderer());
+
+    <span class="java-quote">// shutdown measurement framework</span>
+    tearDown();
+  }
+
+
+  <span class="java-keyword">private static void</span> setup() {
+    BasicEtmConfigurator.configure();
+    monitor = EtmManager.getEtmMonitor();
+    monitor.start();
+  }
+
+  <span class="java-keyword">private static void</span> tearDown() {
+    monitor.stop();
+  }
+
+}
+</pre>
+</div>
+
+<p>
+  The class <a
+  href="../@samples@/tutorial/one-minute/src/java/etm/tutorial/oneminute/OneMinuteTest.java"><i>OneMinuteTest</i></a>
+  now executes BusinessService methods and renders the result using a
+  <a href="../@api@/etm/core/renderer/SimpleTextRenderer.html">SimpleTextRenderer</a>.
+  This renderer writes aggregated performance results to Java standard-out using the default locale.
+  Please note that there is setup and teardown code that initializes and stops performance monitoring.
+</p>
+
+<p>The execution of this code fragment should create an output like this (alternatively execute <i>ant demo</i> in the
+  tutorial directory to get the same result):</p>
+
+<div class="code"><pre>|------------------------------|---|---------|--------|--------|---------|
+|      Measurement Point       | # | Average |   Min  |   Max  |  Total  |
+|------------------------------|---|---------|--------|--------|---------|
+| BusinessService:nestedMethod | 4 |   3.556 |  1.029 |  6.075 |  14.224 |
+|------------------------------|---|---------|--------|--------|---------|
+| BusinessService:someMethod   | 3 |   5.881 |  5.079 |  7.460 |  17.642 |
+|------------------------------|---|---------|--------|--------|---------|
+</pre>
+</div>
+
+
+<p>Thats it! Well, almost. There are some optional features you may be interested in.</p>
+<h4>Step 4: (Optional) Alter runtime configuration</h4>
+
+An <a href="../@api@/etm/core/configuration/EtmManager.html">EtmManager</a> will always
+return the default performance monitoring setup unless it's configured using an
+<a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a> or
+<a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>. Within this tutorial
+we demonstrate two BasicEtmConfigurator options.
+
+<h5>Enable execution path recording</h5>
+
+<p>
+  In the example above <i>BasicEtmConfigurator.configure()</i> selects a <a
+  href="../@api@/etm/core/monitor/FlatMonitor.html">FlatMonitor</a> for measurement collection.
+  Often this EtmMonitor provides enough details to understand the performance characteristics of your application.
+  However it might be
+  important to record execution paths as well. The so-called
+  <a href="../@api@/etm/core/monitor/NestedMonitor.html">NestedMonitor</a>
+  may be enabled with <i>BasicEtmConfigurator.configure(true)</i>.
+</p>
+
+<p>
+  The output will change as follows:
+</p>
+
+<div class="code"><pre>|-------------------------------|---|---------|--------|--------|---------|
+|       Measurement Point       | # | Average |   Min  |   Max  |  Total  |
+|-------------------------------|---|---------|--------|--------|---------|
+| BusinessService:nestedMethod  | 1 |   7.116 |  7.116 |  7.116 |   7.116 |
+|-------------------------------|---|---------|--------|--------|---------|
+| BusinessService:someMethod    | 3 |  10.692 |  3.544 | 19.305 |  32.075 |
+|  BusinessService:nestedMethod | 3 |   5.095 |  1.060 | 12.146 |  15.285 |
+|-------------------------------|---|---------|--------|--------|---------|</pre>
+</div>
+
+
+<h5>Select timer implementation</h5>
+
+<p>
+  By default EtmManager will record execution times using the best available
+  <a href="../@api@/etm/core/timer/ExecutionTimer.html">ExecutionTimer</a>.
+  Currently available measurement timers are JDK1.5 nano timer, Sun Misc HighRes Timer and System.currentTimeMillis.
+  You may select a specific ExecutionTimer by providing an concrete timer instance to <i>BasicEtmConfigurator.configure()</i>.
+</p>
+
+<p>
+  For example BasicEtmConfigurator.configure(true, new DefaultTimer()) will change the output as follows (note
+  change in resolution):
+</p>
+
+<div class="code"><pre>|-------------------------------|---|---------|--------|--------|---------|
+|       Measurement Point       | # | Average |   Min  |   Max  |  Total  |
+|-------------------------------|---|---------|--------|--------|---------|
+| BusinessService:nestedMethod  | 1 |   5.000 |  5.000 |  5.000 |   5.000 |
+|-------------------------------|---|---------|--------|--------|---------|
+| BusinessService:someMethod    | 3 |   8.000 |  5.000 | 12.000 |  24.000 |
+|  BusinessService:nestedMethod | 3 |   4.000 |  2.000 |  7.000 |  12.000 |
+|-------------------------------|---|---------|--------|--------|---------|</pre>
+</div>
+
+
+<p>For more options see <a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a>
+  and
+  <a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a> Javadoc.</p>
+
+<p><b>Next: <a href="advanced_concepts.html">Advanced concepts.</a></b></p>
+
+</div>
+
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../cvs.html">CVS</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+</div>
+
+</body>
+<!-- Last modified  $Date: 2006/12/11 15:18:36 $ -->
+</html>

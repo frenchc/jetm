@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+  <script type="text/javascript">
+    function showPopup() {
+      var console = window.open('../rendering/drop-in-console-popup.html', 'popup', 'width=750,height=680,left=100,top=100');
+      console.focus();
+    }
+  </script>
+</head>
+
+<body>
+
+<div id="content">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+
+<div id="subheader">The swiss army knife of the poor</div>
+
+<div id="main">
+  <h3>JETM Drop-in HTTP Console</h3>
+
+  <a onclick="showPopup(); return false;">
+    <img style="float: right; margin-left: 15px; margin-bottom: 15px;" border="0" src="../img/jetm_console_thumb.png"
+         alt="JETM Console"/>
+  </a>
+
+  <p>
+    JETM ships with a drop-in HTTP console that provides access to aggregated performance statistics. It supports
+    both nested and flat measurements. Click image to the right to see an example screenshot.
+  </p>
+
+  <p>
+    Once enabled it can be accessed through HTTP port 40000 (e.g. http://localhost:40000).
+  </p>
+
+  <p>
+    Currently there are two ways to activate the HTTP console: It can either be manually instantiated using
+    <a href="../@api@/etm/contrib/console/HttpConsoleServer.html">HttpConsoleServer</a> or enabled
+    as <a href="../@api@/etm/contrib/console/HttpConsoleServerPlugin.html">HttpConsoleServerPlugin</a>.
+  </p>
+
+  <h4>Standalone HTTP Console Server</h4>
+
+  <p>
+    Starting the HTTP Console Server is as simple as providing an instance of EtmMonitor to <i>HttpConsoleServer</i>.
+    Optionally the listen port (<i>setListenPort</i>) and the number of worker threads (<i>setWorkerSize</i>) can be
+    configured.
+  </p>
+
+  <div class="code"><pre>EtmMonitor etmMonitor = ...;
+
+<b>HttpConsoleServer server = new HttpConsoleServer(etmMonitor);</b>
+<span class="java-quote">// override default listen port</span>
+server.setListenPort(45000);
+server.start();</pre>
+  </div>
+
+  <p>
+    Please note that <i>HttpConsoleServer</i> can easily be used within a spring managed application.
+    See <a href="spring_integration.html">Spring Framework integration howto</a> for further details.
+  </p>
+  <h4>HTTP Console Plugin</h4>
+
+  <p>
+    Applications that use <a href="etm_manager_configuration.html">static JETM configuration</a> can rely on the
+    plugin mechanism to startup and shutdown a HTTP console. The plugin <i>HttpConsoleServerPlugin</i> may be used
+    for this. See following xml configuration example:
+  </p>
+
+  <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+&lt;jetm-config&gt;
+
+  ...
+
+  &lt;extension&gt;
+    &lt;plugin&gt;
+      &lt;plugin-class&gt;<b>etm.contrib.console.HttpConsoleServerPlugin</b>&lt;/plugin-class&gt;
+      &lt;properties&gt;
+        &lt;property name="listenPort"&gt;45000&lt;/property&gt;
+      &lt;/properties&gt;
+    &lt;/plugin&gt;
+  &lt;/extension&gt;
+&lt;/jetm-config&gt;
+</pre>
+  </div>
+
+  <h4>HTTP console properties</h4>
+
+  <p>The HTTPConsole supports the following properties:</p>
+  <table class="list">
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+    <tr>
+      <td valign="top">listenPort</td>
+      <td valign="top">Sets the listen port for the console</td>
+      <td valign="top">40000</td>
+    </tr>
+    <tr>
+      <td valign="top">expanded</td>
+      <td valign="top">Enables or disables expanded view</td>
+      <td valign="top">false</td>
+    </tr>
+    <tr>
+      <td valign="top">workerSize</td>
+      <td valign="top">The number of threads used for request processing. Must be 2 or more.</td>
+      <td valign="top">2</td>
+    </tr>
+
+  </table>
+
+</div>
+
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../cvs.html">CVS</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+</div>
+</body>
+<!-- Last modified  $Date: 2006/10/02 06:10:40 $ -->
+</html>

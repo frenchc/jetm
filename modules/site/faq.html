@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="default.css"/>
+</head>
+<body>
+
+<div id="content">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+<div id="subheader">The swiss army knife of the poor</div>
+<div id="main">
+
+<h3>JETM Frequently Asked Questions</h3>
+
+<p>
+  This are the JETM FAQ. If you are new to JETM you better start at <a href="index.html">JETM Home</a> or
+  <a href="views/monitoring_examples.html">JETM Examples</a>.
+</p>
+<dl>
+  <dt><a href="#overview">1 Overview</a></dt>
+  <dd><a href="#whatisjetm">1.1 What is JETM?</a></dd>
+  <dd><a href="#jetmbenefits">1.2 What are the benefits using JETM?</a></dd>
+  <dd><a href="#license">1.3 How is JETM licensed?</a></dd>
+
+  <dt><a href="#quickstart">2 Quick Start</a></dt>
+  <dd><a href="#requirements">2.1 What are the requirements using JETM?</a></dd>
+  <dd><a href="#download">2.2 How do I download and install JETM?</a></dd>
+  <dd><a href="#start">2.3 How should I start using JETM?</a></dd>
+
+  <dt><a href="#concepts">3 JETM Core Concepts</a></dt>
+  <dd><a href="#measurementpoint">3.1 What is an "Measurement Point"?</a></dd>
+  <dd><a href="#etmmonitor">3.2 What is an "Etm Monitor"?</a></dd>
+  <dd><a href="#flatnested">3.3 What is the difference between flat and nested measurement?</a></dd>
+  <dd><a href="#aggregator">3.4 What is an "Aggregator"?</a></dd>
+  <dd><a href="#aop">3.5 What is AOP?</a></dd>
+
+  <dt><a href="#troubleshooting">4 Troubleshooting</a></dt>
+  <dd><a href="#no-measurements">4.1 I don't get measurement results at all! What's wrong?</a></dd>
+
+  <dt><a href="#help">5 Getting help</a></dt>
+  <dd><a href="#moreinfo">5.1 How do I find out more about JETM?</a></dd>
+  <dd><a href="#reportbug">5.2 How do I submit a bug report?</a></dd>
+  <dd><a href="#contact">5.3 How do I get in touch with JETM users/developers?</a></dd>
+
+  <dt><a href="#development">6 JETM Project Development</a></dt>
+  <dd><a href="#todos">6.1 What are the current TODOs?</a></dd>
+  <dd><a href="#implementation">6.2 Why did you implement {insert your classname} exactly this way?</a></dd>
+  <dd><a href="#junit">6.3 Why don't you write test cases for all classes?</a></dd>
+  <dd><a href="#libraries">6.4 Why don't you use {insert library name}?</a></dd>
+  <dd><a href="#aopframeworks">6.5 Why don't you support {insert AOP Framework name}?</a></dd>
+</dl>
+<hr width="98%"/>
+
+<!-- Overview -->
+<a name="overview"></a><h4>1 Overview</h4>
+
+<a name="whatisjetm"></a><h5>1.1 What is JETM?</h5>
+The Java&trade; Execution Time Measurement Library (JETM) is a free tool to monitor execution times
+of Java&trade; code fragments. This can be done either programmatic through hand written code or declarative
+using AOP. JETM was implemented based on an idea from <a href="http://www.tideland.biz">Frank M&uuml;ller</a>
+seen a few years ago. Thanks for the pointer, Frank;).
+
+<a name="jetmbenefits"></a><h5>1.2 What are the benefits using JETM?</h5>
+While there is always a need for low level profiling JETM helps you to monitor selected performance statistics
+in production. The major benefit is that you gain realistic data for code fragements your interested in only.
+<p/>
+And of course - JETM is free.
+
+<a name="license"></a><h5>1.3 How is JETM licensed?</h5>
+JETM source code and documentation is available under a <a href="license.html">BSD style license</a>.
+In short you are free to do whatever you want to do with this code as long as you retain the copyright
+(according to the license agreement).
+
+
+<!-- Quick start -->
+<hr width="98%"/>
+<a name="quickstart"></a><h4>2 Quick start</h4>
+
+<a name="requirements"></a><h5>2.1 What are the requirements using JETM?</h5>
+The JETM core library needs JDK 1.3 or higher. For better timer resolutions JDK 5.0 or any Sun JDK should
+be considered.
+
+<a name="download"></a><h5>2.2 How do I download and install JETM?</h5>
+You may download the distribution from the <a href="files.html">download page</a>. There is no need to install
+the library, however you need to add JETM libraries to your application. Since this depends on your runtime
+environment checkout <a href="doc.html">full documentation</a>.
+
+<a name="start"></a><h5>2.3 How should I start using JETM?</h5>
+Just start with <a href="intro/one_minute_tutorial.html">one minute tutorial</a> and proceed with
+<a href="intro/five_minute_tutorial.html">five minute tutorial</a> and <a href="@api@/index.html">JavaDoc</a>.
+
+
+<!-- core concepts -->
+<hr width="98%"/>
+<a name="concepts"></a><h4>3 JETM Core Concepts</h4>
+
+<a name="measurementpoint"></a><h5>3.1 What is an "Measurement Point"?</h5>
+An <i>Measurement Point</i> is an arbitrary code fragment such as an method call, a constructor invocation or a limited
+number
+of Java instructions. The JETM API allows you to associate symbolic names to such fragments
+and collect their execution times automatically.
+
+<a name="etmmonitor"></a><h5>3.2 What is an "Etm Monitor"?</h5>
+An instance of an <i>Etm Monitor</i> is used to store and aggregate the collected performance statistics. Currently
+JETM ships with three different types: FlatMonitor, NestedMonitor and NullMoniter.
+
+<a name="flatnested"></a><h5>3.3 What is the difference between flat and nested ?</h5>
+Sometimes is is important to analyse code fragements depending on their execution path. As opposite to
+flat measurement nested measurement represents nested Measurement Points as a tree. See <a
+  href="intro/one_minute_tutorial.html">one minute tutorial</a>
+for an example.
+
+<a name="aggregator"></a><h5>3.4 What is an "Aggregator"?</h5>
+JETM will collect execution times only and delay the aggregation for performance reasons. An aggregator
+is used to trigger the aggreation process and might be based on the number of currently collected
+Measurement Points or an time interval. See <a href="@api@/etm/core/aggregation/Aggregator.html">Aggregator</a>
+for further details.
+
+<a name="aop"></a><h5>3.5 What is AOP?</h5>
+AOP is short for Aspect Oriented Programming. The answer to this question exceeds the scope of this FAQ. See
+<a href="http://www.asod.net">ASOD.NET</a> for further information.
+
+
+<!-- Tips and notes -->
+<hr width="98%"/>
+<a name="troubleshooting"></a><h4>4 Troubleshooting</h4>
+
+<a name="no-measurements"></a><h5>4.1 I don't get measurement results at all! What's wrong?</h5>
+In order to collect measurement results an EtmMonitor instance need to be started, otherwhise
+measurement results will be discarded. In order to start the collection ensure that you always
+call <a href="@api@/etm/core/monitor/EtmMonitor.html#start()">EtmMonitor.start()</a> before using
+a monitor.
+
+<!-- Getting help -->
+<hr width="98%"/>
+<a name="help"></a><h4>5 Getting help</h4>
+
+<a name="moreinfo"></a><h5>5.1 How do I find out more about JETM?</h5>
+Just drop a mail at the appropriate <a href="http://sourceforge.net/mail/?group_id=109626">mailing list</a>.
+
+<a name="reportbug"></a><h5>5.2 How do I submit a bug report?</h5>
+Use the project bug tracker at sourceforge.net: <a
+  href="http://sourceforge.net/tracker/?group_id=109626&amp;atid=654000">Report a bug</a>.
+
+<a name="contact"></a><h5>5.3 How do I get in touch with JETM users/developers?</h5>
+Just drop a mail at the appropriate <a href="http://sourceforge.net/mail/?group_id=109626">mailing list</a>.
+
+
+<!-- Development -->
+<hr width="98%"/>
+<a name="development"></a><h4>6 JETM Project Development</h4>
+
+<a name="todos"></a><h5>6.1 What are the current TODOs?</h5>
+See <a href="releaseplan.html">JETM roadmap</a>.
+
+<a name="implementation"></a><h5>6.2 Why did you implement {insert your classname} exactly this way?</h5>
+Probably because we are too lazy or didn't know better.<br/>
+Anyway, if you think we should change the current design/implementation drop a mail on the mailing list.
+
+<a name="junit"></a><h5>6.3 Why don't you write test cases for all classes?</h5>
+Same as above. However volunteer work is always welcome;).
+
+<a name="libraries"></a><h5>6.4 Why don't you use {insert library}?</h5>
+The core JETM library should be easy to use and as small as possible. Therefore we decided to avoid external
+dependencies for JETM core at all.
+This is especially true for logging frameworks. If you need logging, subclass JETM classes and add your log statements.
+
+<a name="aopframeworks"></a><h5>6.5 Why don't you support {insert AOP Framework name}?</h5>
+As always: it's just a matter of time and interest. If you think we should support another AOP Framework supply a patch
+or drop a note.
+
+</div>
+
+<div id="menu">
+  <a href="index.html">Home</a>
+  |
+  <a href="doc.html">Documentation</a>
+  |
+  <a href="faq.html">FAQ</a>
+  |
+  <a href="@api@/index.html">JavaDoc</a>
+  |
+  <a href="files.html">Download</a>
+  |
+  <a href="cvs.html">CVS</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+</div>
+
+</body>
+<!-- Last modified  $Date: 2006/10/18 07:16:39 $ -->
+</html>

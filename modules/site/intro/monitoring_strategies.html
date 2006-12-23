@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+
+<body>
+
+<div id="content">
+  <div id="header">Java&trade; Execution Time Measurement Library</div>
+
+  <div id="subheader">The swiss army knife of the poor</div>
+
+  <div id="main">
+    <h3>JETM Performance monitoring strategies</h3>
+
+    <p>
+      The Java&trade; Execution Time Measurement Library targets two performance monitoring strategies:
+    </p>
+    <ul>
+      <li>Programatic performance monitoring activated at <i>source code level</i>.</li>
+      <li>Declarative performance monitoring activated at application <i>compile, load or runtime</i>.</li>
+    </ul>
+    <p>
+      Even though these strategies serve different purposes they are still able to utilize the full JETM featureset and
+      can
+      be used at the same time or separately.
+    </p>
+    <a name="programmatic"/>
+    <h4>Programmatic performance monitoring</h4>
+
+    <p>
+      In Java&trade; land everyone should know the two most important keywords for programmatic
+      performance monitoring: <i>try</i> and <i>finally</i>.
+      Using try/finally blocks as foundation JETM provides a simple infrastructure to collect
+      execution times for further analysis. All you need to do is to assign symbolic names
+      to distinct code blocks as seen in the example below.
+    </p>
+
+    <div class="code"><pre><b>MeasurementPoint point = new MeasurementPoint(<i>"symbolic name"</i>);</b>
+
+<span class="java-keyword">try</span> {
+
+  // arbitrary code fragment
+
+} <span class="java-keyword">finally</span> {
+  <b>point.collect();</b>
+}</pre>
+    </div>
+    <p>For further details regarding programmatic performance monitoring see:</p>
+    <ul>
+      <li><a href="../intro/one_minute_tutorial.html">One minute tutorial</a></li>
+      <li><a href="../howto/etm_manager_configuration.html">EtmManager configuration</a></li>
+    </ul>
+
+    <a name="declarative"/>
+    <h4>Declarative performance monitoring</h4>
+
+    <p>
+      Although programmatic performance monitoring is a good place to start with it will clutter your source code
+      pretty soon. Usually you will end up with inconsistent measurement points accross your application
+      that exist purely based on developer needs.
+    </p>
+
+    <p>
+      With the advent of Aspect Oriented Programming and Aspect Oriented Frameworks such as AspectJ,
+      Spring AOP or AspectWerkz there is no need to alter source code for performance monitoring. This is due to
+      the fact that these frameworks have the capability to add or remove any arbitrary code fragement at compile,
+      load or even runtime. JETM comes with several integrations to support declarative performance monitoring out
+      of the box, nevertheless it should be possible to implementation custom integrations fairly easily.
+    </p>
+
+    <p>For further details regarding declarative performance monitoring see:</p>
+    <ul>
+      <li><a href="../howto/spring_integration.html">Springframework Integration</a></li>
+      <li><a href="../howto/aspectwerkz_integration.html">AspectWerkz Integration</a></li>
+      <li><a href="../howto/web_integration.html">Web Application Integration</a></li>
+    </ul>
+  </div>
+
+  <div id="menu">
+    <a href="../index.html">Home</a>
+    |
+    <a href="../doc.html">Documentation</a>
+    |
+    <a href="../faq.html">FAQ</a>
+    |
+    <a href="../@api@/index.html">JavaDoc</a>
+    |
+    <a href="../files.html">Download</a>
+    |
+    <a href="../cvs.html">CVS</a>
+    |
+    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+    |
+    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+  </div>
+</div>
+</body>
+<!-- Last modified  $Date: 2006/10/29 14:39:20 $ -->
+</html>

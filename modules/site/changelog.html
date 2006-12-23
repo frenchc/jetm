@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="default.css"/>
+</head>
+<body>
+
+<div id="content">
+  <div id="header">Java&trade; Execution Time Measurement Library</div>
+  <div id="subheader">The swiss army knife of the poor</div>
+  <div id="main">
+
+    <h3>JETM Changelog</h3>
+
+
+    <h4>Release 1.1.0</h4>
+<pre> New features
+ - AspectWerkz Support
+ - Generic Web App Integration Support
+ - Expanded/Collapsed HTTP Console result rendering
+ - Dump on shutdown plugin
+
+ Changes, Fixes and Improvements
+ - robots.txt for HTTP console added (disabled actions)
+ - EtmManager.getEtmMonitor() now returns a proxy, this allows
+   late EtmMonitor init.
+ - Removed auto referesh in HTTP console
+ - Added reset(MeasurementPointName) to EtmMonitor
+ - Improved SimpleTextRenderer layout
+ - Logging aggregators now support filtering
+</pre>
+
+    <h4>Release 1.0.0</h4>
+<pre> New features
+ - Spring based demo (currently available online only)
+
+ Changes, Fixes and Improvements
+ - Javadoc cleanup
+ - Fixed logging aggregator bugs
+</pre>
+
+    <h4>Release 0.8.0</h4>
+<pre> New features
+  - Enabled Plugin Support for XML Configuration
+  - Added HTTPConsoleServer Plugin
+
+ Changes, Fixes and Improvements
+  - EtmMonitor instances have now two states (required for plugin mechanism)
+  - HTTPConsoleServer Startup Thread fixes.
+  - Minor layout changes in SimpleHtmlRenderer
+  - Autostart for EtmManager configurations
+</pre>
+
+    <h4>Release 0.7.0</h4>
+<pre> New features
+  - Added spring support
+  - Added AOP Alliance support
+  - Added log framework abstractions
+  - Added log4j style configurators
+  - Added drop-in HTTP console
+
+ Changes, Fixes and Improvements
+  - Removed StaticMeasurementPoint and MonitorFactory and switched
+    to Log4J/Commons Loging type configuration for static monitoring
+  - Improved online documentation, javadoc and examples
+  - Aggregators now use mixed constructor/setter injection for required
+    and optional dependencies
+  - Minor API changes in monitor constructors
+  - Moved BufferedTimedAggregator to core package
+  - Moved Jdk14DumpAggregator to Jdk14LogAggregator (new package)
+  - Temporary disabled JBoss support
+</pre>
+
+    <p>For changelog prior to 0.7.0 see CVS</p>
+
+  </div>
+
+  <div id="menu">
+    <a href="index.html">Home</a>
+    |
+    <a href="doc.html">Documentation</a>
+    |
+    <a href="faq.html">FAQ</a>
+    |
+    <a href="@api@/index.html">JavaDoc</a>
+    |
+    <a href="files.html">Download</a>
+    |
+    <a href="cvs.html">CVS</a>
+    |
+    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+    |
+    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+  </div>
+
+</div>
+</body>
+<!-- Last modified  $Date: 2006/10/02 07:46:46 $ -->
+</html>

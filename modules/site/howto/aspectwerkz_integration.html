@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+
+<body>
+
+<div id="content">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+
+<div id="subheader">The swiss army knife of the poor</div>
+
+<div id="main">
+<h3>JETM AspectWerkz integration</h3>
+
+<p>
+  The following howto is a basic introduction to the JETM AspectWerkz integration.
+</p>
+
+<p>
+  AspectWerkz is an AOP framework that can be used to modify Java&trade; bytecode on-the-fly. With its help it is
+  possible
+  to add performance measurement code to existing Java applications purely by declaration. Even though AspectWerkz
+  seems to lose momentum right now (because of the merger with <a href="http://aspectj.eclipse.org">AspectJ</a>)
+  it is still a very useful and mature AOP framework.
+</p>
+
+<p>
+  The AspectWerkz XML configuration syntax makes it very easy to add or remove performance monitoring code
+  at compile or application load time. The so-called weaving process enhances
+  exisiting Java&trade; classes based on the config file <i>aop.xml</i> that describes all monitored code
+  fragments.
+</p>
+
+<h4>Prerequisuites</h4>
+
+<p>
+  In order to use AspectWerkz you need the AspectWerkz runtime and it's dependencies. You can download AspectWerkz
+  <a href="http://aspectwerkz.codehause.org">here</a>. For both compile time or load time weaving add all jars
+  below <i>{ASPECTWERKZ_DOWLOAD}/lib</i> to your classpath.*</p>
+
+<p>
+  The binary distribution of JETM contains source code for this howto. If you did not dowload JETM so far get
+  the current distribution <a href="">here</a> and locate the sources at <i>samples/aop/aspectwerkz</i>.
+</p>
+
+<h4>Describe measurement points</h4>
+
+<p>
+  Lets assume you have a number of service classes and database interactions you want to monitor. So the method
+  executions you are interested in are all public methods of classes that end with <i>Service</i> and all
+  public methods of classes that implement the interface <i>Dao</i>.
+</p>
+
+<p>
+  Now with AspectWerkz you can describe these points of interest using its expression language. The
+  example below shows a so-called pointcut (which is more or less a description of code blocks). This pointcut
+  includes both our Services classes and DAOs.
+</p>
+<table border="0" style="padding-left:20px">
+  <tr>
+    <td>Service classes</td>
+    <td style="padding-left:30px">execution(public * example.aop.aspectwerkz.*Service.*(..))</td>
+  </tr>
+  <tr>
+    <td>DAOs</td>
+    <td style="padding-left:30px">execution(public * example.aop.aspectwerkz.Dao+.*(..))</td>
+  </tr>
+</table>
+
+<div class="code"><pre>&lt;!DOCTYPE aspectwerkz PUBLIC "-//AspectWerkz//DTD 2.0//EN"
+          "http://aspectwerkz.codehaus.org/dtd/aspectwerkz2.dtd"&gt;
+
+&lt;aspectwerkz&gt;
+  &lt;system id="weaving-example"&gt;
+
+    &lt;aspect class="<b>etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect</b>"
+            deployment-model="perJVM"&gt;
+
+      &lt;pointcut name="etmExample" expression="
+
+        <b>execution(public * example.aop.aspectwerkz.*Service.*(..))
+          OR
+          execution(public * example.aop.aspectwerkz.Dao+.*(..))</b>
+
+      "/&gt;
+
+      &lt;advice name="monitor" type="around" bind-to="etmExample"/&gt;
+
+    &lt;/aspect&gt;
+
+  &lt;/system&gt;
+&lt;/aspectwerkz&gt;</pre>
+</div>
+
+<p>
+  This XML configuration basically describes that we want to add performance monitoring
+  code to our defined pointcut. The performance monitoring code itself is represented by the class
+  <a href="../@api@/etm/contrib/aop/aspectwerkz/EtmAspectWerkzAspect.html">EtmAspectWerkzAspect</a>
+  that intercepts method calls and measures execution times.
+</p>
+
+<p>
+  The fragment above should be saved as <i>aop.xml</i> to the directory <i>META-INF</i>
+  and added to the application classpath. You will find the same file in <i>src/java/META-INF</i> in
+  the JETM AspectWerkz example.
+</p>
+<h4>Weave Java&trade; classes and test it</h4>
+
+<p>
+  Now we are ready to weave our classes and run the demo. While AspectWerkz supports several options
+  to do so this howto demonstrates <i>load time weaving</i> using the JDK 5.0 JVMTI
+  agent facility and <i>offline weaving</i> using a custom ant task.
+  For a full list of available weaving options see AspectWerkz <a href="http://aspectwerkz.codehaus.org/weaving.html">weaving
+  documentation</a>.
+</p>
+
+<h5>Load-time weaving using JDK 5.0 JVMTI</h5>
+
+<p>
+  If you are using JDK 5.0 you may add performance monitoring transparently.
+  AspectWerkz ships with an JMVTI agent that can transform classes at load-time based on an <i>aop.xml</i>
+  configuration file. The agent can be activated using the <i>javaagent</i> directive that points to
+  the file <i>aspectwerkz-jdk5-x.x.jar</i> (part of the AspectWerkz distribution). The command line would look
+  like this:
+</p>
+
+<div class="code"><pre>
+java -javaagent:/path/to/lib/aspectwerkz-jdk5-x.x.jar -cp <i>CLASSPATH</i> 
+     example.aop.aspectwerkz.AspectWerkzExample
+</pre>
+</div>
+<p>
+  Please note you have to use JDK 5.0 and include the compiled example classes, <i>META-INF/aop.xml</i>,
+  all AspectWerkz libraries*, jetm.jar and jetm-optional.jar to the launch CLASSPATH.
+</p>
+
+<p>To shorten up things <i>load-time weaving</i> can be tested using the provided ant build file.
+  Therefore you need to alter the file <i>build.properties</i> in the example root directory
+  <i>example/aop/aspectwerkz</i>. Ensure the property <i>aspectwerkz.dist.path</i> points to a valid AspectWerkz
+  distribution and execute the ant target <i>loadtime-weaving</i>. This target will compile our demo and run it with
+  the javaagent directive providing performance monitoring results.
+</p>
+
+<h5>Offline weaving using Ant</h5>
+
+<p>
+  Even though load-time weaving can add performance monitoring on demand it is sometimes better to activate this
+  capability at project build time. Luckily AspectWerkz supports offline-weaving. Besides other options <i>offline-weaving</i>
+  can be triggerd by an custom ant task. The task <i>AspectWerkzCTask</i> will process any kind
+  of jar file or Java&trade; class and weave them according to the configuration found in <i>META-INF/aop.xml</i>.
+</p>
+
+<p>
+  The following ant snippet demonstrates offline weaving:
+</p>
+
+<div class="code"><pre>
+<i>&lt;!-- path that contains our demo classes --&gt;</i>
+&lt;path id="compile.path" location="build/classes" /&gt;
+
+<i>&lt;!-- classpath that contains aspectwerkz and jetm libraries --&gt;</i>
+&lt;path id="library.classpath"&gt;
+ &lt;fileset dir="${aspectwerkz.dist.path}/lib"
+          includes="**/*.jar"
+          excludes="**/ant*.jar"/&gt;
+ &lt;fileset dir="${jetm.dist.path}/lib"
+          includes="**/*.jar"/&gt;
+&lt;/path&gt;
+  
+<i>&lt;!-- introduce aspectwerkz ant task --&gt;</i>
+&lt;taskdef name="awc"
+         classname="org.codehaus.aspectwerkz.compiler.AspectWerkzCTask"
+         classpathref="library.classpath"/&gt;
+
+<i>&lt;!-- weave classes in compile.path --&gt;</i>
+&lt;awc verbose="true"
+     definition="src/java/META-INF/aop.xml"
+     classpathref="library.classpath"
+     targetpathref="compile.path"
+/&gt;
+</pre>
+</div>
+<p>
+  Similar to load-time weaving you can test <i>offline weaving</i> using the provided ant build file. Simply execute
+  the ant target <i>offline-weaving</i> in the example root directory. It will compile all example classes, post process
+  them using the <i>awc</i> task and execute the example. (Again ensure that aspectwerkz.dist.path in the file
+  build.properties
+  points to a valid AspectWerkz distribution.)
+</p>
+
+<p><i>*Note: Not all libraries will be required at runtime. Please check AspectWerkz manual for weaving and
+  runtime dependencies.</i></p>
+</div>
+
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../cvs.html">CVS</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+</div>
+</body>
+<!-- Last modified  $Date: 2006/10/22 18:40:42 $ -->
+</html>

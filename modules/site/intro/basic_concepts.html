@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+
+<body>
+<div id="content">
+  <div id="header">Java&trade; Execution Time Measurement Library</div>
+  <div id="subheader">The swiss army knife of the poor</div>
+  <div id="main">
+    <h3>JETM Basic concepts</h3>
+
+    <p>
+      Consider a Java&trade; application that has or potentially may have performance problems. What do you do?
+    </p>
+
+    <p>Most likely you will go ahead and <b>profile the application</b>
+      using a Java Profiler or just <b>log execution times</b> to a logging framework.
+      Both strategies will hopefully give you enough information to understand
+      what is really going wrong in your application.
+    </p>
+
+    <p>However these two strategies do have their drawbacks.</p>
+    <h4>The issues</h4>
+
+    <p>
+      Even though a Java&trade; Profiler offers a detailed inside-view to your application
+      you sometimes just can't use it. This is because typically a profiler makes use of the
+      Java&trade; Virtual Machine Profiling Interface (JVMPI) or Java&trade; Virtual Machine Tool Interface
+      (JVMTI) to collect fine-grained details such as object and
+      memory allocations, execution paths and garbage collector behavior. The usage of these interfaces
+      and the related profiler extensions usually <i>add some overhead</i> to executions times and thus
+      may <i>slow down an application</i> to a point where it is impossible to be used in a production
+      environment.
+    </p>
+
+    <p>
+      As an alternative to profiling and often as part of the runtime monitoring
+      process application developers tend to log execution times to log files. Depending on the size
+      of the application and the developer team this tends to be a major nightmare in terms <i>data formatting,
+      quality and consistency</i>.
+    </p>
+    <h4>The idea</h4>
+
+    <p>
+      While leaving the in-depth application performance analysis in the hands of professional
+      <a href="http://www.google.com/search?q=Java+Profiler+YourKit+JProfiler&amp;ie=UTF-8&amp;oe=UTF-8"
+         target="_blank">Java Profilers</a>
+      there is often a need to monitor an application under production load or even transparently during development
+      and testing. Therefore it is necessary to provide means to collect statistics similar to
+      the ones of Java Profilers without their side effects. From a high level perspective JETM gives you exactly
+      this ability with minimal (but existing) impact on application performance and minimal requirements for test
+      setup and maintenance.
+    </p>
+    <h4>How does it work?</h4>
+
+    <p>
+      All you need to do is to mark code fragments as <i>to be measured</i> and associate a name
+      with it. These so called <b>Measurement Points</b> are the foundation of the Java&trade; Execution Time
+      Measurement Library.
+    </p>
+
+    <p>
+      For a quick overview see <a href="one_minute_tutorial.html">one minute tutorial</a>. Of course JETM targets a bit
+      more
+      than that, see <a href="advanced_concepts.html">advanced concepts</a> for further details.
+    </p>
+  </div>
+
+  <div id="menu">
+    <a href="../index.html">Home</a>
+    |
+    <a href="../doc.html">Documentation</a>
+    |
+    <a href="../faq.html">FAQ</a>
+    |
+    <a href="../@api@/index.html">JavaDoc</a>
+    |
+    <a href="../files.html">Download</a>
+    |
+    <a href="../cvs.html">CVS</a>
+    |
+    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+    |
+    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+  </div>
+</div>
+
+</body>
+<!-- Last modified  $Date: 2006/10/06 07:43:52 $ -->
+</html>

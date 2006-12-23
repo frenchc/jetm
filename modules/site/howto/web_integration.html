@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+
+<body>
+
+<div id="content">
+  <div id="header">Java&trade; Execution Time Measurement Library</div>
+
+  <div id="subheader">The swiss army knife of the poor</div>
+
+  <div id="main">
+    <h3>JETM Web Integration</h3>
+
+    <p>
+      JETM offers some basic web integration capabilities. The following page introduces
+      those features.
+    </p>
+    <h4>Attach JETM to web application lifecycle</h4>
+
+    <p>
+      The EtmMonitorContextListener configures and starts an EtmMonitor using
+      an <a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>.
+      By default it assumes a file called
+      <i>jetm-config.xml</i> in classpath. You enable performance monitoring
+      by adding this code fragement to your web.xml file.
+
+    <p>
+
+    <div class="code"><pre>&lt;listener&gt;
+   &lt;listener-class&gt;etm.contrib.integration.web.EtmMonitorContextListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</pre>
+    </div>
+    <p>
+      It is possible to override the name of the file using the web application context parameter
+      <i>jetm.config.filename</i>. Example:
+    </p>
+
+    <div class="code"><pre>
+&lt;context-param&gt;
+  &lt;param-name&gt;jetm.config.filename&lt;/param-name&gt;
+  &lt;param-value&gt;custom-config.xml&lt;/param-value&gt;
+&lt;/context-param&gt;
+</pre>
+    </div>
+    <p>
+      As an alternative the jetm config file may be loaded from file system. This feature can be enabled
+      by specifying jetm.config.filepath as context parameter. In the example below
+      the jetm config file is expected at <i>/etc/yourapp</i> under the name supplied with <i>
+      jetm.config.filename</i>. If jetm.config.filename is unset, the default name <i>jetm-config.xml</i>
+      will be used.
+    </p>
+
+    <div class="code"><pre>
+&lt;context-param&gt;
+  &lt;param-name&gt;jetm.config.filepath&lt;/param-name&gt;
+  &lt;param-value&gt;/etc/yourapp&lt;/param-value&gt;
+&lt;/context-param&gt;
+</pre>
+    </div>
+    <p>
+      While this feaure sounds convinient a hard coded filepath within a web.xml descriptor is often considered
+      a design or programming error. Therefore the path to a jetm config file can be specified using
+      a system property. Just write <i>jetm.config.filepath</i> as ant style property and its
+      value will be retrieved from {@link System#getProperty(String)} using the given name. Example:
+    </p>
+
+    <div class="code"><pre>
+&lt;context-param&gt;
+  &lt;param-name&gt;jetm.config.filepath&lt;/param-name&gt;
+  &lt;param-value&gt;${myapp.jetm.path}&lt;/param-value&gt;
+&lt;/context-param&gt;
+</pre>
+    </div>
+    <h4>Monitor HTTP or SOAP Requests</h4>
+
+    <p>
+      JETM includes two HTTP servlet filters that may be used to monitor HTTP or SOAP requests. The class
+      <i>etm.contrib.integration.web.HttpRequestPerformanceFilter</i> will record HTTP requests and use the
+      given request uri as name, the class <i>etm.contrib.integration.web.SoapActionPerformanceFilter</i>
+      can be used to record document/literal SOAP requests that provide a "SOAPAction" HTTP Header.
+    </p>
+
+    <p>
+      The following web.xml exerpt enables SOAPAction based monitoring for a Axis applications.
+    </p>
+
+    <div class="code"><pre>&lt;filter&gt;
+  &lt;filter-name&gt;performance-monitor&lt;/filter-name&gt;
+  &lt;filter-class&gt;etm.contrib.integration.web.SoapActionPerformanceFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+      
+&lt;filter-mapping&gt;
+  &lt;filter-name&gt;performance-monitor&lt;/filter-name&gt;
+  &lt;url-pattern&gt;/services/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+</pre>
+    </div>
+  </div>
+
+  <div id="menu">
+    <a href="../index.html">Home</a>
+    |
+    <a href="../doc.html">Documentation</a>
+    |
+    <a href="../faq.html">FAQ</a>
+    |
+    <a href="../@api@/index.html">JavaDoc</a>
+    |
+    <a href="../files.html">Download</a>
+    |
+    <a href="../cvs.html">CVS</a>
+    |
+    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+    |
+    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+  </div>
+</div>
+</body>
+<!-- Last modified  $Date: 2006/09/22 17:44:32 $ -->
+</html>
