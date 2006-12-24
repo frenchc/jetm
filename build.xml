@@ -7,7 +7,6 @@
   <!ENTITY demo SYSTEM "file:etc/build/build-demo.xml">
   ]>
 
-
 <project name="JETM build Script" default="build-all" basedir=".">
   <property file="build.properties"/>
   <property environment="env"/>
@@ -47,9 +46,10 @@
 
 
   <target name="dist-all"
-          depends="clean-all, build-all, test-jetm, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
-    <!-- prepare site first -->
-    <copy todir="${build.site.dir}" filtering="true">
+          depends="clean-all, build-all, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
+
+    <!-- create distribution -->
+    <copy todir="${build.site.dist.dir}" filtering="true" preservelastmodified="true">
       <fileset dir="${module.site.dir}">
         <include name="**/*.html"/>
         <include name="**/*.css"/>
@@ -57,11 +57,12 @@
         <include name="**/*.ico"/>
       </fileset>
       <filterset>
-        <filter token="api" value="../api" />
-        <filter token="samples" value="../samples" />
-        <filter token="dtd" value="../dtd" />
+        <filter token="api" value="../api"/>
+        <filter token="samples" value="../samples"/>
+        <filter token="dtd" value="../dtd"/>
       </filterset>
     </copy>
+
     <tar destfile="${build.dist.dir}/${release.name}-${release.version}.tar.gz" compression="gzip">
       <tarfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
         <include name="**/*.jar"/>
@@ -69,13 +70,44 @@
       <tarfileset prefix="${release.name}-${release.version}/doc" dir="${doc.dir}"/>
       <tarfileset prefix="${release.name}-${release.version}/doc/api" dir="${build.javadoc.dir}"/>
 
-      <tarfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dir}"/>
+      <tarfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dist.dir}"/>
       <tarfileset prefix="${release.name}-${release.version}/doc/samples" dir="${module.samples.dir}">
         <exclude name="**/classes/**"/>
       </tarfileset>
       <tarfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </tarfileset>
+    </tar>
+
+    <!-- Create website -->
+    <copy todir="${build.site.web.dir}" filtering="true" preservelastmodified="true">
+      <fileset dir="${module.site.dir}">
+        <include name="**/*.html"/>
+        <include name="**/*.css"/>
+        <include name="**/*.png"/>
+        <include name="**/*.ico"/>
+      </fileset>
+      <filterset>
+        <filter token="api" value="api"/>
+        <filter token="samples" value="samples"/>
+        <filter token="dtd" value="dtd"/>
+      </filterset>
+    </copy>
+    <copy todir="${build.site.web.dir}/api" filtering="true" preservelastmodified="true">
+      <fileset dir="${build.javadoc.dir}"/>
+    </copy>
+    <copy todir="${build.site.web.dir}/samples" filtering="true" preservelastmodified="true">
+      <fileset dir="${module.samples.dir}">
+        <exclude name="**/classes/**"/>
+      </fileset>
+    </copy>
+    <copy todir="${build.site.web.dir}/dtd" filtering="true" preservelastmodified="true">
+      <fileset dir="${module.core.src.java}">
+        <include name="**/*.dtd"/>
+      </fileset>
+    </copy>
+    <tar destfile="${build.dist.dir}/${release.name}-site-${release.version}.tar.gz" compression="gzip">
+      <tarfileset prefix="${release.name}-site" dir="${build.site.web.dir}"/>
     </tar>
   </target>
 
