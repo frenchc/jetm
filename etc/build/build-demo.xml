@@ -45,13 +45,19 @@
   <tar destfile="${build.dist.dir}/${release.name}-demo-src-${release.version}.tar.gz"
        compression="gzip">
     <tarfileset
-      prefix="${release.name}-demo-${release.version}"
-      dir="${module.demo.dir}"/>
+      prefix="${release.name}-demo-src-${release.version}"
+      dir="${module.demo.dir}">
+      <exclude name="**/build/**"/>
+      <exclude name="**/dist/**"/>
+    </tarfileset>
   </tar>
   <zip destfile="${build.dist.dir}/${release.name}-demo-src-${release.version}.zip">
     <zipfileset
-      prefix="${release.name}-demo-${release.version}"
-      dir="${module.demo.dir}"/>
+      prefix="${release.name}-demo-src-${release.version}"
+      dir="${module.demo.dir}">
+      <exclude name="**/build/**"/>
+      <exclude name="**/dist/**"/>
+    </zipfileset>
   </zip>
 
   <copy file="${build.dist.dir}/${release.name}-demo-src-${release.version}.tar.gz"

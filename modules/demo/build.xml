@@ -2,11 +2,17 @@
 
 <project name="JETM online demo" default="create-war" basedir=".">
 
+
+  <path id="jetm.classpath">
+    <fileset dir="lib" includes="**/*.jar"/>
+    <fileset dir="src/web/WEB-INF/lib" includes="**/*.jar"/>
+  </path>
+
   <target name="create-war" depends="clean, init">
     <javac
       srcdir="src/java"
       destdir="build/classes"
-      classpathref="classpath"
+      classpathref="jetm.classpath"
       debug="true"
       target="1.4"
       source="1.4"
@@ -15,27 +21,44 @@
          webxml="src/web/WEB-INF/web.xml">
       <lib dir="src/web/WEB-INF/lib"/>
       <classes dir="build/classes"/>
-      <classes dir="src/java" includes="**/*.xml" />
+      <classes dir="src/java" includes="**/*.xml"/>
 
       <fileset dir="src/web">
         <exclude name="**/web.xml"/>
         <exclude name="**/lib/**"/>
       </fileset>
-    </war>    
+    </war>
+
+    <tar destfile="build/jetm-demo-src.tar.gz"
+         compression="gzip">
+      <tarfileset
+        prefix="jetm-demo-src"
+        dir=".">
+        <exclude name="**/build/**"/>
+        <exclude name="**/dist/**"/>
+      </tarfileset>
+    </tar>
+    <zip destfile="build/jetm-demo-src.zip">
+      <zipfileset
+        prefix="jetm-demo-src"
+        dir=".">
+        <exclude name="**/build/**"/>
+        <exclude name="**/dist/**"/>
+      </zipfileset>
+    </zip>
+
+    <jar update="true" destfile="dist/jetm-demo.war">
+      <fileset dir="build">
+        <include name="jetm-demo-src.tar.gz"/>
+        <include name="jetm-demo-src.zip"/>
+      </fileset>
+    </jar>
+
   </target>
 
   <target name="init" depends="validate-runtime">
     <mkdir dir="build/classes"/>
     <mkdir dir="dist"/>
-
-    <path id="classpath">
-      <fileset dir="src/web/WEB-INF/lib">
-        <include name="*.jar"/>
-      </fileset>
-      <fileset dir="lib">
-        <include name="*.jar"/>
-      </fileset>
-    </path>
   </target>
 
   <target name="clean">
@@ -44,28 +67,27 @@
   </target>
 
   <target name="validate-runtime">
-     <available classname="etm.core.monitor.EtmMonitor"
-                property="etmcore.available"
-                classpathref="jetm.classpath"/>
-     <fail unless="etmcore.available">
-
- JETM core missing!
- Please ensure that jetm-${version}.jar is available at ../../lib.
- If you are running this demo from source please execute top level build.xml
- with target build-all first.
-     </fail>
-     <available classname="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
-                property="etmoptional.available"
+    <available classname="etm.core.monitor.EtmMonitor"
+               property="etmcore.available"
                classpathref="jetm.classpath"/>
-     <fail unless="etmoptional.available">
+    <fail unless="etmcore.available">
 
- JETM optional missing!
- Please ensure that jetm-optional-${version}.jar is available at ../../lib.
- If you are running this demo from source please execute top level build.xml
- with target build-all first.
-     </fail>
-   </target>
+      JETM core missing!
+      Please ensure that jetm-${version}.jar is available at ../../lib.
+      If you are running this demo from source please execute top level build.xml
+      with target build-all first.
+    </fail>
+    <available classname="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
+               property="etmoptional.available"
+               classpathref="jetm.classpath"/>
+    <fail unless="etmoptional.available">
 
+      JETM optional missing!
+      Please ensure that jetm-optional-${version}.jar is available at ../../lib.
+      If you are running this demo from source please execute top level build.xml
+      with target build-all first.
+    </fail>
+  </target>
 
 
 </project>
