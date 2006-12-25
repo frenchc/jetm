@@ -72,15 +72,15 @@
 
     <p>
       You should now start to collect execution times. Either login to
-      access the private demo space. Or request a registration form and submitting it.
+      access the private demo space. Or request a registration form and submit it.
       The registration data are stored in memory only. If you don't like to register
-      use username "foo" and password "bar" to login or click to login
+      use username "foo" and password "bar" to login or click
       <a href="#" onclick="submit(); return false;">here</a> without entering login credentials at all.
     </p>
 
     <p style="clear: left">
-      This demo uses Springframework MVC in order to demonstrate declarative performance monitoring.
-      Demo Sources are available as <a href="jetm-demo-src.tar.gz">tar.gz</a> or
+      This demo uses Springframework MVC to demonstrate declarative performance monitoring.
+      Demo Sources are available as <a href="jetm-demo-src.tar.gz">tar.gz</a>,
       <a href="jetm-demo-src.zip">zip</a> or via <a href="http://jetm.void.fm/svn.html">subversion respository</a>.
     </p>
 

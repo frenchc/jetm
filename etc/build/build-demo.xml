@@ -40,27 +40,41 @@
     <classes dir="${module.demo.dest.classes}"/>
     <classes dir="${module.demo.src.java}" includes="**/*.xml"/>
   </war>
-</target>
 
 
-<target name="dist-demo-sources" depends="clean-demo, build-demo">
-  <tar destfile="${build.lib.dir}/${release.name}-demo-src-${release.version}.tar.gz"
+  <tar destfile="${build.dist.dir}/${release.name}-demo-src-${release.version}.tar.gz"
        compression="gzip">
     <tarfileset
       prefix="${release.name}-demo-${release.version}"
       dir="${module.demo.dir}"/>
   </tar>
-  <zip destfile="${build.lib.dir}/${release.name}-demo-src-${release.version}.zip">
+  <zip destfile="${build.dist.dir}/${release.name}-demo-src-${release.version}.zip">
     <zipfileset
       prefix="${release.name}-demo-${release.version}"
       dir="${module.demo.dir}"/>
   </zip>
+
+  <copy file="${build.dist.dir}/${release.name}-demo-src-${release.version}.tar.gz"
+        tofile="${module.demo.dest.source}/${release.name}-demo-src.tar.gz">
+  </copy>
+
+  <copy file="${build.dist.dir}/${release.name}-demo-src-${release.version}.zip"
+        tofile="${module.demo.dest.source}/${release.name}-demo-src.zip">
+  </copy>
+
+  <jar update="true" destfile="${build.dist.dir}/${release.name}-demo.war">
+    <fileset dir="${module.demo.dest.source}">
+      <include name="jetm-demo-src.tar.gz"/>
+      <include name="jetm-demo-src.zip"/>
+    </fileset>
+  </jar>
+
 </target>
 
 <target name="init-demo">
   <mkdir dir="${build.dist.dir}"/>
   <mkdir dir="${module.demo.dest.classes}"/>
-
+  <mkdir dir="${module.demo.dest.source}"/>
 </target>
 
 <target name="clean-demo">
