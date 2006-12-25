@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @version $Id: ConsoleController.java,v 1.1 2006/06/29 07:49:42 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

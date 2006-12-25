@@ -42,7 +42,7 @@ import etm.core.timer.ExecutionTimer;
  * are nested.
  *
  * @author void.fm
- * @version $Id: FlatMonitor.java,v 1.14 2006/06/04 21:16:00 french_c Exp $
+ * @version $Id$
  */
 public class FlatMonitor extends EtmMonitorSupport {
   private static final String DESCRIPTION = "A monitor recording all executions separately.";

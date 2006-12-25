@@ -37,7 +37,7 @@ import etm.demo.webapp.dao.User;
 /**
  *
  *
- * @version $Id: UserManagementService.java,v 1.2 2006/06/25 13:57:45 french_c Exp $
+ * @version $Id$
  * @author void.fm
  */
 

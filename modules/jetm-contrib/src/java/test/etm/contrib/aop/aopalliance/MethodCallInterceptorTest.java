@@ -49,7 +49,7 @@ import java.util.Map;
  * method interceptor with and withput an exception.
  *
  * @author void.fm
- * @version $Id: MethodCallInterceptorTest.java,v 1.4 2006/07/16 21:49:19 french_c Exp $
+ * @version $Id$
  */
 public class MethodCallInterceptorTest extends TestCase {
 

@@ -36,7 +36,7 @@ package test.etm.contrib.aop.resources;
  * Simple test service.
  *
  * @author void.fm
- * @version $Id: BarService.java,v 1.1 2006/05/23 10:00:43 french_c Exp $
+ * @version $Id$
  */
 public class BarService extends BaseService {
 

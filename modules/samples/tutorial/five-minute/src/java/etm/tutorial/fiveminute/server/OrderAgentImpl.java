@@ -42,7 +42,7 @@ import java.util.List;
  * Default OrderAgent implementation.
  *
  * @author void.fm
- * @version $Id: OrderAgentImpl.java,v 1.4 2006/12/11 15:15:14 french_c Exp $
+ * @version $Id$
  */
 public class OrderAgentImpl implements OrderAgent {
   private static final Log log = LogFactory.getLog(OrderAgentImpl.class);

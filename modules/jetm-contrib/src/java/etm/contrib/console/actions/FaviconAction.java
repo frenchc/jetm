@@ -43,7 +43,7 @@ import java.util.Date;
  * Returns the favicon.
  *
  * @author void.fm
- * @version $Id: FaviconAction.java,v 1.1 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 
 public class FaviconAction extends AbstractAction {

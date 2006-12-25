@@ -39,7 +39,7 @@ import etm.core.monitor.MeasurementPoint;
  * given measurement point.
  *
  * @author void.fm
- * @version $Id: LogOutputFormatter.java,v 1.1 2006/05/23 10:00:43 french_c Exp $
+ * @version $Id$
  */
 public interface LogOutputFormatter {
 

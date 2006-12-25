@@ -39,7 +39,7 @@ import etm.core.plugin.EtmPlugin;
  * A EtmPlugin that enables our HTTP console.
  *
  * @author void.fm
- * @version $Id: HttpConsoleServerPlugin.java,v 1.2 2006/09/10 11:40:10 french_c Exp $
+ * @version $Id$
  */
 public class HttpConsoleServerPlugin extends HttpConsoleServer implements EtmPlugin {
 

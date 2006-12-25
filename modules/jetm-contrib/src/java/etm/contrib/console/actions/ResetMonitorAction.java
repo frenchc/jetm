@@ -42,7 +42,7 @@ import java.net.URLEncoder;
  * Resets current measurement results.
  *
  * @author void.fm
- * @version $Id: ResetMonitorAction.java,v 1.2 2006/09/10 13:33:26 french_c Exp $
+ * @version $Id$
  */
 public class ResetMonitorAction extends AbstractAction {
 

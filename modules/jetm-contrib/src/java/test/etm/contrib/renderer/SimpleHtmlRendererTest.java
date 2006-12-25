@@ -45,7 +45,7 @@ import java.util.Map;
  * Tests the html renderer output.
  *
  * @author void.fm
- * @version $Id: SimpleHtmlRendererTest.java,v 1.5 2006/06/24 11:26:16 french_c Exp $
+ * @version $Id$
  */
 public class SimpleHtmlRendererTest extends TestCase {
 

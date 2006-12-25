@@ -40,7 +40,7 @@ import java.util.Map;
  * Alters visibility.
  *
  * @author void.fm
- * @version $Id: TestExecutionAggregate.java,v 1.4 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 public class TestExecutionAggregate extends ExecutionAggregate {
 

@@ -52,7 +52,7 @@ import java.io.IOException;
  * Delegates monitoring to {@link HttpRequestPerformanceFilter} for missing or empty soap actions.
  *
  * @author void.fm
- * @version $Id: SoapActionPerformanceFilter.java,v 1.2 2006/07/08 12:03:03 french_c Exp $
+ * @version $Id$
  */
 public class SoapActionPerformanceFilter extends HttpRequestPerformanceFilter {
 

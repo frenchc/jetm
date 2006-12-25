@@ -44,7 +44,7 @@ import java.io.StringWriter;
  * on shutdown.
  *
  * @author void.fm
- * @version $Id: Log4jDumpOnShutdownPlugin.java,v 1.2 2006/09/23 07:03:21 french_c Exp $
+ * @version $Id$
  */
 public class Log4jDumpOnShutdownPlugin implements EtmPlugin {
   protected EtmMonitor etmMonitor;

@@ -43,7 +43,7 @@ import java.util.Date;
  * Returns a robot.txt.
  *
  * @author void.fm
- * @version $Id: RobotsTxtAction.java,v 1.1 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 
 public class RobotsTxtAction extends AbstractAction {

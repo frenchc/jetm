@@ -48,7 +48,7 @@ import java.util.Map;
 
 /**
  * @author void.fm
- * @version $Id: SoapActionPerformanceFilterTest.java,v 1.1 2006/07/08 12:03:03 french_c Exp $
+ * @version $Id$
  */
 public class SoapActionPerformanceFilterTest extends HttpRequestPerformanceFilterTest {
 

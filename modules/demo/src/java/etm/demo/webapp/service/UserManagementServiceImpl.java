@@ -37,7 +37,7 @@ import etm.demo.webapp.dao.NonUniqueObjectException;
 
 /**
  * @author void.fm
- * @version $Id: UserManagementServiceImpl.java,v 1.3 2006/06/25 13:57:45 french_c Exp $
+ * @version $Id$
  */
 public class UserManagementServiceImpl implements UserManagementService {
   private UserDao userDao;

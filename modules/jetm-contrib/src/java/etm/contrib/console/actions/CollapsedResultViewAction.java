@@ -11,7 +11,7 @@ import java.util.Date;
  * Renders Top Level Measurement Points Only.
  *
  * @author void.fm
- * @version $Id: CollapsedResultViewAction.java,v 1.2 2006/09/10 13:33:26 french_c Exp $
+ * @version $Id$
  */
 public class CollapsedResultViewAction extends AbstractAction {
 

@@ -45,7 +45,7 @@ import java.util.Map;
 
 /**
  * @author void.fm
- * @version $Id: SimpleNestedMonitorTest.java,v 1.7 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 public class SimpleNestedMonitorTest extends CommonMonitorTest {
 

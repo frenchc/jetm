@@ -41,7 +41,7 @@ import etm.core.renderer.SimpleTextRenderer;
  * AspectWerkz Example
  *
  * @author void.fm
- * @version $Id: AspectWerkzExample.java,v 1.1 2006/10/28 21:17:37 french_c Exp $
+ * @version $Id$
  */
 public class AspectWerkzExample {
 

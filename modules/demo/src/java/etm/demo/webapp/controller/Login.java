@@ -36,7 +36,7 @@ import java.io.Serializable;
 /**
  *
  *
- * @version $Id: Login.java,v 1.1 2006/06/24 23:58:39 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

@@ -51,7 +51,7 @@ import java.util.TreeMap;
  * Supports both flat and nested measurement points.
  *
  * @author void.fm
- * @version $Id: SimpleTextRenderer.java,v 1.8 2006/09/17 22:20:38 french_c Exp $
+ * @version $Id$
  */
 public class SimpleTextRenderer implements MeasurementRenderer {
 

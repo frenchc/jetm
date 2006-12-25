@@ -41,7 +41,7 @@ import java.io.OutputStream;
  * A Bad Request Action.
  *
  * @author void.fm
- * @version $Id: Error400Action.java,v 1.1 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 public class Error400Action extends AbstractAction {
 

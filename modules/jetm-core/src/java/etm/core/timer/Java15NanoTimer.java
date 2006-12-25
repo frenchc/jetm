@@ -38,7 +38,7 @@ import etm.core.metadata.TimerMetaData;
  * The Java15NanoTimer uses the new JDK 1.5 System.nanotime.
  *
  * @author void.fm
- * @version $Id: Java15NanoTimer.java,v 1.9 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 public class Java15NanoTimer implements ExecutionTimer {
   private static final long DEFAULT_TICKS_PER_SECOND = 1000000000L;

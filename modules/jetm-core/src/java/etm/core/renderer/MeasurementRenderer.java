@@ -40,7 +40,7 @@ import java.util.Map;
  * that will have access to those results. 
  *
  * @author void.fm
- * @version $Id: MeasurementRenderer.java,v 1.7 2006/06/23 18:43:22 french_c Exp $
+ * @version $Id$
  */
 
 public interface MeasurementRenderer {

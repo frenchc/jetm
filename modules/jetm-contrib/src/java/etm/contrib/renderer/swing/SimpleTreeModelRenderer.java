@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * This implementation is considered alpha quality and will be improved with release 1.1
  *
  * @author void.fm
- * @version $Id: SimpleTreeModelRenderer.java,v 1.6 2006/06/30 06:53:28 french_c Exp $
+ * @version $Id$
  * @see javax.swing.tree.TreeModel
  */
 

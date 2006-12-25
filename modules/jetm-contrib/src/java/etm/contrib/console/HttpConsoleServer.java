@@ -74,7 +74,7 @@ import java.util.Stack;
  * <p/>
  *
  * @author void.fm
- * @version $Id: HttpConsoleServer.java,v 1.8 2006/09/24 21:03:35 french_c Exp $
+ * @version $Id$
  */
 
 public class HttpConsoleServer {

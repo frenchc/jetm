@@ -44,7 +44,7 @@ import java.util.List;
  * for a certain period of time. The default interval is 5000 miliseconds.
  *
  * @author void.fm
- * @version $Id: BufferedTimedAggregator.java,v 1.6 2006/09/10 11:40:11 french_c Exp $
+ * @version $Id$
  */
 public class BufferedTimedAggregator implements Aggregator {
   private static final String DESCRIPTION_PREFIX = "A time based buffering aggregator with a flush interval of ";

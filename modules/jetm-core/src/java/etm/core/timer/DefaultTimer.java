@@ -40,7 +40,7 @@ import etm.core.metadata.TimerMetaData;
  * on this platform if possible.
  *
  * @author void.fm
- * @version $Id: DefaultTimer.java,v 1.10 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 
 public class DefaultTimer implements ExecutionTimer {

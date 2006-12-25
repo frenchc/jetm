@@ -41,7 +41,7 @@ import java.io.OutputStream;
  * Starts performance monitoring.
  *
  * @author void.fm
- * @version $Id: StartMonitorAction.java,v 1.1 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 
 public class StartMonitorAction extends AbstractAction {

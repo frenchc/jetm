@@ -84,7 +84,7 @@ import etm.core.renderer.MeasurementRenderer;
  * </p>
  *
  * @author void.fm
- * @version $Id: EtmMonitor.java,v 1.18 2006/09/22 17:49:03 french_c Exp $
+ * @version $Id$
  * @see MeasurementPoint
  */
 

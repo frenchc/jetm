@@ -48,7 +48,7 @@ import java.util.ArrayList;
  *
  * Simple test monitor used for xml config test.
  *
- * @version $Id: TestMonitor.java,v 1.2 2006/06/22 12:04:14 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

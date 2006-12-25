@@ -43,7 +43,7 @@ import java.util.Date;
  * Base class for all actions.
  *
  * @author void.fm
- * @version $Id: DetailAction.java,v 1.2 2006/09/10 13:33:26 french_c Exp $
+ * @version $Id$
  */
 public class DetailAction extends AbstractAction {
 

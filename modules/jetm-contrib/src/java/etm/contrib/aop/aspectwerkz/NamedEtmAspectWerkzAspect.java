@@ -22,7 +22,7 @@ import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
  * </pre>
  *
  * @author void.fm
- * @version $Id: NamedEtmAspectWerkzAspect.java,v 1.1 2006/09/17 14:50:22 french_c Exp $
+ * @version $Id$
  */
 public class NamedEtmAspectWerkzAspect extends EtmAspectWerkzAspect {
 

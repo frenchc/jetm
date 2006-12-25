@@ -48,7 +48,7 @@ import java.util.List;
  * Tests basic behavior for logging aggregators.
  *
  * @author void.fm
- * @version $Id: AbstractLogAggregatorTest.java,v 1.1 2006/09/22 06:31:51 french_c Exp $
+ * @version $Id$
  */
 public class AbstractLogAggregatorTest extends TestCase {
 

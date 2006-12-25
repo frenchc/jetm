@@ -40,7 +40,7 @@ import java.util.Map;
  * Represents the incoming HTTP request.
  *
  * @author void.fm
- * @version $Id: ConsoleRequest.java,v 1.1 2006/09/10 11:40:10 french_c Exp $
+ * @version $Id$
  */
 public class ConsoleRequest {
   private ResourceAccessor resourceAccessor;

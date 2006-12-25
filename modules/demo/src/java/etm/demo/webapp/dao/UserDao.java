@@ -3,7 +3,7 @@ package etm.demo.webapp.dao;
 /**
  *
  *
- * @version $Id: UserDao.java,v 1.2 2006/06/25 13:57:45 french_c Exp $
+ * @version $Id$
  * @author void.fm
  */
 public interface UserDao {

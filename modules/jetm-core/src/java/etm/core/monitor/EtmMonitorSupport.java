@@ -50,7 +50,7 @@ import java.util.List;
  * accessing shared resources, especially the attribute <code>aggregator</code>.
  *
  * @author void.fm
- * @version $Id: EtmMonitorSupport.java,v 1.21 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 
 public abstract class EtmMonitorSupport implements EtmMonitor {

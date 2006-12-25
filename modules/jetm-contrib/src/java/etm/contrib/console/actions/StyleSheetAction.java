@@ -43,7 +43,7 @@ import java.util.Date;
  * Returns our stylesheet.
  *
  * @author void.fm
- * @version $Id: StyleSheetAction.java,v 1.1 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 
 public class StyleSheetAction extends AbstractAction {

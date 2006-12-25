@@ -36,7 +36,7 @@ package test.etm.contrib.aop.resources;
  * Simple test service
  *
  * @author void.fm
- * @version $Id: YaddaService.java,v 1.2 2006/06/17 21:25:52 french_c Exp $
+ * @version $Id$
  */
 public class YaddaService extends BaseService {
 

@@ -41,7 +41,7 @@ import etm.core.monitor.EtmMonitor;
  * to get access to its managing monitor.
  *
  * @author void.fm
- * @version $Id: EtmPlugin.java,v 1.2 2006/09/23 07:03:22 french_c Exp $
+ * @version $Id$
  */
 public interface EtmPlugin {
 

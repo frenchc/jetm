@@ -10,7 +10,7 @@ import java.util.HashMap;
  *
  * Configuration for an EtmPlugin
  *
- * @version $Id: EtmPluginConfig.java,v 1.1 2006/06/11 13:57:30 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

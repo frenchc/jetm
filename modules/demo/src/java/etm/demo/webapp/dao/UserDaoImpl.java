@@ -37,7 +37,7 @@ import java.util.Date;
 
 /**
  * @author void.fm
- * @version $Id: UserDaoImpl.java,v 1.3 2006/06/28 18:30:15 french_c Exp $
+ * @version $Id$
  */
 public class UserDaoImpl implements UserDao {
 

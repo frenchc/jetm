@@ -39,7 +39,7 @@ import java.io.InputStream;
  * In memory "cache" for drop-in html console resources.
  *
  * @author void.fm
- * @version $Id: ResourceAccessor.java,v 1.5 2006/12/11 15:10:32 french_c Exp $
+ * @version $Id$
  */
 public class ResourceAccessor {
   private byte[] favicon;

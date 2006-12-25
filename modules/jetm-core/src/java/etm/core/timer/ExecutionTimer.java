@@ -42,7 +42,7 @@ import etm.core.metadata.TimerMetaData;
  * </p>
  *
  * @author void.fm
- * @version $Id: ExecutionTimer.java,v 1.9 2006/06/09 14:20:24 french_c Exp $
+ * @version $Id$
  */
 
 public interface ExecutionTimer {

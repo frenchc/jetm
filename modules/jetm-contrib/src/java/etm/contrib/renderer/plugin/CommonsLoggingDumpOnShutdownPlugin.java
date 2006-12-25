@@ -45,7 +45,7 @@ import java.io.StringWriter;
  * on shutdown.
  *
  * @author void.fm
- * @version $Id: CommonsLoggingDumpOnShutdownPlugin.java,v 1.2 2006/09/23 07:03:22 french_c Exp $
+ * @version $Id$
  */
 public class CommonsLoggingDumpOnShutdownPlugin implements EtmPlugin {
 

@@ -40,7 +40,7 @@ import java.util.Date;
  * instance.
  *
  * @author void.fm
- * @version $Id: EtmMonitorMetaData.java,v 1.4 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 
 public class EtmMonitorMetaData implements Serializable {

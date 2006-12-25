@@ -39,7 +39,7 @@ import java.io.PrintWriter;
  *
  * Base exception for all etm exceptions.
  *
- * @version $Id: EtmException.java,v 1.2 2006/06/30 06:53:28 french_c Exp $
+ * @version $Id$
  * @author Jens Schumann
  *
  */

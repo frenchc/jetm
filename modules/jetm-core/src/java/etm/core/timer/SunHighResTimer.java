@@ -40,7 +40,7 @@ import sun.misc.Perf;
  * JDK High Performance Timer <code>code.misc.Perf</code>.
  *
  * @author void.fm
- * @version $Id: SunHighResTimer.java,v 1.9 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 
 public class SunHighResTimer implements ExecutionTimer {

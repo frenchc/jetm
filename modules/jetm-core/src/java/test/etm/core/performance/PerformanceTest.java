@@ -47,7 +47,7 @@ import java.io.OutputStream;
  * Collect a few metrics for future references.
  *
  * @author void.fm
- * @version $Id: PerformanceTest.java,v 1.5 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 public class PerformanceTest extends TestCase {
 

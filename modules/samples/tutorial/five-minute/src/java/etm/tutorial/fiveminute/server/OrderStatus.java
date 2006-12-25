@@ -38,7 +38,7 @@ import java.io.Serializable;
  *
  * The order status containing the result of an order request.
  *
- * @version $Id: OrderStatus.java,v 1.1 2006/10/29 14:33:22 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

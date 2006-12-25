@@ -58,7 +58,7 @@ import java.net.URL;
  * using it. See {@link etm.core.monitor.EtmMonitor} lifecycle.
  *
  * @author void.fm
- * @version $Id: XmlEtmConfigurator.java,v 1.9 2006/12/11 15:10:32 french_c Exp $
+ * @version $Id$
  */
 public class XmlEtmConfigurator {
   public static final String PUBLIC_DTD_ID = "-// void.fm //DTD JETM Config 1.0//EN";

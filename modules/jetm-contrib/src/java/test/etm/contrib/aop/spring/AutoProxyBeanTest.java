@@ -44,7 +44,7 @@ import test.etm.contrib.aop.resources.YaddaService;
  * BeanNameAutoProxyCreator.
  *
  * @author void.fm
- * @version $Id: AutoProxyBeanTest.java,v 1.2 2006/06/17 21:25:52 french_c Exp $
+ * @version $Id$
  */
 public class AutoProxyBeanTest extends AopTestBase {
 

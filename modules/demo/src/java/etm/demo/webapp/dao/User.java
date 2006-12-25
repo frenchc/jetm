@@ -35,7 +35,7 @@ import java.util.Date;
 
 /**
  * @author void.fm
- * @version $Id: User.java,v 1.2 2006/06/25 13:57:45 french_c Exp $
+ * @version $Id$
  */
 public class User {
   private int userId;

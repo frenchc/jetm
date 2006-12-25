@@ -56,7 +56,7 @@ import test.etm.core.configuration.mockup.TestPlugin;
  * Testing XML based configuration.
  *
  * @author void.fm
- * @version $Id: XmlEtmConfiguratorTest.java,v 1.4 2006/06/24 13:13:57 french_c Exp $
+ * @version $Id$
  */
 public class XmlEtmConfiguratorTest extends TestCase {
 

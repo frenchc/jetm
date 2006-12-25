@@ -34,7 +34,7 @@ package etm.demo.webapp.dao;
 
 /**
  *
- * @version $Id: NonUniqueObjectException.java,v 1.1 2006/06/25 13:57:45 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

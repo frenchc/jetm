@@ -47,7 +47,7 @@ import org.apache.commons.logging.LogFactory;
  * further details/configurations.
  *
  * @author void.fm
- * @version $Id: CommonsLoggingAggregator.java,v 1.3 2006/06/29 07:37:24 french_c Exp $
+ * @version $Id$
  */
 
 public class CommonsLoggingAggregator extends AbstractLogAggregator {

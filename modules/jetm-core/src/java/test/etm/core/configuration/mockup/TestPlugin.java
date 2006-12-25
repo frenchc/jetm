@@ -39,7 +39,7 @@ import etm.core.monitor.EtmMonitor;
  *
  * Plugin for config tests
  *
- * @version $Id: TestPlugin.java,v 1.1 2006/06/22 12:04:14 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

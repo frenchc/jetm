@@ -40,7 +40,7 @@ import test.etm.core.TestPointGenerator;
  * Tests our build-in console.
  *
  * @author void.fm
- * @version $Id: HtmlConsoleServerTest.java,v 1.2 2006/09/10 11:40:11 french_c Exp $
+ * @version $Id$
  */
 public class HtmlConsoleServerTest extends ConsoleTests {
   private HttpConsoleServer httpConsoleServer;

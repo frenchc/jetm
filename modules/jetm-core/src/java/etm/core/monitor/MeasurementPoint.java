@@ -52,7 +52,7 @@ package etm.core.monitor;
  *  </pre>
  *
  * @author void.fm
- * @version $Id: MeasurementPoint.java,v 1.13 2006/07/01 17:12:28 french_c Exp $
+ * @version $Id$
  * @see EtmMonitor
  */
 

@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author void.fm
- * @version $Id: MeasurementServlet.java,v 1.2 2006/09/28 21:12:47 french_c Exp $
+ * @version $Id$
  */
 public class MeasurementServlet extends DispatcherServlet {
   protected EtmMonitor etmMonitor;

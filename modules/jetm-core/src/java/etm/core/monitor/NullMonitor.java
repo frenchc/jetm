@@ -41,7 +41,7 @@ import etm.core.renderer.MeasurementRenderer;
  * limit the overhead in a production environment.
  *
  * @author void.fm
- * @version $Id: NullMonitor.java,v 1.16 2006/09/10 11:40:09 french_c Exp $
+ * @version $Id$
  */
 
 public class NullMonitor extends EtmMonitorSupport {

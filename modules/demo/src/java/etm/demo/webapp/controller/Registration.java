@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  *
- * @version $Id: Registration.java,v 1.2 2006/06/25 01:50:39 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

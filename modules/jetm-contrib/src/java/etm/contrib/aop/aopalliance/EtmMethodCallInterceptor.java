@@ -44,7 +44,7 @@ import java.lang.reflect.Method;
  * other aop Alliance frameworks to collect method invocation times.
  *
  * @author void.fm
- * @version $Id: EtmMethodCallInterceptor.java,v 1.3 2006/07/16 21:49:19 french_c Exp $
+ * @version $Id$
  */
 
 public class EtmMethodCallInterceptor implements MethodInterceptor {

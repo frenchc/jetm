@@ -44,7 +44,7 @@ import java.util.Map;
  * will be ignored.
  *
  * @author void.fm
- * @version $Id: FlatAggregator.java,v 1.16 2006/09/10 11:40:11 french_c Exp $
+ * @version $Id$
  */
 
 public class FlatAggregator implements Aggregator {

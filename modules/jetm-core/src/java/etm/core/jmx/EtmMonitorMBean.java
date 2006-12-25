@@ -56,7 +56,7 @@ import java.io.StringWriter;
  * interfaces supports start/stop of monitoring
  *
  * @author void.fm
- * @version $Id: EtmMonitorMBean.java,v 1.1 2006/10/19 11:33:25 french_c Exp $
+ * @version $Id$
  */
 public class EtmMonitorMBean implements DynamicMBean {
 

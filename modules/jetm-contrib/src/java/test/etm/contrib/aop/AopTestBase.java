@@ -46,7 +46,7 @@ import java.util.Map;
  * Testbase for AOP enhanced service classes.
  *
  * @author void.fm
- * @version $Id: AopTestBase.java,v 1.2 2006/09/10 11:47:57 french_c Exp $
+ * @version $Id$
  */
 public abstract class AopTestBase extends TestCase {
 

@@ -36,7 +36,7 @@ package etm.samples.aop.aspectwerkz;
  * A service class.
  *
  * @author void.fm
- * @version $Id: FooBarService.java,v 1.1 2006/10/28 21:17:37 french_c Exp $
+ * @version $Id$
  */
 public class FooBarService {
   private YaddaService yaddaService = new YaddaService();

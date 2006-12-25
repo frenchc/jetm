@@ -51,7 +51,7 @@ import java.util.Map;
  * Concurrency tests for flat monitor.
  *
  * @author void.fm
- * @version $Id: ConcurrentFlatMonitorTest.java,v 1.8 2006/05/23 10:00:45 french_c Exp $
+ * @version $Id$
  */
 public class ConcurrentFlatMonitorTest extends TestCase {
 

@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author void.fm
- * @version $Id: LoginController.java,v 1.5 2006/06/25 13:57:45 french_c Exp $
+ * @version $Id$
  */
 public class LoginController extends SimpleFormController {
 

@@ -42,7 +42,7 @@ import java.util.LinkedList;
  * measurement results.
  *
  * @author void.fm
- * @version $Id: NestedAggregator.java,v 1.14 2006/07/16 21:49:19 french_c Exp $
+ * @version $Id$
  */
 public class NestedAggregator extends FlatAggregator {
 

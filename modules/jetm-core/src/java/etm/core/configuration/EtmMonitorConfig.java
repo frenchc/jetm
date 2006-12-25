@@ -46,7 +46,7 @@ import java.util.ArrayList;
  *
  * Represent the configuration for an EtmMonitor instance.
  *
- * @version $Id: EtmMonitorConfig.java,v 1.5 2006/06/24 13:13:57 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

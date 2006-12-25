@@ -56,7 +56,7 @@ import java.util.Map;
  * HTTP request filter test.
  *
  * @author void.fm
- * @version $Id: HttpRequestPerformanceFilterTest.java,v 1.2 2006/07/08 12:03:03 french_c Exp $
+ * @version $Id$
  */
 public class HttpRequestPerformanceFilterTest extends TestCase {
 

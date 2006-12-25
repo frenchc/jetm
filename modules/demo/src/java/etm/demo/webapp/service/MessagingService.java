@@ -36,7 +36,7 @@ import etm.demo.webapp.dao.User;
 /**
  *
  *
- * @version $Id: MessagingService.java,v 1.1 2006/06/24 11:13:43 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

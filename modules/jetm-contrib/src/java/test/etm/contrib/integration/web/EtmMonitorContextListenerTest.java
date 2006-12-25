@@ -51,7 +51,7 @@ import java.util.Map;
  * Tests for Servlet Context listeners using static Etm Configuration.
  *
  * @author void.fm
- * @version $Id: EtmMonitorContextListenerTest.java,v 1.1 2006/07/08 11:28:36 french_c Exp $
+ * @version $Id$
  */
 public class EtmMonitorContextListenerTest extends TestCase {
 

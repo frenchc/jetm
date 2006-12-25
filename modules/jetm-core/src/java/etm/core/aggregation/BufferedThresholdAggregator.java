@@ -55,7 +55,7 @@ import java.util.List;
  * </p>
  *
  * @author void.fm
- * @version $Id: BufferedThresholdAggregator.java,v 1.15 2006/09/10 11:40:11 french_c Exp $
+ * @version $Id$
  */
 public class BufferedThresholdAggregator implements Aggregator {
   private static final String DESCRIPTION = "A buffering aggregator with a threshold of ";

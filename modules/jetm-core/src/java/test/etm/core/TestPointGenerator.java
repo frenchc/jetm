@@ -50,7 +50,7 @@ import java.util.Map;
  * Test class for test point generation
  *
  * @author void.fm
- * @version $Id: TestPointGenerator.java,v 1.12 2006/09/10 11:40:10 french_c Exp $
+ * @version $Id$
  */
 
 public class TestPointGenerator {

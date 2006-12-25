@@ -48,7 +48,7 @@ import org.springframework.beans.factory.InitializingBean;
  * TransactionFactoryBean.
  *
  * @author void.fm
- * @version $Id: EtmProxyFactoryBean.java,v 1.2 2006/06/11 13:54:42 french_c Exp $
+ * @version $Id$
  */
 public class EtmProxyFactoryBean extends ProxyConfig
   implements FactoryBean, InitializingBean {

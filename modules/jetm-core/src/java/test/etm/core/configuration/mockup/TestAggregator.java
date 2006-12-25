@@ -41,7 +41,7 @@ import etm.core.renderer.MeasurementRenderer;
  * Simple test aggregator used for xml config test.
  *
  * @author void.fm
- * @version $Id: TestAggregator.java,v 1.2 2006/09/10 11:40:11 french_c Exp $
+ * @version $Id$
  */
 public class TestAggregator implements Aggregator {
 

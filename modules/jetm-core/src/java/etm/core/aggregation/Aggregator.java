@@ -55,7 +55,7 @@ import etm.core.renderer.MeasurementRenderer;
  * aggregator argument.
  *
  * @author void.fm
- * @version $Id: Aggregator.java,v 1.13 2006/09/22 17:49:03 french_c Exp $
+ * @version $Id$
  */
 
 public interface Aggregator {

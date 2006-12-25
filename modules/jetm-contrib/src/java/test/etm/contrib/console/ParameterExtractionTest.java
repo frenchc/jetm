@@ -41,7 +41,7 @@ import java.util.Map;
  * Tests parameter extraction of URL encoded.
  *
  * @author void.fm
- * @version $Id: ParameterExtractionTest.java,v 1.1 2006/09/10 11:40:11 french_c Exp $
+ * @version $Id$
  */
 public class ParameterExtractionTest extends TestCase {
 

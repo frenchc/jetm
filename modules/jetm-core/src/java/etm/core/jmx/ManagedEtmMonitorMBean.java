@@ -38,7 +38,7 @@ import java.util.Date;
  * Etm Monitor MBean Interface.
  *
  * @author void.fm
- * @version $Id: ManagedEtmMonitorMBean.java,v 1.4 2006/10/19 11:33:25 french_c Exp $
+ * @version $Id$
  * @deprecated Please use {@link EtmMonitorMBean} and {@link EtmMonitorJmxPlugin} instead
  */
 public interface ManagedEtmMonitorMBean {

@@ -40,7 +40,7 @@ import etm.core.renderer.MeasurementRenderer;
  * Dummy helper aggregator.
  *
  * @author void.fm
- * @version $Id: TestAggregator.java,v 1.11 2006/09/10 11:40:10 french_c Exp $
+ * @version $Id$
  */
 public class TestAggregator implements Aggregator {
   private Aggregator aggregator;

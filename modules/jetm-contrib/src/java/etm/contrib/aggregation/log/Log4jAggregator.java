@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * further details/configurations.
  *
  * @author void.fm
- * @version $Id: Log4jAggregator.java,v 1.2 2006/06/29 07:37:24 french_c Exp $
+ * @version $Id$
  */
 
 public class Log4jAggregator extends AbstractLogAggregator {

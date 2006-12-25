@@ -42,7 +42,7 @@ import java.util.HashMap;
  * EtmAggregatorConfig represents an aggregator chain
  * configuration.
  *
- * @version $Id: EtmAggregatorConfig.java,v 1.3 2006/06/11 13:55:58 french_c Exp $
+ * @version $Id$
  * @author void.fm
  *
  */

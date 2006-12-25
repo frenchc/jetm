@@ -41,7 +41,7 @@ import etm.core.monitor.MeasurementPoint;
  * through {@link EtmManager}.
  *
  * @author void.fm
- * @version $Id: BusinessService.java,v 1.2 2006/10/30 01:32:19 french_c Exp $
+ * @version $Id$
  */
 
 

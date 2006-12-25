@@ -46,7 +46,7 @@ import java.util.Map;
  * SimpleTextRenderer test.
  *
  * @author void.fm
- * @version $Id: SimpleTextRendererTest.java,v 1.5 2006/09/21 20:22:45 french_c Exp $
+ * @version $Id$
  */
 
 public class SimpleTextRendererTest extends TestCase {

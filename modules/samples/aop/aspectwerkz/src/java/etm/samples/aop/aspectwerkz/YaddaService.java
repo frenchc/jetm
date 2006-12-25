@@ -36,7 +36,7 @@ package etm.samples.aop.aspectwerkz;
  * Another Service
  *
  * @author void.fm
- * @version $Id: YaddaService.java,v 1.1 2006/10/28 21:17:37 french_c Exp $
+ * @version $Id$
  */
 public class YaddaService {
 

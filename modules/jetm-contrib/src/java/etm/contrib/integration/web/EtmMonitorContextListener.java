@@ -86,7 +86,7 @@ import java.io.InputStream;
  * </pre>
  *
  * @author void.fm
- * @version $Id: EtmMonitorContextListener.java,v 1.2 2006/12/11 15:10:32 french_c Exp $
+ * @version $Id$
  */
 public class EtmMonitorContextListener implements ServletContextListener {
 
