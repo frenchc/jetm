@@ -36,7 +36,7 @@ package etm.samples.aop.aspectwerkz;
  * Another Service
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class YaddaService {
 

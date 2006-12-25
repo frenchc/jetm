@@ -35,7 +35,7 @@ import java.util.Date;
 
 /**
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class User {
   private int userId;

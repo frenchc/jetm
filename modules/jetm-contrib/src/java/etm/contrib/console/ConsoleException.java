@@ -38,7 +38,7 @@ import etm.core.monitor.EtmException;
  *
  * Root exception for consoles.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public class ConsoleException extends EtmException {

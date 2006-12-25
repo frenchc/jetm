@@ -37,7 +37,7 @@ import etm.demo.webapp.dao.NonUniqueObjectException;
 
 /**
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class UserManagementServiceImpl implements UserManagementService {
   private UserDao userDao;

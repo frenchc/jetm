@@ -41,7 +41,7 @@ import java.io.OutputStream;
  * A 404 Action.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class Error404Action extends AbstractAction {
 

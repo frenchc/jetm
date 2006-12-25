@@ -40,7 +40,7 @@ import etm.core.metadata.TimerMetaData;
  * on this platform if possible.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class DefaultTimer implements ExecutionTimer {

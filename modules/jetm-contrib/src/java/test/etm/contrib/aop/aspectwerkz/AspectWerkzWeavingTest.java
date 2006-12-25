@@ -40,7 +40,7 @@ import org.apache.log4j.BasicConfigurator;
  * Tests AspectWerkz weaving.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class AspectWerkzWeavingTest extends TestCase {

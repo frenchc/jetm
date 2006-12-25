@@ -53,7 +53,7 @@ import java.util.Locale;
  * The transaction time is written using a NumberFormat with min/max friction digits of 3.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class DefaultOutputFormatter implements LogOutputFormatter {
 

@@ -53,7 +53,7 @@ import java.util.TreeMap;
  * and exposes it through JMX.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  * @deprecated Please use {@link EtmMonitorMBean} and {@link EtmMonitorJmxPlugin} instead
  */
 public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {

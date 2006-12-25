@@ -40,7 +40,7 @@ import etm.demo.webapp.service.UserManagementService;
 
 /**
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class RegistrationValidator implements Validator {
 

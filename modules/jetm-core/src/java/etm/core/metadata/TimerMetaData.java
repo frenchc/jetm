@@ -38,7 +38,7 @@ import java.io.Serializable;
  * timer implementation.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class TimerMetaData implements Serializable {
   private Class implementationClass;

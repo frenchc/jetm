@@ -55,7 +55,7 @@ import test.etm.contrib.aop.resources.FooService;
  * method interceptor with and withput an exception.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class FunctionalAspectWerkzTest extends TestCase {
 

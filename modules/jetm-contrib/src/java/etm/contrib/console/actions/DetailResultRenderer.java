@@ -46,7 +46,7 @@ import java.util.Map;
  * Renderes a result for a measurement point.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class DetailResultRenderer implements MeasurementRenderer {
 

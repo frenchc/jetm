@@ -41,7 +41,7 @@ import etm.core.monitor.EtmMonitor;
  * to get access to its managing monitor.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public interface EtmPlugin {
 

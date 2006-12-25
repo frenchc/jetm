@@ -36,7 +36,7 @@ package etm.samples.aop.aspectwerkz;
  * An Dao
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class IdentityDao implements Dao {
   public void selectById() {

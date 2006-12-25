@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Demo dao that simulates order add.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public interface OrderAgentDao {

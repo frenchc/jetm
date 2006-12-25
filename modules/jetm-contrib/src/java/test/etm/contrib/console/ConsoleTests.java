@@ -48,7 +48,7 @@ import java.util.Map;
  * standalone or plugin console.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public abstract class ConsoleTests extends TestCase {
 

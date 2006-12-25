@@ -41,7 +41,7 @@ import etm.core.renderer.SimpleTextRenderer;
  * on shutdown.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class SystemOutDumpOnShutdownPlugin implements EtmPlugin {
 

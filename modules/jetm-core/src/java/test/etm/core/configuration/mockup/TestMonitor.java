@@ -48,7 +48,7 @@ import java.util.ArrayList;
  *
  * Simple test monitor used for xml config test.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  *
  */

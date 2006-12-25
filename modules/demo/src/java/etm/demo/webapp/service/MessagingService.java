@@ -36,7 +36,7 @@ import etm.demo.webapp.dao.User;
 /**
  *
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  *
  */

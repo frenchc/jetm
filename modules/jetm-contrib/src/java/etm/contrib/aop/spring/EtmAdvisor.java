@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class EtmAdvisor extends StaticMethodMatcherPointcutAdvisor {
 

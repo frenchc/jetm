@@ -50,7 +50,7 @@ import java.util.ArrayList;
  * to true.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class EtmMonitorJmxPlugin implements EtmPlugin {
 

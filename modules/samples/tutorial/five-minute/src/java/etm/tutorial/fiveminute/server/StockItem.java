@@ -38,7 +38,7 @@ import java.io.Serializable;
  *
  * A item in our stock.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public class StockItem implements Serializable {

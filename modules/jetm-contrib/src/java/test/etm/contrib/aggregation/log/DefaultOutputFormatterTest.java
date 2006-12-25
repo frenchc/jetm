@@ -43,7 +43,7 @@ import java.util.Locale;
  * Minor runtime tests for output formatter.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class DefaultOutputFormatterTest extends TestCase {
 

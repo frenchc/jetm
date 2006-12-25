@@ -45,7 +45,7 @@ import java.util.Map;
  * are not synchronized.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class ExecutionAggregate implements Serializable {
 

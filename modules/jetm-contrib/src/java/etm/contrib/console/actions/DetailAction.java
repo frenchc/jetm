@@ -43,7 +43,7 @@ import java.util.Date;
  * Base class for all actions.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class DetailAction extends AbstractAction {
 

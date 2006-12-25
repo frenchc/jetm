@@ -44,7 +44,7 @@ import java.io.StringWriter;
  * on shutdown.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class Log4jDumpOnShutdownPlugin implements EtmPlugin {
   protected EtmMonitor etmMonitor;

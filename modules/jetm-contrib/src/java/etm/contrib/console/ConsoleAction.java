@@ -39,7 +39,7 @@ import java.io.OutputStream;
  * An action is used to create an HTTP console response.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public interface ConsoleAction {
 

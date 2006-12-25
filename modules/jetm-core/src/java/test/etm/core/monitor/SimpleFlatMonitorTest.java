@@ -43,7 +43,7 @@ import test.etm.core.TestAggregator;
  * monitors.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class SimpleFlatMonitorTest extends CommonMonitorTest {
 

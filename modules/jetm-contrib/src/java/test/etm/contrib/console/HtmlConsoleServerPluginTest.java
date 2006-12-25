@@ -39,7 +39,7 @@ import test.etm.core.TestPointGenerator;
  * Tests our build-in console.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class HtmlConsoleServerPluginTest extends ConsoleTests {
 

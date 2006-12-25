@@ -41,7 +41,7 @@ import java.io.OutputStream;
  * A Internal Server Error Action.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class Error500Action extends AbstractAction {
 

@@ -55,7 +55,7 @@ import etm.core.renderer.MeasurementRenderer;
  * aggregator argument.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public interface Aggregator {

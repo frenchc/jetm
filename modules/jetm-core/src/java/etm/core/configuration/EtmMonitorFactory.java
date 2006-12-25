@@ -48,7 +48,7 @@ import java.util.Map;
  * Factory to create an EtmMonitor based on configuration.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class EtmMonitorFactory {

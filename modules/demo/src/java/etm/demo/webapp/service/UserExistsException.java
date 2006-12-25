@@ -34,7 +34,7 @@ package etm.demo.webapp.service;
 
 /**
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  *
  */

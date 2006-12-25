@@ -39,7 +39,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * Five minute tutorial starter.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public class Main {

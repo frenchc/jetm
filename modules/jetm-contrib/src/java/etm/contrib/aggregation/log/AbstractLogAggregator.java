@@ -60,7 +60,7 @@ import java.util.regex.Pattern;
  * log timestamps and measurement timestamps may be out of synch to due buffering.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public abstract class AbstractLogAggregator implements Aggregator {
 

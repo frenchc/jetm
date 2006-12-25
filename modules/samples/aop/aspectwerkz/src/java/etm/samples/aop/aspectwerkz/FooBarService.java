@@ -36,7 +36,7 @@ package etm.samples.aop.aspectwerkz;
  * A service class.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class FooBarService {
   private YaddaService yaddaService = new YaddaService();

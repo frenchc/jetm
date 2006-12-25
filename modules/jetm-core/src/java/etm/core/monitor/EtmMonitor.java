@@ -84,7 +84,7 @@ import etm.core.renderer.MeasurementRenderer;
  * </p>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  * @see MeasurementPoint
  */
 

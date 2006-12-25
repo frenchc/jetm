@@ -41,7 +41,7 @@ import etm.core.monitor.MeasurementPoint;
  * through {@link EtmManager}.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 

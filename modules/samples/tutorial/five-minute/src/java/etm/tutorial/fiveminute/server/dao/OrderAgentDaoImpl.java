@@ -44,7 +44,7 @@ import java.util.List;
  * Default demo DAO implementation.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class OrderAgentDaoImpl implements OrderAgentDao {
 

@@ -42,7 +42,7 @@ import java.io.StringWriter;
  * The EtmConfigurationException is thrown to indicate
  * an invalid  Etm configuration,
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  *
  */

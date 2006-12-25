@@ -45,7 +45,7 @@ import test.etm.contrib.aop.resources.YaddaService;
  * spring factory beans.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class ProxyFactoryBeanTest extends AopTestBase {
 

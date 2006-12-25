@@ -59,7 +59,7 @@ import java.util.LinkedList;
  * </p>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggregator {

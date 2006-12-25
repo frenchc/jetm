@@ -39,7 +39,7 @@ import java.io.InputStream;
  * In memory "cache" for drop-in html console resources.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class ResourceAccessor {
   private byte[] favicon;

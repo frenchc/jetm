@@ -44,7 +44,7 @@ import java.util.Date;
  * Base class for all actions.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public abstract class AbstractAction implements ConsoleAction {
   protected static final String UTF_8 = "UTF-8";

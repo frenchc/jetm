@@ -48,7 +48,7 @@ import etm.core.timer.ExecutionTimer;
  * </p>
  *
  * @author Jens Schumann
- * @version $Id$
+ * @version $Revision$
  */
 public class NestedMonitor extends EtmMonitorSupport {
 

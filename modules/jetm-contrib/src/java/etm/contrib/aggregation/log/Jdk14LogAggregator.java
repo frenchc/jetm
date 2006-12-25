@@ -47,7 +47,7 @@ import java.util.logging.Logger;
  * further details/configurations.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class Jdk14LogAggregator extends AbstractLogAggregator {
 

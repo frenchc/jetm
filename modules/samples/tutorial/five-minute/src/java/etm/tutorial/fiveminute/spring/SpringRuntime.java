@@ -39,7 +39,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Base class for spring managed runtimes.
  * 
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public abstract class SpringRuntime {
   protected ClassPathXmlApplicationContext context;

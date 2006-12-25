@@ -52,7 +52,7 @@ package etm.core.monitor;
  *  </pre>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  * @see EtmMonitor
  */
 

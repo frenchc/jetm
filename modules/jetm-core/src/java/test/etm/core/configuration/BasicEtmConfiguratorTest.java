@@ -49,7 +49,7 @@ import java.lang.reflect.Proxy;
  *
  * Testing basic configurator behavior.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public class BasicEtmConfiguratorTest extends TestCase {

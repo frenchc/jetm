@@ -40,7 +40,7 @@ import java.util.Map;
  * that will have access to those results. 
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public interface MeasurementRenderer {

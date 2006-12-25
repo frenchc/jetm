@@ -35,7 +35,7 @@ package test.etm.contrib.aop.resources;
  * Simple test service.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class FooService extends BaseService {
 

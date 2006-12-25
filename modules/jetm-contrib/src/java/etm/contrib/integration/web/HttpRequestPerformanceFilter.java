@@ -51,7 +51,7 @@ import java.io.IOException;
  * to retrieve the currently active EtmMonitor.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class HttpRequestPerformanceFilter implements Filter {
 

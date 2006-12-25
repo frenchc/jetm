@@ -115,7 +115,7 @@ import java.util.TreeMap;
  * </pre>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class SimpleHtmlRenderer implements MeasurementRenderer {
 

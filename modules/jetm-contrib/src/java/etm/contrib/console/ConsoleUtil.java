@@ -41,7 +41,7 @@ import java.util.Map;
  * Helper class for HTTP requests.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class ConsoleUtil {

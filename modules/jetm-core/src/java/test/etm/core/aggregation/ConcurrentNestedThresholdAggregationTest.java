@@ -48,7 +48,7 @@ import java.util.List;
  * Test to check possible concurrency issues during aggregation in nested monitors.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class ConcurrentNestedThresholdAggregationTest extends TestCase {

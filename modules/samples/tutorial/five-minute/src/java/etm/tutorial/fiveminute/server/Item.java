@@ -40,7 +40,7 @@ import java.text.NumberFormat;
  *
  * A purchasable item.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public class Item implements Serializable {

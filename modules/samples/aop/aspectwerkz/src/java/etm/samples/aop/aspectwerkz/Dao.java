@@ -36,7 +36,7 @@ package etm.samples.aop.aspectwerkz;
  * Simple Marker Interface for demo purposes.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public interface Dao {
 }

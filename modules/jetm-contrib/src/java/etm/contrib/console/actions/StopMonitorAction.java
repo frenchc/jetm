@@ -41,7 +41,7 @@ import java.io.OutputStream;
  * Disable performance monitoring.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class StopMonitorAction extends AbstractAction {
 

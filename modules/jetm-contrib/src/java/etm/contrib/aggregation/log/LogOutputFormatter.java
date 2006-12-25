@@ -39,7 +39,7 @@ import etm.core.monitor.MeasurementPoint;
  * given measurement point.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public interface LogOutputFormatter {
 

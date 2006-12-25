@@ -40,7 +40,7 @@ import etm.core.renderer.SimpleTextRenderer;
  * Test class for one minute tutorial.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class OneMinuteTest {

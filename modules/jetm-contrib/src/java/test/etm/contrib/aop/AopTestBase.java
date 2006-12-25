@@ -46,7 +46,7 @@ import java.util.Map;
  * Testbase for AOP enhanced service classes.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public abstract class AopTestBase extends TestCase {
 

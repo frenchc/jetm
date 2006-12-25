@@ -53,7 +53,7 @@ import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
  * </pre>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class EtmAspectWerkzAspect {
 

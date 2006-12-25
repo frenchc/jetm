@@ -39,7 +39,7 @@ import java.io.Serializable;
  * aggregator and optionally about a nested aggregator.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class AggregatorMetaData implements Serializable {
   private Class implementationClass;

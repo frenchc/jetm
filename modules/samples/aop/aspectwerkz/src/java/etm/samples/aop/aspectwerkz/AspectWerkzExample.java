@@ -41,7 +41,7 @@ import etm.core.renderer.SimpleTextRenderer;
  * AspectWerkz Example
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class AspectWerkzExample {
 

@@ -42,7 +42,7 @@ import etm.core.metadata.TimerMetaData;
  * </p>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public interface ExecutionTimer {

@@ -47,7 +47,7 @@ import etm.core.timer.ExecutionTimer;
  * using it. See {@link etm.core.monitor.EtmMonitor} lifecycle.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class BasicEtmConfigurator {
 

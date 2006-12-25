@@ -38,7 +38,7 @@ import java.util.List;
  * The OrderAgent will
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public interface OrderAgent {
 

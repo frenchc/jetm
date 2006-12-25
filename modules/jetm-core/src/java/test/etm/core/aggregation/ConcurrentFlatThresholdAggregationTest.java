@@ -53,7 +53,7 @@ import java.util.Map;
  * Test to check possible concurrency issues during aggregation in flat monitors.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class ConcurrentFlatThresholdAggregationTest extends TestCase {
 

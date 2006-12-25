@@ -39,7 +39,7 @@ import java.io.PrintWriter;
  *
  * Base exception for all etm exceptions.
  *
- * @version $Id$
+ * @version $Revision$
  * @author Jens Schumann
  *
  */

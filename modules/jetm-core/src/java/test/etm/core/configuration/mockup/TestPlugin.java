@@ -39,7 +39,7 @@ import etm.core.monitor.EtmMonitor;
  *
  * Plugin for config tests
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  *
  */

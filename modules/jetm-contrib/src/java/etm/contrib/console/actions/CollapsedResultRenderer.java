@@ -50,7 +50,7 @@ import java.util.TreeMap;
  * results.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class CollapsedResultRenderer implements MeasurementRenderer {
   private static final String HEAD =

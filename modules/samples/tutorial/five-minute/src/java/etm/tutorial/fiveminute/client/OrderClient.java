@@ -45,7 +45,7 @@ import java.util.List;
  * the SpringFramework RMI infrastructure.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class OrderClient {
 

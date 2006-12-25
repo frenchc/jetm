@@ -40,7 +40,7 @@ import sun.misc.Perf;
  * JDK High Performance Timer <code>code.misc.Perf</code>.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class SunHighResTimer implements ExecutionTimer {

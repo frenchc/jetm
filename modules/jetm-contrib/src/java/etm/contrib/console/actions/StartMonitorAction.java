@@ -41,7 +41,7 @@ import java.io.OutputStream;
  * Starts performance monitoring.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class StartMonitorAction extends AbstractAction {

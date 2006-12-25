@@ -51,7 +51,7 @@ import java.util.Map;
  * Concurrency tests for flat monitor.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class ConcurrentNestedMonitorTest extends TestCase {
 

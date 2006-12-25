@@ -74,7 +74,7 @@ import java.util.Stack;
  * <p/>
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 
 public class HttpConsoleServer {

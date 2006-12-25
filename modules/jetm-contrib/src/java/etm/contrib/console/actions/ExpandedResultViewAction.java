@@ -44,7 +44,7 @@ import java.util.Date;
  * Renders all measurement results.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class ExpandedResultViewAction extends AbstractAction {
 

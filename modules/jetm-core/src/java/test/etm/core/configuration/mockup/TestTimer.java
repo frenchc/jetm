@@ -40,7 +40,7 @@ import etm.core.metadata.TimerMetaData;
  * Mockup test timer for xml configuration
  * tests.
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  */
 public class TestTimer implements ExecutionTimer {

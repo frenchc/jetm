@@ -34,7 +34,7 @@ package etm.demo.webapp.dao;
 
 /**
  *
- * @version $Id$
+ * @version $Revision$
  * @author void.fm
  *
  */

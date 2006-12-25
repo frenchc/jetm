@@ -45,7 +45,7 @@ import java.lang.reflect.Proxy;
  * or {@link XmlEtmConfigurator}
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public class EtmManager {
 

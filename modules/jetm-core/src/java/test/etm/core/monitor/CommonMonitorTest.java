@@ -45,7 +45,7 @@ import java.util.Map;
  * Common tests for all monitor types.
  *
  * @author void.fm
- * @version $Id$
+ * @version $Revision$
  */
 public abstract class CommonMonitorTest extends TestCase {
 
