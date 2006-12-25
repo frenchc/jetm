@@ -58,7 +58,7 @@
       </fileset>
       <filterset>
         <filter token="api" value="../api"/>
-        <filter token="samples" value="../samples"/>
+        <filter token="samples" value="../../samples"/>
         <filter token="dtd" value="../dtd"/>
       </filterset>
     </copy>
@@ -71,7 +71,7 @@
       <tarfileset prefix="${release.name}-${release.version}/doc/api" dir="${build.javadoc.dir}"/>
 
       <tarfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dist.dir}"/>
-      <tarfileset prefix="${release.name}-${release.version}/doc/samples" dir="${module.samples.dir}">
+      <tarfileset prefix="${release.name}-${release.version}/samples" dir="${module.samples.dir}">
         <exclude name="**/classes/**"/>
       </tarfileset>
       <tarfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">

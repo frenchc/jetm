@@ -52,27 +52,27 @@ public class OrderAgentDaoImpl implements OrderAgentDao {
 
 
   public OrderAgentDaoImpl() {
-    stock.add(new StockItem(new Item("apples", new BigDecimal(2.99)), 15));
-    stock.add(new StockItem(new Item("oranges", new BigDecimal(1.49)), 10));
-    stock.add(new StockItem(new Item("bananas", new BigDecimal(1.99)), 2));
-    stock.add(new StockItem(new Item("grapes", new BigDecimal(2.49)), 10));
+    stock.add(new StockItem(new Item(1, "apples", new BigDecimal(2.99)), 15));
+    stock.add(new StockItem(new Item(2, "oranges", new BigDecimal(1.49)), 10));
+    stock.add(new StockItem(new Item(3, "bananas", new BigDecimal(1.99)), 2));
+    stock.add(new StockItem(new Item(4, "grapes", new BigDecimal(2.49)), 10));
   }
 
 
-  public boolean isAvailable(String item, int quantity) {
+  public boolean isAvailable(int item, int quantity) {
     for (int i = 0; i < stock.size(); i++) {
       StockItem stockItem = (StockItem) stock.get(i);
-      if (stockItem.getItem().getName().equals(item) && stockItem.getQuantity() >= quantity) {
+      if (stockItem.getItem().getId() == item && stockItem.getQuantity() >= quantity) {
         return true;
       }
     }
     return false;
   }
 
-  public Item addOrder(String item, int quantity) {
+  public Item addOrder(int item, int quantity) {
     for (int i = 0; i < stock.size(); i++) {
       StockItem stockItem = (StockItem) stock.get(i);
-      if (stockItem.getItem().getName().equals(item) && stockItem.getQuantity() >= quantity) {
+      if (stockItem.getItem().getId() == item && stockItem.getQuantity() >= quantity) {
         stockItem.decreaseQuantity(quantity);
         return stockItem.getItem();
       }

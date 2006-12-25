@@ -44,9 +44,9 @@ import java.util.List;
  */
 public interface OrderAgentDao {
 
-  public Item addOrder(String item, int quantity);
+  public Item addOrder(int itemId, int quantity);
 
-  public boolean isAvailable(String item, int quantity);
+  public boolean isAvailable(int itemId, int quantity);
 
   public List getCurrentStock();
 }

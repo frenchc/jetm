@@ -42,7 +42,7 @@ import java.util.List;
  */
 public interface OrderAgent {
 
-  public OrderStatus placeOrder(String item, int quantity);
+  public OrderStatus placeOrder(int item, int quantity);
 
   public List listStock();
 }

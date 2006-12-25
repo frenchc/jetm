@@ -33,10 +33,11 @@
 package etm.tutorial.fiveminute.client;
 
 import etm.tutorial.fiveminute.server.OrderAgent;
-import etm.tutorial.fiveminute.server.OrderStatus;
 import etm.tutorial.fiveminute.server.StockItem;
-import etm.tutorial.fiveminute.spring.SpringRuntime;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -46,103 +47,63 @@ import java.util.List;
  * @author void.fm
  * @version $Id: OrderClient.java,v 1.1 2006/10/29 14:33:22 french_c Exp $
  */
-public class OrderClient extends SpringRuntime {
+public class OrderClient {
 
   private OrderAgent agent;
 
-  public OrderClient() {
-    super("order-client.xml");
-    agent = (OrderAgent) context.getBean("orderAgent");
-    start();
+  public OrderClient(OrderAgent aAgent) {
+    agent = aAgent;
   }
 
-  public static void main(String[] args) {
-    if (args.length == 0) {
-      printMissingArgument();
-      System.exit(-1);
-    }
 
-    if ("liststock".equals(args[0])) {
-      listStock();
-      System.exit(0);
-    } else if ("order".equals(args[0]) && args.length >= 3) {
-      try {
-        String item = args[1];
-        int quantity = Integer.parseInt(args[2]);
-        orderItem(item, quantity);
-        System.exit(0);
-      } catch (NumberFormatException e) {
-        printInvalidQuantity(args[2]);
-        System.exit(-1);
-      }
-    }
-    printParameterError(args);
-    System.exit(-1);
+  public void execute() {
+    boolean shouldRun = true;
 
-
-  }
-
-  private static void orderItem(String item, int quantity) {
-    try {
-      OrderClient client = new OrderClient();
-      OrderStatus orderStatus = client.agent.placeOrder(item, quantity);
-      if (orderStatus.isSuccess()) {
-        System.out.println("Successfully ordered " + quantity + " " + orderStatus.getItem() + "." +
-          " Order ID is " + orderStatus.getOrderId());
+    while (shouldRun) {
+      printCurrentStock();
+      printLine();
+      int itemId = readAction();
+      if (itemId > 0) {
+        processOrder(itemId);
+      } else if (itemId == 0) {
+        shouldRun = false;
       } else {
-        System.out.println("Unable to order item " + quantity + " " + item + ".");
+        System.out.println("Error...");
       }
-    } catch (Exception e) {
-      System.err.println("Error accessing stock server:  " + e.getMessage());
     }
   }
 
-  private static void listStock() {
+  private void processOrder(int aItemId) {
+    System.out.print("Enter Quantity: ");
+    int quantity = readAction();
+    agent.placeOrder(aItemId, quantity);
+  }
+
+  private int readAction() {
+    BufferedReader stdIn;
+    stdIn = new BufferedReader(new InputStreamReader(System.in));
     try {
-      OrderClient client = new OrderClient();
-
-      List list = client.agent.listStock();
-      if (list.size() > 0) {
-        System.out.println("Currently in stock:");
-        for (int i = 0; i < list.size(); i++) {
-          StockItem stockItem = (StockItem) list.get(i);
-          System.out.println(" " + stockItem.toString());
-        }
-      } else {
-        System.err.println("No more items in stock.");
-      }
-    } catch (Exception e) {
-      System.err.println("Error accessing stock server:  " + e.getMessage());
+      String line = stdIn.readLine();
+      return Integer.parseInt(line);
+    } catch (IOException e) {
+      return -1;
     }
-
   }
 
-  private static void printInvalidQuantity(String arg) {
-    System.err.println(" Error: '" + arg + "' is not a valid quantity.");
-    printUsage();
+  private void printLine() {
+    System.out.print("Enter item id to order (or 0 exit): ");
   }
 
-  private static void printParameterError(String[] args) {
-    String parameters = "";
-    for (int i = 0; i < args.length; i++) {
-      parameters += args[i];
-      parameters += ' ';
+  private void printCurrentStock() {
+    System.out.println("ID : Item");
+    List list = agent.listStock();
+    for (int i = 0; i < list.size(); i++) {
+      StockItem stockItem = (StockItem) list.get(i);
+      System.out.print(" ");
+      System.out.print(stockItem.getItem().getId());
+      System.out.print(" : ");
+      System.out.println(stockItem);
     }
-    System.err.println(" Error: Unsupported operation '" + parameters.trim() + "'.");
-    printUsage();
   }
 
-  private static void printMissingArgument() {
-    System.err.println(" Error: Missing agent operation.");
-    printUsage();
-  }
-
-  private static void printUsage() {
-    System.err.println(" Usage: orderAgent operation [parameters].");
-    System.err.println("  liststock");
-    System.err.println("   Lists the currently available stock items, quantity and price.");
-    System.err.println("  order -item- -quantity-");
-    System.err.println("   Orders the given item at the given quantity. Item and quantity are");
-    System.err.println("   mandatory.");
-  }
 }

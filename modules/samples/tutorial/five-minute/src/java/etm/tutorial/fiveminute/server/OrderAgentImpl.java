@@ -55,7 +55,7 @@ public class OrderAgentImpl implements OrderAgent {
     this.orderAgentDao = orderAgentDao;
   }
 
-  public OrderStatus placeOrder(String item, int quantity) {
+  public OrderStatus placeOrder(int item, int quantity) {
     log.info("Received order for " + item + " with quantity " + quantity);
     if (orderAgentDao.isAvailable(item, quantity)) {
       Item orderedItem = orderAgentDao.addOrder(item, quantity);

@@ -44,12 +44,19 @@ import java.text.NumberFormat;
  * @author void.fm
  */
 public class Item implements Serializable {
-  private BigDecimal price;
+  private int id;
   private String name;
+  private BigDecimal price;
 
-  public Item(String name, BigDecimal price) {
+  public Item(int id,  String name, BigDecimal price) {
+    this.id = id;
     this.name = name;
     this.price = price;
+  }
+
+
+  public int getId() {
+    return id;
   }
 
   public BigDecimal getPrice() {

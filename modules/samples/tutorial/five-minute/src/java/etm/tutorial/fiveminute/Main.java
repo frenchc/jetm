@@ -30,41 +30,28 @@
  *
  */
 
-package etm.tutorial.fiveminute.server;
+package etm.tutorial.fiveminute;
 
-import etm.tutorial.fiveminute.spring.SpringRuntime;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import etm.tutorial.fiveminute.client.OrderClient;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
+ * Five minute tutorial starter.
  *
- * Our stock server which basically starts a spring beanfactory
- * that exposes our Rmi Server and with it our OrderAgent.
- *
+ * @version $Id$
  * @author void.fm
- * @version $Id: StockServer.java,v 1.1 2006/10/29 14:33:22 french_c Exp $
  */
-public class StockServer extends SpringRuntime {
-  private static final Log log = LogFactory.getLog(StockServer.class);
-
-  public StockServer() {
-    super("stock-server.xml");
-    start();
-  }
+public class Main {
 
   public static void main(String[] args) {
+    ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("five-minute-tutorial.xml");
+    context.start();
     try {
-      StockServer server = new StockServer();
-      log.info("Stock server up and running.");
-      try {
-        while (true) {
-          Thread.sleep(Long.MAX_VALUE);
-        }
-      } catch (InterruptedException e) {
-        // ignored
-      }
-    } catch (Exception e) {
-      log.warn("Stock server error:  " + e.getMessage());
+      OrderClient client = (OrderClient) context.getBean("orderClient");
+      client.execute();
+    } finally {
+      context.stop();
     }
   }
 }

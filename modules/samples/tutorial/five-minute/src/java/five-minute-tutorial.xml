@@ -4,6 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
   >
 
+  <bean id="orderClient"
+        class="etm.tutorial.fiveminute.client.OrderClient"
+        autowire="constructor" />
+
   <bean id="orderAgent"
         class="etm.tutorial.fiveminute.server.OrderAgentImpl"
         autowire="constructor">
@@ -13,16 +17,7 @@
   <bean id="orderAgentDao" class="etm.tutorial.fiveminute.server.dao.OrderAgentDaoImpl"
         autowire="constructor"/>
 
-  <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
-    <property name="service" ref="orderAgent"/>
-    <property name="serviceInterface" value="etm.tutorial.fiveminute.server.OrderAgent"/>
-    <property name="serviceName" value="OrderAgent"/>
-    <property name="registryPort" value="1199"/>
-  </bean>
-
-
-  <!--
-   <bean id="etmAutoProxy"
+  <bean id="etmAutoProxy"
          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
      <property name="interceptorNames">
        <list>
@@ -48,7 +43,6 @@
    <bean id="etmHttpConsole"
          class="etm.contrib.console.HttpConsoleServer"
          init-method="start" destroy-method="stop" autowire="constructor"/>
-  -->
 
   <!--
     <bean id="aggregatorChain"
@@ -58,13 +52,4 @@
       </constructor>
     </bean>
   -->
-  <!--
-  <bean name="etm:service=PerformanceMonitor"
-        class="etm.core.jmx.EtmMonitorMBean" autowire="constructor"/>
-
-  <bean class="org.springframework.jmx.export.MBeanExporter">
-    <property name="autodetect" value="true"/>
-  </bean>
-  -->
-
 </beans>
