@@ -14,6 +14,15 @@
     </echo>
   </target>
 
+  <target name="demo" depends="compile">
+    <path id="runtime.classpath">
+      <path refid="jetm.classpath" />
+      <pathelement location="classes" />
+    </path>
+    <java fork="true"
+          classname="etm.tutorial.fiveminute.Main"
+          classpathref="runtime.classpath" />
+  </target>
 
   <target name="compile" depends="clean, init">
     <javac destdir="classes"

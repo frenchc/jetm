@@ -32,12 +32,13 @@
 
 package etm.tutorial.fiveminute.client;
 
+import etm.tutorial.fiveminute.server.Item;
 import etm.tutorial.fiveminute.server.OrderAgent;
 import etm.tutorial.fiveminute.server.StockItem;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -48,6 +49,7 @@ import java.util.List;
  * @version $Revision$
  */
 public class OrderClient {
+  private static final String SPACES = "          ";
 
   private OrderAgent agent;
 
@@ -61,8 +63,7 @@ public class OrderClient {
 
     while (shouldRun) {
       printCurrentStock();
-      printLine();
-      int itemId = readAction();
+      int itemId = readIntFromConsole();
       if (itemId > 0) {
         processOrder(itemId);
       } else if (itemId == 0) {
@@ -73,36 +74,61 @@ public class OrderClient {
     }
   }
 
-  private void processOrder(int aItemId) {
-    System.out.print("Enter Quantity: ");
-    int quantity = readAction();
+  protected void processOrder(int aItemId) {
+    printPrompt("Enter Quantity: ");
+    int quantity = readIntFromConsole();
     agent.placeOrder(aItemId, quantity);
   }
 
-  private int readAction() {
+  protected int readIntFromConsole() {
     BufferedReader stdIn;
     stdIn = new BufferedReader(new InputStreamReader(System.in));
     try {
       String line = stdIn.readLine();
       return Integer.parseInt(line);
-    } catch (IOException e) {
+    } catch (Exception e) {
       return -1;
     }
   }
 
-  private void printLine() {
-    System.out.print("Enter item id to order (or 0 exit): ");
-  }
+  protected void printCurrentStock() {
+    System.out.println("We currently have on stock:");
+    System.out.println(" ------------------------------");
+    System.out.println(" | ID | Qty | Item    | Price |");
+    System.out.println(" ------------------------------");
 
-  private void printCurrentStock() {
-    System.out.println("ID : Item");
     List list = agent.listStock();
     for (int i = 0; i < list.size(); i++) {
       StockItem stockItem = (StockItem) list.get(i);
-      System.out.print(" ");
-      System.out.print(stockItem.getItem().getId());
-      System.out.print(" : ");
-      System.out.println(stockItem);
+      Item item = stockItem.getItem();
+
+      System.out.print(" |  ");
+      System.out.print(item.getId());
+      System.out.print(" | ");
+      System.out.print(ensureWidth(String.valueOf(stockItem.getQuantity()), 3));
+      System.out.print(" | ");
+      System.out.print(ensureWidth(item.getName(), 7));
+      System.out.print(" | ");
+      System.out.print(NumberFormat.getCurrencyInstance().format(item.getPrice()));
+      System.out.println(" | ");
+    }
+    System.out.println(" ------------------------------");
+    System.out.println();
+    printPrompt("Enter item id to order (or 0 exit): ");
+  }
+
+  private String ensureWidth(String value, int i) {
+    if (value.length() < i) {
+      return SPACES.substring(0, i - value.length()) + value;
+    }
+    return value;
+  }
+
+  protected void printPrompt(String message) {
+    if (System.getProperty("ant.home") != null) {
+      System.out.println(message);
+    } else {
+      System.out.print(message);
     }
   }
 

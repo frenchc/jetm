@@ -33,25 +33,51 @@
 package etm.tutorial.fiveminute;
 
 import etm.tutorial.fiveminute.client.OrderClient;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Five minute tutorial starter.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
 public class Main {
 
   public static void main(String[] args) {
-    ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("five-minute-tutorial.xml");
-    context.start();
-    try {
-      OrderClient client = (OrderClient) context.getBean("orderClient");
-      client.execute();
-    } finally {
-      context.stop();
+
+    final Object lock = new Object();
+
+    Thread t = new Thread() {
+      public void run() {
+        AbstractApplicationContext context = new ClassPathXmlApplicationContext("five-minute-tutorial.xml");
+        context.start();
+
+        try {
+
+          OrderClient client = (OrderClient) context.getBean("orderClient");
+          client.execute();
+
+        } finally {
+          context.destroy();
+          synchronized (lock) {
+            lock.notifyAll();
+          }
+        }
+      }
+    };
+
+    // start client application
+    t.start();
+
+    synchronized (lock) {
+      try {
+        // wait for client thread
+        lock.wait();
+      } catch (InterruptedException e) {
+        // ignored
+      }
     }
+
   }
 }

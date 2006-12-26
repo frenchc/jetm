@@ -166,6 +166,8 @@ public class HttpConsoleServer {
   }
 
   public void stop() {
+    listenerThread.shutdown();
+
     synchronized (this) {
       for (int i = 0; i < workers.size(); i++) {
         ConsoleWorker worker = (ConsoleWorker) workers.get(i);
@@ -174,7 +176,6 @@ public class HttpConsoleServer {
       workers.clear();
     }
 
-    listenerThread.shutdown();
   }
 
   protected ConsoleWorker getWorker() {
@@ -254,6 +255,7 @@ public class HttpConsoleServer {
 
     public void shutdown() {
       shouldRun = false;
+
       if (socket != null) {
         try {
           socket.close();
