@@ -125,7 +125,7 @@ public class OrderClient {
   }
 
   protected void printPrompt(String message) {
-    if (System.getProperty("ant.home") != null) {
+    if (System.getProperty("ant.runtime") != null) {
       System.out.println(message);
     } else {
       System.out.print(message);

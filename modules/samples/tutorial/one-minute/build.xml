@@ -20,16 +20,15 @@
     </path>
 
     <java classpathref="execution.classpath"
-          fork="true"
-          classname="etm.tutorial.oneminute.OneMinuteTest"/>
+          classname="etm.tutorial.oneminute.OneMinuteTest" />
+
   </target>
 
   <target name="compile" depends="clean, init">
     <javac destdir="classes"
            srcdir="src"
            classpathref="jetm.classpath"
-           debug="true"
-      />
+           debug="true" />
   </target>
 
   <target name="clean">

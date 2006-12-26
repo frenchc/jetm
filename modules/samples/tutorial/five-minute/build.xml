@@ -21,7 +21,10 @@
     </path>
     <java fork="true"
           classname="etm.tutorial.fiveminute.Main"
-          classpathref="runtime.classpath" />
+          classpathref="runtime.classpath"
+     >
+      <jvmarg value="-Dant.runtime=true" /> 
+    </java>
   </target>
 
   <target name="compile" depends="clean, init">

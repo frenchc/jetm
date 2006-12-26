@@ -45,7 +45,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Main {
 
   public static void main(String[] args) {
-
     final Object lock = new Object();
 
     Thread t = new Thread() {

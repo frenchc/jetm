@@ -33,8 +33,6 @@
 package etm.tutorial.fiveminute.server;
 
 import etm.tutorial.fiveminute.server.dao.OrderAgentDao;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 
@@ -45,7 +43,6 @@ import java.util.List;
  * @version $Revision$
  */
 public class OrderAgentImpl implements OrderAgent {
-  private static final Log log = LogFactory.getLog(OrderAgentImpl.class);
 
   private OrderAgentDao orderAgentDao;
   private int orderId = 0;
@@ -56,7 +53,7 @@ public class OrderAgentImpl implements OrderAgent {
   }
 
   public OrderStatus placeOrder(int item, int quantity) {
-    log.info("Received order for " + item + " with quantity " + quantity);
+    System.out.println("Received order for " + item + " with quantity " + quantity);
     if (orderAgentDao.isAvailable(item, quantity)) {
       Item orderedItem = orderAgentDao.addOrder(item, quantity);
       if (orderedItem != null) {
