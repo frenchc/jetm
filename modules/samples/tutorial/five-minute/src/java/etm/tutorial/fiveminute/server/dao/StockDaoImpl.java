@@ -32,8 +32,8 @@
 
 package etm.tutorial.fiveminute.server.dao;
 
-import etm.tutorial.fiveminute.server.Item;
-import etm.tutorial.fiveminute.server.StockItem;
+import etm.tutorial.fiveminute.server.model.Item;
+import etm.tutorial.fiveminute.server.model.StockItem;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -46,12 +46,12 @@ import java.util.List;
  * @author void.fm
  * @version $Revision$
  */
-public class OrderAgentDaoImpl implements OrderAgentDao {
+public class StockDaoImpl implements StockDao {
 
   private List stock = new ArrayList();
 
 
-  public OrderAgentDaoImpl() {
+  public StockDaoImpl() {
     stock.add(new StockItem(new Item(1, "apples", new BigDecimal(2.99)), 15));
     stock.add(new StockItem(new Item(2, "oranges", new BigDecimal(1.49)), 10));
     stock.add(new StockItem(new Item(3, "bananas", new BigDecimal(1.99)), 2));

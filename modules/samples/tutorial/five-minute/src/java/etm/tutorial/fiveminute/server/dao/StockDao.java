@@ -30,43 +30,23 @@
  *
  */
 
-package etm.tutorial.fiveminute.server;
+package etm.tutorial.fiveminute.server.dao;
 
-import java.io.Serializable;
+import etm.tutorial.fiveminute.server.model.Item;
+
+import java.util.List;
 
 /**
- *
- * The order status containing the result of an order request.
+ * Demo dao that simulates order add.
  *
  * @version $Revision$
  * @author void.fm
- *
  */
-public class OrderStatus implements Serializable {
+public interface StockDao {
 
-  private boolean success;
-  private int orderId;
-  private Item item;
+  public Item addOrder(int itemId, int quantity);
 
-  public OrderStatus() {
-    success = false;
-  }
+  public boolean isAvailable(int itemId, int quantity);
 
-  public OrderStatus(int aOrderId, Item aItem) {
-    orderId = aOrderId;
-    item = aItem;
-    success = true;
-  }
-
-  public boolean isSuccess() {
-    return success;
-  }
-
-  public int getOrderId() {
-    return orderId;
-  }
-
-  public Item getItem() {
-    return item;
-  }
+  public List getCurrentStock();
 }

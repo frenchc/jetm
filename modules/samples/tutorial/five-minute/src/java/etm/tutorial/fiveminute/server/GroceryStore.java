@@ -32,40 +32,19 @@
 
 package etm.tutorial.fiveminute.server;
 
-import etm.tutorial.fiveminute.server.dao.OrderAgentDao;
+import etm.tutorial.fiveminute.server.model.OrderStatus;
 
 import java.util.List;
 
 /**
- * Default OrderAgent implementation.
+ * The GroceryStore will
  *
  * @author void.fm
  * @version $Revision$
  */
-public class OrderAgentImpl implements OrderAgent {
+public interface GroceryStore {
 
-  private OrderAgentDao orderAgentDao;
-  private int orderId = 0;
+  public OrderStatus buy(int item, int quantity);
 
-
-  public OrderAgentImpl(OrderAgentDao orderAgentDao) {
-    this.orderAgentDao = orderAgentDao;
-  }
-
-  public OrderStatus placeOrder(int item, int quantity) {
-    System.out.println("Received order for " + item + " with quantity " + quantity);
-    if (orderAgentDao.isAvailable(item, quantity)) {
-      Item orderedItem = orderAgentDao.addOrder(item, quantity);
-      if (orderedItem != null) {
-        return new OrderStatus(++orderId, orderedItem);
-      }
-    }
-    return new OrderStatus();
-  }
-
-
-  public List listStock() {
-    return orderAgentDao.getCurrentStock();
-  }
-
+  public List listStock();
 }

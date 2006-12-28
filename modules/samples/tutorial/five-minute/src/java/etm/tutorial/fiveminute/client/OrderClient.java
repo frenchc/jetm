@@ -32,9 +32,9 @@
 
 package etm.tutorial.fiveminute.client;
 
-import etm.tutorial.fiveminute.server.Item;
-import etm.tutorial.fiveminute.server.OrderAgent;
-import etm.tutorial.fiveminute.server.StockItem;
+import etm.tutorial.fiveminute.server.model.Item;
+import etm.tutorial.fiveminute.server.GroceryStore;
+import etm.tutorial.fiveminute.server.model.StockItem;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -51,9 +51,9 @@ import java.util.List;
 public class OrderClient {
   private static final String SPACES = "          ";
 
-  private OrderAgent agent;
+  private GroceryStore agent;
 
-  public OrderClient(OrderAgent aAgent) {
+  public OrderClient(GroceryStore aAgent) {
     agent = aAgent;
   }
 
@@ -77,7 +77,7 @@ public class OrderClient {
   protected void processOrder(int aItemId) {
     printPrompt("Enter Quantity: ");
     int quantity = readIntFromConsole();
-    agent.placeOrder(aItemId, quantity);
+    agent.buy(aItemId, quantity);
   }
 
   protected int readIntFromConsole() {

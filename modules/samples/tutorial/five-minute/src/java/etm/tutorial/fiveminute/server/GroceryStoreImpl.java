@@ -30,23 +30,44 @@
  *
  */
 
-package etm.tutorial.fiveminute.server.dao;
+package etm.tutorial.fiveminute.server;
 
-import etm.tutorial.fiveminute.server.Item;
+import etm.tutorial.fiveminute.server.dao.StockDao;
+import etm.tutorial.fiveminute.server.model.OrderStatus;
+import etm.tutorial.fiveminute.server.model.Item;
 
 import java.util.List;
 
 /**
- * Demo dao that simulates order add.
+ * Default GroceryStore implementation.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
-public interface OrderAgentDao {
+public class GroceryStoreImpl implements GroceryStore {
 
-  public Item addOrder(int itemId, int quantity);
+  private StockDao stockDao;
+  private int orderId = 0;
 
-  public boolean isAvailable(int itemId, int quantity);
 
-  public List getCurrentStock();
+  public GroceryStoreImpl(StockDao aStockDao) {
+    this.stockDao = aStockDao;
+  }
+
+  public OrderStatus buy(int item, int quantity) {
+    System.out.println("Received order for " + item + " with quantity " + quantity);
+    if (stockDao.isAvailable(item, quantity)) {
+      Item orderedItem = stockDao.addOrder(item, quantity);
+      if (orderedItem != null) {
+        return new OrderStatus(++orderId, orderedItem);
+      }
+    }
+    return new OrderStatus();
+  }
+
+
+  public List listStock() {
+    return stockDao.getCurrentStock();
+  }
+
 }

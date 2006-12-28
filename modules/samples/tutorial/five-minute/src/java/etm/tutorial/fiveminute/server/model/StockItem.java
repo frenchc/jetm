@@ -30,7 +30,7 @@
  *
  */
 
-package etm.tutorial.fiveminute.server;
+package etm.tutorial.fiveminute.server.model;
 
 import java.io.Serializable;
 
@@ -58,10 +58,6 @@ public class StockItem implements Serializable {
 
   public Item getItem() {
     return item;
-  }
-
-  public void decreaseQuantity(int aQuantity) {
-    quantity -= aQuantity;
   }
 
   public String toString() {

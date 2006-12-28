@@ -9,12 +9,12 @@
         autowire="constructor" />
 
   <bean id="orderAgent"
-        class="etm.tutorial.fiveminute.server.OrderAgentImpl"
+        class="etm.tutorial.fiveminute.server.GroceryStoreImpl"
         autowire="constructor">
 
   </bean>
 
-  <bean id="orderAgentDao" class="etm.tutorial.fiveminute.server.dao.OrderAgentDaoImpl"
+  <bean id="aStockDao" class="etm.tutorial.fiveminute.server.dao.StockDaoImpl"
         autowire="constructor"/>
 
   <bean id="etmAutoProxy"
@@ -32,7 +32,7 @@
      </property>
    </bean>
 
-   <bean id="etmMethodCallInterceptor"
+  <bean id="etmMethodCallInterceptor"
          class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
          autowire="constructor"/>
 

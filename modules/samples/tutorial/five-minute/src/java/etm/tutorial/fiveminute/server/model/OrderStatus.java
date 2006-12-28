@@ -30,19 +30,43 @@
  *
  */
 
-package etm.tutorial.fiveminute.server;
+package etm.tutorial.fiveminute.server.model;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
- * The OrderAgent will
  *
- * @author void.fm
+ * The order status containing the result of an order request.
+ *
  * @version $Revision$
+ * @author void.fm
+ *
  */
-public interface OrderAgent {
+public class OrderStatus implements Serializable {
 
-  public OrderStatus placeOrder(int item, int quantity);
+  private boolean success;
+  private int orderId;
+  private Item item;
 
-  public List listStock();
+  public OrderStatus() {
+    success = false;
+  }
+
+  public OrderStatus(int aOrderId, Item aItem) {
+    orderId = aOrderId;
+    item = aItem;
+    success = true;
+  }
+
+  public boolean isSuccess() {
+    return success;
+  }
+
+  public int getOrderId() {
+    return orderId;
+  }
+
+  public Item getItem() {
+    return item;
+  }
 }
