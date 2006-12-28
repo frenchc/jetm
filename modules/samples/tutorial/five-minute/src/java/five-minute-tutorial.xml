@@ -9,12 +9,12 @@
         autowire="constructor" />
 
   <bean id="orderAgent"
-        class="etm.tutorial.fiveminute.server.GroceryStoreImpl"
+        class="etm.tutorial.fiveminute.store.GroceryStoreImpl"
         autowire="constructor">
 
   </bean>
 
-  <bean id="aStockDao" class="etm.tutorial.fiveminute.server.dao.StockDaoImpl"
+  <bean id="aStockDao" class="etm.tutorial.fiveminute.store.dao.StockDaoImpl"
         autowire="constructor"/>
 
   <bean id="etmAutoProxy"

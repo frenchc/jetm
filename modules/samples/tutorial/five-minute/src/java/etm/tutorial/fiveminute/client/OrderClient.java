@@ -32,9 +32,9 @@
 
 package etm.tutorial.fiveminute.client;
 
-import etm.tutorial.fiveminute.server.model.Item;
-import etm.tutorial.fiveminute.server.GroceryStore;
-import etm.tutorial.fiveminute.server.model.StockItem;
+import etm.tutorial.fiveminute.store.model.Item;
+import etm.tutorial.fiveminute.store.GroceryStore;
+import etm.tutorial.fiveminute.store.model.StockItem;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
