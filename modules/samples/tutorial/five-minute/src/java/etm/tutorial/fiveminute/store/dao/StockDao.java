@@ -30,9 +30,9 @@
  *
  */
 
-package etm.tutorial.fiveminute.server.dao;
+package etm.tutorial.fiveminute.store.dao;
 
-import etm.tutorial.fiveminute.server.model.Item;
+import etm.tutorial.fiveminute.store.model.Item;
 
 import java.util.List;
 

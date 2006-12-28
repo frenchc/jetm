@@ -30,7 +30,7 @@
  *
  */
 
-package etm.tutorial.fiveminute.server.model;
+package etm.tutorial.fiveminute.store.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

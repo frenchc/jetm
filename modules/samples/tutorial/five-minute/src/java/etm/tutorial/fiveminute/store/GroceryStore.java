@@ -30,9 +30,9 @@
  *
  */
 
-package etm.tutorial.fiveminute.server;
+package etm.tutorial.fiveminute.store;
 
-import etm.tutorial.fiveminute.server.model.OrderStatus;
+import etm.tutorial.fiveminute.store.model.OrderStatus;
 
 import java.util.List;
 
