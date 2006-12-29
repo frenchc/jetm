@@ -46,7 +46,7 @@
 
 
   <target name="dist-all"
-          depends="clean-all, build-all, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
+          depends="clean-all, build-all, test-jetm, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
 
     <!-- create distribution -->
     <copy todir="${build.site.dist.dir}" filtering="true" preservelastmodified="true">
