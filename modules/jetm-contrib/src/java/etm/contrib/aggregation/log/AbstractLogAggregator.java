@@ -49,8 +49,8 @@ import java.util.regex.Pattern;
  * Logger implementations will use the default logger name {@link #DEFAULT_LOG_NAME}
  * unless this name was altered using {@link #setLogName(String)}.
  * <p/>
- * A measuremenpoint will loged using the {@link DefaultOutputFormatter}. You may override
- * the default implementation by using [@link #setFormatter}.
+ * A Measurement Point will logged using the {@link DefaultOutputFormatter}. You may override
+ * the default implementation by using {@link #setFormatter}.
  * <p/>
  * Due to the direct performance impact this aggregator
  * should be used in conjunction with a time based buffered aggregator,
@@ -171,8 +171,10 @@ public abstract class AbstractLogAggregator implements Aggregator {
           return true;
         }
       }
+      return false;
     }
-    return false;
+    // log all measurement points if we don't one
+    return true;
   }
 
   /**
