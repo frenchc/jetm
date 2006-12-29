@@ -32,13 +32,18 @@
 
 package etm.tutorial.fiveminute.client;
 
-import etm.tutorial.fiveminute.store.model.Item;
 import etm.tutorial.fiveminute.store.GroceryStore;
+import etm.tutorial.fiveminute.store.UnknownArticleException;
+import etm.tutorial.fiveminute.store.model.Item;
+import etm.tutorial.fiveminute.store.model.OrderStatus;
 import etm.tutorial.fiveminute.store.model.StockItem;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -57,9 +62,11 @@ public class OrderClient {
     agent = aAgent;
   }
 
-
   public void execute() {
     boolean shouldRun = true;
+
+    System.out.println("Welcome to the JETM Grocery Store!");
+    System.out.println();
 
     while (shouldRun) {
       printCurrentStock();
@@ -77,7 +84,17 @@ public class OrderClient {
   protected void processOrder(int aItemId) {
     printPrompt("Enter Quantity: ");
     int quantity = readIntFromConsole();
-    agent.buy(aItemId, quantity);
+    try {
+      OrderStatus orderStatus = agent.buy(aItemId, quantity);
+      if (orderStatus.isSuccess()) {
+        System.out.println("Thank you for your order.");
+      } else {
+        System.out.println("Unable to purchase item " + orderStatus.getItem().getName() + " with quantity " + quantity);
+      }
+    } catch (UnknownArticleException e) {
+      System.err.println("There is no item with item ID " + aItemId);
+    }
+    System.out.println();
   }
 
   protected int readIntFromConsole() {
@@ -92,14 +109,22 @@ public class OrderClient {
   }
 
   protected void printCurrentStock() {
-    System.out.println("We currently have on stock:");
+    System.out.println("We currently have in stock:");
     System.out.println(" ------------------------------");
     System.out.println(" | ID | Qty | Item    | Price |");
     System.out.println(" ------------------------------");
 
     List list = agent.listStock();
-    for (int i = 0; i < list.size(); i++) {
-      StockItem stockItem = (StockItem) list.get(i);
+    Collections.sort(list, new Comparator() {
+      public int compare(Object o1, Object o2) {
+        int one = ((StockItem) o1).getItem().getId();
+        int two = ((StockItem) o2).getItem().getId();
+        return one < two ? -1 : 1;
+      }
+    });
+
+    for (Iterator it = list.iterator(); it.hasNext();) {
+      StockItem stockItem = (StockItem) it.next();
       Item item = stockItem.getItem();
 
       System.out.print(" |  ");
@@ -116,6 +141,7 @@ public class OrderClient {
     System.out.println();
     printPrompt("Enter item id to order (or 0 exit): ");
   }
+
 
   private String ensureWidth(String value, int i) {
     if (value.length() < i) {

@@ -33,8 +33,8 @@
 package etm.tutorial.fiveminute.store;
 
 import etm.tutorial.fiveminute.store.dao.StockDao;
-import etm.tutorial.fiveminute.store.model.OrderStatus;
 import etm.tutorial.fiveminute.store.model.Item;
+import etm.tutorial.fiveminute.store.model.OrderStatus;
 
 import java.util.List;
 
@@ -54,15 +54,16 @@ public class GroceryStoreImpl implements GroceryStore {
     this.stockDao = aStockDao;
   }
 
-  public OrderStatus buy(int item, int quantity) {
-    System.out.println("Received order for " + item + " with quantity " + quantity);
-    if (stockDao.isAvailable(item, quantity)) {
-      Item orderedItem = stockDao.addOrder(item, quantity);
-      if (orderedItem != null) {
-        return new OrderStatus(++orderId, orderedItem);
-      }
+  public OrderStatus buy(int aItemId, int quantity) throws UnknownArticleException {
+    Item orderedItem = stockDao.getItem(aItemId);
+    if (orderedItem == null) {
+      throw new UnknownArticleException();
     }
-    return new OrderStatus();
+    if (stockDao.addOrder(orderedItem, quantity)) {
+      return new OrderStatus(orderedItem, ++orderId);
+    } else {
+      return new OrderStatus(orderedItem);
+    }
   }
 
 

@@ -32,13 +32,15 @@
 
 package etm.tutorial.fiveminute.store.dao;
 
+import etm.tutorial.fiveminute.store.UnknownArticleException;
 import etm.tutorial.fiveminute.store.model.Item;
 import etm.tutorial.fiveminute.store.model.StockItem;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Default demo DAO implementation.
@@ -48,47 +50,53 @@ import java.util.List;
  */
 public class StockDaoImpl implements StockDao {
 
-  private List stock = new ArrayList();
+  private Map catalog = new HashMap();
+  private Map stock = new HashMap();
 
 
   public StockDaoImpl() {
-    stock.add(new StockItem(new Item(1, "apples", new BigDecimal(2.99)), 15));
-    stock.add(new StockItem(new Item(2, "oranges", new BigDecimal(1.49)), 10));
-    stock.add(new StockItem(new Item(3, "bananas", new BigDecimal(1.99)), 2));
-    stock.add(new StockItem(new Item(4, "grapes", new BigDecimal(2.49)), 10));
+    loadInitialStock();
   }
 
 
-  public boolean isAvailable(int item, int quantity) {
-    for (int i = 0; i < stock.size(); i++) {
-      StockItem stockItem = (StockItem) stock.get(i);
-      if (stockItem.getItem().getId() == item && stockItem.getQuantity() >= quantity) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public Item addOrder(int item, int quantity) {
-    for (int i = 0; i < stock.size(); i++) {
-      StockItem stockItem = (StockItem) stock.get(i);
-      if (stockItem.getItem().getId() == item && stockItem.getQuantity() >= quantity) {
+  public boolean addOrder(Item item, int quantity) throws UnknownArticleException {
+    StockItem stockItem = (StockItem) stock.get(new Integer(item.getId()));
+    if (stockItem != null) {
+      if (stockItem.getQuantity() >= quantity) {
         stockItem.decreaseQuantity(quantity);
-        return stockItem.getItem();
+        if (stockItem.getQuantity() == 0) {
+          stock.remove(new Integer(stockItem.getItem().getId()));
+        }
+        return true;
+      } else {
+        return false;
       }
+    } else {
+      throw new UnknownArticleException();
     }
-    return null;
   }
 
 
   public List getCurrentStock() {
-    List list = new ArrayList();
-    for (int i = 0; i < stock.size(); i++) {
-      StockItem stockItem = (StockItem) stock.get(i);
-      if (stockItem.getQuantity() > 0) {
-        list.add(stockItem);
-      }
-    }
-    return Collections.unmodifiableList(list);
+    return new ArrayList(stock.values());
   }
+
+  public Item getItem(int aItemId) {
+    return (Item) catalog.get(new Integer(aItemId));
+  }
+
+
+  private void loadInitialStock() {
+    catalog.put(new Integer(1), new Item(1, "apples", new BigDecimal(2.99)));
+    catalog.put(new Integer(2), new Item(2, "oranges", new BigDecimal(1.49)));
+    catalog.put(new Integer(3), new Item(3, "bananas", new BigDecimal(1.99)));
+    catalog.put(new Integer(4), new Item(4, "grapes", new BigDecimal(2.49)));
+
+    stock.put(new Integer(1), new StockItem((Item) catalog.get(new Integer(1)), 15));
+    stock.put(new Integer(2), new StockItem((Item) catalog.get(new Integer(2)), 5));
+    stock.put(new Integer(3), new StockItem((Item) catalog.get(new Integer(3)), 20));
+    stock.put(new Integer(4), new StockItem((Item) catalog.get(new Integer(4)), 11));
+  }
+
+
 }

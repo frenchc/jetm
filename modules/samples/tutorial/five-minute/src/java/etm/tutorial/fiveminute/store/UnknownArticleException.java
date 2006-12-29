@@ -32,19 +32,26 @@
 
 package etm.tutorial.fiveminute.store;
 
-import etm.tutorial.fiveminute.store.model.OrderStatus;
-
-import java.util.List;
-
 /**
- * The GroceryStore will
  *
- * @author void.fm
  * @version $Revision$
+ * @author void.fm
  */
-public interface GroceryStore {
+public class UnknownArticleException extends Exception {
 
-  public OrderStatus buy(int item, int quantity) throws UnknownArticleException;
+  public UnknownArticleException() {
+    super();
+  }
 
-  public List listStock();
+  public UnknownArticleException(String message) {
+    super(message);
+  }
+
+  public UnknownArticleException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public UnknownArticleException(Throwable cause) {
+    super(cause);
+  }
 }

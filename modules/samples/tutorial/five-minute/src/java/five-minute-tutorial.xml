@@ -6,7 +6,7 @@
 
   <bean id="orderClient"
         class="etm.tutorial.fiveminute.client.OrderClient"
-        autowire="constructor" />
+        autowire="constructor"/>
 
   <bean id="orderAgent"
         class="etm.tutorial.fiveminute.store.GroceryStoreImpl"
@@ -17,39 +17,57 @@
   <bean id="aStockDao" class="etm.tutorial.fiveminute.store.dao.StockDaoImpl"
         autowire="constructor"/>
 
-  <bean id="etmAutoProxy"
-         class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-     <property name="interceptorNames">
-       <list>
-         <value>etmMethodCallInterceptor</value>
-       </list>
-     </property>
-     <property name="beanNames">
-       <list>
-         <value>orderAgent</value>
-         <value>*Dao</value>
-       </list>
-     </property>
-   </bean>
+  <!--
+    <bean id="etmMonitor"
+          class="etm.core.monitor.NestedMonitor"
+          init-method="start" destroy-method="stop"/>
 
-  <bean id="etmMethodCallInterceptor"
-         class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
-         autowire="constructor"/>
 
-   <bean id="etmMonitor"
-         class="etm.core.monitor.NestedMonitor"
-         init-method="start" destroy-method="stop"/>
+    <bean id="etmAutoProxy"
+          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+      <property name="interceptorNames">
+        <list>
+          <value>etmMethodCallInterceptor</value>
+        </list>
+      </property>
+      <property name="beanNames">
+        <list>
+          <value>orderAgent</value>
+          <value>*Dao</value>
+        </list>
+      </property>
+    </bean>
 
-   <bean id="etmHttpConsole"
-         class="etm.contrib.console.HttpConsoleServer"
-         init-method="start" destroy-method="stop" autowire="constructor"/>
+    <bean id="etmMethodCallInterceptor"
+          class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
+          autowire="constructor"/>
+  -->
+
 
   <!--
-    <bean id="aggregatorChain"
-          class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
-      <constructor>
-             <bean class="etm.core.aggregation.NestedAggregation" />
-      </constructor>
+    <bean id="etmHttpConsole"
+          class="etm.contrib.console.HttpConsoleServer"
+          init-method="start" destroy-method="stop" autowire="constructor">
+          <property name="expanded" value="true" />
+    </bean>
+  -->
+
+
+  <!--
+    <bean id="etmMonitor" class="etm.core.monitor.NestedMonitor"
+          init-method="start" destroy-method="stop">
+      <constructor-arg ref="aggregatorChain"/>
+    </bean>
+
+    <bean id="aggregatorChain" class="etm.core.aggregation.BufferedTimedAggregator">
+      <constructor-arg>
+        <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
+          <constructor-arg>
+            <bean class="etm.core.aggregation.NestedAggregator"/>
+          </constructor-arg>
+        </bean>
+      </constructor-arg>
     </bean>
   -->
 </beans>
+  

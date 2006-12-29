@@ -16,27 +16,27 @@
 
   <target name="demo" depends="compile">
     <path id="runtime.classpath">
+      <pathelement location="build/classes" />
       <path refid="jetm.classpath" />
-      <pathelement location="classes" />
     </path>
     <java fork="true"
           classname="etm.tutorial.fiveminute.Main"
           classpathref="runtime.classpath"
+
      >
-      <jvmarg value="-Dant.runtime=true" /> 
+      <jvmarg value="-Dant.runtime=true" />
     </java>
   </target>
 
-  <target name="compile" depends="clean, init">
-    <javac destdir="classes"
+  <target name="compile" depends="init">
+    <javac destdir="build/classes"
            srcdir="src/java"
            classpathref="jetm.classpath"
            debug="true"
       />
 
-    <copy todir="classes">
+    <copy todir="build/classes">
       <fileset dir="src/java" includes="**/*.xml"/>
-      <fileset dir="src/java" includes="**/*.properties"/>
     </copy>
 
   </target>
@@ -46,7 +46,7 @@
   </target>
 
   <target name="init" depends="validate-runtime">
-    <mkdir dir="classes"/>
+    <mkdir dir="build/classes"/>
   </target>
 
   <target name="validate-runtime">

@@ -33,6 +33,7 @@
 package etm.tutorial.fiveminute.store.dao;
 
 import etm.tutorial.fiveminute.store.model.Item;
+import etm.tutorial.fiveminute.store.UnknownArticleException;
 
 import java.util.List;
 
@@ -44,9 +45,9 @@ import java.util.List;
  */
 public interface StockDao {
 
-  public Item addOrder(int itemId, int quantity);
-
-  public boolean isAvailable(int itemId, int quantity);
+  public boolean addOrder(Item item, int quantity) throws UnknownArticleException;
 
   public List getCurrentStock();
+
+  public Item getItem(int aItemId);
 }

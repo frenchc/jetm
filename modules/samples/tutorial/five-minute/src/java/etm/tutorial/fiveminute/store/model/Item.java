@@ -54,7 +54,6 @@ public class Item implements Serializable {
     this.price = price;
   }
 
-
   public int getId() {
     return id;
   }
@@ -65,6 +64,21 @@ public class Item implements Serializable {
 
   public String getName() {
     return name;
+  }
+
+
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Item item = (Item) o;
+
+    return id == item.id;
+
+  }
+
+  public int hashCode() {
+    return id;
   }
 
   public String toString() {

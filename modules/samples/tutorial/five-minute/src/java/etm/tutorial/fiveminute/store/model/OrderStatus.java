@@ -48,14 +48,15 @@ public class OrderStatus implements Serializable {
   private int orderId;
   private Item item;
 
-  public OrderStatus() {
+  public OrderStatus(Item aItem) {
     success = false;
+    item = aItem;
   }
 
-  public OrderStatus(int aOrderId, Item aItem) {
-    orderId = aOrderId;
+  public OrderStatus(Item aItem, int aOrderId) {
     item = aItem;
     success = true;
+    orderId = aOrderId;
   }
 
   public boolean isSuccess() {
