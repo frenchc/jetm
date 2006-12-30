@@ -32,7 +32,7 @@
 
 <target name="clean-samples">
   <delete includeemptydirs="true">
-    <fileset dir="${module.samples.dir}" includes="**/classes/**"/>
+    <fileset dir="${module.samples.dir}" includes="**/build/**"/>
   </delete>
   <delete dir="${module.samples.dest.lib}" quiet="true"/>
 </target>

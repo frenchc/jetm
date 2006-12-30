@@ -2,7 +2,7 @@
 <project name="JETM One Minute Tutorial" default="help" basedir=".">
 
   <path id="jetm.classpath">
-    <fileset dir="../../lib" includes="**/jetm*.jar"/>
+    <fileset dir="../.." includes="**/lib/jetm*.jar"/>
   </path>
 
   <target name="help">
@@ -16,7 +16,7 @@
   <target name="demo" depends="compile">
     <path id="execution.classpath">
       <path refid="jetm.classpath"/>
-      <pathelement location="classes"/>
+      <pathelement location="build/classes"/>
     </path>
 
     <java classpathref="execution.classpath"
@@ -25,18 +25,18 @@
   </target>
 
   <target name="compile" depends="clean, init">
-    <javac destdir="classes"
+    <javac destdir="build/classes"
            srcdir="src"
            classpathref="jetm.classpath"
            debug="true" />
   </target>
 
   <target name="clean">
-    <delete dir="classes"/>
+    <delete dir="build/classes"/>
   </target>
 
   <target name="init" depends="validate-runtime">
-    <mkdir dir="classes"/>
+    <mkdir dir="build/classes"/>
   </target>
 
 <target name="validate-runtime">

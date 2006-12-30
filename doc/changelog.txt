@@ -3,37 +3,38 @@ Release 1.2.0
   - Activated JMX support again (deprecated old JMX MBeans)
 
  Changes, Fixes and Improvements
-  - JETM now available via Maven 2 repository
+  - Minor fixes to logging aggregators
   - Five minute tutorial added
   - Documentation improvements
 
 Release 1.1.1
-  Changes, Fixes and Improvements
-  - Switch to Thred context classloader.
+ Changes, Fixes and Improvements
+  - JETM now available via Maven 2 repository
+  - Switched to thread context classloader to load resources.
 
 Release 1.1.0
  New features
- - AspectWerkz Support
- - Generic Web App Integration Support
- - Expanded/Collapsed HTTP Console result rendering
- - Dump on shutdown plugin
+  - AspectWerkz Support
+  - Generic Web App Integration Support
+  - Expanded/Collapsed HTTP Console result rendering
+  - Dump on shutdown plugin
 
  Changes, Fixes and Improvements
- - robots.txt for HTTP console added (disabled actions)
- - EtmManager.getEtmMonitor() now returns a proxy, this allows
+  - robots.txt for HTTP console added (disabled actions)
+  - EtmManager.getEtmMonitor() now returns a proxy, this allows
    late EtmMonitor init.
- - Removed auto referesh in HTTP console
- - Added reset(MeasurementPointName) to EtmMonitor
- - Improved SimpleTextRenderer layout
- - Logging aggregators now support filtering
+  - Removed auto referesh in HTTP console
+  - Added reset(MeasurementPointName) to EtmMonitor
+  - Improved SimpleTextRenderer layout
+  - Logging aggregators now support filtering
 
 Release 1.0.0
  New features
- - Spring based demo (currently available online only)
+  - Spring based demo (currently available online only)
 
  Changes, Fixes and Improvements
- - Javadoc cleanup
- - Fixed logging aggregator bugs
+  - Javadoc cleanup
+  - Fixed logging aggregator bugs
 
 Release 0.8.0
  New features

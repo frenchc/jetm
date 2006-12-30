@@ -3,7 +3,7 @@
 
   <path id="jetm.classpath">
     <fileset dir="lib" includes="**/*.jar"/>
-    <fileset dir="../../lib" includes="**/*.jar"/>
+    <fileset dir="../.." includes="**/lib/*.jar"/>
   </path>
 
   <target name="help">
