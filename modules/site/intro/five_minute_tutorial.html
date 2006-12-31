@@ -11,103 +11,206 @@
 <body>
 
 <div id="content">
-  <div id="header">Java&trade; Execution Time Measurement Library</div>
+<div id="header">Java&trade; Execution Time Measurement Library</div>
 
-  <div id="subheader">The swiss army knife of the poor</div>
+<div id="subheader">The swiss army knife of the poor</div>
 
-  <div id="main">
-    <h3>JETM: Five minute tutorial</h3>
+<div id="main">
+<h3>JETM: Five minute tutorial</h3>
 
-    <p>
-      This tutorial demonstrates some advanced features of JETM. It assumes you have
-      already taken a look at <a href="advanced_concepts.html">advanced concepts</a>.
-      For a quick intro you better start with <a href="one_minute_tutorial.html">one minute tutorial</a>.
-    </p>
+<p>
+  This tutorial demonstrates some advanced features of JETM. It assumes you have
+  already taken a look at <a href="advanced_concepts.html">advanced concepts</a>.
+  If you are new to JETM better start with <a href="one_minute_tutorial.html">one minute tutorial</a>.
+</p>
 
-    <p>
-      In this tutorial we will develop a simple RMI server and measure its performance. Out of convience we will
-      use Springframework features to exponse the RMI service, add performance monitoring and issue client requests.
-      <br/><i>(If you are new to the Springframework this tutorial may take longer than five minutes.)</i>
-    </p>
-    <h4>Step 1: Download samples and dependencies</h4>
+<p>
+  In this tutorial we will enhance a Java&trade; application such that we are able to gain performance statistics without
+  touching source code at all. Out of convenience we use the Springframework as runtime and performance
+  monitoring infrastructure.
+</p>
 
-    <p>
-      The archive <a href="../files.html">JETM examples</a> contains the sources and all dependencies for this tutorial.
-      Download the file, expand it and create a new project from the content of <i>tutorial/five-minute</i> in your
-      favourite IDE. Ensure that <i>lib/jetm.jar</i>, <i>lib/jetm-optional.jar</i> and all libraries in <i>tutorial/five-minute/lib</i>
-      are part of your project classpath.
-    </p>
+<p>
+  <i>Attention:</i> If you never heard about the Springframework this tutorial may take longer than five minutes.
+</p>
+<h4>Step 1: Prerequisites</h4>
 
-    <p>
-      Alternatively you can use <i>ant</i> and can run this tutorial from the command line.
-    </p>
+<p>
+  The JETM samples include all required sources for this tutorial. <a href="../files.html">Download</a>
+  the archive and expand it. Now there are two options to execute the tutorial demo application:
+</p>
 
-    <h4>Step 2: Develop a stock server and order client</h4>
+<p>
+  If you want to run the tutorial from within your favourite IDE just create a new project from the content of
+  <i>tutorial/five-minute</i> and ensure that <i>lib/jetm-{VERSION}.jar</i>, <i>lib/jetm-optional-{VERSION}.jar</i>
+  and all libraries in <i>tutorial/five-minute/lib</i> are in your project classpath.
+</p>
 
-    <p>
-      We will use RmiServiceExporter to export a plain Java&trade; class as RmiServer and access it using
-      RmiProxyFactoryBean
-      to access it.
+<p>
+  Alternatively you can just use <a href="http://ant.apache.org">ANT</a> and run this tutorial from the command line.
+  Therefore a valid <i>ANT</i> installation (>= 1.6.x) is required.
+</p>
 
-      Our plain Java&trade; class
+<h4>Step 2: Examine tutorial source code</h4>
 
-    </p>
-    <h4>Step 3: Run the demo</h4>
+<p>
+  TBD
+</p>
+<h4>Step 3: Run the demo</h4>
 
-    <p>
-      We are now ready to run the demo. First you should start the StockServer class.
-    </p>
-    <table>
-      <tr>
-        <td valign="top">IDE Setup</td>
-        <td>
-          1. Compile the demo in your IDE<br/>
-          2. Execute the StockServer class etm.tutorial.fiveminute.server.StockServer<br/>
-          3. Execute etm.tutorial.fiveminute.client.OrderClient<br/>
-        </td>
-      </tr>
-      <tr>
-        <td valign="top">Command Line</td>
-        <td>
-          1. Compile the demo using ant<br/>
-          2. Start the StockServer startServer.(sh/bat) from the commandline<br/>
-          2. Execute startServer.(sh/bat) from the commandline<br/>
+<p>
+  We are now ready to run the demo. Depending on whether you run the demo from your IDE or from command line
+  the process is slightly different.
+</p>
+<table>
+  <tr>
+    <td valign="top" width="120">IDE Setup</td>
+    <td>
+      1. Compile the demo in your IDE.<br/>
+      2. Execute the main class etm.tutorial.fiveminute.Main.<br/>
+      3. Interact with tutorial application.<br/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">Command line</td>
+    <td>
+      1. Change directory to <i>tutorial/five-minute</i><br/>
+      2. Execute <i>ant demo</i> from the commandline<br/>
+      3. Interact with tutorial application.<br/>
+    </td>
+  </tr>
+</table>
+<p>
+  You should now see at your console the output of our JETM Grocery Store:
+</p>
 
-        </td>
-      </tr>
-    </table>
+<div class="code"><pre>Welcome to the JETM Grocery Store!
 
-    <h4>Step 4: Add performance monitoring</h4>
+We currently have in stock:
+ ------------------------------
+ | ID | Qty | Item    | Price |
+ ------------------------------
+ |  1 |  15 |  apples | $2.99 |
+ |  2 |   5 | oranges | $1.49 |
+ |  3 |  20 | bananas | $1.99 |
+ |  4 |  11 |  grapes | $2.49 |
+ ------------------------------
 
-    <p>
-      The demo itself isn't that impressive. But how about adding performance monitoring to server without
-      alterating source code at all?
-    </p>
+Enter item id to order (or 0 exit): 
+</pre>
+</div>
+<h4>Step 4: Add performance monitoring</h4>
 
-    <h4>Step 5: Access aggregated results</h4>
+<p>
+  The application itself isn't that impressive. However it's only purpose is to demonstrate performance monitioring.
 
-    <h4>Step 6: Log raw results</h4>
+
+</p>
+
+<p>
+  Your should now enable the following XML fragement in your tutorial spring configuration (<i>five-minute-tutorial.xml</i>).
+</p>
+
+<div class="code"><pre>&lt;!-- Step 4: Add performance monitoring --&gt;
+  
+&lt;bean id="etmMonitor" class="<b>etm.core.monitor.NestedMonitor</b>"
+      init-method="start" destroy-method="stop"/&gt;
+
+&lt;bean id="etmMethodCallInterceptor" class="<b>etm.contrib.aop.aopalliance.EtmMethodCallInterceptor</b>"
+      autowire="constructor"/&gt;
+
+&lt;bean id="etmAutoProxy"
+      class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"&gt;
+      &lt;property name="interceptorNames"&gt;
+        &lt;list&gt;
+          &lt;value&gt;etmMethodCallInterceptor&lt;/value&gt;
+        &lt;/list&gt;
+      &lt;/property&gt;
+      &lt;property name="beanNames"&gt;
+        &lt;list&gt;
+          &lt;value&gt;<b>orderAgent</b>&lt;/value&gt;
+          &lt;value&gt;<b>*Dao</b>&lt;/value&gt;
+        &lt;/list&gt;
+      &lt;/property&gt;
+&lt;/bean&gt;</pre>
+</div>
 
 
-  </div>
+<h4>Step 5: Access aggregated results</h4>
 
-  <div id="menu">
-    <a href="../index.html">Home</a>
-    |
-    <a href="../doc.html">Documentation</a>
-    |
-    <a href="../faq.html">FAQ</a>
-    |
-    <a href="../@api@/index.html">JavaDoc</a>
-    |
-    <a href="../files.html">Download</a>
-    |
-    <a href="../svn.html">SVN</a>
-    |
-    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
-    |
-    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
-  </div>
+<p>
+  There isn't much.
+</p>
+
+<div class="code"><pre>&lt;bean id="etmHttpConsole" class="<b>etm.contrib.console.HttpConsoleServer</b>"
+      init-method="start" destroy-method="stop" autowire="constructor"&gt;
+      &lt;property name="expanded" value="true" /&gt;
+&lt;/bean&gt;  
+</pre>
+</div>
+<p>
+  Now restart the tutorial and point your browser to <a href="http://localhost:40000">http://localhost:40000</a>
+  to access the aggregated performance statistics provided by the build-in
+  <a href="../howto/drop-in-console.html">HTTP console</a>
+</p>
+
+<h4>Step 6: Alter aggregation chain</h4>
+
+<div class="code"><pre>&lt;bean id="etmMonitor" class="<b>etm.core.monitor.NestedMonitor</b>"
+      init-method="start" destroy-method="stop"&gt;
+      &lt;constructor-arg ref="<b>aggregatorChain</b>"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
+      &lt;constructor-arg&gt;
+        &lt;bean class="<b>etm.core.aggregation.NestedAggregator</b>"/&gt;
+      &lt;/constructor-arg&gt;
+      &lt;property name="aggregationInterval" value="1000" /&gt;
+&lt;/bean&gt;</pre>
+</div>
+
+
+<h4>Step 7: Log raw performance results</h4>
+
+<div class="code"><pre>&lt;bean id="etmMonitor" class="<b>etm.core.monitor.NestedMonitor</b>"
+      init-method="start" destroy-method="stop"&gt;
+      &lt;constructor-arg ref="<b>aggregatorChain</b>"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
+      &lt;constructor-arg&gt;
+        &lt;bean class="<b>etm.contrib.aggregation.log.CommonsLoggingAggregator</b>"&gt;
+          &lt;constructor-arg&gt;
+            &lt;bean class="<b>etm.core.aggregation.NestedAggregator</b>"/&gt;
+          &lt;/constructor-arg&gt;
+        &lt;/bean&gt;
+      &lt;/constructor-arg&gt;
+&lt;/bean&gt;</pre>
+</div>
+
+<h4>Next...</h4>
+
+<p>Now proceed to remaining <a href="../doc.html">JETM documentation</a>.
+</p>
+</div>
+
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
 </div>
 
 </body>
