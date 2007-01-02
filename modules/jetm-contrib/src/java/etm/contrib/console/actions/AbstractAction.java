@@ -33,6 +33,7 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleAction;
+import etm.contrib.console.ConsoleResponse;
 import etm.core.monitor.EtmMonitor;
 
 import java.io.IOException;
@@ -50,67 +51,43 @@ public abstract class AbstractAction implements ConsoleAction {
   protected static final String UTF_8 = "UTF-8";
   protected static final byte[] SERVER_HEADER = "Server: JETM drop-in HTML console\n".getBytes();
 
-
-  protected void sendRedirect(OutputStream out, String location) throws IOException {
-    out.write("HTTP/1.0 302 OK\n".getBytes());
-    out.write(SERVER_HEADER);
-    out.write(("Date: " + new Date() + "\n").getBytes());
-    out.write("Location: ".getBytes());
-    out.write(location.getBytes(UTF_8));
-    out.write("\n".getBytes());
-    out.write("Connection: close\n".getBytes());
-    out.write("\n".getBytes());
-  }
-
-  protected void sendStatus(OutputStream out, String errorCode, String errorDescription) throws IOException {
-    out.write("HTTP/1.0 ".getBytes());
-    out.write(errorCode.getBytes());
-    out.write(' ');
-    out.write(errorDescription.getBytes());
-    out.write("\n".getBytes());
-    out.write(SERVER_HEADER);
-    out.write(("Date: " + new Date() + "\n").getBytes());
-    out.write("Connection: close\n".getBytes());
-    out.write("\n".getBytes());
-  }
-
-  protected void writeConsoleHeader(OutputStream out, EtmMonitor etmMonitor, String point) throws IOException {
+  protected void writeConsoleHeader(ConsoleResponse response, EtmMonitor etmMonitor, String point) throws IOException {
     Date currentTime = new Date();
     String pointEncoded = null;
     if (point != null) {
       pointEncoded = URLEncoder.encode(point, "UTF-8");
     }
 
-    out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">".getBytes());
-    out.write((
+    response.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">".getBytes());
+    response.write((
       "<html>\n" +
         " <head> \n" +
         "  <title>JETM HTML Console</title>\n" +
         "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>\n" +
         "  <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\">" +
         " </head>\n").getBytes(UTF_8));
-    out.write("<body>\n<h1>JETM HTML Console</h1>".getBytes());
+    response.write("<body>\n<h1>JETM HTML Console</h1>".getBytes());
 
 
     if (point != null) {
-      out.write(("<b>").getBytes());
-      out.write(point.getBytes());
-      out.write(("</b><br /><br />\n").getBytes());
+      response.write(("<b>").getBytes());
+      response.write(point.getBytes());
+      response.write(("</b><br /><br />\n").getBytes());
 
-      out.write(("<a href=\"/detail?point=").getBytes());
-      out.write(pointEncoded.getBytes());
-      out.write(("\">Reload point</a>  &nbsp; \n").getBytes());
+      response.write(("<a href=\"/detail?point=").getBytes());
+      response.write(pointEncoded.getBytes());
+      response.write(("\">Reload point</a>  &nbsp; \n").getBytes());
 
-      out.write(("<a href=\"/reset?point=").getBytes());
-      out.write(pointEncoded.getBytes());
-      out.write(("\">Reset point</a>  &nbsp; ").getBytes());
-      out.write((" <a href=\"/\">Back to overview</a>\n").getBytes());
+      response.write(("<a href=\"/reset?point=").getBytes());
+      response.write(pointEncoded.getBytes());
+      response.write(("\">Reset point</a>  &nbsp; ").getBytes());
+      response.write((" <a href=\"/\">Back to overview</a>\n").getBytes());
 
 
     } else {
-      out.write("<table class=\"noborder\">\n".getBytes());
+      response.write("<table class=\"noborder\">\n".getBytes());
 
-      out.write(("  <tr class=\"noborder\">\n" +
+      response.write(("  <tr class=\"noborder\">\n" +
         "    <td class=\"noborder\">Application start:</td>\n" +
         "    <td class=\"noborder\">" + etmMonitor.getMetaData().getStartTime() + "</td>\n" +
         "  </tr>\n" +
@@ -122,23 +99,23 @@ public abstract class AbstractAction implements ConsoleAction {
         "    <td class=\"noborder\">Monitoring status:</td>\n").getBytes());
 
       if (etmMonitor.isStarted()) {
-        out.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n".getBytes());
+        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n".getBytes());
       } else {
-        out.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n".getBytes());
+        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n".getBytes());
       }
 
-      out.write((
+      response.write((
         "  </tr>\n" +
           "  <tr class=\"noborder\">\n" +
           "    <td class=\"noborder\">Collecting status:</td>\n").getBytes());
 
       if (etmMonitor.isCollecting()) {
-        out.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n".getBytes());
+        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n".getBytes());
       } else {
-        out.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n".getBytes());
+        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n".getBytes());
       }
 
-      out.write((
+      response.write((
         "  </tr>\n" +
           "  <tr class=\"noborder\">\n" +
           "    <td class=\"noborder\">&nbsp;</td>\n" +
@@ -146,18 +123,18 @@ public abstract class AbstractAction implements ConsoleAction {
           "  </tr>\n" +
           "  <tr class=\"noborder\">\n" +
           "    <td class=\"noborder\"><a href=\"").getBytes());
-      out.write('/');
-      out.write(("\">Reload monitor</a></td>\n").getBytes());
-      out.write(("    <td class=\"noborder\"><a href=\"").getBytes());
-      out.write(("/reset\">Reset monitor</a>  &nbsp; ").getBytes());
+      response.write('/');
+      response.write(("\">Reload monitor</a></td>\n").getBytes());
+      response.write(("    <td class=\"noborder\"><a href=\"").getBytes());
+      response.write(("/reset\">Reset monitor</a>  &nbsp; ").getBytes());
 
       if (etmMonitor.isCollecting()) {
-        out.write((" <a href=\"/stop\">Stop collection</a></td>\n").getBytes());
+        response.write((" <a href=\"/stop\">Stop collection</a></td>\n").getBytes());
       } else {
-        out.write((" <a href=\"/start\">Start collection</a></td>\n").getBytes());
+        response.write((" <a href=\"/start\">Start collection</a></td>\n").getBytes());
       }
-      out.write(("  </tr>\n").getBytes());
-      out.write(("</table>").getBytes());
+      response.write(("  </tr>\n").getBytes());
+      response.write(("</table>").getBytes());
     }
 
   }

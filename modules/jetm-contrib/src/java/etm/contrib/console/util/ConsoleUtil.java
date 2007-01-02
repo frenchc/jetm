@@ -30,69 +30,66 @@
  *
  */
 
-package etm.contrib.console;
+package etm.contrib.console.util;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * In memory "cache" for drop-in html console resources.
+ * Helper class for HTTP requests.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ResourceAccessor {
-  private byte[] favicon;
-  private byte[] css;
-  private byte[] robots;
 
-  public ResourceAccessor() {
-    favicon = loadResource("etm/contrib/console/favicon.ico");
-    css = loadResource("etm/contrib/console/style.css");
-    robots = loadResource("etm/contrib/console/robots.txt");
-  }
+public class ConsoleUtil {
 
-  private byte[] loadResource(String resourcePath) {
-    byte[] buffer = new byte[8192];
-    int offset = 0;
-    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-    if (in != null) {
-      try {
-        int r;
-        while ((r = in.read(buffer, offset, buffer.length - offset)) > -1) {
-          offset += r;
-          if (buffer.length - r < 100) {
-            byte[] temp = new byte[buffer.length + 8192];
-            System.arraycopy(buffer, 0, temp, 0, offset);
-            buffer = temp;
-          }
-        }
+  public static Map extractRequestParameters(byte[] aTemp, int parameterStart, int endOfLine) {
+    Map map = new HashMap();
 
-      } catch (IOException e) {
-        throw new ConsoleException(e);
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
+    int index = parameterStart;
+    int lastEnd = parameterStart;
+    int currentDelimiter = parameterStart;
+
+    while (index < endOfLine) {
+      switch (aTemp[index]) {
+        case'=':
+          currentDelimiter = index;
+          break;
+        case'&': {
+          parseParameters(map, aTemp, index, lastEnd, currentDelimiter);
+          currentDelimiter = index;
+          lastEnd = index;
+          break;
         }
       }
 
+      index++;
     }
-    byte[] content = new byte[offset];
-    System.arraycopy(buffer, 0, content, 0, offset);
-    return content;
+
+    parseParameters(map, aTemp, index, lastEnd, currentDelimiter);
+    return map;
   }
 
-  public byte[] getFavicon() {
-    return favicon;
+  private static void parseParameters(Map aMap, byte[] aTemp, int aIndex, int aLastEnd, int aCurrentDelimiter) {
+    if (aCurrentDelimiter <= aLastEnd) {
+      String key = new String(aTemp, aLastEnd + 1, aIndex - aLastEnd - 1);
+      try {
+        aMap.put(URLDecoder.decode(key, "UTF-8"), "");
+      } catch (UnsupportedEncodingException e) {
+        // ignored
+      }
+    } else {
+      try {
+        String key = new String(aTemp, aLastEnd + 1, aCurrentDelimiter - aLastEnd - 1);
+        String value = new String(aTemp, aCurrentDelimiter + 1, aIndex - aCurrentDelimiter - 1).trim();
+        aMap.put(URLDecoder.decode(key, "UTF-8"), URLDecoder.decode(value, "UTF-8"));
+      } catch (UnsupportedEncodingException e) {
+        // ignored
+      }
+    }
   }
 
-  public byte[] getStyleSheet() {
-    return css;
-  }
-
-  public byte[] getRobotsTxt() {
-    return robots;
-  }
 }

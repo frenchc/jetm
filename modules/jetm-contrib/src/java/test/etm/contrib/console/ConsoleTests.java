@@ -91,7 +91,7 @@ public abstract class ConsoleTests extends TestCase {
 
   protected String executeRequest(String request) throws Exception {
     Socket socket = new Socket("127.0.0.1", 40000);
-    socket.setSoTimeout(2000);
+    socket.setSoTimeout(4000);
     OutputStream outputStream = socket.getOutputStream();
     outputStream.write(("GET " + request + " HTTP/1.0\n").getBytes());
     outputStream.flush();

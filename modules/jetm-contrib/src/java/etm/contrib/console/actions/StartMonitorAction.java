@@ -33,6 +33,7 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
+import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -47,8 +48,8 @@ import java.io.OutputStream;
 public class StartMonitorAction extends AbstractAction {
 
 
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException {
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     request.getEtmMonitor().enableCollection();
-    sendRedirect(out, "/");
+    response.sendRedirect("/");
   }
 }

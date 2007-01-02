@@ -33,9 +33,9 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
+import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Disable performance monitoring.
@@ -45,8 +45,9 @@ import java.io.OutputStream;
  */
 public class StopMonitorAction extends AbstractAction {
 
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException {
+
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     request.getEtmMonitor().disableCollection();
-    sendRedirect(out, "/");
+    response.sendRedirect("/");
   }
 }

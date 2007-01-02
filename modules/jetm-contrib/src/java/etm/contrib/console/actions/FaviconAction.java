@@ -33,11 +33,10 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
-import etm.contrib.console.ResourceAccessor;
+import etm.contrib.console.util.ResourceAccessor;
+import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Date;
 
 /**
  * Returns the favicon.
@@ -47,17 +46,10 @@ import java.util.Date;
  */
 
 public class FaviconAction extends AbstractAction {
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException {
+
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     ResourceAccessor accessor = request.getResourceAccessor();
-
-
-    out.write("HTTP/1.0 200 OK\n".getBytes());
-    out.write(SERVER_HEADER);
-    out.write("Content-Type: image/x-icon\n".getBytes());
-    out.write(("Date: " + new Date() + "\n").getBytes());
-    out.write(("Content-Length: " + accessor.getFavicon().length + "\n").getBytes());
-    out.write("Connection: close\n".getBytes());
-    out.write("\n".getBytes());
-    out.write(accessor.getFavicon());
+    response.addHeader("Content-Type", "image/x-icon");
+    response.write(accessor.getFavicon());
   }
 }

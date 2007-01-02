@@ -33,8 +33,7 @@
 package etm.contrib.console;
 
 import etm.core.monitor.EtmMonitor;
-
-import java.util.Map;
+import etm.contrib.console.util.ResourceAccessor;
 
 /**
  * Represents the incoming HTTP request.
@@ -42,35 +41,12 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public class ConsoleRequest {
-  private ResourceAccessor resourceAccessor;
-  private EtmMonitor etmMonitor;
-  private Map requestParam;
+public interface ConsoleRequest {
 
+  public ResourceAccessor getResourceAccessor();
 
-  public ConsoleRequest(EtmMonitor aEtmMonitor, ResourceAccessor aResourceAccessor) {
-    resourceAccessor = aResourceAccessor;
-    etmMonitor = aEtmMonitor;
-  }
+  public EtmMonitor getEtmMonitor();
 
+  public String getRequestParameter(String name);
 
-  public ResourceAccessor getResourceAccessor() {
-    return resourceAccessor;
-  }
-
-  public EtmMonitor getEtmMonitor() {
-    return etmMonitor;
-  }
-
-  public String getRequestParameter(String name) {
-    if (requestParam != null) {
-      return (String) requestParam.get(name);
-    }
-
-    return null;
-  }
-
-  public void setRequestParameters(Map aParameters) {
-    requestParam = aParameters;
-  }
 }

@@ -33,11 +33,10 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
-import etm.contrib.console.ResourceAccessor;
+import etm.contrib.console.util.ResourceAccessor;
+import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Date;
 
 /**
  * Returns a robot.txt.
@@ -49,19 +48,9 @@ import java.util.Date;
 public class RobotsTxtAction extends AbstractAction {
 
 
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException {
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     ResourceAccessor accessor = request.getResourceAccessor();
-
-    out.write("HTTP/1.0 200 OK\n".getBytes());
-    out.write(SERVER_HEADER);
-    out.write("Content-Type: text/plain;charset=UTF-8\n".getBytes());
-    out.write(("Date: " + new Date() + "\n").getBytes());
-    out.write(("Content-Length: " + accessor.getRobotsTxt().length + "\n").getBytes());
-    out.write("Connection: close\n".getBytes());
-    out.write("\n".getBytes());
-
-    out.write(accessor.getRobotsTxt());
-
-
+    response.addHeader("Content-Type","text/plain;charset=UTF-8");
+    response.write(accessor.getRobotsTxt());
   }
 }

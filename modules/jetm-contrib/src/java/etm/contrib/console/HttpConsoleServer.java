@@ -44,6 +44,10 @@ import etm.contrib.console.actions.RobotsTxtAction;
 import etm.contrib.console.actions.StartMonitorAction;
 import etm.contrib.console.actions.StopMonitorAction;
 import etm.contrib.console.actions.StyleSheetAction;
+import etm.contrib.console.standalone.StandaloneConsoleResponse;
+import etm.contrib.console.standalone.StandaloneConsoleRequest;
+import etm.contrib.console.util.ConsoleUtil;
+import etm.contrib.console.util.ResourceAccessor;
 import etm.core.monitor.EtmMonitor;
 
 import java.io.BufferedInputStream;
@@ -367,7 +371,7 @@ public class HttpConsoleServer {
     }
 
     protected void process(OutputStream out, byte[] aTemp, int endOfLine) throws IOException {
-      ConsoleRequest consoleRequest = new ConsoleRequest(etmMonitor, resourceAccessor);
+      StandaloneConsoleRequest consoleRequest = new StandaloneConsoleRequest(etmMonitor, resourceAccessor);
       // if we don't find an action it is a bad request
       ConsoleAction action = error400;
 
@@ -416,7 +420,9 @@ public class HttpConsoleServer {
         action = error500;
       }
 
-      action.execute(consoleRequest, out);
+      StandaloneConsoleResponse consoleResponse = new StandaloneConsoleResponse(out);
+      action.execute(consoleRequest, consoleResponse);
+      consoleResponse.flush();
     }
 
   }

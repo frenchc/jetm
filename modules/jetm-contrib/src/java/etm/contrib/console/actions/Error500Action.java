@@ -33,6 +33,7 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
+import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,7 +47,7 @@ import java.io.OutputStream;
 public class Error500Action extends AbstractAction {
 
 
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException {
-    sendStatus(out, "500", "Internal Server Error");
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
+    response.sendStatus(500, "Internal Server Error");
   }
 }

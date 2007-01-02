@@ -33,6 +33,7 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
+import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.SimpleHtmlRenderer;
 
 import java.io.IOException;
@@ -48,19 +49,15 @@ import java.util.Date;
  */
 public class ExpandedResultViewAction extends AbstractAction {
 
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException {
-    out.write("HTTP/1.0 200 OK\n".getBytes());
-    out.write(SERVER_HEADER);
-    out.write("Content-Type: text/html;charset=UTF-8\n".getBytes());
-    out.write(("Date: " + new Date() + "\n").getBytes());
-    out.write("Connection: close\n".getBytes());
-    out.write("\n".getBytes());
+
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
+    response.addHeader("Content-Type", "text/html;charset=UTF-8");
 
     StringWriter writer = new StringWriter();
     request.getEtmMonitor().render(new SimpleHtmlRenderer(writer));
 
-    writeConsoleHeader(out, request.getEtmMonitor(), null);
-    out.write(writer.toString().getBytes(UTF_8));
-    out.write(" </body>\n</html>".getBytes());
+    writeConsoleHeader(response, request.getEtmMonitor(), null);
+    response.write(writer.toString().getBytes(UTF_8));
+    response.write(" </body>\n</html>".getBytes());
   }
 }

@@ -30,34 +30,50 @@
  *
  */
 
-package etm.contrib.console.actions;
+package etm.contrib.console.standalone;
 
 import etm.contrib.console.ConsoleRequest;
-import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.util.ResourceAccessor;
+import etm.core.monitor.EtmMonitor;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
+import java.util.Map;
 
 /**
- * Resets current measurement results.
+ * Request abstraction for standalone HTTP console.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ResetMonitorAction extends AbstractAction {
+public class StandaloneConsoleRequest implements ConsoleRequest {
+
+   private ResourceAccessor resourceAccessor;
+  private EtmMonitor etmMonitor;
+  private Map requestParam;
 
 
-  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
-    String point = request.getRequestParameter("point");
+  public StandaloneConsoleRequest(EtmMonitor aEtmMonitor, ResourceAccessor aResourceAccessor) {
+    resourceAccessor = aResourceAccessor;
+    etmMonitor = aEtmMonitor;
+  }
 
-    if (point != null) {
-      request.getEtmMonitor().reset(point);
-      response.sendRedirect("/detail?point=" + URLEncoder.encode(point, "UTF-8"));
-    } else {
-      request.getEtmMonitor().reset();
-      response.sendRedirect("/");
+
+  public ResourceAccessor getResourceAccessor() {
+    return resourceAccessor;
+  }
+
+  public EtmMonitor getEtmMonitor() {
+    return etmMonitor;
+  }
+
+  public String getRequestParameter(String name) {
+    if (requestParam != null) {
+      return (String) requestParam.get(name);
     }
 
+    return null;
+  }
+
+  public void setRequestParameters(Map aParameters) {
+    requestParam = aParameters;
   }
 }

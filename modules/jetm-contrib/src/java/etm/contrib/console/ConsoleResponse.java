@@ -30,34 +30,25 @@
  *
  */
 
-package etm.contrib.console.actions;
-
-import etm.contrib.console.ConsoleRequest;
-import etm.contrib.console.ConsoleResponse;
+package etm.contrib.console;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
 
 /**
- * Resets current measurement results.
+ * Represents the HTTP response.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ResetMonitorAction extends AbstractAction {
+public interface ConsoleResponse {
 
+  public void addHeader(String header, String value);
 
-  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
-    String point = request.getRequestParameter("point");
+  public void write(byte[] content) throws IOException;
 
-    if (point != null) {
-      request.getEtmMonitor().reset(point);
-      response.sendRedirect("/detail?point=" + URLEncoder.encode(point, "UTF-8"));
-    } else {
-      request.getEtmMonitor().reset();
-      response.sendRedirect("/");
-    }
+  public void write(char content);
 
-  }
+  public void sendRedirect(String target);
+
+  public void sendStatus(int statusCode, String description);
 }

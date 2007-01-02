@@ -43,7 +43,6 @@ import java.io.OutputStream;
  */
 public interface ConsoleAction {
 
-
-  public void execute(ConsoleRequest request, OutputStream out) throws IOException;
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException;
 
 }
