@@ -30,36 +30,49 @@
  *
  */
 
-package etm.contrib.renderer.plugin;
+package etm.core.metadata;
 
-import etm.core.renderer.SimpleTextRenderer;
-import org.apache.log4j.Logger;
-
-import java.io.StringWriter;
+import java.util.Map;
 
 /**
- * Dumps aggregated performance results using log4j
- * on shutdown.
+ * Provide information about configured plugins.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class Log4jDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
-  protected Logger log;
+public class PluginMetaData {
 
-  public Log4jDumpOnShutdownPlugin() {
-    super("Dumps current performance results using log4j.");
+  private Class implementationClass;
+  private String description;
+  private Map properties;
+
+
+  public PluginMetaData(Class aImplementationClass, String aDescription) {
+    this(aImplementationClass, aDescription, null);
   }
 
-  public void start() {
-    log = Logger.getLogger(logName);
+  public PluginMetaData(Class aImplementationClass, String aDescription, Map aProperties) {
+    implementationClass = aImplementationClass;
+    description = aDescription;
+    properties = aProperties;
   }
 
-  public void stop() {
-    StringWriter writer = new StringWriter();
-    etmMonitor.render(new SimpleTextRenderer(writer));
-    log.info("Dumping performance results..." +
-      System.getProperty("line.separator") +
-      writer.toString());
+
+  public Class getImplementationClass() {
+    return implementationClass;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  /**
+   * Returns a map of properties, may be null. See specific EtmPlugin class for
+   * names of the properties. Both keys and values are always strings.
+   *
+   * @return A map of properties, may be null.
+   */
+  public Map getProperties() {
+    return properties;
   }
 }

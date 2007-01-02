@@ -34,6 +34,7 @@ package etm.core.metadata;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Etm Monitor metadata describe the configuration of an EtmMonitor
@@ -46,19 +47,25 @@ import java.util.Date;
 public class EtmMonitorMetaData implements Serializable {
   private Class monitorClazz;
   private String monitorDescription;
-  private TimerMetaData timerMetaData;
-  private AggregatorMetaData aggregatorMetaData;
+
   private Date startTime;
   private Date lastResetTime;
 
-  public EtmMonitorMetaData(Class aMonitorClazz, String aMonitorDescription, Date aStartTime, Date aLastReset,
-                            AggregatorMetaData aAggregatorMetaData, TimerMetaData aTimerMetaData) {
+  private TimerMetaData timerMetaData;
+  private AggregatorMetaData aggregatorMetaData;
+  private List pluginMetaData;
+
+  public EtmMonitorMetaData(Class aMonitorClazz, String aMonitorDescription,
+                            Date aStartTime, Date aLastReset,
+                            AggregatorMetaData aAggregatorMetaData, TimerMetaData aTimerMetaData,
+                            List aPluginMetaData) {
     monitorClazz = aMonitorClazz;
     monitorDescription = aMonitorDescription;
     timerMetaData = aTimerMetaData;
     aggregatorMetaData = aAggregatorMetaData;
     startTime = aStartTime;
     lastResetTime = aLastReset;
+    pluginMetaData = aPluginMetaData;
   }
 
   /**
@@ -117,6 +124,15 @@ public class EtmMonitorMetaData implements Serializable {
 
   public AggregatorMetaData getAggregatorMetaData() {
     return aggregatorMetaData;
+  }
+
+
+  /**
+   * Returns the plugin Metadata. May be null;
+   * @return A list of {@link etm.core.metadata.PluginMetaData} or null;
+   */
+  public List getPluginMetaData() {
+    return pluginMetaData;
   }
 
   public String toString() {

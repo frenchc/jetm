@@ -32,6 +32,7 @@
 
 package etm.core.jmx;
 
+import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.plugin.EtmPlugin;
 
@@ -40,6 +41,8 @@ import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A plugin that registers the EtmMonitor in JMX. Default name is
@@ -55,6 +58,8 @@ import java.util.ArrayList;
 public class EtmMonitorJmxPlugin implements EtmPlugin {
 
   public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm:service=PerformanceMonitor";
+
+  private static final String DESCRIPTION = "A plugin the exports the current EtmMonitor to JMX.";
 
   private EtmMonitor monitor;
   private MBeanServer mbeanServer;
@@ -137,5 +142,23 @@ public class EtmMonitorJmxPlugin implements EtmPlugin {
         e.printStackTrace();
       }
     }
+  }
+
+
+  /**
+   * Returns the current JMX Plugin console metadata. The provided map of properties contains
+   * <ul>
+   * <li><i>jmxObjectName</i> - the JMX ObjectName used for registration</li>
+   * <li><i>mbeanServerName</i> - the name of the JMX MBeanServer, may be null</li>
+   * </ul>
+   *
+   * @return The plugin metadata
+   */
+  public PluginMetaData getPluginMetaData() {
+    Map properties = new HashMap();
+    properties.put("jmxObjectName", etmMonitorObjectName);
+    properties.put("mbeanServerName", mbeanServerName);
+
+    return new PluginMetaData(EtmMonitorJmxPlugin.class, DESCRIPTION, properties);
   }
 }

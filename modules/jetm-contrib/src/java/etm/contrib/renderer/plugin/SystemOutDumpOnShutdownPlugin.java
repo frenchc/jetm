@@ -32,8 +32,6 @@
 
 package etm.contrib.renderer.plugin;
 
-import etm.core.monitor.EtmMonitor;
-import etm.core.plugin.EtmPlugin;
 import etm.core.renderer.SimpleTextRenderer;
 
 /**
@@ -43,21 +41,17 @@ import etm.core.renderer.SimpleTextRenderer;
  * @author void.fm
  * @version $Revision$
  */
-public class SystemOutDumpOnShutdownPlugin implements EtmPlugin {
+public class SystemOutDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
 
-  private EtmMonitor etmMonitor;
-
-  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
-    etmMonitor = aEtmMonitor;
+  public SystemOutDumpOnShutdownPlugin() {
+    super("Dumps current performance results to Standard Out.");
   }
 
   public void start() {
-
   }
 
   public void stop() {
     System.out.println("Dumping performance results...");
     etmMonitor.render(new SimpleTextRenderer());
-
   }
 }

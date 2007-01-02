@@ -32,8 +32,12 @@
 
 package etm.contrib.console;
 
+import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.plugin.EtmPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A EtmPlugin that enables our HTTP console.
@@ -42,6 +46,7 @@ import etm.core.plugin.EtmPlugin;
  * @version $Revision$
  */
 public class HttpConsoleServerPlugin extends HttpConsoleServer implements EtmPlugin {
+  private static final String DESCRIPTION = "A HTTP Console providing aggregated results.";
 
   public HttpConsoleServerPlugin() {
     // workaround for required constructor
@@ -50,5 +55,26 @@ public class HttpConsoleServerPlugin extends HttpConsoleServer implements EtmPlu
 
   public void setEtmMonitor(EtmMonitor aEtmMonitor) {
     etmMonitor = aEtmMonitor;
+  }
+
+
+  /**
+   * Returns the current HTTP console metadata. The provided map of properties contains
+   * <ul>
+   * <li><i>listenPort</i> - the port the console is listen at</li>
+   * <li><i>workerSize</i> - the number of workers answering requests</li>
+   * <li><i>expanded</i> - whether the console defaults to expanded view or not</li>
+   * </ul>
+   *
+   * @return The plugin metadata
+   */
+  public PluginMetaData getPluginMetaData() {
+
+    Map properties = new HashMap();
+    properties.put("listenPort", String.valueOf(getListenPort()));
+    properties.put("workerSize", String.valueOf(getWorkerSize()));
+    properties.put("expanded", String.valueOf(isExpanded()));
+
+    return new PluginMetaData(HttpConsoleServerPlugin.class, DESCRIPTION, properties);
   }
 }

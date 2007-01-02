@@ -71,8 +71,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
   /**
    * Creates a EtmMonitorSupport instance.
    *
-   * @param aTimer      The timer to use.
-   * @param aAggregator The aggregator to use.
+   * @param aDescription The description for this monitor.
+   * @param aTimer       The timer to use.
+   * @param aAggregator  The aggregator to use.
    */
 
   protected EtmMonitorSupport(String aDescription, ExecutionTimer aTimer, Aggregator aAggregator) {
@@ -170,9 +171,11 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
   }
 
   public final EtmMonitorMetaData getMetaData() {
+    List pluginMetaData = getPluginMetaData();
     return new EtmMonitorMetaData(
       getClass(), description, startTime, lastReset,
-      aggregator.getMetaData(), timer.getMetaData());
+      aggregator.getMetaData(), timer.getMetaData(),
+      pluginMetaData);
   }
 
   public void start() {
@@ -225,6 +228,16 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     plugins.add(aEtmPlugin);
     if (started) {
       aEtmPlugin.start();
+    }
+  }
+
+  public void setPlugins(List newPlugins) {
+    if (plugins != null) {
+      throw new IllegalStateException("Unable to set a list of plugins after a plugin exists.");
+    }
+    for (int i = 0; i < newPlugins.size(); i++) {
+      EtmPlugin plugin = (EtmPlugin) newPlugins.get(i);
+      addPlugin(plugin);
     }
   }
 
@@ -289,5 +302,16 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
   }
 
+  private List getPluginMetaData() {
+    if (plugins != null) {
+      List metaData = new ArrayList(plugins.size());
+      for (int i = 0; i < plugins.size(); i++) {
+        metaData.add(((EtmPlugin) plugins.get(i)).getPluginMetaData());
+      }
 
+      return metaData;
+    }
+
+    return null;
+  }
 }

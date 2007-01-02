@@ -36,6 +36,8 @@ import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.plugin.EtmPlugin;
 import etm.core.renderer.MeasurementRenderer;
 
+import java.util.List;
+
 /**
  * <p/>
  * An EtmMonitor is responsible for collecting and aggregating
@@ -192,4 +194,12 @@ public interface EtmMonitor {
    * @param aEtmPlugin The new EtmPlugin.
    */
   public void addPlugin(EtmPlugin aEtmPlugin);
+
+  /**
+   *
+   * Adds a list of plugins.
+   *
+   * @param plugins A list of EtmPlugin.
+   */
+  public void setPlugins(List plugins);
 }

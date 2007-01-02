@@ -34,6 +34,7 @@ package test.etm.core.configuration.mockup;
 
 import etm.core.plugin.EtmPlugin;
 import etm.core.monitor.EtmMonitor;
+import etm.core.metadata.PluginMetaData;
 
 /**
  *
@@ -113,5 +114,9 @@ public class TestPlugin implements EtmPlugin {
 
   public void setStringValue(String aStringValue) {
     stringValue = aStringValue;
+  }
+
+  public PluginMetaData getPluginMetaData() {
+    return new PluginMetaData(TestPlugin.class, "A test plugin");
   }
 }

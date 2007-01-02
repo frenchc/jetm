@@ -33,6 +33,7 @@
 package etm.core.plugin;
 
 import etm.core.monitor.EtmMonitor;
+import etm.core.metadata.PluginMetaData;
 
 /**
  * An EtmPlugin is an optional service which may be attached to
@@ -64,4 +65,11 @@ public interface EtmPlugin {
 
   public void stop();
 
+  /**
+   *
+   * Returns metadata of the plugin.
+   *
+   * @return The metadata.
+   */
+  public PluginMetaData getPluginMetaData();
 }

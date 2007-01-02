@@ -32,8 +32,6 @@
 
 package etm.contrib.renderer.plugin;
 
-import etm.core.monitor.EtmMonitor;
-import etm.core.plugin.EtmPlugin;
 import etm.core.renderer.SimpleTextRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,20 +45,13 @@ import java.io.StringWriter;
  * @author void.fm
  * @version $Revision$
  */
-public class CommonsLoggingDumpOnShutdownPlugin implements EtmPlugin {
+public class CommonsLoggingDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
 
-  protected EtmMonitor etmMonitor;
   protected Log log;
 
-  private static final String DEFAULT_LOG_NAME = "etm-dump";
-  private String logName = DEFAULT_LOG_NAME;
 
-  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
-    etmMonitor = aEtmMonitor;
-  }
-
-  public void setLogName(String aLogName) {
-    logName = aLogName;
+  public CommonsLoggingDumpOnShutdownPlugin() {
+    super("Dumps current performance results using commons logging.");
   }
 
   public void start() {

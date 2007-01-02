@@ -32,34 +32,55 @@
 
 package etm.contrib.renderer.plugin;
 
-import etm.core.renderer.SimpleTextRenderer;
-import org.apache.log4j.Logger;
+import etm.core.plugin.EtmPlugin;
+import etm.core.monitor.EtmMonitor;
+import etm.core.metadata.PluginMetaData;
 
-import java.io.StringWriter;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
- * Dumps aggregated performance results using log4j
- * on shutdown.
+ *
+ * Base class for Plugins that dump the current aggregated
+ * results during shutdown.
  *
  * @author void.fm
  * @version $Revision$
+ *
  */
-public class Log4jDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
-  protected Logger log;
+public abstract class DumpOnShutDownPlugin implements EtmPlugin {
+  protected EtmMonitor etmMonitor;
+  private static final String DEFAULT_LOG_NAME = "etm-dump";
+  protected String logName = DEFAULT_LOG_NAME;
 
-  public Log4jDumpOnShutdownPlugin() {
-    super("Dumps current performance results using log4j.");
+  private String description;
+
+
+  protected DumpOnShutDownPlugin(String aDescription) {
+    description = aDescription;
   }
 
-  public void start() {
-    log = Logger.getLogger(logName);
+  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
+    etmMonitor = aEtmMonitor;
   }
 
-  public void stop() {
-    StringWriter writer = new StringWriter();
-    etmMonitor.render(new SimpleTextRenderer(writer));
-    log.info("Dumping performance results..." +
-      System.getProperty("line.separator") +
-      writer.toString());
+  public void setLogName(String aLogName) {
+    logName = aLogName;
+  }
+
+  /**
+   * Returns the current Dump On Shutdown metadata. The provided map of properties contains
+   * <ul>
+   * <li><i>logName</i> - the JMX ObjectName used for registration</li>
+   * </ul>
+   *
+   * @return The plugin metadata
+   */
+
+  public PluginMetaData getPluginMetaData() {
+    Map properties = new HashMap();
+    properties.put("logName", logName);
+
+    return new PluginMetaData(getClass(), description, properties);
   }
 }

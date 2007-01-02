@@ -421,4 +421,16 @@ public class HttpConsoleServer {
 
   }
 
+
+  protected int getListenPort() {
+    return listenPort;
+  }
+
+  protected int getWorkerSize() {
+    return workerSize;
+  }
+
+  protected boolean isExpanded() {
+    return expanded;
+  }
 }
