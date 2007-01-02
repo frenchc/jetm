@@ -103,6 +103,7 @@
         <include name="**/*.css"/>
         <include name="**/*.png"/>
         <include name="**/*.ico"/>
+        <include name="**/*.txt"/>
       </fileset>
       <filterset>
         <filter token="api" value="api"/>
