@@ -25,63 +25,103 @@
 </p>
 
 <p>
-  In this tutorial we will enhance a Java&trade; application such that we are able to gain performance statistics without
-  touching source code at all. Out of convenience we use the Springframework as runtime and performance
-  monitoring infrastructure.
+  In this tutorial we will enhance a Java&trade; application such that we are able to gain performance statistics
+  without touching source code at all. Out of convenience we use the Springframework as runtime and performance
+  monitoring infrastructure (and there are <a href="monitoring_strategies.html#declarative"> further options</a> to
+  do so).
 </p>
 
 <p>
-  <i>Attention:</i> If you never heard about the Springframework this tutorial may take longer than five minutes.
+  <i>Attention:</i> If you never heard about the Springframework before this tutorial might take longer than five
+  minutes. In this case we recommend reading the
+  <a href="http://static.springframework.org/spring/docs/2.0.x/reference/beans.html" target="_blank">introductional
+    material</a> regarding BeanFactories at springframework.org.
 </p>
 <h4>Step 1: Prerequisites</h4>
 
 <p>
-  The JETM samples include all required sources for this tutorial. <a href="../files.html">Download</a>
-  the archive and expand it. Now there are two options to execute the tutorial demo application:
+  The JETM samples include all required sources for the tutorial. <a href="../files.html">Download</a>
+  the archive and expand it.
 </p>
 
 <p>
+  There are two options to execute the tutorial application:
   If you want to run the tutorial from within your favourite IDE just create a new project from the content of
-  <i>tutorial/five-minute</i> and ensure that <i>lib/jetm-{VERSION}.jar</i>, <i>lib/jetm-optional-{VERSION}.jar</i>
-  and all libraries in <i>tutorial/five-minute/lib</i> are in your project classpath.
+  <i>tutorial/five-minute</i> and ensure that
 </p>
-
+<ul>
+  <li><i>lib/jetm-{VERSION}.jar</i>,</li>
+  <li><i>lib/jetm-optional-{VERSION}.jar</i> and</li>
+  <li>all libraries in <i>tutorial/five-minute/lib</i></li>
+</ul>
 <p>
-  Alternatively you can just use <a href="http://ant.apache.org">ANT</a> and run this tutorial from the command line.
-  Therefore a valid <i>ANT</i> installation (>= 1.6.x) is required.
+  are in your project classpath. Alternatively you can just use <a href="http://ant.apache.org">ant</a> and run this
+  tutorial from the command line. Therefore a valid <i>ant</i> installation (>= 1.6.x) is required.
 </p>
 
 <h4>Step 2: Examine tutorial source code</h4>
 
 <p>
-  TBD
+  Our five minute tutorial application is a simple console grocery store, where you can buy apples, oranges and such.
+  It is made of the
+  <a href="../@samples@/tutorial/five-minute/src/java/etm/tutorial/fiveminute/store/GroceryStoreImpl.java"><i>Store</i></a>
+  itself that is using a
+  <a
+    href="../@samples@/tutorial/five-minute/src/java/etm/tutorial/fiveminute/store/dao/StockDaoImpl.java"><i>Dao</i></a>
+  Mockup for persistence. The class
+  <a
+    href="../@samples@/tutorial/five-minute/src/java/etm/tutorial/fiveminute/client/OrderClient.java"><i>OrderClient</i></a>
+  acts as a client to our store and is executed with the help of
+  <a href="../@samples@/tutorial/five-minute/src/java/etm/tutorial/fiveminute/Main.java"><i>Main</i></a>.
 </p>
-<h4>Step 3: Run the demo</h4>
 
 <p>
-  We are now ready to run the demo. Depending on whether you run the demo from your IDE or from command line
-  the process is slightly different.
+  Starting in <i>Main</i> you will see that the application loads its configuration from
+  <a href="../@samples@/tutorial/five-minute/src/java/five-minute-tutorial.xml"><i>five-minute-tutorial.xml</i></a>,
+  a spring configuration file. This file contains all bean (class) definitions that are wired automatically using
+  constructor injection.
+</p>
+
+<p>
+  The lines
+</p>
+
+<div class="code"><pre>
+ OrderClient client = (OrderClient) context.getBean("orderClient");
+ client.execute(); 
+</pre>
+</div>
+<p>
+  retrieve a fully configured instance of the class <i>OrderClient</i> and execute the demo. The surrounding thread is
+  used to avoid blocking when executed within <i>ant</i>.
+</p>
+
+<h4>Step 3: Run the tutorial application</h4>
+
+<p>
+  We are now ready to run the tutorial application. Depending on whether you run the demo from your IDE or from command
+  line the process is slightly different.
 </p>
 <table>
   <tr>
     <td valign="top" width="120">IDE Setup</td>
     <td>
       1. Compile the demo in your IDE.<br/>
-      2. Execute the main class etm.tutorial.fiveminute.Main.<br/>
+      2. Execute the main class <i>etm.tutorial.fiveminute.Main</i>.<br/>
       3. Interact with tutorial application.<br/>
     </td>
   </tr>
   <tr>
     <td valign="top">Command line</td>
     <td>
-      1. Change directory to <i>tutorial/five-minute</i><br/>
+      1. Change to directory <i>tutorial/five-minute</i><br/>
       2. Execute <i>ant demo</i> from the commandline<br/>
       3. Interact with tutorial application.<br/>
     </td>
   </tr>
 </table>
 <p>
-  You should now see at your console the output of our JETM Grocery Store:
+  You should now see at your console the JETM Grocery Store output:
 </p>
 
 <div class="code"><pre>Welcome to the JETM Grocery Store!
@@ -99,16 +139,30 @@ We currently have in stock:
 Enter item id to order (or 0 exit): 
 </pre>
 </div>
+<p>
+  Not that pretty - but works for now;)
+</p>
 <h4>Step 4: Add performance monitoring</h4>
 
 <p>
-  The application itself isn't that impressive. However it's only purpose is to demonstrate performance monitioring.
-
-
+  If you examine all tutorial classes again you will notice that there isn't a single <i>etm.*</i> import. This is
+  because we will use declarative performance monitoring. To do so we have to alter the current spring configuration
+  file <i>five-minute-tutorial.xml</i>.
 </p>
 
 <p>
-  Your should now enable the following XML fragement in your tutorial spring configuration (<i>five-minute-tutorial.xml</i>).
+  First we need to add an instance of <a href="../@api@/etm/core/monitor/NestedMonitor.html">NestedMonitor</a>. Second
+  we make use of a powerful springframework feature that can create proxies of existing bean definitions and apply
+  interceptors to them. Our interceptor called
+  <a href="../@api@/etm/contrib/aop/aopalliance/EtmMethodCallInterceptor.html">EtmMethodCallInterceptor</a>
+  will intercept every public method call and records it's execution time using the JETM performance monitoring
+  infrastructure. Since we want to add the interceptor to certain beans only we supply the matching patterns
+  <i>groceryStore</i> and <i>*Dao</i> as parameters to <i>BeanNameAutoProxyCreator</i>.
+</p>
+
+<p>
+  Now look for the section <i>&lt;!-- Step 4: ... --&gt;</i> in the provided <i>five-minute-tutorial.xml</i> and
+  uncomment the following three bean definitions:
 </p>
 
 <div class="code"><pre>&lt;!-- Step 4: Add performance monitoring --&gt;
@@ -119,8 +173,7 @@ Enter item id to order (or 0 exit):
 &lt;bean id="etmMethodCallInterceptor" class="<b>etm.contrib.aop.aopalliance.EtmMethodCallInterceptor</b>"
       autowire="constructor"/&gt;
 
-&lt;bean id="etmAutoProxy"
-      class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"&gt;
+&lt;bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"&gt;
       &lt;property name="interceptorNames"&gt;
         &lt;list&gt;
           &lt;value&gt;etmMethodCallInterceptor&lt;/value&gt;
@@ -128,39 +181,70 @@ Enter item id to order (or 0 exit):
       &lt;/property&gt;
       &lt;property name="beanNames"&gt;
         &lt;list&gt;
-          &lt;value&gt;<b>orderAgent</b>&lt;/value&gt;
+          &lt;value&gt;<b>groceryStore</b>&lt;/value&gt;
           &lt;value&gt;<b>*Dao</b>&lt;/value&gt;
         &lt;/list&gt;
       &lt;/property&gt;
 &lt;/bean&gt;</pre>
 </div>
-
+<p>
+  After starting the application again it is running just like before - and there aren't any performance details. That's
+  because we enabled performance monitoring without adding means to access the collected details.
+</p>
 
 <h4>Step 5: Access aggregated results</h4>
 
 <p>
-  There isn't much.
+  One option to access those details is the build-in <a href="../howto/drop-in-console.html">HTTP console</a>.
 </p>
 
-<div class="code"><pre>&lt;bean id="etmHttpConsole" class="<b>etm.contrib.console.HttpConsoleServer</b>"
+<p>
+  Therefore uncomment the bean definition past <i>&lt;!-- Step 5: ... &gt;</i> and restart the application.
+</p>
+
+<div class="code"><pre>&lt;!-- Step 5: Access aggregated results --&gt;
+
+&lt;bean id="etmHttpConsole" class="<b>etm.contrib.console.HttpConsoleServer</b>"
       init-method="start" destroy-method="stop" autowire="constructor"&gt;
       &lt;property name="expanded" value="true" /&gt;
 &lt;/bean&gt;  
 </pre>
 </div>
 <p>
-  Now restart the tutorial and point your browser to <a href="http://localhost:40000">http://localhost:40000</a>
-  to access the aggregated performance statistics provided by the build-in
-  <a href="../howto/drop-in-console.html">HTTP console</a>
+  Now point your browser to <a href="http://localhost:40000">http://localhost:40000</a> and you will see aggregated
+  performance statistics.
+</p>
+
+<p>
+  The property <i>expanded</i> in the bean definition decides whether all performance results should be rendered
+  (including the nested ones) or just the top level results only. To see the difference set this property to
+  <i>false</i> (or remove it) and restart the tutorial application.
 </p>
 
 <h4>Step 6: Alter aggregation chain</h4>
 
-<div class="code"><pre>&lt;bean id="etmMonitor" class="<b>etm.core.monitor.NestedMonitor</b>"
-      init-method="start" destroy-method="stop"&gt;
-      &lt;constructor-arg ref="<b>aggregatorChain</b>"/&gt;
-&lt;/bean&gt;
+<p>
+  Since we are using the default configuration of NestedMonitor all performance data will be buffered until a certain
+  threshold is reached. The default threshold is 1000 measurements. As soon as measurement 1001 arrives or whenever
+  aggregated performance statistics are requested the default
+  <a href="../@api@/etm/core/aggregation/BufferedThresholdAggregator.html">BufferedThresholdAggregator</a>
+  will flush it's buffer down the aggregator chain. However there is one negative side effect: The thread that collected
+  the last result will be used to calculate the aggregated performance statistics.
+</p>
 
+<p>
+  The negative effect can be minimized by using a
+  <a href="../@api@/etm/core/aggregation/BufferedTimedAggregator.html">BufferedTimedAggregator</a> that will
+  buffer collected results for a certain period of time and calculate the statistics in a separate thread.
+</p>
+<p>
+  In order to alter the default aggregation chain we just define a new instance of Aggregator that will be picked up by
+  our NestedMonitor automatically. As you can see past <i> &lt;!-- Step 6: ... &gt;</i> the bean definition
+  of aggregaterChain defines a BufferedTimedAggregator that delegates all results to NestedAggregator. 
+</p>
+
+<div class="code"><pre>&lt;!-- Step 6: Alter aggregation chain --&gt;
+  
 &lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
       &lt;constructor-arg&gt;
         &lt;bean class="<b>etm.core.aggregation.NestedAggregator</b>"/&gt;
@@ -172,10 +256,19 @@ Enter item id to order (or 0 exit):
 
 <h4>Step 7: Log raw performance results</h4>
 
-<div class="code"><pre>&lt;bean id="etmMonitor" class="<b>etm.core.monitor.NestedMonitor</b>"
-      init-method="start" destroy-method="stop"&gt;
-      &lt;constructor-arg ref="<b>aggregatorChain</b>"/&gt;
-&lt;/bean&gt;
+<p>
+  While being able to access aggregated performance statistics it still may be useful to have access
+  to raw performance data for post processing. This can be achived through altering the aggregation chain again: Simply
+  add a Logging Aggregator such as
+  <a href="../@api@/etm/contrib/aggregation/log/CommonsLoggingAggregator.html">CommonsLoggingAggregator</a> as seen
+  below.
+</p>
+<p>Be aware that the automatic aggregator chain detection requires one aggregator definition in
+  <i>five-minute-tutorial.xml</i>. So always ensure that you uncomment either the aggregator definition
+  past <i> &lt;!-- Step 6: ... &gt;</i> <b>or</b> <i> &lt;!-- Step 7: ... &gt;</i>. 
+</p>
+
+<div class="code"><pre>&lt;!-- Step 7: Log raw performance results --&gt;
 
 &lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
       &lt;constructor-arg&gt;
@@ -187,10 +280,18 @@ Enter item id to order (or 0 exit):
       &lt;/constructor-arg&gt;
 &lt;/bean&gt;</pre>
 </div>
+<p>
+  After restarting the tutorial application raw performance data will be logged to a file called <i>performance.log</i>
+  in the directory <i>tutorial/five-minute</i>. Please note that it is recommended to add Logging
+  Aggregators past Buffering Aggregators in order to minimize performance side effects.
+</p>
+<p>
+  That's it!
+</p>
 
 <h4>Next...</h4>
 
-<p>Now proceed to remaining <a href="../doc.html">JETM documentation</a>.
+<p>Now proceed to the remaining <a href="../doc.html">JETM documentation</a>.
 </p>
 </div>
 

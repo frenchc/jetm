@@ -8,7 +8,7 @@
         class="etm.tutorial.fiveminute.client.OrderClient"
         autowire="constructor"/>
 
-  <bean id="orderAgent"
+  <bean id="groceryStore"
         class="etm.tutorial.fiveminute.store.GroceryStoreImpl"
         autowire="constructor">
 
@@ -21,10 +21,10 @@
   <!--
     <bean id="etmMonitor"
           class="etm.core.monitor.NestedMonitor"
-          init-method="start" destroy-method="stop"/>
+          init-method="start" destroy-method="stop"
+          autowire="constructor"/>
 
-    <bean id="etmAutoProxy"
-          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
       <property name="interceptorNames">
         <list>
           <value>etmMethodCallInterceptor</value>
@@ -32,7 +32,7 @@
       </property>
       <property name="beanNames">
         <list>
-          <value>orderAgent</value>
+          <value>groceryStore</value>
           <value>*Dao</value>
         </list>
       </property>
@@ -41,7 +41,7 @@
     <bean id="etmMethodCallInterceptor"
           class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
           autowire="constructor"/>
-  -->
+   -->
 
   <!-- Step 5: Enable HTTP console -->
   <!--
@@ -54,26 +54,16 @@
 
   <!-- Step 6: Alter aggregation chain -->
   <!--
-    <bean id="etmMonitor" class="etm.core.monitor.NestedMonitor"
-          init-method="start" destroy-method="stop">
-      <constructor-arg ref="aggregatorChain"/>
-    </bean>
-
     <bean id="aggregatorChain" class="etm.core.aggregation.BufferedTimedAggregator">
           <constructor-arg>
             <bean class="etm.core.aggregation.NestedAggregator"/>
           </constructor-arg>
       <property name="aggregationInterval" value="1000" />
     </bean>
-  -->
+   -->
 
   <!-- Step 7:  Log raw performance results -->
   <!--
-    <bean id="etmMonitor" class="etm.core.monitor.NestedMonitor"
-          init-method="start" destroy-method="stop">
-      <constructor-arg ref="aggregatorChain"/>
-    </bean>
-
     <bean id="aggregatorChain" class="etm.core.aggregation.BufferedTimedAggregator">
       <constructor-arg>
         <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">

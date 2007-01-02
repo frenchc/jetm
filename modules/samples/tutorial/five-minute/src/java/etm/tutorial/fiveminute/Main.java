@@ -47,6 +47,8 @@ public class Main {
   public static void main(String[] args) {
     final Object lock = new Object();
 
+    // run in a separate thread to avoid blocking
+    // if executed within ant
     Thread t = new Thread() {
       public void run() {
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("five-minute-tutorial.xml");
