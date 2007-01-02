@@ -13,13 +13,13 @@
 </target>
 
 <target name="dist-sample-sources">
-  <tar destfile="${build.lib.dir}/${release.name}-samples-${release.version}.tar.gz"
+  <tar destfile="${build.dist.dir}/${release.name}-samples-${release.version}.tar.gz"
        compression="gzip">
     <tarfileset
       prefix="${release.name}-samples-${release.version}"
       dir="${module.samples.dir}"/>
   </tar>
-  <zip destfile="${build.lib.dir}/${release.name}-samples-${release.version}.zip">
+  <zip destfile="${build.dist.dir}/${release.name}-samples-${release.version}.zip">
     <zipfileset
       prefix="${release.name}-samples-${release.version}"
       dir="${module.samples.dir}"/>

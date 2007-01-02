@@ -46,7 +46,7 @@
 
 
   <target name="dist-all"
-          depends="clean-all, build-all, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle">
+          depends="clean-all, build-all, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle, dist-sample-sources">
 
     <!-- create distribution -->
     <copy todir="${build.site.dist.dir}" filtering="true" preservelastmodified="true">
@@ -79,6 +79,23 @@
       </tarfileset>
     </tar>
 
+
+    <zip destfile="${build.dist.dir}/${release.name}-${release.version}.zip">
+      <zipfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
+        <include name="**/*.jar"/>
+      </zipfileset>
+      <zipfileset prefix="${release.name}-${release.version}/doc" dir="${doc.dir}"/>
+      <zipfileset prefix="${release.name}-${release.version}/doc/api" dir="${build.javadoc.dir}"/>
+
+      <zipfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dist.dir}"/>
+      <zipfileset prefix="${release.name}-${release.version}/samples" dir="${module.samples.dir}">
+        <exclude name="**/classes/**"/>
+      </zipfileset>
+      <zipfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
+        <include name="**/*.dtd"/>
+      </zipfileset>
+    </zip>
+
     <!-- Create website -->
     <copy todir="${build.site.web.dir}" filtering="true" preservelastmodified="true">
       <fileset dir="${module.site.dir}">
@@ -106,6 +123,19 @@
         <include name="**/*.dtd"/>
       </fileset>
     </copy>
+    <copy todir="${build.site.web.dir}/snapshots/jetm" preservelastmodified="true">
+      <fileset dir="${build.dist.dir}">
+        <include name="**/${release.name}-${release.version}.tar.gz"/>
+        <include name="**/${release.name}-${release.version}.zip"/>
+      </fileset>
+    </copy>
+    <copy todir="${build.site.web.dir}/snapshots/jetm-examples" preservelastmodified="true">
+      <fileset dir="${build.dist.dir}">
+        <include name="**/${release.name}-samples-${release.version}.tar.gz"/>
+        <include name="**/${release.name}-samples-${release.version}.zip"/>
+      </fileset>
+    </copy>
+    
     <tar destfile="${build.dist.dir}/${release.name}-site-${release.version}.tar.gz" compression="gzip">
       <tarfileset prefix="${release.name}-site" dir="${build.site.web.dir}"/>
     </tar>
