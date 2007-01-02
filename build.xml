@@ -172,7 +172,7 @@
       </fileset>
 
       <doctitle><![CDATA[<h1>Java(TM) Execution Time Measurement Library</h1>]]></doctitle>
-      <bottom><![CDATA[<i>Copyright &#169; 2004,2005, 2006 void.fm. All Rights Reserved.</i>]]></bottom>
+      <bottom><![CDATA[<i>Copyright &#169; 2004,2005, 2006, 2007 void.fm. All Rights Reserved.</i>]]></bottom>
       <group title="Java Execution Time Measurement (JETM) Core" packages="etm.core*"/>
       <group title="JETM - HTTP Console" packages="etm.contrib.console*"/>
       <group title="JETM - AOP Support" packages="etm.contrib.aop*"/>
