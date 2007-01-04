@@ -71,6 +71,24 @@ public class AbstractLogAggregatorTest extends TestCase {
     assertEquals(4, aggregator.points.size());
   }
 
+
+  /**
+   * Tests the log aggregator filtering mechanism. If filtering works
+   * the overall implementation works.
+   */
+  public void testWithoutFilter() {
+    EtmMonitor monitor = new NullMonitor();
+    TestLogAggregator aggregator = new TestLogAggregator(new NestedAggregator());
+
+    aggregator.add(new MeasurementPoint(monitor, "Action Foo"));
+    aggregator.add(new MeasurementPoint(monitor, "Action Bar"));
+    aggregator.add(new MeasurementPoint(monitor, "AnotherPoint"));
+    aggregator.add(new MeasurementPoint(monitor, "ClassName"));
+    aggregator.add(new MeasurementPoint(monitor, "Action Bar"));
+
+    assertEquals(5, aggregator.points.size());
+  }
+
   class TestLogAggregator extends AbstractLogAggregator {
     private List points = new ArrayList();
 

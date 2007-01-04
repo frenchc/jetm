@@ -32,12 +32,10 @@
 package etm.contrib.aggregation.log;
 
 import etm.core.aggregation.Aggregator;
+import etm.core.aggregation.filter.AggregationFilter;
+import etm.core.aggregation.filter.RegexAggregationFilter;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
-
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Sometimes it is important to have access to raw measurement results. This
@@ -71,8 +69,7 @@ public abstract class AbstractLogAggregator implements Aggregator {
   protected String logName = DEFAULT_LOG_NAME;
   protected LogOutputFormatter formatter;
 
-  protected Pattern[] pattern;
-  protected HashSet validNames;
+  protected AggregationFilter filter;
 
   protected AbstractLogAggregator(Aggregator aAggregator) {
     delegate = aAggregator;
@@ -106,24 +103,15 @@ public abstract class AbstractLogAggregator implements Aggregator {
    * separated by a ";".
    *
    * @param matchingPattern One or more pattern, separated by ;
+   * @see etm.core.aggregation.filter.RegexAggregationFilter
    */
   public void setFilterPattern(String matchingPattern) {
-    String[] strings = matchingPattern.split(";");
-    pattern = new Pattern[strings.length];
-
-    for (int i = 0; i < strings.length; i++) {
-      String string = strings[i].trim();
-      if (string.length() > 0) {
-        pattern[i] = Pattern.compile(string);
-      }
-    }
-
-    validNames = new HashSet();
+    filter = new RegexAggregationFilter(matchingPattern);
   }
 
   public void add(MeasurementPoint point) {
     delegate.add(point);
-    if (matches(point)) {
+    if (filter == null || filter.matches(point)) {
       logMeasurement(point);
     }
   }
@@ -153,28 +141,6 @@ public abstract class AbstractLogAggregator implements Aggregator {
 
   public void stop() {
     delegate.stop();
-  }
-
-  protected boolean matches(MeasurementPoint aPoint) {
-    if (pattern != null) {
-      String name = aPoint.getName();
-      if (validNames.contains(name)) {
-        return true;
-      }
-
-      for (int i = 0; i < pattern.length; i++) {
-        Matcher matcher = pattern[i].matcher(name);
-        if (matcher.matches()) {
-          synchronized (validNames) {
-            validNames.add(name);
-          }
-          return true;
-        }
-      }
-      return false;
-    }
-    // log all measurement points if we don't one
-    return true;
   }
 
   /**
