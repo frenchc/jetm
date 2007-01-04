@@ -2,12 +2,14 @@ Release 1.2.0
  New features
   - Activated JMX support again (deprecated old JMX MBeans)
   - Added EtmPluginMetada - thus enabling lookup for runtime configuration such as HTTP Console listen port
+  - Sort by name, executions and time in HTTP console
+  - Added HTTP console servlet
 
  Changes, Fixes and Improvements
   - Minor fixes to logging aggregators
   - Five minute tutorial added
   - Documentation improvements
-  - Provided setter for Plugins for better Spring Integration
+  - Provided setter for Plugins for better Spring Integration  
 
 Release 1.1.1
  Changes, Fixes and Improvements
