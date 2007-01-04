@@ -68,7 +68,9 @@ public class ConsoleUtil {
           url = url + URLEncoder.encode(name, "UTF-8") + "=" + URLEncoder.encode((String) parameters.get(name), "UTF-8") + "&amp;";
         }
 
-        url = url.substring(0, url.length() - 5);
+        if (url.endsWith("&amp;")) {
+          url = url.substring(0, url.length() - 5);
+        }
       }
       return url;
     } catch (UnsupportedEncodingException e) {
