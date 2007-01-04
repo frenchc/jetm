@@ -90,7 +90,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
         " <head> \n" +
         "  <title>JETM Console</title>\n" +
         "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>\n" +
-        "  <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\">" +
+        "  <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\"/>" +
         " </head>\n");
     response.write("<body>\n<h1>JETM Console</h1>");
 
@@ -227,7 +227,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     } else {
       response.write("><a href=\"?sort=min&order=desc\">Min</a> ");
     }
-    response.write("</div></th>\n");
+    response.write("</th>\n");
 
     response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_MAX == comparator.getType()) {
@@ -239,7 +239,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     } else {
       response.write("><a href=\"?sort=max&order=desc\">Max</a>");
     }
-    response.write("</div></th>\n");
+    response.write("</th>\n");
 
     response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_TOTAL == comparator.getType()) {
@@ -251,7 +251,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     } else {
       response.write("><a href=\"?sort=total&order=desc\">Total</a> ");
     }
-    response.write("</div></th>\n");
+    response.write("</th>\n");
 
     response.write(" </tr>\n");
   }
