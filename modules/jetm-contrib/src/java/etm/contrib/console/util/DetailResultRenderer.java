@@ -119,7 +119,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
     }
     response.write("</th>\n");
 
-    response.write("  <th width=\"30\"");
+    response.write("  <th width=\"30\" ");
     if (ExecutionAggregateComparator.TYPE_EXCECUTIONS == comparator.getType()) {
       if (comparator.isDescending()) {
         response.write("class=\"descending\"><a href=\"?sort=executions&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">#</a>");
@@ -132,7 +132,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
     response.write("</th>\n");
 
 
-    response.write("  <th width=\"100\"");
+    response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_AVERAGE == comparator.getType()) {
       if (comparator.isDescending()) {
         response.write("class=\"descending\"><a href=\"?sort=average&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Average</a>");
@@ -144,7 +144,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
     }
     response.write("</th>\n");
 
-    response.write("  <th width=\"100\"");
+    response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_MIN == comparator.getType()) {
       if (comparator.isDescending()) {
         response.write("class=\"descending\"><a href=\"?sort=min&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Min</a>");
@@ -156,7 +156,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
     }
     response.write("</th>\n");
 
-    response.write("  <th width=\"100\"");
+    response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_MAX == comparator.getType()) {
       if (comparator.isDescending()) {
         response.write("class=\"descending\"><a href=\"?sort=max&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Max</a>");
@@ -168,7 +168,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
     }
     response.write("</th>\n");
 
-    response.write("  <th width=\"100\"");
+    response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_TOTAL == comparator.getType()) {
       if (comparator.isDescending()) {
         response.write("class=\"descending\"><a href=\"?sort=total&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Total</a>");
