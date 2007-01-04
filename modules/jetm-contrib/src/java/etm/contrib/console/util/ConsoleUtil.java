@@ -58,17 +58,17 @@ public class ConsoleUtil {
         if (url.indexOf('?') < 0) {
           url = url + "?";
         } else {
-          url = url + "&";
+          url = url + "&amp;";
         }
         for (Iterator iterator = parameters.keySet().iterator(); iterator.hasNext();) {
           String name = (String) iterator.next();
           if (removeDetails && "point".equals(name)) {
             continue;
           }
-          url = url + URLEncoder.encode(name, "UTF-8") + "=" + URLEncoder.encode((String) parameters.get(name), "UTF-8") + "&";
+          url = url + URLEncoder.encode(name, "UTF-8") + "=" + URLEncoder.encode((String) parameters.get(name), "UTF-8") + "&amp;";
         }
 
-        url = url.substring(0, url.length() - 1);
+        url = url.substring(0, url.length() - 5);
       }
       return url;
     } catch (UnsupportedEncodingException e) {

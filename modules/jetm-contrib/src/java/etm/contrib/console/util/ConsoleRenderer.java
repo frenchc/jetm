@@ -183,24 +183,24 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write("  <th width=\"200\" ");
     if (ExecutionAggregateComparator.TYPE_NAME == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=name&order=asc\">Measurement Point</a>");
+        response.write("class=\"descending\"><a href=\"?sort=name&amp;order=asc\">Measurement Point</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=name&order=desc\">Measurement Point</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=name&amp;order=desc\">Measurement Point</a>");
       }
     } else {
-      response.write("><a href=\"?sort=name&order=asc\">Measurement Point</a>");
+      response.write("><a href=\"?sort=name&amp;order=asc\">Measurement Point</a>");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"30\"");
     if (ExecutionAggregateComparator.TYPE_EXCECUTIONS == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=executions&order=asc\">#</a>");
+        response.write("class=\"descending\"><a href=\"?sort=executions&amp;order=asc\">#</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=executions&order=desc\">#</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=executions&amp;order=desc\">#</a>");
       }
     } else {
-      response.write("><a href=\"?sort=executions&order=desc\">#</a> ");
+      response.write("><a href=\"?sort=executions&amp;order=desc\">#</a> ");
     }
     response.write("</th>\n");
 
@@ -208,48 +208,48 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_AVERAGE == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=average&order=asc\">Average</a>");
+        response.write("class=\"descending\"><a href=\"?sort=average&amp;order=asc\">Average</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=average&order=desc\">Average</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=average&amp;order=desc\">Average</a>");
       }
     } else {
-      response.write("><a href=\"?sort=average&order=desc\">Average</a> ");
+      response.write("><a href=\"?sort=average&amp;order=desc\">Average</a> ");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_MIN == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=min&order=asc\">Min</a>");
+        response.write("class=\"descending\"><a href=\"?sort=min&amp;order=asc\">Min</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=min&order=desc\">Min</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=min&amp;order=desc\">Min</a>");
       }
     } else {
-      response.write("><a href=\"?sort=min&order=desc\">Min</a> ");
+      response.write("><a href=\"?sort=min&amp;order=desc\">Min</a> ");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_MAX == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=max&order=asc\">Max</a>");
+        response.write("class=\"descending\"><a href=\"?sort=max&amp;order=asc\">Max</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=max&order=desc\">Max</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=max&amp;order=desc\">Max</a>");
       }
     } else {
-      response.write("><a href=\"?sort=max&order=desc\">Max</a>");
+      response.write("><a href=\"?sort=max&amp;order=desc\">Max</a>");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_TOTAL == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=total&order=asc\">Total</a>");
+        response.write("class=\"descending\"><a href=\"?sort=total&amp;order=asc\">Total</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=total&order=desc\">Total</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=total&amp;order=desc\">Total</a>");
       }
     } else {
-      response.write("><a href=\"?sort=total&order=desc\">Total</a> ");
+      response.write("><a href=\"?sort=total&amp;order=desc\">Total</a> ");
     }
     response.write("</th>\n");
 
