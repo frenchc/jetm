@@ -24,8 +24,6 @@ public class CollapsedResultViewAction extends AbstractAction {
     ExecutionAggregateComparator comparator = getComparator(request);
     CollapsedResultRenderer collapsedResultRenderer = new CollapsedResultRenderer(request, response, comparator);
     request.getEtmMonitor().render(collapsedResultRenderer);
-
-    response.write(" </body>\n</html>");
   }
 
 

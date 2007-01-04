@@ -59,7 +59,6 @@ public class DetailAction extends AbstractAction {
 
       ExecutionAggregateComparator aggregateComparator = getComparator(request);
       request.getEtmMonitor().render(new DetailResultRenderer(request, response, aggregateComparator, point));
-      response.write(" </body>\n</html>");
     }
   }
 }

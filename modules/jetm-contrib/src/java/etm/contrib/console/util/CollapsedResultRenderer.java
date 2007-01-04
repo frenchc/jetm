@@ -106,7 +106,8 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
 
       }
       response.write(FOOTER);
-      response.write("</table>");
+      response.write("</table>\n");
+      response.write(" </body>\n</html>");
 
     } catch (IOException e) {
       throw new RuntimeException("Unable to write to writer: " + e);

@@ -92,13 +92,15 @@ public abstract class ConsoleTests extends TestCase {
     };
 
     CollapsedResultRenderer renderer = new CollapsedResultRenderer(request,
-      testResponse, new ExecutionAggregateComparator()
+      testResponse, new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_AVERAGE, true)
     );
     monitor.render(renderer);
 
     String serverResponse = executeRequest("/");
+    String expected = new String(out.toByteArray(), "UTF-8");
 
-    assertTrue(serverResponse.indexOf(new String(out.toByteArray(), "UTF-8")) > 0);
+    String s = serverResponse.substring(serverResponse.indexOf("close") + 5).trim();
+    assertEquals(expected, s);
   }
 
   public void testMonitorReset() throws Exception {

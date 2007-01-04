@@ -55,7 +55,5 @@ public class ExpandedResultViewAction extends AbstractAction {
     ExecutionAggregateComparator comparator = getComparator(request);
     ExpandedResultRenderer expandedResultRenderer = new ExpandedResultRenderer(request, response, comparator);
     request.getEtmMonitor().render(expandedResultRenderer);
-
-    response.write(" </body>\n</html>");
   }
 }
