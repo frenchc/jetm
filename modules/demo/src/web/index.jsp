@@ -28,7 +28,7 @@
       }
     %>
 
-      window.open(url, 'console', 'width=750,left=0,top=0,scrollbars=true');
+      window.open(url, 'console', 'width=900,left=0,top=0,scrollbars=true');
     }
 
   </script>
