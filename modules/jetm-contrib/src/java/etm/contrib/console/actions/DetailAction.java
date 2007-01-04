@@ -57,7 +57,6 @@ public class DetailAction extends AbstractAction {
       response.addHeader("Pragma", "no-cache");
       response.addHeader("Cache-Control", "no-cache");
 
-      writeConsoleHeader(request, response, point);
       ExecutionAggregateComparator aggregateComparator = getComparator(request);
       request.getEtmMonitor().render(new DetailResultRenderer(request, response, aggregateComparator, point));
       response.write(" </body>\n</html>");

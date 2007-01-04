@@ -17,7 +17,6 @@ import java.util.Map;
  */
 public class ExpandedResultRenderer extends ConsoleRenderer {
 
-
   /**
    * Constructs a CollapsedResultRenderer that writes results to
    * the given response.
@@ -33,16 +32,18 @@ public class ExpandedResultRenderer extends ConsoleRenderer {
 
 
   public void render(Map points) {
+    Object[] values = points.values().toArray();   
 
     try {
+      writeConsoleHeader(null);
+
       response.write("<table>\n");
-      writeHeader();
+      writeTableHeader();
 
       if (points.size() == 0) {
         response.write(NO_RESULTS);
       } else {
 
-        Object[] values = points.values().toArray();
         Arrays.sort(values, comparator);
         for (int i = 0; i < values.length; i++) {
           ExecutionAggregate point = (ExecutionAggregate) values[i];

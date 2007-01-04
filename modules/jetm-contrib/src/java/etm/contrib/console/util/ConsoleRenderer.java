@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -76,82 +77,181 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     numberFormatter.setGroupingUsed(true);
   }
 
-  protected void writeHeader() throws IOException {
+  protected void writeConsoleHeader(String point) throws IOException {
+    Date currentTime = new Date();
+    String pointEncoded = null;
+    if (point != null) {
+      pointEncoded = URLEncoder.encode(point, "UTF-8");
+    }
+
+    response.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+    response.write(
+      "<html>\n" +
+        " <head> \n" +
+        "  <title>JETM Console</title>\n" +
+        "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>\n" +
+        "  <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\">" +
+        " </head>\n");
+    response.write("<body>\n<h1>JETM Console</h1>");
+
+
+    if (point != null) {
+      response.write("<b>");
+      response.write(point);
+      response.write("</b><br /><br />\n");
+
+      response.write("<a href=\"");
+      response.write(ConsoleUtil.appendParameters("/detail?point=" + pointEncoded, request.getRequestParameters()));
+      response.write("\">Reload point</a>  &nbsp; \n");
+
+      response.write("<a href=\"");
+      response.write(ConsoleUtil.appendParameters("/reset?point=" + pointEncoded, request.getRequestParameters()));
+      response.write("\">Reset point</a>  &nbsp; ");
+
+      response.write(" <a href=\"");
+      response.write(ConsoleUtil.appendParameters("/", request.getRequestParameters(), true));
+      response.write("\">Back to overview</a>\n");
+
+
+
+    } else {
+      response.write("<table class=\"noborder\">\n");
+
+      response.write("  <tr class=\"noborder\">\n" +
+        "    <td class=\"noborder\">Application start:</td>\n" +
+        "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getStartTime() + "</td>\n" +
+        "  </tr>\n" +
+        "  <tr class=\"noborder\">\n" +
+        "    <td class=\"noborder\">Monitoring period:</td>\n" +
+        "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getLastResetTime() + " - " + currentTime + "</td>\n" +
+        "  </tr>\n" +
+        "  <tr class=\"noborder\">\n" +
+        "    <td class=\"noborder\">Monitoring status:</td>\n");
+
+      if (request.getEtmMonitor().isStarted()) {
+        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
+      } else {
+        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
+      }
+
+      response.write(
+        "  </tr>\n" +
+          "  <tr class=\"noborder\">\n" +
+          "    <td class=\"noborder\">Collecting status:</td>\n");
+
+      if (request.getEtmMonitor().isCollecting()) {
+        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
+      } else {
+        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
+      }
+
+      response.write(
+        "  </tr>\n" +
+          "  <tr class=\"noborder\">\n" +
+          "    <td class=\"noborder\">&nbsp;</td>\n" +
+          "    <td class=\"noborder\">&nbsp;</td>\n" +
+          "  </tr>\n" +
+          "  <tr class=\"noborder\">\n");
+
+      response.write("    <td class=\"noborder\"><a href=\"");
+      response.write(ConsoleUtil.appendParameters("/", request.getRequestParameters()));
+      response.write("\">Reload monitor</a></td>\n");
+
+      response.write("    <td class=\"noborder\"><a href=\"");
+      response.write(ConsoleUtil.appendParameters("/reset", request.getRequestParameters()));
+      response.write("\">Reset monitor</a>  &nbsp; ");
+
+      if (request.getEtmMonitor().isCollecting()) {
+        response.write(" <a href=\"");
+        response.write(ConsoleUtil.appendParameters("/stop", request.getRequestParameters()));
+        response.write("\">Stop collection</a></td>\n");
+      } else {
+        response.write(" <a href=\"");
+        response.write(ConsoleUtil.appendParameters("/start", request.getRequestParameters()));
+        response.write("\">Start collection</a></td>\n");
+      }
+      response.write("  </tr>\n");
+      response.write("</table>");
+    }
+
+  }
+
+
+  protected void writeTableHeader() throws IOException {
     response.write(" <tr>\n");
 
-    response.write("  <th>");
+    response.write("  <th width=\"200\" ");
     if (ExecutionAggregateComparator.TYPE_NAME == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("    <a href=\"?sort=name&order=asc\">Measurement Point <img border=\"0\" src=\"up-arrow.png\" alt=\"Sort ascending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"descending\"><a href=\"?sort=name&order=asc\">Measurement Point</a>");
       } else {
-        response.write("    <a href=\"?sort=name&order=desc\">Measurement Point <img border=\"0\" src=\"down-arrow.png\" alt=\"Sort descending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"ascending\"><a href=\"?sort=name&order=desc\">Measurement Point</a>");
       }
     } else {
-      response.write("    <a href=\"?sort=name&order=desc\">Measurement Point</a> ");
-
+      response.write("><a href=\"?sort=name&order=asc\">Measurement Point</a>");
     }
-    response.write("  </th>\n");
+    response.write("</th>\n");
 
-    response.write("  <th>");
+    response.write("  <th width=\"30\"");
     if (ExecutionAggregateComparator.TYPE_EXCECUTIONS == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("    <a href=\"?sort=executions&order=asc\"># <img border=\"0\" src=\"up-arrow.png\" alt=\"Sort ascending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"descending\"><a href=\"?sort=executions&order=asc\">#</a>");
       } else {
-        response.write("    <a href=\"?sort=executions&order=desc\"># <img border=\"0\" src=\"down-arrow.png\" alt=\"Sort descending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"ascending\"><a href=\"?sort=executions&order=desc\">#</a>");
       }
     } else {
-      response.write("    <a href=\"?sort=executions&order=desc\">#</a> ");
+      response.write("><a href=\"?sort=executions&order=desc\">#</a> ");
     }
-    response.write("  </th>\n");
+    response.write("</th>\n");
 
 
-    response.write("  <th>");
+    response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_AVERAGE == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("    <a href=\"?sort=average&order=asc\">Average <img border=\"0\" src=\"up-arrow.png\" alt=\"Sort ascending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"descending\"><a href=\"?sort=average&order=asc\">Average</a>");
       } else {
-        response.write("    <a href=\"?sort=average&order=desc\">Average <img border=\"0\" src=\"down-arrow.png\" alt=\"Sort descending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"ascending\"><a href=\"?sort=average&order=desc\">Average</a>");
       }
     } else {
-      response.write("    <a href=\"?sort=average&order=desc\">Average</a> ");
+      response.write("><a href=\"?sort=average&order=desc\">Average</a> ");
     }
-    response.write("  </th>\n");
+    response.write("</th>\n");
 
-    response.write("  <th>");
+    response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_MIN == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("    <a href=\"?sort=min&order=asc\">Min <img border=\"0\" src=\"up-arrow.png\" alt=\"Sort ascending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"descending\"><a href=\"?sort=min&order=asc\">Min</a>");
       } else {
-        response.write("    <a href=\"?sort=min&order=desc\">Min <img border=\"0\" src=\"down-arrow.png\" alt=\"Sort descending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"ascending\"><a href=\"?sort=min&order=desc\">Min</a>");
       }
     } else {
-      response.write("    <a href=\"?sort=min&order=desc\">Min</a> ");
+      response.write("><a href=\"?sort=min&order=desc\">Min</a> ");
     }
-    response.write("  </th>\n");
+    response.write("</div></th>\n");
 
-    response.write("  <th>");
+    response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_MAX == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("    <a href=\"?sort=max&order=asc\">Max <img border=\"0\" src=\"up-arrow.png\" alt=\"Sort ascending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"descending\"><a href=\"?sort=max&order=asc\">Max</a>");
       } else {
-        response.write("    <a href=\"?sort=max&order=desc\">Max <img border=\"0\" src=\"down-arrow.png\" alt=\"Sort descending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"ascending\"><a href=\"?sort=max&order=desc\">Max</a>");
       }
     } else {
-      response.write("    <a href=\"?sort=max&order=asc\">Max</a>");
+      response.write("><a href=\"?sort=max&order=desc\">Max</a>");
     }
-    response.write("  </th>\n");
+    response.write("</div></th>\n");
 
-    response.write("  <th>");
+    response.write("  <th width=\"100\"");
     if (ExecutionAggregateComparator.TYPE_TOTAL == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("    <a href=\"?sort=total&order=asc\">Total <img border=\"0\" src=\"up-arrow.png\" alt=\"Sort ascending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"descending\"><a href=\"?sort=total&order=asc\">Total</a>");
       } else {
-        response.write("    <a href=\"?sort=total&order=desc\">Total <img border=\"0\" src=\"down-arrow.png\" alt=\"Sort descending\" width=\"10\" height=\"14\"></a>");
+        response.write("class=\"ascending\"><a href=\"?sort=total&order=desc\">Total</a>");
       }
     } else {
-      response.write("    <a href=\"?sort=total&order=desc\">Total</a> ");
+      response.write("><a href=\"?sort=total&order=desc\">Total</a> ");
     }
-    response.write("  </th>\n");
+    response.write("</div></th>\n");
 
     response.write(" </tr>\n");
   }

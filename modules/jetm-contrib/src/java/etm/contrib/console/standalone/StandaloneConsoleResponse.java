@@ -57,7 +57,7 @@ import java.util.TimeZone;
 public class StandaloneConsoleResponse implements ConsoleResponse {
 
   // todo implement chucked output
-  private static final byte[] SERVER_HEADER = "Server: JETM HTTP console\n".getBytes();
+  private static final byte[] SERVER_HEADER = "Server: JETM console\n".getBytes();
   private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
   private Map headers;

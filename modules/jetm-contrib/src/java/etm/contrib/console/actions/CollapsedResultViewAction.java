@@ -20,7 +20,6 @@ public class CollapsedResultViewAction extends AbstractAction {
     response.addHeader("Pragma", "no-cache");
     response.addHeader("Cache-Control", "no-cache");
 
-    writeConsoleHeader(request, response, null);
 
     ExecutionAggregateComparator comparator = getComparator(request);
     CollapsedResultRenderer collapsedResultRenderer = new CollapsedResultRenderer(request, response, comparator);

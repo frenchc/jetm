@@ -49,9 +49,8 @@ public class ExpandedResultViewAction extends AbstractAction {
 
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     response.addHeader("Content-Type", "text/html;charset=UTF-8");
-
-
-    writeConsoleHeader(request, response, null);
+    response.addHeader("Pragma", "no-cache");
+    response.addHeader("Cache-Control", "no-cache");
 
     ExecutionAggregateComparator comparator = getComparator(request);
     ExpandedResultRenderer expandedResultRenderer = new ExpandedResultRenderer(request, response, comparator);
