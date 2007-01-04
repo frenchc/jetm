@@ -33,23 +33,30 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
-import etm.contrib.console.util.ResourceAccessor;
 import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
 
 /**
- * Returns the favicon.
+ * Resource a certain resource.
  *
  * @author void.fm
  * @version $Revision$
  */
 
-public class FaviconAction extends AbstractAction {
+public class ResourceAction extends AbstractAction {
+
+  private String contentType;
+  private byte[] resource;
+
+
+  public ResourceAction(String aContentType, byte[] aResource) {
+    contentType = aContentType;
+    resource = aResource;
+  }
 
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
-    ResourceAccessor accessor = request.getResourceAccessor();
-    response.addHeader("Content-Type", "image/x-icon");
-    response.write(accessor.getFavicon());
+    response.addHeader("Content-Type", contentType);
+    response.write(resource);
   }
 }

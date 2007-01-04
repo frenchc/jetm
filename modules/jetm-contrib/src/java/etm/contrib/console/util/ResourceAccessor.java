@@ -45,11 +45,15 @@ import java.io.InputStream;
  */
 public class ResourceAccessor {
   private byte[] favicon;
+  private byte[] downarrow;
   private byte[] css;
   private byte[] robots;
+  private byte[] uparrow;
 
   public ResourceAccessor() {
     favicon = loadResource("etm/contrib/console/favicon.ico");
+    downarrow = loadResource("etm/contrib/console/down-arrow.png");
+    uparrow = loadResource("etm/contrib/console/up-arrow.png");
     css = loadResource("etm/contrib/console/style.css");
     robots = loadResource("etm/contrib/console/robots.txt");
   }
@@ -96,5 +100,13 @@ public class ResourceAccessor {
 
   public byte[] getRobotsTxt() {
     return robots;
+  }
+
+  public byte[] getDownarrow() {
+    return downarrow;
+  }
+
+  public byte[] getUparrow() {
+    return uparrow;
   }
 }

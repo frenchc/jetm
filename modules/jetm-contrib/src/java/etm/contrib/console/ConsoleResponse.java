@@ -33,6 +33,7 @@
 package etm.contrib.console;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Represents the HTTP response.
@@ -44,11 +45,13 @@ public interface ConsoleResponse {
 
   public void addHeader(String header, String value);
 
+  public void write(String content) throws IOException;
+
+   public void write(char[] content) throws IOException;
+
   public void write(byte[] content) throws IOException;
 
-  public void write(char content);
-
-  public void sendRedirect(String target);
+  public void sendRedirect(String target, Map parameters);
 
   public void sendStatus(int statusCode, String description);
 }

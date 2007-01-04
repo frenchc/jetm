@@ -34,12 +34,10 @@ package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
-import etm.contrib.renderer.SimpleHtmlRenderer;
+import etm.contrib.console.util.ExpandedResultRenderer;
+import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.util.Date;
 
 /**
  * Renders all measurement results.
@@ -49,15 +47,16 @@ import java.util.Date;
  */
 public class ExpandedResultViewAction extends AbstractAction {
 
-
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     response.addHeader("Content-Type", "text/html;charset=UTF-8");
 
-    StringWriter writer = new StringWriter();
-    request.getEtmMonitor().render(new SimpleHtmlRenderer(writer));
 
-    writeConsoleHeader(response, request.getEtmMonitor(), null);
-    response.write(writer.toString().getBytes(UTF_8));
-    response.write(" </body>\n</html>".getBytes());
+    writeConsoleHeader(request, response, null);
+
+    ExecutionAggregateComparator comparator = getComparator(request);
+    ExpandedResultRenderer expandedResultRenderer = new ExpandedResultRenderer(request, response, comparator);
+    request.getEtmMonitor().render(expandedResultRenderer);
+
+    response.write(" </body>\n</html>");
   }
 }

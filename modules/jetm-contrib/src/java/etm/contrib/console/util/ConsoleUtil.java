@@ -34,7 +34,9 @@ package etm.contrib.console.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -45,6 +47,35 @@ import java.util.Map;
  */
 
 public class ConsoleUtil {
+
+  public static String appendParameters(String url, Map parameters) {
+    return appendParameters(url, parameters, false);
+  }
+
+  public static String appendParameters(String url, Map parameters, boolean removeDetails) {
+    try {
+      if (parameters != null && parameters.size() > 0) {
+        if (url.indexOf('?') < 0) {
+          url = url + "?";
+        } else {
+          url = url + "&";
+        }
+        for (Iterator iterator = parameters.keySet().iterator(); iterator.hasNext();) {
+          String name = (String) iterator.next();
+          if (removeDetails && "point".equals(name)) {
+            continue;
+          }
+          url = url + URLEncoder.encode(name, "UTF-8") + "=" + URLEncoder.encode((String) parameters.get(name), "UTF-8") + "&";
+        }
+
+        url = url.substring(0, url.length() - 1);
+      }
+      return url;
+    } catch (UnsupportedEncodingException e) {
+      // will hopefully never happen since UTF-8 should be supported.
+      throw new RuntimeException(e);
+    }
+  }
 
   public static Map extractRequestParameters(byte[] aTemp, int parameterStart, int endOfLine) {
     Map map = new HashMap();

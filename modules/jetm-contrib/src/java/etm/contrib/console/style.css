@@ -19,7 +19,7 @@ table {
 th {
   border: 1px solid #999;
   margin: 0 0 0 0;
-  padding: 5px 15px 5px 10px;
+  padding: 5px 10px 5px 10px;
   text-align: center;
   font-weight: bold;
 }
@@ -39,7 +39,6 @@ td {
 a:link
 {
   color: #314E6C;
-  /*cursor: hand;*/
   voice-family: inherit;
   cursor: pointer;
 }
@@ -51,12 +50,40 @@ a:visited
 
 a:hover
 {
-  /*cursor: hand;*/
   voice-family: inherit;
   cursor: pointer;
 }
 
+th a:link
+{
+  color: #000000;
+  voice-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
 
+th a:visited
+{
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+
+  color: #000000;
+  text-decoration: none;
+}
+
+th a:hover
+{
+  color: #333333;
+  voice-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+th a img {
+  float:right;
+  vertical-align:middle;
+  border: 0 0 0 0;
+}
 .childname {
   text-align: left;
   border-top: 1px dotted #999;

@@ -33,11 +33,12 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleAction;
+import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
-import etm.core.monitor.EtmMonitor;
+import etm.contrib.console.util.ConsoleUtil;
+import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Date;
 
@@ -51,91 +52,123 @@ public abstract class AbstractAction implements ConsoleAction {
   protected static final String UTF_8 = "UTF-8";
   protected static final byte[] SERVER_HEADER = "Server: JETM drop-in HTML console\n".getBytes();
 
-  protected void writeConsoleHeader(ConsoleResponse response, EtmMonitor etmMonitor, String point) throws IOException {
+  protected void writeConsoleHeader(ConsoleRequest request, ConsoleResponse response, String point) throws IOException {
     Date currentTime = new Date();
     String pointEncoded = null;
     if (point != null) {
       pointEncoded = URLEncoder.encode(point, "UTF-8");
     }
 
-    response.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">".getBytes());
-    response.write((
+    response.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+    response.write(
       "<html>\n" +
         " <head> \n" +
         "  <title>JETM HTML Console</title>\n" +
         "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>\n" +
         "  <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\">" +
-        " </head>\n").getBytes(UTF_8));
-    response.write("<body>\n<h1>JETM HTML Console</h1>".getBytes());
+        " </head>\n");
+    response.write("<body>\n<h1>JETM HTML Console</h1>");
 
 
     if (point != null) {
-      response.write(("<b>").getBytes());
-      response.write(point.getBytes());
-      response.write(("</b><br /><br />\n").getBytes());
+      response.write("<b>");
+      response.write(point);
+      response.write("</b><br /><br />\n");
 
-      response.write(("<a href=\"/detail?point=").getBytes());
-      response.write(pointEncoded.getBytes());
-      response.write(("\">Reload point</a>  &nbsp; \n").getBytes());
+      response.write("<a href=\"");
+      response.write(ConsoleUtil.appendParameters("/detail?point=" + pointEncoded, request.getRequestParameters()));
+      response.write("\">Reload point</a>  &nbsp; \n");
 
-      response.write(("<a href=\"/reset?point=").getBytes());
-      response.write(pointEncoded.getBytes());
-      response.write(("\">Reset point</a>  &nbsp; ").getBytes());
-      response.write((" <a href=\"/\">Back to overview</a>\n").getBytes());
+      response.write("<a href=\"");
+      response.write(ConsoleUtil.appendParameters("/reset?point=" + pointEncoded, request.getRequestParameters()));
+      response.write("\">Reset point</a>  &nbsp; ");
+
+      response.write(" <a href=\"");
+      response.write(ConsoleUtil.appendParameters("/", request.getRequestParameters(), true));
+      response.write("\">Back to overview</a>\n");
+
 
 
     } else {
-      response.write("<table class=\"noborder\">\n".getBytes());
+      response.write("<table class=\"noborder\">\n");
 
-      response.write(("  <tr class=\"noborder\">\n" +
+      response.write("  <tr class=\"noborder\">\n" +
         "    <td class=\"noborder\">Application start:</td>\n" +
-        "    <td class=\"noborder\">" + etmMonitor.getMetaData().getStartTime() + "</td>\n" +
+        "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getStartTime() + "</td>\n" +
         "  </tr>\n" +
         "  <tr class=\"noborder\">\n" +
         "    <td class=\"noborder\">Monitoring period:</td>\n" +
-        "    <td class=\"noborder\">" + etmMonitor.getMetaData().getLastResetTime() + " - " + currentTime + "</td>\n" +
+        "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getLastResetTime() + " - " + currentTime + "</td>\n" +
         "  </tr>\n" +
         "  <tr class=\"noborder\">\n" +
-        "    <td class=\"noborder\">Monitoring status:</td>\n").getBytes());
+        "    <td class=\"noborder\">Monitoring status:</td>\n");
 
-      if (etmMonitor.isStarted()) {
-        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n".getBytes());
+      if (request.getEtmMonitor().isStarted()) {
+        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
       } else {
-        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n".getBytes());
+        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
       }
 
-      response.write((
+      response.write(
         "  </tr>\n" +
           "  <tr class=\"noborder\">\n" +
-          "    <td class=\"noborder\">Collecting status:</td>\n").getBytes());
+          "    <td class=\"noborder\">Collecting status:</td>\n");
 
-      if (etmMonitor.isCollecting()) {
-        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n".getBytes());
+      if (request.getEtmMonitor().isCollecting()) {
+        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
       } else {
-        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n".getBytes());
+        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
       }
 
-      response.write((
+      response.write(
         "  </tr>\n" +
           "  <tr class=\"noborder\">\n" +
           "    <td class=\"noborder\">&nbsp;</td>\n" +
           "    <td class=\"noborder\">&nbsp;</td>\n" +
           "  </tr>\n" +
-          "  <tr class=\"noborder\">\n" +
-          "    <td class=\"noborder\"><a href=\"").getBytes());
-      response.write('/');
-      response.write(("\">Reload monitor</a></td>\n").getBytes());
-      response.write(("    <td class=\"noborder\"><a href=\"").getBytes());
-      response.write(("/reset\">Reset monitor</a>  &nbsp; ").getBytes());
+          "  <tr class=\"noborder\">\n");
 
-      if (etmMonitor.isCollecting()) {
-        response.write((" <a href=\"/stop\">Stop collection</a></td>\n").getBytes());
+      response.write("    <td class=\"noborder\"><a href=\"");
+      response.write(ConsoleUtil.appendParameters("/", request.getRequestParameters()));
+      response.write("\">Reload monitor</a></td>\n");
+
+      response.write("    <td class=\"noborder\"><a href=\"");
+      response.write(ConsoleUtil.appendParameters("/reset", request.getRequestParameters()));
+      response.write("\">Reset monitor</a>  &nbsp; ");
+
+      if (request.getEtmMonitor().isCollecting()) {
+        response.write(" <a href=\"");
+        response.write(ConsoleUtil.appendParameters("/stop", request.getRequestParameters()));
+        response.write("\">Stop collection</a></td>\n");
       } else {
-        response.write((" <a href=\"/start\">Start collection</a></td>\n").getBytes());
+        response.write(" <a href=\"");
+        response.write(ConsoleUtil.appendParameters("/start", request.getRequestParameters()));
+        response.write("\">Start collection</a></td>\n");
       }
-      response.write(("  </tr>\n").getBytes());
-      response.write(("</table>").getBytes());
+      response.write("  </tr>\n");
+      response.write("</table>");
     }
 
+  }
+
+  protected ExecutionAggregateComparator getComparator(ConsoleRequest request) {
+    String sort = request.getRequestParameter("sort");
+    boolean isDescending = !"asc".equals(request.getRequestParameter("order"));
+
+    if ("name".equals(sort)) {
+      return new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_NAME, isDescending);
+    } else if ("executions".equals(sort)) {
+      return new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_EXCECUTIONS, isDescending);
+    } else if ("average".equals(sort)) {
+      return new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_AVERAGE, isDescending);
+    } else if ("min".equals(sort)) {
+      return new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_MIN, isDescending);
+    } else if ("max".equals(sort)) {
+      return new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_MAX, isDescending);
+    } else if ("total".equals(sort)) {
+      return new ExecutionAggregateComparator(ExecutionAggregateComparator.TYPE_TOTAL, isDescending);
+    } else {
+      return new ExecutionAggregateComparator();
+    }
   }
 }

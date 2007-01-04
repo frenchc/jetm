@@ -200,6 +200,7 @@ public interface EtmMonitor {
    * Adds a list of plugins.
    *
    * @param plugins A list of EtmPlugin.
+   * @since 1.2.0
    */
   public void setPlugins(List plugins);
 }

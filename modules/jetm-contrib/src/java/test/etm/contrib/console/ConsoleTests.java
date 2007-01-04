@@ -32,14 +32,19 @@
 
 package test.etm.contrib.console;
 
-import etm.contrib.console.actions.CollapsedResultRenderer;
+import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.standalone.StandaloneConsoleRequest;
+import etm.contrib.console.util.CollapsedResultRenderer;
+import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Map;
 
@@ -57,13 +62,43 @@ public abstract class ConsoleTests extends TestCase {
 
   public void testResultRendering() throws Exception {
 
-    StringWriter writer = new StringWriter();
-    CollapsedResultRenderer renderer = new CollapsedResultRenderer(writer);
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    StandaloneConsoleRequest request = new StandaloneConsoleRequest(monitor);
+    ConsoleResponse testResponse = new ConsoleResponse() {
+      OutputStreamWriter writer = new OutputStreamWriter(out);
+
+      public void addHeader(String header, String value) {
+      }
+
+      public void write(String content) throws IOException {
+        writer.write(content);
+        writer.flush();
+      }
+
+      public void write(char[] content) throws IOException {
+        writer.write(content);
+        writer.flush();
+      }
+
+      public void write(byte[] content) throws IOException {
+        out.write(content);
+      }
+
+      public void sendRedirect(String target, Map parameters) {
+      }
+
+      public void sendStatus(int statusCode, String description) {
+      }
+    };
+
+    CollapsedResultRenderer renderer = new CollapsedResultRenderer(request,
+      testResponse, new ExecutionAggregateComparator()
+    );
     monitor.render(renderer);
 
     String serverResponse = executeRequest("/");
 
-    assertTrue(serverResponse.indexOf(writer.toString()) > 0);
+    assertTrue(serverResponse.indexOf(new String(out.toByteArray(), "UTF-8")) > 0);
   }
 
   public void testMonitorReset() throws Exception {

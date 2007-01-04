@@ -33,7 +33,8 @@
 package etm.contrib.console;
 
 import etm.core.monitor.EtmMonitor;
-import etm.contrib.console.util.ResourceAccessor;
+
+import java.util.Map;
 
 /**
  * Represents the incoming HTTP request.
@@ -43,10 +44,10 @@ import etm.contrib.console.util.ResourceAccessor;
  */
 public interface ConsoleRequest {
 
-  public ResourceAccessor getResourceAccessor();
-
   public EtmMonitor getEtmMonitor();
 
   public String getRequestParameter(String name);
+
+  public Map getRequestParameters();
 
 }

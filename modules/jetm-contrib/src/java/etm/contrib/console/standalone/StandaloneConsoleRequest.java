@@ -33,7 +33,6 @@
 package etm.contrib.console.standalone;
 
 import etm.contrib.console.ConsoleRequest;
-import etm.contrib.console.util.ResourceAccessor;
 import etm.core.monitor.EtmMonitor;
 
 import java.util.Map;
@@ -46,19 +45,12 @@ import java.util.Map;
  */
 public class StandaloneConsoleRequest implements ConsoleRequest {
 
-   private ResourceAccessor resourceAccessor;
   private EtmMonitor etmMonitor;
   private Map requestParam;
 
 
-  public StandaloneConsoleRequest(EtmMonitor aEtmMonitor, ResourceAccessor aResourceAccessor) {
-    resourceAccessor = aResourceAccessor;
+  public StandaloneConsoleRequest(EtmMonitor aEtmMonitor) {
     etmMonitor = aEtmMonitor;
-  }
-
-
-  public ResourceAccessor getResourceAccessor() {
-    return resourceAccessor;
   }
 
   public EtmMonitor getEtmMonitor() {
@@ -75,5 +67,9 @@ public class StandaloneConsoleRequest implements ConsoleRequest {
 
   public void setRequestParameters(Map aParameters) {
     requestParam = aParameters;
+  }
+
+  public Map getRequestParameters() {
+    return requestParam;
   }
 }

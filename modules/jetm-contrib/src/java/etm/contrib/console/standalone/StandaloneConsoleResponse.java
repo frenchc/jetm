@@ -33,10 +33,14 @@
 package etm.contrib.console.standalone;
 
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.util.ConsoleUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,36 +57,48 @@ import java.util.TimeZone;
 public class StandaloneConsoleResponse implements ConsoleResponse {
 
   // todo implement chucked output
-  private static final byte[] SERVER_HEADER = "Server: JETM drop-in HTML console\n".getBytes();
+  private static final byte[] SERVER_HEADER = "Server: JETM HTTP console\n".getBytes();
   private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
   private Map headers;
-  private ByteArrayOutputStream buffer;
+  private Writer bufferWriter;
+  private ByteArrayOutputStream bufferOutStream;
 
   private String redirectUrl;
   private HttpStatus status;
   private OutputStream destination;
 
   public StandaloneConsoleResponse(OutputStream aDestination) {
-    headers = new HashMap();
-    buffer = new ByteArrayOutputStream();
-    destination = aDestination;
+    try {
+      headers = new HashMap();
+      bufferOutStream = new ByteArrayOutputStream();
+      bufferWriter = new OutputStreamWriter(bufferOutStream, "UTF-8");
+      destination = aDestination;
+    } catch (UnsupportedEncodingException e) {
+      throw new IllegalStateException(e.getMessage());
+    }
   }
 
   public void addHeader(String header, String value) {
     headers.put(header, value);
   }
 
+  public void write(String content) throws IOException {
+    bufferWriter.write(content);
+    bufferWriter.flush();
+  }
+
+  public void write(char[] content) throws IOException {
+    bufferWriter.write(content);
+    bufferWriter.flush();
+  }
+
   public void write(byte[] content) throws IOException {
-    buffer.write(content);
+    bufferOutStream.write(content);
   }
 
-  public void write(char content) {
-    buffer.write(content);
-  }
-
-  public void sendRedirect(String target) {
-    redirectUrl = target;
+  public void sendRedirect(String target, Map parameters) {
+    redirectUrl = ConsoleUtil.appendParameters(target, parameters);
   }
 
   public void sendStatus(int statusCode, String description) {
@@ -97,6 +113,8 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
     } else {
       writeContent();
     }
+
+    destination.flush();
   }
 
   private void writeStatus() throws IOException {
@@ -116,7 +134,7 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
     destination.write(SERVER_HEADER);
     destination.write(("Date: " + getRfc1123Date() + "\n").getBytes());
     destination.write("Location: ".getBytes());
-    destination.write(redirectUrl.getBytes("UTF-8"));
+    destination.write(redirectUrl.getBytes());
     destination.write("\n".getBytes());
     destination.write("Connection: close\n".getBytes());
     destination.write("\n".getBytes());
@@ -133,10 +151,11 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
       destination.write(((String) (headers.get(name))).getBytes());
       destination.write("\n".getBytes());
     }
-    destination.write(("Content-Length: " + buffer.size() + "\n").getBytes());
+
+    destination.write(("Content-Length: " + bufferOutStream.size() + "\n").getBytes());
     destination.write("Connection: close\n".getBytes());
     destination.write("\n".getBytes());
-    destination.write(buffer.toByteArray());
+    destination.write(bufferOutStream.toByteArray());
   }
 
 

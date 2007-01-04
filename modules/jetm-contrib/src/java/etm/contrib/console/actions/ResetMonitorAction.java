@@ -36,7 +36,6 @@ import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 
 /**
@@ -47,17 +46,18 @@ import java.net.URLEncoder;
  */
 public class ResetMonitorAction extends AbstractAction {
 
-
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     String point = request.getRequestParameter("point");
 
     if (point != null) {
       request.getEtmMonitor().reset(point);
-      response.sendRedirect("/detail?point=" + URLEncoder.encode(point, "UTF-8"));
+      response.sendRedirect("/detail?point=" + URLEncoder.encode(point, "UTF-8"),request.getRequestParameters());
     } else {
       request.getEtmMonitor().reset();
-      response.sendRedirect("/");
+      response.sendRedirect("/", request.getRequestParameters());
     }
 
   }
+
+
 }

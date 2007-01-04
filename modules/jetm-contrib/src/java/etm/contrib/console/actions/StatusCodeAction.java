@@ -32,25 +32,31 @@
 
 package etm.contrib.console.actions;
 
+import etm.contrib.console.ConsoleAction;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
-import etm.contrib.console.util.ResourceAccessor;
 
 import java.io.IOException;
 
 /**
- * Returns our stylesheet.
  *
- * @author void.fm
+ * Renders a status code.
+ *
  * @version $Revision$
+ * @author void.fm
  */
+public class StatusCodeAction implements ConsoleAction {
+  private int statusCode;
+  private String textMessage;
 
-public class StyleSheetAction extends AbstractAction {
 
+  public StatusCodeAction(int aStatusCode, String aTextMessage) {
+    statusCode = aStatusCode;
+    textMessage = aTextMessage;
+  }
 
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
-    ResourceAccessor accessor = request.getResourceAccessor();
-    response.addHeader("Content-Type", "text/css;charset=UTF-8");
-    response.write(accessor.getStyleSheet());
+    response.sendStatus(statusCode, textMessage);
   }
+
 }

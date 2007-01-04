@@ -36,7 +36,6 @@ import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Starts performance monitoring.
@@ -47,9 +46,8 @@ import java.io.OutputStream;
 
 public class StartMonitorAction extends AbstractAction {
 
-
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     request.getEtmMonitor().enableCollection();
-    response.sendRedirect("/");
+    response.sendRedirect("/", request.getRequestParameters());
   }
 }

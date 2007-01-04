@@ -34,11 +34,10 @@ package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.util.DetailResultRenderer;
+import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.util.Date;
 
 /**
  * Base class for all actions.
@@ -52,18 +51,16 @@ public class DetailAction extends AbstractAction {
     String point = request.getRequestParameter("point");
 
     if (point == null) {
-      response.sendRedirect("/");
+      response.sendRedirect("/", request.getRequestParameters());
     } else {
       response.addHeader("Content-Type", "text/html;charset=UTF-8");
       response.addHeader("Pragma", "no-cache");
       response.addHeader("Cache-Control", "no-cache");
 
-      StringWriter writer = new StringWriter();
-      request.getEtmMonitor().render(new DetailResultRenderer(writer, point));
-
-      writeConsoleHeader(response, request.getEtmMonitor(), point);
-      response.write(writer.toString().getBytes(UTF_8));
-      response.write(" </body>\n</html>".getBytes());
+      writeConsoleHeader(request, response, point);
+      ExecutionAggregateComparator aggregateComparator = getComparator(request);
+      request.getEtmMonitor().render(new DetailResultRenderer(request, response, aggregateComparator, point));
+      response.write(" </body>\n</html>");
     }
   }
 }

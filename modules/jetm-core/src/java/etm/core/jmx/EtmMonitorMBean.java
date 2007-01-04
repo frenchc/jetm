@@ -57,6 +57,7 @@ import java.io.StringWriter;
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class EtmMonitorMBean implements DynamicMBean {
 

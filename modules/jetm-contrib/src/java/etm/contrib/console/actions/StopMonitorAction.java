@@ -45,9 +45,8 @@ import java.io.IOException;
  */
 public class StopMonitorAction extends AbstractAction {
 
-
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     request.getEtmMonitor().disableCollection();
-    response.sendRedirect("/");
+    response.sendRedirect("/", request.getRequestParameters());
   }
 }

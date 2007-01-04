@@ -33,7 +33,6 @@
 package etm.contrib.console;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * An action is used to create an HTTP console response.

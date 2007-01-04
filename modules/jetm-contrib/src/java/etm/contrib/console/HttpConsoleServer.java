@@ -34,18 +34,14 @@ package etm.contrib.console;
 
 import etm.contrib.console.actions.CollapsedResultViewAction;
 import etm.contrib.console.actions.DetailAction;
-import etm.contrib.console.actions.Error400Action;
-import etm.contrib.console.actions.Error404Action;
-import etm.contrib.console.actions.Error500Action;
 import etm.contrib.console.actions.ExpandedResultViewAction;
-import etm.contrib.console.actions.FaviconAction;
 import etm.contrib.console.actions.ResetMonitorAction;
-import etm.contrib.console.actions.RobotsTxtAction;
+import etm.contrib.console.actions.ResourceAction;
 import etm.contrib.console.actions.StartMonitorAction;
+import etm.contrib.console.actions.StatusCodeAction;
 import etm.contrib.console.actions.StopMonitorAction;
-import etm.contrib.console.actions.StyleSheetAction;
-import etm.contrib.console.standalone.StandaloneConsoleResponse;
 import etm.contrib.console.standalone.StandaloneConsoleRequest;
+import etm.contrib.console.standalone.StandaloneConsoleResponse;
 import etm.contrib.console.util.ConsoleUtil;
 import etm.contrib.console.util.ResourceAccessor;
 import etm.core.monitor.EtmMonitor;
@@ -102,9 +98,9 @@ public class HttpConsoleServer {
   private Map actions = new HashMap();
 
   // default actions
-  private ConsoleAction error400 = new Error400Action();
-  private ConsoleAction error404 = new Error404Action();
-  private ConsoleAction error500 = new Error500Action();
+  private ConsoleAction error400 = new StatusCodeAction(400, "Bad request");
+  private ConsoleAction error404 = new StatusCodeAction(404, "File not found");
+  private ConsoleAction error500 = new StatusCodeAction(500, "Internal server error");
 
 
   public HttpConsoleServer(EtmMonitor aEtmMonitor) {
@@ -211,9 +207,11 @@ public class HttpConsoleServer {
     actions.put("/stop", new StopMonitorAction());
 
     // content requests
-    actions.put("/style.css", new StyleSheetAction());
-    actions.put("/robots.txt", new RobotsTxtAction());
-    actions.put("/favicon.ico", new FaviconAction());
+    actions.put("/style.css", new ResourceAction("text/css;charset=UTF-8", resourceAccessor.getStyleSheet()));
+    actions.put("/robots.txt", new ResourceAction("text/plain;charset=UTF-8", resourceAccessor.getRobotsTxt()));
+    actions.put("/favicon.ico", new ResourceAction("image/x-icon", resourceAccessor.getFavicon()));
+    actions.put("/down-arrow.png", new ResourceAction("image/png", resourceAccessor.getDownarrow()));
+    actions.put("/up-arrow.png", new ResourceAction("image/png", resourceAccessor.getUparrow()));
   }
 
 
@@ -371,7 +369,7 @@ public class HttpConsoleServer {
     }
 
     protected void process(OutputStream out, byte[] aTemp, int endOfLine) throws IOException {
-      StandaloneConsoleRequest consoleRequest = new StandaloneConsoleRequest(etmMonitor, resourceAccessor);
+      StandaloneConsoleRequest consoleRequest = new StandaloneConsoleRequest(etmMonitor);
       // if we don't find an action it is a bad request
       ConsoleAction action = error400;
 
