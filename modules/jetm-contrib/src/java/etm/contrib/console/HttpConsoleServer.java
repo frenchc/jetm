@@ -32,14 +32,8 @@
 
 package etm.contrib.console;
 
-import etm.contrib.console.actions.CollapsedResultViewAction;
-import etm.contrib.console.actions.DetailAction;
-import etm.contrib.console.actions.ExpandedResultViewAction;
-import etm.contrib.console.actions.ResetMonitorAction;
-import etm.contrib.console.actions.ResourceAction;
-import etm.contrib.console.actions.StartMonitorAction;
+import etm.contrib.console.actions.ActionRegistry;
 import etm.contrib.console.actions.StatusCodeAction;
-import etm.contrib.console.actions.StopMonitorAction;
 import etm.contrib.console.standalone.StandaloneConsoleRequest;
 import etm.contrib.console.standalone.StandaloneConsoleResponse;
 import etm.contrib.console.util.ConsoleUtil;
@@ -53,7 +47,6 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -89,13 +82,10 @@ public class HttpConsoleServer {
   private int workerSize = DEFAULT_WORKER_SIZE;
   private boolean expanded = false;
 
-  private ResourceAccessor resourceAccessor;
+  private ActionRegistry actionRegistry;
 
   private Stack workers;
   private ListenerThread listenerThread;
-
-  // Our actions
-  private Map actions = new HashMap();
 
   // default actions
   private ConsoleAction error400 = new StatusCodeAction(400, "Bad request");
@@ -146,11 +136,7 @@ public class HttpConsoleServer {
     if (etmMonitor == null) {
       throw new IllegalStateException("Missing EtmMonitor reference.");
     }
-
-    // load resources into memory
-    resourceAccessor = new ResourceAccessor();
-
-    preloadSupportedActions();
+    actionRegistry = new ActionRegistry(new ResourceAccessor(), expanded);
 
     // create our worker pool
     workers = new Stack();
@@ -193,27 +179,6 @@ public class HttpConsoleServer {
       workers.push(aConsoleWorker);
     }
   }
-
-  private void preloadSupportedActions() {
-    if (expanded) {
-      actions.put("/", new ExpandedResultViewAction());
-    } else {
-      actions.put("/", new CollapsedResultViewAction());
-      actions.put("/detail", new DetailAction());
-    }
-
-    actions.put("/reset", new ResetMonitorAction());
-    actions.put("/start", new StartMonitorAction());
-    actions.put("/stop", new StopMonitorAction());
-
-    // content requests
-    actions.put("/style.css", new ResourceAction("text/css;charset=UTF-8", resourceAccessor.getStyleSheet()));
-    actions.put("/robots.txt", new ResourceAction("text/plain;charset=UTF-8", resourceAccessor.getRobotsTxt()));
-    actions.put("/favicon.ico", new ResourceAction("image/x-icon", resourceAccessor.getFavicon()));
-    actions.put("/down-arrow.png", new ResourceAction("image/png", resourceAccessor.getDownarrow()));
-    actions.put("/up-arrow.png", new ResourceAction("image/png", resourceAccessor.getUparrow()));
-  }
-
 
   class ListenerThread extends Thread {
     private boolean shouldRun = true;
@@ -404,7 +369,7 @@ public class HttpConsoleServer {
               requestName = new String(aTemp, 4, endOfRequestString - 4);
             }
 
-            action = (ConsoleAction) actions.get(requestName);
+            action = actionRegistry.getAction(requestName);
 
             if (action == null) {
               // unsupported request
