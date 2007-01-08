@@ -42,6 +42,7 @@ import etm.core.timer.ExecutionTimer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 
 /**
@@ -69,6 +70,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
   private boolean collecting = true;
 
   private boolean noStartedErrorMessageFlag = false;
+
+  private Timer scheduler = new Timer(true);
 
   /**
    * Creates a EtmMonitorSupport instance.
@@ -209,8 +212,18 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       return;
     }
 
+    // 1. init aggregators
+    aggregator.init(new EtmMonitorSupportContext(this, scheduler));
+
+    // 2. init plugins
+
+    // 3. start aggregators
     aggregator.start();
+
+    // 4. start plugins
     startPlugins();
+
+
     started = true;
     collecting = true;
   }
@@ -223,8 +236,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
     collecting = false;
     started = false;
-    aggregator.stop();
 
+    aggregator.stop();
     shutdownPlugins();
   }
 
@@ -338,5 +351,24 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
 
     return null;
+  }
+
+  class EtmMonitorSupportContext implements EtmMonitorContext {
+    private EtmMonitor monitor;
+    private Timer scheduler;
+
+
+    public EtmMonitorSupportContext(EtmMonitor aMonitor, Timer aScheduler) {
+      monitor = aMonitor;
+      scheduler = aScheduler;
+    }
+
+    public EtmMonitor getEtmMonitor() {
+      return monitor;
+    }
+
+    public Timer getTimer() {
+      return scheduler;
+    }
   }
 }
