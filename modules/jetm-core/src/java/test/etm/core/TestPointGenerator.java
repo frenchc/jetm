@@ -36,6 +36,7 @@ import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
@@ -208,7 +209,7 @@ public class TestPointGenerator {
 
 
     public void reset(String measurementPoint) {
-      //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public void render(MeasurementRenderer renderer) {
@@ -224,6 +225,10 @@ public class TestPointGenerator {
     }
 
     public void stop() {
+
+    }
+
+    public void init(EtmMonitorContext ctx) {
 
     }
   }

@@ -33,6 +33,7 @@
 package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -99,7 +100,6 @@ public interface Aggregator {
 
   public void render(MeasurementRenderer renderer);
 
-
   /**
    * Returns detailed information about the aggregator chain.
    *
@@ -109,8 +109,19 @@ public interface Aggregator {
   public AggregatorMetaData getMetaData();
 
   /**
-   * Lifecycle method, will be called before the EtmMonitor instance
-   * will become available.
+   *
+   * Lifecycle Method, will be called before {@link #start()}, after initalization of
+   * the current EtmMonitor runtime. Be aware that Plugins are instantiated, but not
+   * started at this point.
+   *
+   * @param ctx The current EtmMonitor Context.
+   */
+  public void init(EtmMonitorContext ctx);
+
+  /**
+   * Lifecycle method, will be called after all Aggregator instances are initialized
+   * by calling {@link #init(etm.core.monitor.EtmMonitorContext)} and  before the
+   * EtmMonitor instance will becomes available.
    */
   public void start();
 

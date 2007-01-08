@@ -33,6 +33,7 @@
 package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -99,6 +100,10 @@ public class FlatAggregator implements Aggregator {
   }
 
   public void stop() {
+    // do nothing
+  }
+
+  public void init(EtmMonitorContext ctx) {
     // do nothing
   }
 }

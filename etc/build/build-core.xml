@@ -63,7 +63,7 @@
 <target name="test-jetm-core" depends="build-jetm-core">
   <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
     <classpath>
-      <path refid="build.classpath" />
+      <path refid="build.classpath"/>
     </classpath>
   </taskdef>
 
@@ -74,18 +74,11 @@
     </classpath>
 
     <formatter type="plain"/>
-    <test name="test.etm.core.monitor.SimpleFlatMonitorTest" todir="${module.core.dest.test}"/>
-    <test name="test.etm.core.monitor.SimpleNestedMonitorTest" todir="${module.core.dest.test}"/>
-    <test name="test.etm.core.monitor.ConcurrentFlatMonitorTest" todir="${module.core.dest.test}"/>
-    <test name="test.etm.core.monitor.ConcurrentNestedMonitorTest" todir="${module.core.dest.test}"/>
-
-    <test name="test.etm.core.aggregation.ConcurrentFlatThresholdAggregationTest" todir="${module.core.dest.test}"/>
-    <test name="test.etm.core.aggregation.ConcurrentNestedThresholdAggregationTest" todir="${module.core.dest.test}"/>
-
-    <test name="test.etm.core.renderer.SimpleTextRendererTest" todir="${module.core.dest.test}"/>
-
-    <test name="test.etm.core.configuration.BasicEtmConfiguratorTest" todir="${module.core.dest.test}"/>
-    <test name="test.etm.core.configuration.XmlEtmConfiguratorTest" todir="${module.core.dest.test}"/>
+    <batchtest todir="${module.core.dest.test}">
+      <fileset dir="${module.core.src.java}">
+        <include name="**/*Test.java"/>
+      </fileset>
+    </batchtest>
 
   </junit>
 
@@ -93,30 +86,30 @@
 
 
 <target name="maven2-core-bundle" depends="build-jetm-core">
-    <mkdir dir="${module.core.dest.maven2}" />
-    <copy todir="${module.core.dest.maven2}">
-      <fileset dir="${module.core.dir}/etc/maven2"/>
-      <filterset>
-        <filter token="version" value="${release.version}"/>
-      </filterset>
-    </copy>
-    <copy file="${doc.dir}/license.txt" tofile="${module.core.dest.maven2}/LICENSE.txt"/>
+  <mkdir dir="${module.core.dest.maven2}"/>
+  <copy todir="${module.core.dest.maven2}">
+    <fileset dir="${module.core.dir}/etc/maven2"/>
+    <filterset>
+      <filter token="version" value="${release.version}"/>
+    </filterset>
+  </copy>
+  <copy file="${doc.dir}/license.txt" tofile="${module.core.dest.maven2}/LICENSE.txt"/>
 
-    <copy file="${build.lib.dir}/${release.name}-${release.version}.jar"
-          todir="${module.core.dest.maven2}"/>
+  <copy file="${build.lib.dir}/${release.name}-${release.version}.jar"
+        todir="${module.core.dest.maven2}"/>
 
-    <jar destfile="${module.core.dest.maven2}/${release.name}-${release.version}-sources.jar">
-      <fileset dir="${module.core.src.java}" excludes="**/test/**"/>
-    </jar>
+  <jar destfile="${module.core.dest.maven2}/${release.name}-${release.version}-sources.jar">
+    <fileset dir="${module.core.src.java}" excludes="**/test/**"/>
+  </jar>
 
-    <jar destfile="${build.dist.dir}/${release.name}-${release.version}-bundle.jar">
-      <fileset dir="${module.core.dest.maven2}"/>
-    </jar>
+  <jar destfile="${build.dist.dir}/${release.name}-${release.version}-bundle.jar">
+    <fileset dir="${module.core.dest.maven2}"/>
+  </jar>
 </target>
 
 <target name="init-core">
   <mkdir dir="${build.lib.dir}"/>
-  <mkdir dir="${build.dist.dir}" />
+  <mkdir dir="${build.dist.dir}"/>
   <mkdir dir="${module.core.dest.classes}"/>
-  <mkdir dir="${module.core.dest.test}" />
+  <mkdir dir="${module.core.dest.test}"/>
 </target>

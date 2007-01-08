@@ -32,25 +32,24 @@
 
 package test.etm.core.configuration;
 
-import junit.framework.TestCase;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
+import etm.core.aggregation.Aggregator;
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.FlatMonitor;
 import etm.core.monitor.NestedMonitor;
-import etm.core.timer.DefaultTimer;
-import etm.core.aggregation.Aggregator;
 import etm.core.plugin.EtmPlugin;
-import test.etm.core.configuration.mockup.TestMonitor;
-import test.etm.core.configuration.mockup.TestTimer;
+import etm.core.timer.DefaultTimer;
+import junit.framework.TestCase;
 import test.etm.core.configuration.mockup.TestAggregator;
+import test.etm.core.configuration.mockup.TestMonitor;
 import test.etm.core.configuration.mockup.TestPlugin;
+import test.etm.core.configuration.mockup.TestTimer;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 /**
  * Testing XML based configuration.
@@ -179,9 +178,9 @@ public class XmlEtmConfiguratorTest extends TestCase {
     url = locateResource("test/etm/core/configuration/files/valid/autostart-off-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
-     etmMonitor = EtmManager.getEtmMonitor();
+    etmMonitor = EtmManager.getEtmMonitor();
     assertFalse(etmMonitor.isStarted());
-    assertFalse(etmMonitor.isCollecting());
+    assertTrue(etmMonitor.isCollecting());
   }
 
   public void testInvalidConfig() {

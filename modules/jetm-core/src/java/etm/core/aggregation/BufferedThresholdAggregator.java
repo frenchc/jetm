@@ -33,6 +33,7 @@
 package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -62,7 +63,7 @@ public class BufferedThresholdAggregator implements Aggregator {
   private static final int DEFAULT_SIZE = 1000;
   private static final int MIN_THRESHOLD = 100;
 
-  protected final Aggregator aggregator;
+  protected final Aggregator delegate;
   protected List list;
   protected int threshold = DEFAULT_SIZE;
 
@@ -74,7 +75,7 @@ public class BufferedThresholdAggregator implements Aggregator {
    */
 
   public BufferedThresholdAggregator(Aggregator aAggregator) {
-    aggregator = aAggregator;
+    delegate = aAggregator;
     list = new ArrayList(threshold);
   }
 
@@ -105,33 +106,39 @@ public class BufferedThresholdAggregator implements Aggregator {
     list = new ArrayList(threshold);
 
     for (int i = 0; i < collectedList.size(); i++) {
-      aggregator.add((MeasurementPoint) collectedList.get(i));
+      delegate.add((MeasurementPoint) collectedList.get(i));
     }
   }
 
   public void reset() {
-    aggregator.reset();
+    delegate.reset();
     list.clear();
   }
 
 
   public void reset(String measurementPoint) {
-    aggregator.reset(measurementPoint);
+    delegate.reset(measurementPoint);
   }
 
   public void render(MeasurementRenderer renderer) {
-    aggregator.render(renderer);
+    delegate.render(renderer);
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(BufferedThresholdAggregator.class, DESCRIPTION + threshold, true, aggregator.getMetaData());
+    return new AggregatorMetaData(BufferedThresholdAggregator.class, DESCRIPTION + threshold, true, delegate.getMetaData());
+  }
+
+
+  public void init(EtmMonitorContext ctx) {
+    // don't do anything local, just delegate
+    delegate.init(ctx);
   }
 
   public void start() {
-    aggregator.start();
+    delegate.start();
   }
 
   public void stop() {
-    aggregator.stop();
+    delegate.stop();
   }
 }

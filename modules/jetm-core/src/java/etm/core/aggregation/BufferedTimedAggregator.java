@@ -33,6 +33,7 @@
 package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -124,6 +125,12 @@ public class BufferedTimedAggregator implements Aggregator {
     synchronized (delegate) {
       delegate.render(renderer);
     }
+  }
+
+
+  public void init(EtmMonitorContext ctx) {
+    // todo use timer task
+    delegate.init(ctx);
   }
 
   /**

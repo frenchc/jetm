@@ -66,7 +66,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
   protected List plugins;
 
   private boolean started = false;
-  private boolean collecting = false;
+  private boolean collecting = true;
+
+  private boolean noStartedErrorMessageFlag = false;
 
   /**
    * Creates a EtmMonitorSupport instance.
@@ -95,7 +97,14 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
   public final void visitPreMeasurement(MeasurementPoint measurementPoint) {
     try {
-      if (!collecting || !started) {
+      if (!collecting) {
+        return;
+      }
+
+      if (!started) {
+        if (!noStartedErrorMessageFlag) {
+          showMonitorNotStartedMessage();
+        }
         return;
       }
 
@@ -118,16 +127,32 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
   }
 
+  private void showMonitorNotStartedMessage() {
+    System.err.println("Warning - Performance Monitoring currently disabled.");
+    System.err.println("If you did not start the current EtmMonitor on purpose,");
+    System.err.println("you may ignore this warning.");
+    System.err.println("Otherwhise ensure to call EtmMonitor.start() at some point");
+    System.err.println("in your application.");
+    noStartedErrorMessageFlag = true;
+  }
+
   public synchronized final void visitPostCollect(MeasurementPoint measurementPoint) {
-    if (!collecting || !started) {
+    if (!collecting) {
+      return;
+    }
+
+    if (!started) {
+      if (!noStartedErrorMessageFlag) {
+        showMonitorNotStartedMessage();
+      }
+      return;
+    }
+
+    if (measurementPoint == null) {
       return;
     }
 
     try {
-      if (measurementPoint == null) {
-        return;
-      }
-
       measurementPoint.setEndTime(timer.getCurrentTime());
 
       synchronized (lock) {

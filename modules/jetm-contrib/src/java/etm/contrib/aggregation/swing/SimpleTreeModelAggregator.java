@@ -36,6 +36,7 @@ import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -156,6 +157,10 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
   public AggregatorMetaData getMetaData() {
     return new AggregatorMetaData(SimpleTreeModelAggregator.class, DESCRIPTION, false, delegate.getMetaData());
   }
+
+  public void init(EtmMonitorContext ctx) {
+  }
+
 
   public void start() {
 

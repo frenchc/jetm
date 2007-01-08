@@ -30,37 +30,23 @@
  *
  */
 
+package etm.core.monitor;
 
-package test.etm.core.monitor;
-
-import etm.core.aggregation.FlatAggregator;
-import etm.core.monitor.FlatMonitor;
-import etm.core.timer.DefaultTimer;
-import test.etm.core.TestAggregator;
+import java.util.Timer;
 
 /**
- * Non threaded flat monitor test. Just uses all common test cases for
- * monitors.
+ *
+ * The EtmMonitorContext provides means to access certain runtime
+ * details of a given EtmMonitor instance. The context will be passed
+ * to plugins and aggregators within their life cycle.
  *
  * @author void.fm
  * @version $Revision$
+ *
  */
-public class SimpleFlatMonitorTest extends CommonMonitorTests {
+public interface EtmMonitorContext {
 
+  public EtmMonitor getEtmMonitor();
 
-  protected void tearDown() throws Exception {
-    monitor.stop();
-    monitor.reset();
-    monitor = null;
-    super.tearDown();
-  }
-
-
-  protected void setUp() throws Exception {
-    super.setUp();
-    aggregator = new TestAggregator(new FlatAggregator());
-    monitor = new FlatMonitor(new DefaultTimer(), aggregator);
-    monitor.start();
-  }
-
+  public Timer getTimer();
 }

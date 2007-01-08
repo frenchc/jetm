@@ -30,37 +30,69 @@
  *
  */
 
-
 package test.etm.core.monitor;
 
-import etm.core.aggregation.FlatAggregator;
-import etm.core.monitor.FlatMonitor;
-import etm.core.timer.DefaultTimer;
-import test.etm.core.TestAggregator;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.MeasurementPoint;
+import junit.framework.TestCase;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 /**
- * Non threaded flat monitor test. Just uses all common test cases for
- * monitors.
+ *
+ * Runs tests whether certain warnings are shown or not.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class SimpleFlatMonitorTest extends CommonMonitorTests {
+public class CheckMonitorWarningsTest extends TestCase {
 
+  public void testEtmMonitorSupportWarning() {
+    EtmManager.reset();
 
-  protected void tearDown() throws Exception {
-    monitor.stop();
-    monitor.reset();
-    monitor = null;
-    super.tearDown();
+    PrintStream writer = System.err;
+
+    try {
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      PrintStream tmpErr = new PrintStream(out);
+      System.setErr(tmpErr);
+
+      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+      MeasurementPoint point = new MeasurementPoint(etmMonitor, "test");
+      point.collect();
+
+      tmpErr.flush();
+      String s = new String(out.toByteArray());
+      assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
+
+    } finally {
+      System.setErr(writer);
+    }
   }
 
+  public void testNullMonitorWarning() {
+    EtmManager.reset();
 
-  protected void setUp() throws Exception {
-    super.setUp();
-    aggregator = new TestAggregator(new FlatAggregator());
-    monitor = new FlatMonitor(new DefaultTimer(), aggregator);
-    monitor.start();
+    PrintStream writer = System.err;
+
+    try {
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      PrintStream tmpErr = new PrintStream(out);
+      System.setErr(tmpErr);
+
+      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+      etmMonitor.start();
+      MeasurementPoint point = new MeasurementPoint(etmMonitor, "test");
+      point.collect();
+
+      tmpErr.flush();
+      String s = new String(out.toByteArray());
+      assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
+      etmMonitor.stop();
+    } finally {
+      System.setErr(writer);
+    }
   }
-
 }

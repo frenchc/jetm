@@ -34,6 +34,7 @@ package etm.contrib.aggregation.log;
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.filter.AggregationFilter;
 import etm.core.aggregation.filter.RegexAggregationFilter;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -130,6 +131,11 @@ public abstract class AbstractLogAggregator implements Aggregator {
 
   public void render(MeasurementRenderer renderer) {
     delegate.render(renderer);
+  }
+
+
+  public void init(EtmMonitorContext ctx) {
+    delegate.init(ctx);
   }
 
   public void start() {

@@ -33,6 +33,7 @@ package test.etm.core;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -82,6 +83,9 @@ public class TestAggregator implements Aggregator {
       aggregator.getMetaData());
   }
 
+  public void init(EtmMonitorContext ctx) {
+  }
+
   public void start() {
 
   }
@@ -89,5 +93,5 @@ public class TestAggregator implements Aggregator {
   public void stop() {
 
   }
-
+ 
 }

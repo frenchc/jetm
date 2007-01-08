@@ -47,7 +47,7 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public abstract class CommonMonitorTest extends TestCase {
+public abstract class CommonMonitorTests extends TestCase {
 
   protected EtmMonitor monitor;
   protected TestAggregator aggregator;

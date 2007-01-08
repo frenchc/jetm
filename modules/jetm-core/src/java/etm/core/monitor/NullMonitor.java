@@ -45,16 +45,16 @@ import etm.core.renderer.MeasurementRenderer;
  */
 
 public class NullMonitor extends EtmMonitorSupport {
-  private static final String DESCRIPTION = "A monitor which does not record executions at all.";
+  private static final String DESCRIPTION = "A monitor that does not record executions at all.";
 
-  private static boolean warningShowed = false;
+  private boolean notCollectionWarningFlag = false;
 
   public NullMonitor() {
     super(DESCRIPTION, null, null);
   }
 
   protected void doVisitPreMeasurement(MeasurementPoint aMeasurementPoint) {
-    if (!warningShowed) {
+    if (!notCollectionWarningFlag) {
       showWarning();
     }
   }
@@ -63,7 +63,7 @@ public class NullMonitor extends EtmMonitorSupport {
   }
 
   public void render(MeasurementRenderer renderer) {
-    if (!warningShowed) {
+    if (!notCollectionWarningFlag) {
       showWarning();
     }
   }
@@ -78,8 +78,14 @@ public class NullMonitor extends EtmMonitorSupport {
 
 
   private void showWarning() {
-    // todo show a warning that a null monitor is used
-    warningShowed = true;
+    System.err.println("Warning - NullMonitor active. Performance results are discarded.");
+    System.err.println("This usually happens if you used EtmManager.getEtmMonitor() to retrieve");
+    System.err.println("the current EtmMonitor instance and did not configure the Performance");
+    System.err.println("sub system before. For further details see EtmManager documentation at ");
+    System.err.println("http://jetm.void.fm/howto/etm_manager_configuration.html");
+
+
+    notCollectionWarningFlag = true;
   }
 
 
@@ -105,13 +111,17 @@ public class NullMonitor extends EtmMonitorSupport {
     }
 
     public AggregatorMetaData getMetaData() {
-      return new AggregatorMetaData(NullAggregator.class, "Mock aggregator - discards all executions.", false);
+      return new AggregatorMetaData(NullAggregator.class, "Mock aggregator - discards all performance results.", false);
     }
 
     public void start() {
     }
 
     public void stop() {
+    }
+
+    public void init(EtmMonitorContext ctx) {
+
     }
   }
 

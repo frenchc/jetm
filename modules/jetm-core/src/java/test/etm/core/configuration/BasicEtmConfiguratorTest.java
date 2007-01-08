@@ -32,48 +32,54 @@
 
 package test.etm.core.configuration;
 
-import junit.framework.TestCase;
-import etm.core.configuration.EtmManager;
 import etm.core.configuration.BasicEtmConfigurator;
+import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
-import etm.core.monitor.NullMonitor;
 import etm.core.monitor.FlatMonitor;
+import etm.core.monitor.MeasurementPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
+import junit.framework.TestCase;
 
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Proxy;
+import java.util.Map;
 
 /**
- *
  * Testing basic configurator behavior.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
 public class BasicEtmConfiguratorTest extends TestCase {
 
   public void testNoConfiguration() {
-    EtmManager.reset();
+    // capture err, since we expect it here
+    PrintStream currentError = System.err;
+    try {
+      System.setErr(new PrintStream(new ByteArrayOutputStream()));
+      EtmManager.reset();
 
-    EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-    assertTrue(Proxy.isProxyClass(etmMonitor.getClass()));
+      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+      assertTrue(Proxy.isProxyClass(etmMonitor.getClass()));
 
-    etmMonitor.start();
+      etmMonitor.start();
 
-    MeasurementPoint point = new MeasurementPoint(etmMonitor, "testPoint");
-    point.collect();
+      MeasurementPoint point = new MeasurementPoint(etmMonitor, "testPoint");
+      point.collect();
 
-    etmMonitor.render(new MeasurementRenderer() {
-      public void render(Map points) {
-        assertNotNull(points);
-        assertEquals(0, points.size());
-      }
-    });
+      etmMonitor.render(new MeasurementRenderer() {
+        public void render(Map points) {
+          assertNotNull(points);
+          assertEquals(0, points.size());
+        }
+      });
+      etmMonitor.stop();
 
-
-    etmMonitor.stop();
+    } finally {
+      System.setErr(currentError);
+    }
   }
 
   public void testFlatConfiguration() {

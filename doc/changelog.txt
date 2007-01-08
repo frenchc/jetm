@@ -10,6 +10,8 @@ Release 1.2.0
   - Five minute tutorial added
   - Documentation improvements
   - Provided setter for Plugins for better Spring Integration  
+  - Now writing warnings to std.err if monitor is not running
+
 
 Release 1.1.1
  Changes, Fixes and Improvements
