@@ -13,24 +13,8 @@
     }
 
     function openConsole() {
-      var url;
-
-    <%
-      if (request.getRequestURL().indexOf("jetm.void.fm") > 0) {
-    %>
-      url = 'http://console.void.fm';
-    <%
-    } else {
-    %>
-
-      url = '<%= request.getScheme() %>://<%= request.getServerName() %>:50000';
-    <%
-      }
-    %>
-
-      window.open(url, 'console', 'width=900,left=0,top=0,scrollbars=true');
+      window.open('performance/index', 'console', 'width=900,left=0,top=0,scrollbars=true');
     }
-
   </script>
 </head>
 

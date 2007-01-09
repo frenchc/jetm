@@ -1,14 +1,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
-   "http://www.springframework.org/dtd/spring-beans.dtd">
+  "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-
-   <!--
-
-    Enable this import to enable JETM performance monitoring.
-    Removing this import will disable monitoring completly.
-    -->
-  <import resource="jetm-monitoring.xml"/>
 
   <!--
 
@@ -54,7 +47,7 @@
     </property>
   </bean>
 
-  <bean id="consoleController" class="etm.demo.webapp.controller.ConsoleController" />
+  <bean id="consoleController" class="etm.demo.webapp.controller.ConsoleController"/>
 
   <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
     <property name="mappings">
@@ -76,10 +69,21 @@
     </property>
   </bean>
 
-  <bean id="userDao" class="etm.demo.webapp.dao.UserDaoImpl"/>
 
-  <bean id="userManagementService" class="etm.demo.webapp.service.UserManagementServiceImpl" autowire="constructor"/>
-
-  <bean id="messagingService" class="etm.demo.webapp.service.MessagingServiceImpl" autowire="constructor"/>
+  <!--
+    Create proxy around our service classes and daos,
+    thus enabling performance monitoring for all public methods.
+  -->
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"
+        singleton="false">
+    <property name="interceptorNames">
+      <list>
+        <value>etmMethodCallInterceptor</value>
+      </list>
+    </property>
+    <property name="beanNames">
+      <value>*Controller,*Validator,*Resolver</value>
+    </property>
+  </bean>
 
 </beans>

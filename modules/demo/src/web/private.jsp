@@ -10,25 +10,13 @@
   <title>Java(TM) Execution Time Measurement Library</title>
   <link rel="stylesheet" type="text/css" href="default.css"/>
   <script type="text/javascript">
-    function openConsole() {
-      var url;
-
-    <%
-      if (request.getRequestURL().indexOf("jetm.void.fm") > 0) {
-    %>
-      url = 'http://console.void.fm';
-    <%
-    } else {
-    %>
-
-      url = '<%= request.getScheme() %>://<%= request.getServerName() %>:50000';
-    <%
-      }
-    %>
-
-      window.open(url, 'console', 'width=900,left=0,top=0,scrollbars=true');
+    function submit() {
+      document.forms['loginForm'].submit();
     }
 
+    function openConsole() {
+      window.open('performance/index', 'console', 'width=900,left=0,top=0,scrollbars=true');
+    }
   </script>
 </head>
 

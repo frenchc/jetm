@@ -1,59 +1,30 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-
-  <bean id="etmAutoProxy"
-        class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"
-        singleton="false">
-    <property name="interceptorNames">
-      <list>
-        <value>etmMethodCallInterceptor</value>
-      </list>
-    </property>
-    <property name="beanNames">
-      <value>*Service,*Controller,*Dao,*Validator</value>
-    </property>
-  </bean>
-
   <bean id="etmMonitor" class="etm.core.monitor.NestedMonitor"
-        init-method="start" destroy-method="stop"/>
+        init-method="start" destroy-method="stop" />
 
 
   <!--
         An etm monitor alternative that logs
         raw measurement points using commons logging
    -->
-  <!--
-  <bean id="etmMonitor" class="etm.core.monitor.NestedMonitor"
-        init-method="start" destroy-method="stop">
+
+  <bean class="etm.core.aggregation.BufferedTimedAggregator">
     <constructor-arg>
-      <bean class="etm.core.aggregation.BufferedTimedAggregator">
+      <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
         <constructor-arg>
-          <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
-            <constructor-arg>
-              <bean class="etm.core.aggregation.NestedAggregator"/>
-            </constructor-arg>
-          </bean>
+          <bean class="etm.core.aggregation.NestedAggregator"/>
         </constructor-arg>
-        <property name="aggregationInterval">
-          <value>5000</value>
-        </property>
       </bean>
     </constructor-arg>
+    <property name="aggregationInterval">
+      <value>5000</value>
+    </property>
   </bean>
-  -->
 
   <bean id="etmMethodCallInterceptor"
         class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
         autowire="constructor"/>
 
-  <bean id="etmHttpConsole" class="etm.contrib.console.HttpConsoleServer"
-        init-method="start" destroy-method="stop" autowire="constructor">
-    <property name="listenPort">
-      <value>50000</value>
-    </property>
-    <!-- we enable expanded result rendering. -->
-    <property name="expanded" value="true"/>
-  </bean>
-  
 </beans>
