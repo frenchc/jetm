@@ -39,9 +39,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
 public class ActionRegistry {
   // Our actions
@@ -50,12 +49,16 @@ public class ActionRegistry {
 
   public ActionRegistry(ResourceAccessor resourceAccessor, boolean expanded) {
     if (expanded) {
-      actions.put("/", new ExpandedResultViewAction());
+      ExpandedResultViewAction action = new ExpandedResultViewAction();
+      actions.put("/index", action);
+
     } else {
-      actions.put("/", new CollapsedResultViewAction());
+      CollapsedResultViewAction action = new CollapsedResultViewAction();
+      actions.put("/index", action);
       actions.put("/detail", new DetailAction());
     }
 
+    actions.put("/", new RedirectAction("index"));
     actions.put("/reset", new ResetMonitorAction());
     actions.put("/start", new StartMonitorAction());
     actions.put("/stop", new StopMonitorAction());

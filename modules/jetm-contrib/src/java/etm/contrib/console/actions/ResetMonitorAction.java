@@ -51,10 +51,10 @@ public class ResetMonitorAction extends AbstractAction {
 
     if (point != null) {
       request.getEtmMonitor().reset(point);
-      response.sendRedirect("/detail?point=" + URLEncoder.encode(point, "UTF-8"),request.getRequestParameters());
+      response.sendRedirect("detail?point=" + URLEncoder.encode(point, "UTF-8"),request.getRequestParameters());
     } else {
       request.getEtmMonitor().reset();
-      response.sendRedirect("/", request.getRequestParameters());
+      response.sendRedirect("index", request.getRequestParameters());
     }
 
   }

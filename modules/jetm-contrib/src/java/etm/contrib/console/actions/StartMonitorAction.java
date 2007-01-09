@@ -48,6 +48,6 @@ public class StartMonitorAction extends AbstractAction {
 
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
     request.getEtmMonitor().enableCollection();
-    response.sendRedirect("/", request.getRequestParameters());
+    response.sendRedirect("index", request.getRequestParameters());
   }
 }

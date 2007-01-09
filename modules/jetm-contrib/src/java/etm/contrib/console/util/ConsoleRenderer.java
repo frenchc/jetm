@@ -101,15 +101,15 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
       response.write("</b><br /><br />\n");
 
       response.write("<a href=\"");
-      response.write(ConsoleUtil.appendParameters("/detail?point=" + pointEncoded, request.getRequestParameters()));
+      response.write(ConsoleUtil.appendParameters("detail?point=" + pointEncoded, request.getRequestParameters()));
       response.write("\">Reload point</a>  &nbsp; \n");
 
       response.write("<a href=\"");
-      response.write(ConsoleUtil.appendParameters("/reset?point=" + pointEncoded, request.getRequestParameters()));
+      response.write(ConsoleUtil.appendParameters("reset?point=" + pointEncoded, request.getRequestParameters()));
       response.write("\">Reset point</a>  &nbsp; ");
 
       response.write(" <a href=\"");
-      response.write(ConsoleUtil.appendParameters("/", request.getRequestParameters(), true));
+      response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters(), true));
       response.write("\">Back to overview</a>\n");
 
 
@@ -154,20 +154,20 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
           "  <tr class=\"noborder\">\n");
 
       response.write("    <td class=\"noborder\"><a href=\"");
-      response.write(ConsoleUtil.appendParameters("/", request.getRequestParameters()));
+      response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters()));
       response.write("\">Reload monitor</a></td>\n");
 
       response.write("    <td class=\"noborder\"><a href=\"");
-      response.write(ConsoleUtil.appendParameters("/reset", request.getRequestParameters()));
+      response.write(ConsoleUtil.appendParameters("reset", request.getRequestParameters()));
       response.write("\">Reset monitor</a>  &nbsp; ");
 
       if (request.getEtmMonitor().isCollecting()) {
         response.write(" <a href=\"");
-        response.write(ConsoleUtil.appendParameters("/stop", request.getRequestParameters()));
+        response.write(ConsoleUtil.appendParameters("stop", request.getRequestParameters()));
         response.write("\">Stop collection</a></td>\n");
       } else {
         response.write(" <a href=\"");
-        response.write(ConsoleUtil.appendParameters("/start", request.getRequestParameters()));
+        response.write(ConsoleUtil.appendParameters("start", request.getRequestParameters()));
         response.write("\">Start collection</a></td>\n");
       }
       response.write("  </tr>\n");
@@ -257,7 +257,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
   }
 
   protected void writeName(ExecutionAggregate aPoint) throws IOException {
-    String link = "/detail?point=";
+    String link = "detail?point=";
     try {
       link = link + URLEncoder.encode(aPoint.getName(), "UTF-8");
     } catch (UnsupportedEncodingException e) {

@@ -48,7 +48,9 @@ import java.io.IOException;
 
 /**
  *
- * A servlet that renders aggregated EtmMonitor results. Always use in conjunction with
+ * A servlet that renders aggregated EtmMonitor results. The EtmMonitor will be retrieve from
+ * {@link etm.core.configuration.EtmManager#getEtmMonitor()}. Therefore it is recommended to
+ * to this service in conjuction with the Etm Lifecycle support
  * {@link etm.contrib.integration.web.EtmMonitorContextListener}.
  *
  * @version $Revision$
@@ -57,21 +59,31 @@ import java.io.IOException;
  */
 public class HttpConsoleServlet extends HttpServlet {
 
-  private ActionRegistry actionRegistry;
-  private EtmMonitor etmMonitor;
-
-
+  protected ActionRegistry actionRegistry;
+  protected EtmMonitor etmMonitor;
+  protected ServletConfig servletConfig;
 
   public void init(ServletConfig aServletConfig) throws ServletException {
     super.init(aServletConfig);
-    etmMonitor = EtmManager.getEtmMonitor();
 
+    servletConfig = aServletConfig;
     // todo read expanded from config
     actionRegistry = new ActionRegistry(new ResourceAccessor(), false);
+    etmMonitor = getEtmMonitor();
   }
 
   protected void doGet(HttpServletRequest aHttpServletRequest, HttpServletResponse aHttpServletResponse) throws ServletException, IOException {
     String actionName = null;
+
+    String requestUri = aHttpServletRequest.getRequestURI();
+    int i = requestUri.lastIndexOf("/");
+    if (i >= 0 ) {
+      actionName = requestUri.substring(i);
+    }
+
+    if ((actionName == null || actionName.length() == 0) && requestUri.indexOf(".") < 0 ) {
+      actionName = "/"; 
+    }
 
     ConsoleAction action = actionRegistry.getAction(actionName);
     if (action == null) {
@@ -80,6 +92,10 @@ public class HttpConsoleServlet extends HttpServlet {
     }
 
     action.execute(new ServletConsoleRequest(etmMonitor, aHttpServletRequest), new ServletConsoleResponse(aHttpServletResponse));
+  }
+
+  protected EtmMonitor getEtmMonitor() throws ServletException {
+    return EtmManager.getEtmMonitor();
   }
 
 }

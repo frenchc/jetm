@@ -29,49 +29,31 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.integration.web.spring;
 
-package etm.contrib.console.servlet;
-
-import etm.contrib.console.ConsoleRequest;
+import etm.contrib.integration.web.HttpRequestPerformanceFilter;
 import etm.core.monitor.EtmMonitor;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.ServletException;
 
 /**
- * Request abstraction for servlet based HTTP console.
+ * A Servlet Filter that spans performance monitoring around HTTP requests for
+ * spring managed EtmMonitor instances. Uses  {@link etm.contrib.integration.web.spring.SpringEtmMonitorContextSupport}
+ * to retrieve the currently active EtmMonitor.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ServletConsoleRequest implements ConsoleRequest {
+public class SpringHttpRequestPerformanceFilter extends HttpRequestPerformanceFilter {
 
-  private EtmMonitor monitor;
-  private Map parameters = new HashMap();
+  protected EtmMonitor getEtmMonitor() throws ServletException {
+    // retrieve name of EtmMonitor to use. may be null    
+    String etmMonitorName = filterConfig.getInitParameter(SpringEtmMonitorContextSupport.ETM_MONITOR_PARAMETER_NAME);
+    WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
 
-  public ServletConsoleRequest(EtmMonitor aMonitor, HttpServletRequest aRequest) {
-    monitor = aMonitor;
-    
-    Enumeration names = aRequest.getParameterNames();
-
-    while (names.hasMoreElements()) {
-      String s = (String) names.nextElement();
-      parameters.put(s, aRequest.getParameter(s));
-    }
+    return SpringEtmMonitorContextSupport.locateEtmMonitor(ctx, etmMonitorName);
   }
 
-  public EtmMonitor getEtmMonitor() {
-    return monitor;
-  }
-
-  public String getRequestParameter(String name) {
-    return (String) parameters.get(name);
-  }
-
-
-  public Map getRequestParameters() {
-    return parameters;
-  }
 }

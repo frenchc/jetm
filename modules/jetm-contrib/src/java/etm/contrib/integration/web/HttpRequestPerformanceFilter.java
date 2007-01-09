@@ -32,16 +32,16 @@
 
 package etm.contrib.integration.web;
 
+import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.MeasurementPoint;
-import etm.core.configuration.EtmManager;
 
 import javax.servlet.Filter;
+import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -56,9 +56,11 @@ import java.io.IOException;
 public class HttpRequestPerformanceFilter implements Filter {
 
   protected EtmMonitor etmMonitor;
+  protected FilterConfig filterConfig;
 
-  public void init(FilterConfig filterConfig) throws ServletException {
-    etmMonitor = EtmManager.getEtmMonitor();
+  public void init(FilterConfig aFilterConfig) throws ServletException {
+    filterConfig = aFilterConfig;
+    etmMonitor = getEtmMonitor();
   }
 
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -76,4 +78,10 @@ public class HttpRequestPerformanceFilter implements Filter {
 
   public void destroy() {
   }
+
+  protected EtmMonitor getEtmMonitor() throws ServletException {
+    return EtmManager.getEtmMonitor();
+  }
+
+
 }

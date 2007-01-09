@@ -30,48 +30,28 @@
  *
  */
 
-package etm.contrib.console.servlet;
+package etm.contrib.integration.web.spring;
 
-import etm.contrib.console.ConsoleRequest;
+import etm.contrib.console.HttpConsoleServlet;
 import etm.core.monitor.EtmMonitor;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.ServletException;
 
 /**
- * Request abstraction for servlet based HTTP console.
+ * A servlet that provides access to aggregated performance statistics
+ * of spring managed EtmMonitor instances. Use {SpringEtmMonitorContextSupport.locateEtmMonitor}
+ * to locate and access the current EtmMonitor instance.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ServletConsoleRequest implements ConsoleRequest {
-
-  private EtmMonitor monitor;
-  private Map parameters = new HashMap();
-
-  public ServletConsoleRequest(EtmMonitor aMonitor, HttpServletRequest aRequest) {
-    monitor = aMonitor;
-    
-    Enumeration names = aRequest.getParameterNames();
-
-    while (names.hasMoreElements()) {
-      String s = (String) names.nextElement();
-      parameters.put(s, aRequest.getParameter(s));
-    }
-  }
-
-  public EtmMonitor getEtmMonitor() {
-    return monitor;
-  }
-
-  public String getRequestParameter(String name) {
-    return (String) parameters.get(name);
-  }
-
-
-  public Map getRequestParameters() {
-    return parameters;
+public class SpringHttpConsoleServlet extends HttpConsoleServlet {
+  protected EtmMonitor getEtmMonitor() throws ServletException {
+    // retrieve name of EtmMonitor to use. may be null
+    String etmMonitorName = servletConfig.getInitParameter(SpringEtmMonitorContextSupport.ETM_MONITOR_PARAMETER_NAME);
+    WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(servletConfig.getServletContext());
+    return SpringEtmMonitorContextSupport.locateEtmMonitor(ctx, etmMonitorName);
   }
 }

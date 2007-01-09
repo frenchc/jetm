@@ -96,7 +96,7 @@ public abstract class ConsoleTests extends TestCase {
     );
     monitor.render(renderer);
 
-    String serverResponse = executeRequest("/");
+    String serverResponse = executeRequest("/index");
     String expected = new String(out.toByteArray(), "UTF-8");
 
     String s = serverResponse.substring(serverResponse.indexOf("close") + 5).trim();

@@ -51,7 +51,7 @@ public class DetailAction extends AbstractAction {
     String point = request.getRequestParameter("point");
 
     if (point == null) {
-      response.sendRedirect("/", request.getRequestParameters());
+      response.sendRedirect("index", request.getRequestParameters());
     } else {
       response.addHeader("Content-Type", "text/html;charset=UTF-8");
       response.addHeader("Pragma", "no-cache");

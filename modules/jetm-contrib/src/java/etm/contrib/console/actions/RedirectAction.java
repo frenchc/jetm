@@ -29,49 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.contrib.console.servlet;
+package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
-import etm.core.monitor.EtmMonitor;
+import etm.contrib.console.ConsoleResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 /**
- * Request abstraction for servlet based HTTP console.
+ * Redirects to a given target.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ServletConsoleRequest implements ConsoleRequest {
+public class RedirectAction extends AbstractAction {
 
-  private EtmMonitor monitor;
-  private Map parameters = new HashMap();
+  private String target;
 
-  public ServletConsoleRequest(EtmMonitor aMonitor, HttpServletRequest aRequest) {
-    monitor = aMonitor;
-    
-    Enumeration names = aRequest.getParameterNames();
 
-    while (names.hasMoreElements()) {
-      String s = (String) names.nextElement();
-      parameters.put(s, aRequest.getParameter(s));
-    }
+  public RedirectAction(String aTarget) {
+    target = aTarget;
   }
 
-  public EtmMonitor getEtmMonitor() {
-    return monitor;
-  }
-
-  public String getRequestParameter(String name) {
-    return (String) parameters.get(name);
-  }
-
-
-  public Map getRequestParameters() {
-    return parameters;
+  public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
+    response.sendRedirect(target, request.getRequestParameters());
   }
 }
