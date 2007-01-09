@@ -48,5 +48,5 @@ public interface EtmMonitorContext {
 
   public EtmMonitor getEtmMonitor();
 
-  public Timer getTimer();
+  public Timer getScheduler();
 }

@@ -71,7 +71,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
   private boolean noStartedErrorMessageFlag = false;
 
-  private Timer scheduler = new Timer(true);
+  private Timer scheduler;
 
   /**
    * Creates a EtmMonitorSupport instance.
@@ -212,6 +212,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       return;
     }
 
+    scheduler = new Timer(true);
+
     // 1. init aggregators
     aggregator.init(new EtmMonitorSupportContext(this, scheduler));
 
@@ -239,6 +241,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
     aggregator.stop();
     shutdownPlugins();
+
+    scheduler.cancel();
   }
 
   public boolean isStarted() {
@@ -367,7 +371,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       return monitor;
     }
 
-    public Timer getTimer() {
+    public Timer getScheduler() {
       return scheduler;
     }
   }

@@ -89,7 +89,8 @@
   </delete>
   <delete>
     <fileset dir="${module.demo.dest.lib}">
-      <include name="**/${release.name}-*${release.version}.jar"/>
+      <include name="**/${release.name}.jar"/>
+      <include name="**/${release.name}-optional.jar"/>
     </fileset>
   </delete>
 </target>

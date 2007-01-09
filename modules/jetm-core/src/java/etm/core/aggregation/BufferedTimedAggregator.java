@@ -39,6 +39,8 @@ import etm.core.renderer.MeasurementRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The BufferedTimedAggregator buffers measurement results
@@ -60,11 +62,12 @@ public class BufferedTimedAggregator implements Aggregator {
 
   protected final Aggregator delegate;
 
-  private TimerThread timerThread;
   private boolean started = false;
   private List buffer;
 
   private long sleepInterval;
+  protected Timer scheduler;
+  protected TimerTask currentTask;
 
 
   /**
@@ -129,7 +132,7 @@ public class BufferedTimedAggregator implements Aggregator {
 
 
   public void init(EtmMonitorContext ctx) {
-    // todo use timer task
+    scheduler = ctx.getScheduler();
     delegate.init(ctx);
   }
 
@@ -139,12 +142,8 @@ public class BufferedTimedAggregator implements Aggregator {
   public void start() {
     delegate.start();
 
-    if (timerThread != null) {
-      return;
-    }
-    timerThread = new TimerThread();
-    timerThread.setDaemon(true);
-    timerThread.start();
+    currentTask = new AggregationTask();
+    scheduler.schedule(currentTask, sleepInterval);
 
     started = true;
   }
@@ -154,9 +153,9 @@ public class BufferedTimedAggregator implements Aggregator {
    */
   public void stop() {
     started = false;
-    timerThread.shouldStop();
-    timerThread.interrupt();
-    timerThread = null;
+    if (currentTask != null) {
+      currentTask.cancel();
+    }
 
     // lets flush all we have.
     flush();
@@ -187,29 +186,14 @@ public class BufferedTimedAggregator implements Aggregator {
   }
 
   /**
-   * Aggregation thread.
+   * Aggregation task.
    */
-  class TimerThread extends Thread {
-    private boolean shouldRun = true;
-
-    public TimerThread() {
-      super("JETM BufferedTimedAggregator");
-    }
+  class AggregationTask extends TimerTask {
 
     public void run() {
-      while (shouldRun) {
-        try {
-          Thread.sleep(sleepInterval);
-          flush();
-        } catch (InterruptedException e) {
-          shouldRun = false;
-        }
-      }
+      flush();
+      scheduler.schedule(new AggregationTask(), sleepInterval);
     }
 
-    public void shouldStop() {
-      shouldRun = false;
-    }
   }
-
 }
