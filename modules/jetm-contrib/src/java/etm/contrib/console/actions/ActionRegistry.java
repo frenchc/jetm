@@ -33,8 +33,11 @@
 package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleAction;
+import etm.contrib.console.ConsoleRequest;
+import etm.contrib.console.ConsoleResponse;
 import etm.contrib.console.util.ResourceAccessor;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,21 +46,15 @@ import java.util.Map;
  * @version $Revision$
  */
 public class ActionRegistry {
-  // Our actions
   private Map actions = new HashMap();
-
 
   public ActionRegistry(ResourceAccessor resourceAccessor, boolean expanded) {
     if (expanded) {
-      ExpandedResultViewAction action = new ExpandedResultViewAction();
-      actions.put("/index", action);
-
+      enableExpanded();
     } else {
-      CollapsedResultViewAction action = new CollapsedResultViewAction();
-      actions.put("/index", action);
-      actions.put("/detail", new DetailAction());
+      enableCollapsed();
     }
-
+    
     actions.put("/", new RedirectAction("index"));
     actions.put("/reset", new ResetMonitorAction());
     actions.put("/start", new StartMonitorAction());
@@ -69,9 +66,35 @@ public class ActionRegistry {
     actions.put("/favicon.ico", new ResourceAction("image/x-icon", resourceAccessor.getFavicon()));
     actions.put("/down-arrow.png", new ResourceAction("image/png", resourceAccessor.getDownarrow()));
     actions.put("/up-arrow.png", new ResourceAction("image/png", resourceAccessor.getUparrow()));
+
+    // workaround to alter actions at runtime
+    actions.put("/expand", new RedirectAction("index") {
+      public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
+        enableExpanded();
+        super.execute(request, response);
+      }
+    });
+
+    actions.put("/collapse", new RedirectAction("index") {
+      public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
+        enableCollapsed();
+        super.execute(request, response);
+      }
+    });
+
   }
 
   public ConsoleAction getAction(String action) {
     return (ConsoleAction) actions.get(action);
   }
+
+  private void enableCollapsed() {
+    actions.put("/index", new CollapsedResultViewAction());
+    actions.put("/detail", new DetailAction());
+  }
+
+  private void enableExpanded() {
+    actions.put("/index", new ExpandedResultViewAction());
+  }
+
 }

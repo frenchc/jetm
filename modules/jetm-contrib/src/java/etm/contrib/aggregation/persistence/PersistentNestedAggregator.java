@@ -29,45 +29,45 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.aggregation.persistence;
 
-package etm.contrib.integration.web;
-
-import etm.core.monitor.MeasurementPoint;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import etm.core.aggregation.NestedAggregator;
+import etm.core.monitor.EtmMonitorContext;
 
 /**
- * A Servlet Filter that spans performance monitoring around WebService document/literal
- * requests that contain a SoapAction HTTP header. Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
- * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link @EtmMonitorContextListener}.
- * <p/>
- * Delegates monitoring to {@link HttpRequestPerformanceFilter} for missing or empty soap actions.
- *
  * @author void.fm
  * @version $Revision$
  */
-public class SoapActionPerformanceFilter extends HttpRequestPerformanceFilter {
+public class PersistentNestedAggregator extends NestedAggregator {
 
-  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-    String soapAction = ((HttpServletRequest) servletRequest).getHeader("SoapAction");
-    if (soapAction == null || soapAction.length() == 0) {
-      super.doFilter(servletRequest, servletResponse, filterChain);
-    } else {
-      MeasurementPoint point = new MeasurementPoint(etmMonitor, "SoapAction " + soapAction);
-      try {
-        filterChain.doFilter(servletRequest, servletResponse);
-      } finally {
-        point.collect();
-      }
+  protected EtmMonitorContext context;
+  protected PersistenceBackend persistenceBackend;
+
+
+
+  public void init(EtmMonitorContext ctx) {
+    super.init(ctx);
+    context = ctx;
+    persistenceBackend = new FileSystemPersistenceBackend();
+  }
+
+  public void start() {
+    super.start();
+    PersistentEtmState state = persistenceBackend.load();
+    if (state != null) {
+      aggregates = state.getAggregates();
+      context.setEtmMonitorState(state.getStartTime(), state.getLastResetTime());
     }
   }
 
-  public void destroy() {
+  public void stop() {
+    PersistentEtmState state = new PersistentEtmState();
+    state.setStartTime(context.getEtmMonitor().getMetaData().getStartTime());
+    state.setLastResetTime(context.getEtmMonitor().getMetaData().getLastResetTime());
+
+    state.setAggregates(aggregates);
+    persistenceBackend.store(state);
+
+    super.stop();
   }
 }

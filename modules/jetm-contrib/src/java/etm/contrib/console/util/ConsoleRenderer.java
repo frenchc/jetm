@@ -35,6 +35,7 @@ package etm.contrib.console.util;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
+import etm.core.Version;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -42,8 +43,11 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,7 +57,10 @@ import java.util.Map;
  * @version $Revision$
  */
 public abstract class ConsoleRenderer implements MeasurementRenderer {
-  protected static final String FOOTER = " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. Measurements provided by <a href=\"http://jetm.void.fm\" target=\"_default\">JETM</a></td></tr>\n";
+  protected static final String FOOTER = " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. " +
+    "Measurements provided by <a href=\"http://jetm.void.fm\" target=\"_default\">JETM " +
+    Version.getVersion() +
+    "</a></td></tr>\n";
   protected static final String NO_RESULTS = " <tr><td colspan=\"6\">No measurement results available.</td></tr>\n";
   protected NumberFormat timeFormatter;
   protected NumberFormat numberFormatter;
@@ -77,13 +84,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     numberFormatter.setGroupingUsed(true);
   }
 
-  protected void writeConsoleHeader(String point) throws IOException {
-    Date currentTime = new Date();
-    String pointEncoded = null;
-    if (point != null) {
-      pointEncoded = URLEncoder.encode(point, "UTF-8");
-    }
-
+  protected void writeCommonHtmlHead() throws IOException {
     response.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
     response.write(
       "<html>\n" +
@@ -94,85 +95,102 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
         " </head>\n");
     response.write("<body>\n<h1>JETM Console</h1>");
 
+  }
 
-    if (point != null) {
-      response.write("<b>");
-      response.write(point);
-      response.write("</b><br /><br />\n");
+  protected void writeDetailHtmlHead(String point) throws IOException {
+    writeCommonHtmlHead();
+    String pointEncoded = URLEncoder.encode(point, "UTF-8");
 
-      response.write("<a href=\"");
-      response.write(ConsoleUtil.appendParameters("detail?point=" + pointEncoded, request.getRequestParameters()));
-      response.write("\">Reload point</a>  &nbsp; \n");
+    response.write("<b>");
+    response.write(point);
+    response.write("</b><br /><br />\n");
 
-      response.write("<a href=\"");
-      response.write(ConsoleUtil.appendParameters("reset?point=" + pointEncoded, request.getRequestParameters()));
-      response.write("\">Reset point</a>  &nbsp; ");
+    response.write("<a href=\"");
+    response.write(ConsoleUtil.appendParameters("detail?point=" + pointEncoded, request.getRequestParameters()));
+    response.write("\">Reload point</a>  &nbsp; \n");
 
-      response.write(" <a href=\"");
-      response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters(), true));
-      response.write("\">Back to overview</a>\n");
+    response.write("<a href=\"");
+    response.write(ConsoleUtil.appendParameters("reset?point=" + pointEncoded, request.getRequestParameters()));
+    response.write("\">Reset point</a>  &nbsp; ");
 
+    response.write(" <a href=\"");
+    response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters(), true));
+    response.write("\">Back to overview</a>\n");
+  }
 
+  protected void writeHtmlHead(boolean expanded) throws IOException {
+    writeCommonHtmlHead();
 
+    Date currentTime = new Date();
+
+    response.write("<table class=\"noborder\">\n");
+
+    response.write("  <tr class=\"noborder\">\n" +
+      "    <td class=\"noborder\">Application start:</td>\n" +
+      "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getStartTime() + "</td>\n" +
+      "  </tr>\n" +
+      "  <tr class=\"noborder\">\n" +
+      "    <td class=\"noborder\">Monitoring period:</td>\n" +
+      "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getLastResetTime() + " - " + currentTime + "</td>\n" +
+      "  </tr>\n" +
+      "  <tr class=\"noborder\">\n" +
+      "    <td class=\"noborder\">Monitoring status:</td>\n");
+
+    if (request.getEtmMonitor().isStarted()) {
+      response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
     } else {
-      response.write("<table class=\"noborder\">\n");
-
-      response.write("  <tr class=\"noborder\">\n" +
-        "    <td class=\"noborder\">Application start:</td>\n" +
-        "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getStartTime() + "</td>\n" +
-        "  </tr>\n" +
-        "  <tr class=\"noborder\">\n" +
-        "    <td class=\"noborder\">Monitoring period:</td>\n" +
-        "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getLastResetTime() + " - " + currentTime + "</td>\n" +
-        "  </tr>\n" +
-        "  <tr class=\"noborder\">\n" +
-        "    <td class=\"noborder\">Monitoring status:</td>\n");
-
-      if (request.getEtmMonitor().isStarted()) {
-        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
-      } else {
-        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
-      }
-
-      response.write(
-        "  </tr>\n" +
-          "  <tr class=\"noborder\">\n" +
-          "    <td class=\"noborder\">Collecting status:</td>\n");
-
-      if (request.getEtmMonitor().isCollecting()) {
-        response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
-      } else {
-        response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
-      }
-
-      response.write(
-        "  </tr>\n" +
-          "  <tr class=\"noborder\">\n" +
-          "    <td class=\"noborder\">&nbsp;</td>\n" +
-          "    <td class=\"noborder\">&nbsp;</td>\n" +
-          "  </tr>\n" +
-          "  <tr class=\"noborder\">\n");
-
-      response.write("    <td class=\"noborder\"><a href=\"");
-      response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters()));
-      response.write("\">Reload monitor</a></td>\n");
-
-      response.write("    <td class=\"noborder\"><a href=\"");
-      response.write(ConsoleUtil.appendParameters("reset", request.getRequestParameters()));
-      response.write("\">Reset monitor</a>  &nbsp; ");
-
-      if (request.getEtmMonitor().isCollecting()) {
-        response.write(" <a href=\"");
-        response.write(ConsoleUtil.appendParameters("stop", request.getRequestParameters()));
-        response.write("\">Stop collection</a></td>\n");
-      } else {
-        response.write(" <a href=\"");
-        response.write(ConsoleUtil.appendParameters("start", request.getRequestParameters()));
-        response.write("\">Start collection</a></td>\n");
-      }
-      response.write("  </tr>\n");
-      response.write("</table>");
+      response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
     }
+
+    response.write(
+      "  </tr>\n" +
+        "  <tr class=\"noborder\">\n" +
+        "    <td class=\"noborder\">Collecting status:</td>\n");
+
+    if (request.getEtmMonitor().isCollecting()) {
+      response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
+    } else {
+      response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
+    }
+
+    response.write(
+      "  </tr>\n" +
+        "  <tr class=\"noborder\">\n" +
+        "    <td class=\"noborder\">&nbsp;</td>\n" +
+        "    <td class=\"noborder\">&nbsp;</td>\n" +
+        "  </tr>\n" +
+        "  <tr class=\"noborder\">\n");
+
+    response.write("    <td class=\"noborder\"><a href=\"");
+    response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters()));
+    response.write("\">Reload monitor</a></td>\n");
+
+    response.write("    <td class=\"noborder\"><a href=\"");
+    response.write(ConsoleUtil.appendParameters("reset", request.getRequestParameters()));
+    response.write("\">Reset monitor</a>  &nbsp; ");
+
+    if (request.getEtmMonitor().isCollecting()) {
+      response.write(" <a href=\"");
+      response.write(ConsoleUtil.appendParameters("stop", request.getRequestParameters()));
+      response.write("\">Stop collection</a> &nbsp; ");
+    } else {
+      response.write(" <a href=\"");
+      response.write(ConsoleUtil.appendParameters("start", request.getRequestParameters()));
+      response.write("\">Start collection</a> &nbsp; ");
+    }
+
+    if (expanded) {
+      response.write(" <a href=\"");
+      response.write(ConsoleUtil.appendParameters("collapse", request.getRequestParameters()));
+      response.write("\">Collapse results</a></td>\n");
+    } else {
+      response.write(" <a href=\"");
+      response.write(ConsoleUtil.appendParameters("expand", request.getRequestParameters()));
+      response.write("\">Expand results</a></td>\n");
+    }
+
+    response.write("  </tr>\n");
+    response.write("</table>");
 
   }
 
@@ -303,135 +321,153 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write("</div>");
   }
 
-  protected void writeName(ExecutionAggregate aPoint, int depth) throws IOException {
+  protected void writeName(SortedExecutionGraph aElement, int depth) throws IOException {
     if (depth > 0) {
       response.write("<div class=\"childname\" >");
     } else {
       response.write("<div class=\"parentname\" >");
     }
 
-    response.write(aPoint.getName());
+    response.write(aElement.getName());
 
-    if (aPoint.hasChilds()) {
+    if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      Map childs = aPoint.getChilds();
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate child = (ExecutionAggregate) iterator.next();
-        writeName(child, currentDepth);
+      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
+        writeName((SortedExecutionGraph) iterator.next(), currentDepth);
       }
     }
 
     response.write("</div>");
   }
 
-  protected void writeTotals(ExecutionAggregate aPoint, int depth) throws IOException {
+  protected void writeTotals(SortedExecutionGraph aElement, int depth) throws IOException {
     if (depth > 0) {
       response.write("<div class=\"childtotal\" >");
     } else {
       response.write("<div class=\"parenttotal\" >");
     }
 
-    response.write(timeFormatter.format(aPoint.getTotal()));
+    response.write(timeFormatter.format(aElement.getTotal()));
 
-    if (aPoint.hasChilds()) {
-      Map childs = aPoint.getChilds();
-
+    if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate child = (ExecutionAggregate) iterator.next();
-        writeTotals(child, currentDepth);
+      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
+        writeTotals((SortedExecutionGraph) iterator.next(), currentDepth);
       }
     }
-
     response.write("</div>");
   }
 
-  protected void writeAverage(ExecutionAggregate aPoint, int depth) throws IOException {
+  protected void writeAverage(SortedExecutionGraph aElement, int depth) throws IOException {
     if (depth > 0) {
       response.write("<div class=\"childtime\" >");
     } else {
       response.write("<div class=\"parenttime\" >");
     }
 
-    response.write(timeFormatter.format(aPoint.getAverage()));
+    response.write(timeFormatter.format(aElement.getAverage()));
 
-    if (aPoint.hasChilds()) {
-      Map childs = aPoint.getChilds();
-
+    if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate child = (ExecutionAggregate) iterator.next();
-        writeAverage(child, currentDepth + 1);
+
+      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
+        writeAverage((SortedExecutionGraph) iterator.next(), currentDepth);
       }
     }
 
     response.write("</div>");
   }
 
-  protected void writeMin(ExecutionAggregate aPoint, int depth) throws IOException {
+  protected void writeMin(SortedExecutionGraph aElement, int depth) throws IOException {
     if (depth > 0) {
       response.write("<div class=\"childtime\" >");
     } else {
       response.write("<div class=\"parenttime\" >");
     }
 
-    response.write(timeFormatter.format(aPoint.getMin()));
+    response.write(timeFormatter.format(aElement.getMin()));
 
-    if (aPoint.hasChilds()) {
-      Map childs = aPoint.getChilds();
-
+    if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate child = (ExecutionAggregate) iterator.next();
-        writeMin(child, currentDepth + 1);
+
+      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
+        writeMin((SortedExecutionGraph) iterator.next(), currentDepth);
       }
     }
 
     response.write("</div>");
   }
 
-  protected void writeMax(ExecutionAggregate aPoint, int depth) throws IOException {
+  protected void writeMax(SortedExecutionGraph aElement, int depth) throws IOException {
     if (depth > 0) {
       response.write("<div class=\"childtime\" >");
     } else {
       response.write("<div class=\"parenttime\" >");
     }
 
-    response.write(timeFormatter.format(aPoint.getMax()));
+    response.write(timeFormatter.format(aElement.getMax()));
 
-    if (aPoint.hasChilds()) {
-      Map childs = aPoint.getChilds();
-
+    if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate child = (ExecutionAggregate) iterator.next();
-        writeMax(child, currentDepth + 1);
+
+      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
+        writeMax((SortedExecutionGraph) iterator.next(), currentDepth);
       }
     }
 
     response.write("</div>");
   }
 
-  protected void writeMeasurements(ExecutionAggregate aPoint, int depth) throws IOException {
+  protected void writeMeasurements(SortedExecutionGraph aElement, int depth) throws IOException {
     if (depth > 0) {
       response.write("<div class=\"childmeasurement\" >");
     } else {
       response.write("<div class=\"parentmeasurement\" >");
     }
 
-    response.write(numberFormatter.format(aPoint.getMeasurements()));
-    if (aPoint.hasChilds()) {
-      Map childs = aPoint.getChilds();
+    response.write(numberFormatter.format(aElement.getMeasurements()));
 
+    if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate child = (ExecutionAggregate) iterator.next();
-        writeMeasurements(child, currentDepth);
+
+      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
+        writeMeasurements((SortedExecutionGraph) iterator.next(), currentDepth);
       }
     }
 
     response.write("</div>");
+  }
+
+  protected class SortedExecutionGraph extends ExecutionAggregate {
+    private List sortedChilds;
+
+    public SortedExecutionGraph(ExecutionAggregate aAggregate, ExecutionAggregateComparator aComparator) {
+      super(aAggregate.getName());
+      setMin(aAggregate.getMin());
+      setMax(aAggregate.getMin());
+      setTotal(aAggregate.getMin());
+      setMeasurements(aAggregate.getMeasurements());
+
+      if (aAggregate.hasChilds()) {
+        Map childs = aAggregate.getChilds();
+        sortedChilds = new ArrayList();
+        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
+          SortedExecutionGraph child = new SortedExecutionGraph((ExecutionAggregate) iterator.next(), aComparator);
+          sortedChilds.add(child);
+        }
+        Collections.sort(sortedChilds, aComparator);
+      }
+    }
+
+    public List getSortedChilds() {
+      return sortedChilds;
+    }
+
+
+    public boolean hasChilds() {
+      return sortedChilds != null;
+    }
   }
 }

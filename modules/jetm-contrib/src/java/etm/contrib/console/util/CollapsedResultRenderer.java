@@ -62,14 +62,14 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
 
   public CollapsedResultRenderer(ConsoleRequest aRequest, ConsoleResponse aResponse, ExecutionAggregateComparator aComparator) {
     super(aRequest, aResponse, aComparator);
- }
+  }
 
 
   public void render(Map points) {
     Object[] values = points.values().toArray();
 
     try {
-      writeConsoleHeader(null);
+      writeHtmlHead(false);
 
       response.write("<table>\n");
       writeTableHeader();

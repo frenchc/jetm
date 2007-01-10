@@ -2,7 +2,7 @@
 <beans>
 
   <bean id="etmMonitor" class="etm.core.monitor.NestedMonitor"
-        init-method="start" destroy-method="stop" />
+        init-method="start" destroy-method="stop" autowire="constructor"/>
 
 
   <!--
@@ -14,7 +14,7 @@
     <constructor-arg>
       <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
         <constructor-arg>
-          <bean class="etm.core.aggregation.NestedAggregator"/>
+          <bean class="etm.contrib.aggregation.persistence.PersistentNestedAggregator"/>
         </constructor-arg>
       </bean>
     </constructor-arg>

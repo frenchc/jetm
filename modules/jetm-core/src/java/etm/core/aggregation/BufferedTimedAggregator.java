@@ -39,7 +39,6 @@ import etm.core.renderer.MeasurementRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -57,7 +56,7 @@ public class BufferedTimedAggregator implements Aggregator {
   private static final int DEFAULT_BUFFER_SIZE = 1000;
   private static final int MIN_AGGREGATION_INTERVAL = 10;
 
-  // the lock for our background thread
+  // the lock for threaded executions
   protected final Object lock = new Object();
 
   protected final Aggregator delegate;
@@ -66,8 +65,7 @@ public class BufferedTimedAggregator implements Aggregator {
   private List buffer;
 
   private long sleepInterval;
-  protected Timer scheduler;
-  protected TimerTask currentTask;
+  private EtmMonitorContext ctx;
 
 
   /**
@@ -80,7 +78,6 @@ public class BufferedTimedAggregator implements Aggregator {
     delegate = aAggregator;
     setAggregationInterval(BufferedTimedAggregator.DEFAULT_AGGREGATION_INTERVAL);
     buffer = new ArrayList(BufferedTimedAggregator.DEFAULT_BUFFER_SIZE);
-
   }
 
   public void add(MeasurementPoint point) {
@@ -131,9 +128,9 @@ public class BufferedTimedAggregator implements Aggregator {
   }
 
 
-  public void init(EtmMonitorContext ctx) {
-    scheduler = ctx.getScheduler();
-    delegate.init(ctx);
+  public void init(EtmMonitorContext aCtx) {
+    ctx = aCtx;
+    delegate.init(aCtx);
   }
 
   /**
@@ -142,8 +139,11 @@ public class BufferedTimedAggregator implements Aggregator {
   public void start() {
     delegate.start();
 
-    currentTask = new AggregationTask();
-    scheduler.schedule(currentTask, sleepInterval);
+    ctx.getScheduler().scheduleAtFixedRate(new TimerTask() {
+      public void run() {
+        flush();
+      }
+    }, sleepInterval, sleepInterval);
 
     started = true;
   }
@@ -153,9 +153,6 @@ public class BufferedTimedAggregator implements Aggregator {
    */
   public void stop() {
     started = false;
-    if (currentTask != null) {
-      currentTask.cancel();
-    }
 
     // lets flush all we have.
     flush();
@@ -165,7 +162,7 @@ public class BufferedTimedAggregator implements Aggregator {
 
   public AggregatorMetaData getMetaData() {
     return new AggregatorMetaData(BufferedTimedAggregator.class,
-      BufferedTimedAggregator.DESCRIPTION_PREFIX + sleepInterval + etm.core.aggregation.BufferedTimedAggregator.DESCRIPTION_POSTFIX,
+      BufferedTimedAggregator.DESCRIPTION_PREFIX + sleepInterval + BufferedTimedAggregator.DESCRIPTION_POSTFIX,
       true,
       delegate.getMetaData());
   }
@@ -179,21 +176,12 @@ public class BufferedTimedAggregator implements Aggregator {
 
   public void setAggregationInterval(long aAggregationInterval) {
     if (aAggregationInterval < BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL) {
-      throw new IllegalArgumentException("Aggregation intervals lower than 10 miliseconds not supported.");
+      throw new IllegalArgumentException("Aggregation intervals lower than " +
+        BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL +
+        " miliseconds not supported.");
     }
 
     sleepInterval = aAggregationInterval;
   }
 
-  /**
-   * Aggregation task.
-   */
-  class AggregationTask extends TimerTask {
-
-    public void run() {
-      flush();
-      scheduler.schedule(new AggregationTask(), sleepInterval);
-    }
-
-  }
 }

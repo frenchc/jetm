@@ -32,10 +32,10 @@ public class ExpandedResultRenderer extends ConsoleRenderer {
 
 
   public void render(Map points) {
-    Object[] values = points.values().toArray();   
+    Object[] values = points.values().toArray();
 
     try {
-      writeConsoleHeader(null);
+      writeHtmlHead(true);
 
       response.write("<table>\n");
       writeTableHeader();
@@ -46,26 +46,26 @@ public class ExpandedResultRenderer extends ConsoleRenderer {
 
         Arrays.sort(values, comparator);
         for (int i = 0; i < values.length; i++) {
-          ExecutionAggregate point = (ExecutionAggregate) values[i];
+          SortedExecutionGraph graphSorted = new SortedExecutionGraph((ExecutionAggregate) values[i], comparator);
 
           response.write(" <tr>\n");
           response.write("  <td>");
-          writeName(point, 0);
+          writeName(graphSorted, 0);
           response.write("</td>\n");
           response.write("  <td>");
-          writeMeasurements(point, 0);
+          writeMeasurements(graphSorted, 0);
           response.write("</td>\n");
           response.write("  <td>");
-          writeAverage(point, 0);
+          writeAverage(graphSorted, 0);
           response.write("</td>\n");
           response.write("  <td>");
-          writeMin(point, 0);
+          writeMin(graphSorted, 0);
           response.write("</td>\n");
           response.write("  <td>");
-          writeMax(point, 0);
+          writeMax(graphSorted, 0);
           response.write("</td>\n");
           response.write("  <td>");
-          writeTotals(point, 0);
+          writeTotals(graphSorted, 0);
           response.write("</td>\n");
           response.write(" </tr>\n");
         }
@@ -74,7 +74,7 @@ public class ExpandedResultRenderer extends ConsoleRenderer {
       response.write(FOOTER);
       response.write("</table>\n");
       response.write(" </body>\n</html>");
-      
+
     } catch (IOException e) {
       throw new RuntimeException("Unable to write to writer: " + e);
     }

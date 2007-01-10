@@ -29,31 +29,53 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.integration.web.spring;
+package etm.contrib.integration.spring.web;
 
-import etm.contrib.integration.web.HttpRequestPerformanceFilter;
 import etm.core.monitor.EtmMonitor;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * A Servlet Filter that spans performance monitoring around HTTP requests for
- * spring managed EtmMonitor instances. Uses  {@link etm.contrib.integration.web.spring.SpringEtmMonitorContextSupport}
- * to retrieve the currently active EtmMonitor.
+ * Helper class to retrieve EtmMonitor instance from spring configuration.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class SpringHttpRequestPerformanceFilter extends HttpRequestPerformanceFilter {
+public class SpringEtmMonitorContextSupport {
 
-  protected EtmMonitor getEtmMonitor() throws ServletException {
-    // retrieve name of EtmMonitor to use. may be null    
-    String etmMonitorName = filterConfig.getInitParameter(SpringEtmMonitorContextSupport.ETM_MONITOR_PARAMETER_NAME);
-    WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
+  public static final String ETM_MONITOR_PARAMETER_NAME = "etmMonitorName";
 
-    return SpringEtmMonitorContextSupport.locateEtmMonitor(ctx, etmMonitorName);
+  public static EtmMonitor locateEtmMonitor(ApplicationContext ctx, String etmMonitorName) throws ServletException {
+    if (etmMonitorName != null) {
+      try {
+        return (EtmMonitor) ctx.getBean(etmMonitorName);
+      } catch (BeansException e) {
+        throw new ServletException("Unable to locate EtmMonitor instance called '" + etmMonitorName + "'");         
+      }
+    } else {
+      Map map = ctx.getBeansOfType(EtmMonitor.class);
+      if (map.size() > 0) {
+        if (map.size() == 1) {
+          return (EtmMonitor) map.values().iterator().next();
+        } else {
+          StringBuffer beanNames = new StringBuffer();
+          for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+            String beanName = (String) iterator.next();
+            beanNames.append(beanName);
+            beanNames.append(',');
+          }
+          beanNames.deleteCharAt(beanNames.length() - 1);
+          throw new ServletException("Located more than one EtmMonitor instance. Please specify the name " +
+            "of EtmMonitor instance. [Found: " + beanNames + "]");
+        }
+      } else {
+        throw new ServletException("Unable to locate EtmMonitor instance in bean definitions.");
+      }
+    }
   }
 
 }

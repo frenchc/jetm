@@ -59,9 +59,9 @@ public class DetailResultRenderer extends ConsoleRenderer {
 
   public void render(Map points) {
     ExecutionAggregate point = (ExecutionAggregate) points.get(measurementPointName);
-   
+
     try {
-      writeConsoleHeader(measurementPointName);
+      writeDetailHtmlHead(measurementPointName);
 
       response.write("<table>\n");
       writeTableHeader();
@@ -69,33 +69,34 @@ public class DetailResultRenderer extends ConsoleRenderer {
       if (point == null) {
         response.write(NO_RESULTS.toCharArray());
       } else {
+        SortedExecutionGraph graphSorted = new SortedExecutionGraph(point, comparator);
+
         response.write(" <tr>\n");
         response.write("  <td>");
-        writeName(point, 0);
+        writeName(graphSorted, 0);
         response.write("</td>\n");
         response.write("  <td>");
-        writeMeasurements(point, 0);
+        writeMeasurements(graphSorted, 0);
         response.write("</td>\n");
         response.write("  <td>");
-        writeAverage(point, 0);
+        writeAverage(graphSorted, 0);
         response.write("</td>\n");
         response.write("  <td>");
-        writeMin(point, 0);
+        writeMin(graphSorted, 0);
         response.write("</td>\n");
         response.write("  <td>");
-        writeMax(point, 0);
+        writeMax(graphSorted, 0);
         response.write("</td>\n");
         response.write("  <td>");
-        writeTotals(point, 0);
+        writeTotals(graphSorted, 0);
         response.write("</td>\n");
         response.write(" </tr>\n");
-
       }
 
       response.write(FOOTER);
       response.write("</table>\n");
       response.write(" </body>\n</html>");
-      
+
     } catch (IOException e) {
       throw new RuntimeException("Unable to write to writer: " + e);
     }

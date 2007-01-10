@@ -29,48 +29,56 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.integration.web.spring;
 
-import etm.core.monitor.EtmMonitor;
-import org.springframework.context.ApplicationContext;
+package etm.core;
 
-import javax.servlet.ServletException;
-import java.util.Iterator;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 
 /**
- * Helper class to retrieve EtmMonitor instance from spring configuration.
  *
- * @author void.fm
+ * Contain JETM version information.
+ *
  * @version $Revision$
+ * @author void.fm
  */
-public class SpringEtmMonitorContextSupport {
+public class Version {
 
-  public static final String ETM_MONITOR_PARAMETER_NAME = "etmMonitorName";
+  private static Map properties;
 
-  public static EtmMonitor locateEtmMonitor(ApplicationContext ctx, String etmMonitorName) throws ServletException {
-    Map map = ctx.getBeansOfType(EtmMonitor.class);
-    if (etmMonitorName != null) {
-      return (EtmMonitor) ctx.getBean(etmMonitorName);
-    } else {
-      if (map.size() > 0) {
-        if (map.size() == 1) {
-          return (EtmMonitor) map.values().iterator().next();
-        } else {
-          StringBuffer beanNames = new StringBuffer();
-          for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-            String beanName = (String) iterator.next();
-            beanNames.append(beanName);
-            beanNames.append(',');
-          }
-          beanNames.deleteCharAt(beanNames.length() - 1);
-          throw new ServletException("Located more than one EtmMonitor instance. Please specify the name " +
-            "of EtmMonitor instance. [Found: " + beanNames + "]");
+  static {
+    Properties props = new Properties();
+    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("jetm.version");
+    if (in != null) {
+      try {
+        try {
+          props.load(in);
+        } catch (IOException e) {
+          // also ignored
         }
-      } else {
-        throw new ServletException("Unable to locate EtmMonitor instance in bean definitions.");
+      } finally {
+        try {
+          in.close();
+        } catch (IOException e) {
+          // ignored
+        }
       }
     }
+    properties = props;
+  }
+  public static String getVersion() {
+    return (String) properties.get("jetm.version");
   }
 
+  public static String getBuildDate() {
+    return (String) properties.get("jetm.build.date");
+
+  }
+
+  public static String getBuildBy() {
+    return (String) properties.get("jetm.build.by");
+
+  }
 }

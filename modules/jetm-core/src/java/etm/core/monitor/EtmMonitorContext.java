@@ -32,6 +32,7 @@
 
 package etm.core.monitor;
 
+import java.util.Date;
 import java.util.Timer;
 
 /**
@@ -49,4 +50,6 @@ public interface EtmMonitorContext {
   public EtmMonitor getEtmMonitor();
 
   public Timer getScheduler();
+
+  public void setEtmMonitorState(Date startTime, Date lastResetTime);
 }

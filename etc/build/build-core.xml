@@ -1,4 +1,13 @@
 <target name="build-jetm-core" depends="init-core">
+  <tstamp>
+      <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
+  </tstamp>
+
+  <echo file="${module.core.dest.classes}/jetm.version">
+jetm.version=${release.version}
+jetm.build.by=${user.name}
+jetm.build.date=${build.time}
+  </echo>
   <javac
     srcdir="${module.core.src.java}"
     excludes="**/SunHighResTimer.java,**/Java15NanoTimer.java"

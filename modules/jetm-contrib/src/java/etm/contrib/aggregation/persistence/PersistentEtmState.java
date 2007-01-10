@@ -30,44 +30,59 @@
  *
  */
 
-package etm.contrib.integration.web;
+package etm.contrib.aggregation.persistence;
 
-import etm.core.monitor.MeasurementPoint;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.Date;
+import java.util.Map;
 
 /**
- * A Servlet Filter that spans performance monitoring around WebService document/literal
- * requests that contain a SoapAction HTTP header. Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
- * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link @EtmMonitorContextListener}.
- * <p/>
- * Delegates monitoring to {@link HttpRequestPerformanceFilter} for missing or empty soap actions.
  *
- * @author void.fm
- * @version $Revision$
  */
-public class SoapActionPerformanceFilter extends HttpRequestPerformanceFilter {
+public class PersistentEtmState implements Externalizable {
+  private static final long serialVersionUID = 1L;
 
-  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-    String soapAction = ((HttpServletRequest) servletRequest).getHeader("SoapAction");
-    if (soapAction == null || soapAction.length() == 0) {
-      super.doFilter(servletRequest, servletResponse, filterChain);
-    } else {
-      MeasurementPoint point = new MeasurementPoint(etmMonitor, "SoapAction " + soapAction);
-      try {
-        filterChain.doFilter(servletRequest, servletResponse);
-      } finally {
-        point.collect();
-      }
-    }
+  private Date startTime;
+  private Date lastResetTime;
+
+  private Map aggregates;
+
+  public Date getStartTime() {
+    return startTime;
   }
 
-  public void destroy() {
+  public void setStartTime(Date aStartTime) {
+    startTime = aStartTime;
+  }
+
+  public Date getLastResetTime() {
+    return lastResetTime;
+  }
+
+  public void setLastResetTime(Date aLastResetTime) {
+    lastResetTime = aLastResetTime;
+  }
+
+  public Map getAggregates() {
+    return aggregates;
+  }
+
+  public void setAggregates(Map aAggregates) {
+    aggregates = aAggregates;
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(startTime);
+    out.writeObject(lastResetTime);
+    out.writeObject(aggregates);
+  }
+
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    startTime = (Date) in.readObject();
+    lastResetTime = (Date) in.readObject();
+    aggregates = (Map) in.readObject();
   }
 }

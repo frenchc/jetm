@@ -29,29 +29,19 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.contrib.integration.web.spring;
-
-import etm.contrib.console.HttpConsoleServlet;
-import etm.core.monitor.EtmMonitor;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.ServletException;
+package etm.contrib.aggregation.persistence;
 
 /**
- * A servlet that provides access to aggregated performance statistics
- * of spring managed EtmMonitor instances. Use {SpringEtmMonitorContextSupport.locateEtmMonitor}
- * to locate and access the current EtmMonitor instance.
+ *
+ * A PersistenceBackend will be used to store and load performance
+ * results.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class SpringHttpConsoleServlet extends HttpConsoleServlet {
-  protected EtmMonitor getEtmMonitor() throws ServletException {
-    // retrieve name of EtmMonitor to use. may be null
-    String etmMonitorName = servletConfig.getInitParameter(SpringEtmMonitorContextSupport.ETM_MONITOR_PARAMETER_NAME);
-    WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(servletConfig.getServletContext());
-    return SpringEtmMonitorContextSupport.locateEtmMonitor(ctx, etmMonitorName);
-  }
+public interface PersistenceBackend {
+
+  public PersistentEtmState load();
+
+  public void store(PersistentEtmState state);
 }

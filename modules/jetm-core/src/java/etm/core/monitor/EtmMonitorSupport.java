@@ -361,7 +361,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     private EtmMonitor monitor;
     private Timer scheduler;
 
-
     public EtmMonitorSupportContext(EtmMonitor aMonitor, Timer aScheduler) {
       monitor = aMonitor;
       scheduler = aScheduler;
@@ -373,6 +372,11 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
     public Timer getScheduler() {
       return scheduler;
+    }
+
+    public void setEtmMonitorState(Date aStartTime, Date aLastResetTime) {
+      startTime = aStartTime;
+      lastReset = aLastResetTime;
     }
   }
 }

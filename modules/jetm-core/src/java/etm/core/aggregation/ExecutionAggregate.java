@@ -34,7 +34,10 @@ package etm.core.aggregation;
 
 import etm.core.monitor.MeasurementPoint;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -47,9 +50,11 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public class ExecutionAggregate implements Serializable {
+public class ExecutionAggregate implements Externalizable {
 
-  private final String name;
+  private static final long serialVersionUID = 1L;
+
+  private String name;
   private long measurements = 0;
 
   private double min = 0.0;
@@ -58,6 +63,10 @@ public class ExecutionAggregate implements Serializable {
 
   // we use late init
   private Map childs;
+
+
+  public ExecutionAggregate() {
+  }
 
   public ExecutionAggregate(String aName) {
     name = aName;
@@ -174,4 +183,21 @@ public class ExecutionAggregate implements Serializable {
     return aggregate;
   }
 
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(name);
+    out.writeLong(measurements);
+    out.writeDouble(min);
+    out.writeDouble(max);
+    out.writeDouble(total);
+    out.writeObject(childs);
+  }
+
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    name = (String) in.readObject();
+    measurements = in.readLong();
+    min = in.readDouble();
+    max = in.readDouble();
+    total = in.readDouble();
+    childs = (Map) in.readObject();
+  }
 }

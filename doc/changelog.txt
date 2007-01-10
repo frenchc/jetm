@@ -1,10 +1,12 @@
 Release 1.2.0
  New features
-  - Sort by name, executions and time in HTTP console
-  - Added Simple and Spring HTTP console servlet
+  - Sort by name, executions and times in HTTP console
+  - Switch collapsed/expanded mode in HTTP console during runtime
+  - Added HTTP console servlet for EtmManager and Spring Managed EtmMonitors
   - Activated JMX support again (deprecated old JMX MBeans)
   - Added EtmPluginMetada - thus enabling lookup for runtime configuration such as HTTP Console listen port
   - Added init(EtmMonitorContext) to plugin and aggregator lifecycle
+  - Added Filter for aggregator chains.
 
  Changes, Fixes and Improvements
   - Five minute tutorial added

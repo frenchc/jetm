@@ -47,17 +47,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *
  * A servlet that renders aggregated EtmMonitor results. The EtmMonitor will be retrieve from
  * {@link etm.core.configuration.EtmManager#getEtmMonitor()}. Therefore it is recommended to
  * to this service in conjuction with the Etm Lifecycle support
  * {@link etm.contrib.integration.web.EtmMonitorContextListener}.
+ * <p/>
+ * By default performance results will be rendered expanded. The servlet context parameter <code>expanded</code>
+ * can be used to override this behavior. Set <code>expanded</code> false to render all results including
+ * nested ones, andset it to false to return to default behavior.
  *
- * @version $Revision$
  * @author void.fm
- *
+ * @version $Revision$
  */
 public class HttpConsoleServlet extends HttpServlet {
+
+  public static final String EXPANDED_RESULTS = "expanded";
 
   protected ActionRegistry actionRegistry;
   protected EtmMonitor etmMonitor;
@@ -67,8 +71,9 @@ public class HttpConsoleServlet extends HttpServlet {
     super.init(aServletConfig);
 
     servletConfig = aServletConfig;
-    // todo read expanded from config
-    actionRegistry = new ActionRegistry(new ResourceAccessor(), false);
+
+    boolean expanded = "true".equalsIgnoreCase(servletConfig.getInitParameter(EXPANDED_RESULTS));
+    actionRegistry = new ActionRegistry(new ResourceAccessor(), expanded);
     etmMonitor = getEtmMonitor();
   }
 
@@ -77,12 +82,12 @@ public class HttpConsoleServlet extends HttpServlet {
 
     String requestUri = aHttpServletRequest.getRequestURI();
     int i = requestUri.lastIndexOf("/");
-    if (i >= 0 ) {
+    if (i >= 0) {
       actionName = requestUri.substring(i);
     }
 
-    if ((actionName == null || actionName.length() == 0) && requestUri.indexOf(".") < 0 ) {
-      actionName = "/"; 
+    if (actionName == null || actionName.length() == 0) {
+      actionName = "/";
     }
 
     ConsoleAction action = actionRegistry.getAction(actionName);

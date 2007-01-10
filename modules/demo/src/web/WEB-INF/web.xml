@@ -11,7 +11,7 @@
 
   <filter>
     <filter-name>requestPerformanceFilter</filter-name>
-    <filter-class>etm.contrib.integration.web.spring.SpringHttpRequestPerformanceFilter</filter-class>
+    <filter-class>etm.contrib.integration.spring.web.SpringHttpRequestPerformanceFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -26,7 +26,11 @@
   </servlet>
   <servlet>
     <servlet-name>performanceMonitor</servlet-name>
-    <servlet-class>etm.contrib.integration.web.spring.SpringHttpConsoleServlet</servlet-class>
+    <servlet-class>etm.contrib.integration.spring.web.SpringHttpConsoleServlet</servlet-class>
+    <init-param>
+      <param-name>expanded</param-name>
+      <param-value>true</param-value>
+    </init-param>
     <load-on-startup>2</load-on-startup>
   </servlet>
 

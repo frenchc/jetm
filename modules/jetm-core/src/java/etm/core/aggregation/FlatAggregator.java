@@ -50,8 +50,7 @@ import java.util.Map;
 
 public class FlatAggregator implements Aggregator {
 
-
-  private Map aggregates = new HashMap();
+  protected Map aggregates = new HashMap();
 
   public FlatAggregator() {
   }
