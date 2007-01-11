@@ -335,6 +335,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       for (int i = 0; i < plugins.size(); i++) {
         EtmPlugin etmPlugin = (EtmPlugin) plugins.get(i);
         try {
+          etmPlugin.init(new EtmMonitorSupportContext(this, scheduler));          
           etmPlugin.start();
         } catch (Exception e) {
           // todo since I don't want to use a logging framework what do we do?

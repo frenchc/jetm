@@ -5,6 +5,7 @@
   <!ENTITY contrib SYSTEM "file:etc/build/build-contrib.xml">
   <!ENTITY samples SYSTEM "file:etc/build/build-samples.xml">
   <!ENTITY demo SYSTEM "file:etc/build/build-demo.xml">
+  <!ENTITY site SYSTEM "file:etc/build/build-site.xml">
   ]>
 
 <project name="JETM build Script" default="build-all" basedir=".">
@@ -25,6 +26,8 @@
   &contrib;
   &samples;
   &demo;
+  &site;
+
 
   <target name="build-jetm" description="Builds all JETM core modules">
     <antcall target="build-jetm-core"/>
@@ -49,19 +52,12 @@
           depends="clean-all, build-all, test-jetm, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle, dist-sample-sources">
 
     <!-- create distribution -->
-    <copy todir="${build.site.dist.dir}" filtering="true" preservelastmodified="true">
-      <fileset dir="${module.site.dir}">
-        <include name="**/*.html"/>
-        <include name="**/*.css"/>
-        <include name="**/*.png"/>
-        <include name="**/*.ico"/>
-      </fileset>
-      <filterset>
-        <filter token="api" value="../api"/>
-        <filter token="samples" value="../../samples"/>
-        <filter token="dtd" value="../dtd"/>
-      </filterset>
-    </copy>
+    <antcall target="copy-site-to-target">
+      <param name="site.dest.dir" value="${build.site.dist.dir}"/>
+      <param name="site.filter.api" value="../api"/>
+      <param name="site.filter.samples" value="../../samples"/>
+      <param name="site.filter.dtd" value="../dtd"/>
+    </antcall>
 
     <tar destfile="${build.dist.dir}/${release.name}-${release.version}.tar.gz" compression="gzip">
       <tarfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
@@ -97,20 +93,13 @@
     </zip>
 
     <!-- Create website -->
-    <copy todir="${build.site.web.dir}" filtering="true" preservelastmodified="true">
-      <fileset dir="${module.site.dir}">
-        <include name="**/*.html"/>
-        <include name="**/*.css"/>
-        <include name="**/*.png"/>
-        <include name="**/*.ico"/>
-        <include name="**/*.txt"/>
-      </fileset>
-      <filterset>
-        <filter token="api" value="api"/>
-        <filter token="samples" value="samples"/>
-        <filter token="dtd" value="dtd"/>
-      </filterset>
-    </copy>
+    <antcall target="copy-site-to-target">
+      <param name="site.dest.dir" value="${build.site.web.dir}"/>
+      <param name="site.filter.api" value="api"/>
+      <param name="site.filter.samples" value="samples"/>
+      <param name="site.filter.dtd" value="dtd"/>
+    </antcall>
+
     <copy todir="${build.site.web.dir}/api" filtering="true" preservelastmodified="true">
       <fileset dir="${build.javadoc.dir}"/>
     </copy>
@@ -136,9 +125,23 @@
         <include name="**/${release.name}-samples-${release.version}.zip"/>
       </fileset>
     </copy>
-    
-    <tar destfile="${build.dist.dir}/${release.name}-site-${release.version}.tar.gz" compression="gzip">
-      <tarfileset prefix="${release.name}-site" dir="${build.site.web.dir}"/>
+
+    <tar destfile="${build.dist.dir}/${release.name}-site.tar.gz" compression="gzip">
+      <tarfileset dir="${build.site.web.dir}"/>
+    </tar>
+  </target>
+
+  <target name="site-html-update" depends="clean-all">
+    <mkdir dir="${build.dist.dir}" />
+    <antcall target="copy-site-to-target">
+      <param name="site.dest.dir" value="${build.site.web.dir}"/>
+      <param name="site.filter.api" value="api"/>
+      <param name="site.filter.samples" value="samples"/>
+      <param name="site.filter.dtd" value="dtd"/>
+    </antcall>
+
+    <tar destfile="${build.dist.dir}/${release.name}-site-update.tar.gz" compression="gzip">
+      <tarfileset dir="${build.site.web.dir}"/>
     </tar>
   </target>
 

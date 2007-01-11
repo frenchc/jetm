@@ -1,0 +1,22 @@
+<target name="copy-site-to-target">
+
+  <copy todir="${site.dest.dir}" filtering="true" preservelastmodified="true">
+      <fileset dir="${module.site.dir}">
+        <include name="**/*.html"/>
+      </fileset>
+      <filterset>
+        <filter token="api" value="${site.filter.api}"/>
+        <filter token="samples" value="${site.filter.samples}"/>
+        <filter token="dtd" value="${site.filter.dtd}"/>
+      </filterset>
+    </copy>
+    <copy todir="${site.dest.dir}" preservelastmodified="true">
+      <fileset dir="${module.site.dir}">
+        <include name="**/*.css"/>
+        <include name="**/*.png"/>
+        <include name="**/*.ico"/>
+        <include name="**/*.txt"/>
+      </fileset>
+    </copy>
+
+</target>
