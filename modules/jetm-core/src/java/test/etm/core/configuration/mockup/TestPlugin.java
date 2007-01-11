@@ -32,9 +32,13 @@
 
 package test.etm.core.configuration.mockup;
 
-import etm.core.plugin.EtmPlugin;
-import etm.core.monitor.EtmMonitor;
 import etm.core.metadata.PluginMetaData;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmMonitorContext;
+import etm.core.plugin.EtmPlugin;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -53,10 +57,13 @@ public class TestPlugin implements EtmPlugin {
   private long longValue;
   private int intValue;
   private String stringValue;
+  private Class clazzValue;
+  private List listValue;
+  private Map mapValue;
 
 
-  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
-   etmMonitor = aEtmMonitor;
+  public void init(EtmMonitorContext ctx) {
+    etmMonitor = ctx.getEtmMonitor();  
   }
 
   public void start() {
@@ -114,6 +121,30 @@ public class TestPlugin implements EtmPlugin {
 
   public void setStringValue(String aStringValue) {
     stringValue = aStringValue;
+  }
+
+  public Class getClazzValue() {
+    return clazzValue;
+  }
+
+  public void setClazzValue(Class aClazzValue) {
+    clazzValue = aClazzValue;
+  }
+
+  public List getListValue() {
+    return listValue;
+  }
+
+  public void setListValue(List aListValue) {
+    listValue = aListValue;
+  }
+
+  public Map getMapValue() {
+    return mapValue;
+  }
+
+  public void setMapValue(Map aMapValue) {
+    mapValue = aMapValue;
   }
 
   public PluginMetaData getPluginMetaData() {

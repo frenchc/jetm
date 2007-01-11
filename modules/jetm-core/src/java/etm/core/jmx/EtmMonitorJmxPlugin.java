@@ -33,7 +33,7 @@
 package etm.core.jmx;
 
 import etm.core.metadata.PluginMetaData;
-import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.plugin.EtmPlugin;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -63,18 +63,13 @@ public class EtmMonitorJmxPlugin implements EtmPlugin {
 
   private static final String DESCRIPTION = "A plugin the exports the current EtmMonitor to JMX.";
 
-  private EtmMonitor monitor;
   private MBeanServer mbeanServer;
 
   private String etmMonitorObjectName = DEFAULT_ETM_MONITOR_OBJECT_NAME;
   // default mbeanservername is null
   private String mbeanServerName;
   private boolean overwriteRegistered = false;
-
-
-  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
-    monitor = aEtmMonitor;
-  }
+  private EtmMonitorContext ctx;
 
   /**
    * Sets the name of the MBeanServer to use. Default is <code>null</code>.
@@ -110,6 +105,11 @@ public class EtmMonitorJmxPlugin implements EtmPlugin {
     overwriteRegistered = flag;
   }
 
+
+  public void init(EtmMonitorContext aCtx) {
+    ctx = aCtx;
+  }
+
   public void start() {
     try {
       ArrayList mbeanServers = MBeanServerFactory.findMBeanServer(mbeanServerName);
@@ -117,11 +117,11 @@ public class EtmMonitorJmxPlugin implements EtmPlugin {
       if (mbeanServer != null) {
         ObjectName objectName = new ObjectName(etmMonitorObjectName);
         try {
-          mbeanServer.registerMBean(new EtmMonitorMBean(monitor), objectName);
+          mbeanServer.registerMBean(new EtmMonitorMBean(ctx.getEtmMonitor()), objectName);
         } catch (InstanceAlreadyExistsException e) {
           if (overwriteRegistered) {
             mbeanServer.unregisterMBean(objectName);
-            mbeanServer.registerMBean(new EtmMonitorMBean(monitor), objectName);
+            mbeanServer.registerMBean(new EtmMonitorMBean(ctx.getEtmMonitor()), objectName);
           } else {
             System.err.println("Error registering EtmMonitor MBean. An instance exists for name " + etmMonitorObjectName);
           }

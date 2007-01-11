@@ -30,28 +30,53 @@
  *
  */
 
-package etm.core.aggregation.filter;
+package etm.core.configuration;
 
-import etm.core.monitor.MeasurementPoint;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
+ * Base class for property capable configurations.
  *
- * An AggregationFilter is used to filter whether a given MeasurementPoint
- * is interesting or not.
- *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  * @since 1.2.0
  */
-public interface AggregationFilter {
+public class PropertySupport {
+  private Map properties;
 
-  /**
-   *
-   * Checks whether the given measurementPoint matches or not.
-   *
-   * @param measurementPoint The measurement point.
-   * @return True for match, otherwhise false.
-   */
-  public boolean matches(MeasurementPoint measurementPoint);
+  public Map getProperties() {
+    return properties;
+  }
+
+  public void addProperty(String propertyName, String propertyValue) {
+    if (properties == null) {
+      properties = new HashMap();
+    }
+    int dotIndex = propertyName.indexOf(".");
+    if (dotIndex > 0) {
+      String name = propertyName.substring(0, dotIndex);
+      String key = propertyName.substring(dotIndex + 1);
+      if (properties.containsKey(name)) {
+        ((Map) properties.get(name)).put(key, propertyValue);
+      } else {
+        Map map = new HashMap();
+        map.put(key, propertyValue);
+        properties.put(name, map);
+      }
+    } else {
+      if (properties.containsKey(propertyName)) {
+        Object currentValue = properties.get(propertyName);
+        List valueList = new LinkedList();
+        valueList.add(currentValue);
+        valueList.add(propertyValue);
+        properties.put(propertyName, valueList);
+      } else {
+        properties.put(propertyName, propertyValue);
+      }
+    }
+  }
 
 }

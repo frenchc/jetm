@@ -62,6 +62,7 @@ import javax.servlet.ServletException;
  * </pre>
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class SpringHttpRequestPerformanceFilter extends HttpRequestPerformanceFilter {
 

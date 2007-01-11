@@ -72,7 +72,7 @@ public class NestedAggregator extends FlatAggregator {
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(NestedAggregator.class, "An cummulating aggregator for nested representation.", false);
+    return new AggregatorMetaData(NestedAggregator.class, "A cummulating aggregator for nested representation.", false);
   }
 
 

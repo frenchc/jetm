@@ -130,6 +130,7 @@ public class EtmMonitorMetaData implements Serializable {
   /**
    * Returns the plugin Metadata. May be null;
    * @return A list of {@link etm.core.metadata.PluginMetaData} or null;
+   * @since 1.2.0
    */
   public List getPluginMetaData() {
     return pluginMetaData;

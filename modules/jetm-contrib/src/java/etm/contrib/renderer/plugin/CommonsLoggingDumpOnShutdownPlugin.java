@@ -60,7 +60,7 @@ public class CommonsLoggingDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
 
   public void stop() {
     StringWriter writer = new StringWriter();
-    etmMonitor.render(new SimpleTextRenderer(writer));
+    ctx.getEtmMonitor().render(new SimpleTextRenderer(writer));
     log.info("Dumping performance results..." +
       System.getProperty("line.separator") +
       writer.toString());

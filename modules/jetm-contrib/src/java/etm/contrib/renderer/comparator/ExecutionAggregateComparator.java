@@ -42,6 +42,7 @@ import java.util.Comparator;
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class ExecutionAggregateComparator implements Comparator {
 

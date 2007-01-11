@@ -32,11 +32,11 @@
 
 package etm.core.configuration;
 
-import etm.core.monitor.EtmMonitor;
-import etm.core.timer.ExecutionTimer;
-import etm.core.timer.DefaultTimer;
 import etm.core.aggregation.Aggregator;
+import etm.core.monitor.EtmMonitor;
 import etm.core.plugin.EtmPlugin;
+import etm.core.timer.DefaultTimer;
+import etm.core.timer.ExecutionTimer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -81,7 +81,6 @@ public class EtmMonitorFactory {
       }
     }
 
-
     EtmMonitor etmMonitor = (EtmMonitor) obj;
     List pluginConfig = monitorConfig.getPluginConfig();
     if (pluginConfig != null) {
@@ -103,12 +102,13 @@ public class EtmMonitorFactory {
       try {
         return (ExecutionTimer) instantiateClass(jetmTimer[i]);
       } catch (Exception e) {
-        // todo add warning
         System.err.println("Unable to instantiate execution timer '" + jetmTimer[i] + "'. Trying next. " + e);
       } catch (Throwable e) {
-        // for our implementations we get a NoSuchMehtodError for
-        // JDK's < 5.0
-        // todo we need to rethrow threaddeath here
+        // for our implementation we get a NoSuchMethodError for JDK's < 5.0
+        // therefore ignore, unless it's ThreadDeath
+        if (e instanceof ThreadDeath) {
+          throw (ThreadDeath) e;
+        }
       }
     }
 
@@ -123,7 +123,7 @@ public class EtmMonitorFactory {
     }
   }
 
-  private static Aggregator createAggregators(EtmMonitorConfig monitorConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+  private static Aggregator createAggregators(EtmMonitorConfig monitorConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
     if (monitorConfig.getAggregatorRoot() != null) {
 
       Aggregator current = (Aggregator) monitorConfig.getAggregatorRoot().getAggregatorClass().newInstance();
@@ -155,7 +155,7 @@ public class EtmMonitorFactory {
     }
   }
 
-  private static void addPlugins(EtmMonitor aEtmMonitor, List aPluginConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+  private static void addPlugins(EtmMonitor aEtmMonitor, List aPluginConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
     for (int i = 0; i < aPluginConfig.size(); i++) {
       EtmPluginConfig etmPluginConfig = (EtmPluginConfig) aPluginConfig.get(i);
       Object obj = etmPluginConfig.getPluginClass().newInstance();
@@ -168,7 +168,7 @@ public class EtmMonitorFactory {
   }
 
 
-  private static void setProperties(Object obj, Map properties) throws IllegalAccessException, InvocationTargetException {
+  private static void setProperties(Object obj, Map properties) throws IllegalAccessException, InvocationTargetException, ClassNotFoundException {
     // todo just improve  ;)
     Method[] methods = obj.getClass().getMethods();
     for (int i = 0; i < methods.length; i++) {
@@ -177,14 +177,14 @@ public class EtmMonitorFactory {
       if (methodName.startsWith("set") && methodName.length() >= 4) {
         String propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
         if (properties.containsKey(propertyName) && method.getParameterTypes().length == 1) {
-          String value = (String) properties.get(propertyName);
+          Object value = properties.get(propertyName);
 
           Class clazz = method.getParameterTypes()[0];
 
           if (int.class.isAssignableFrom(clazz)) {
-            method.invoke(obj, new Object[]{new Integer(Integer.parseInt(value))});
+            method.invoke(obj, new Object[]{new Integer(Integer.parseInt((String) value))});
           } else if (long.class.isAssignableFrom(clazz)) {
-            method.invoke(obj, new Object[]{new Long(Long.parseLong(value))});
+            method.invoke(obj, new Object[]{new Long(Long.parseLong((String) value))});
           } else if (boolean.class.isAssignableFrom(clazz)) {
             if ("true".equals(value)) {
               method.invoke(obj, new Object[]{Boolean.TRUE});
@@ -193,6 +193,16 @@ public class EtmMonitorFactory {
             }
           } else if (String.class.isAssignableFrom(clazz)) {
             method.invoke(obj, new Object[]{value});
+          } else if (Class.class.isAssignableFrom(clazz)) {
+            method.invoke(obj, new Object[]{Class.forName((String) value)});
+          } else if (Map.class.isAssignableFrom(clazz)) {
+            if (value instanceof Map) {
+              method.invoke(obj, new Object[]{value});
+            }
+          } else if (List.class.isAssignableFrom(clazz)) {
+            if (value instanceof List) {
+              method.invoke(obj, new Object[]{value});
+            }
           }
         }
       }

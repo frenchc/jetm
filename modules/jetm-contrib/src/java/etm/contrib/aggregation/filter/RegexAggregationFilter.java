@@ -30,56 +30,75 @@
  *
  */
 
-package etm.core;
+package etm.contrib.aggregation.filter;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import etm.core.aggregation.AggregationFilter;
+import etm.core.monitor.MeasurementPoint;
+
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
- * Contain JETM version information.
+ * The RegexAggregationFilter filters measurement point names based
+ * on a list of JDK 1.4 regex.
  *
  * @version $Revision$
  * @author void.fm
  * @since 1.2.0
+ * @see java.util.regex.Pattern
  */
-public class Version {
+public class RegexAggregationFilter implements AggregationFilter {
+  protected final HashSet validNames;
+  protected Pattern[] pattern;
 
-  private static Map properties;
+  /**
+   *
+   * Create a RegexAggregationFilter instance based on a list
+   * of regex pattern separated by semicolon.
+   *
+   * @param listOfPattern Java 5 Regex separated by semicolon.
+   */
+  public RegexAggregationFilter(String listOfPattern) {
+    this(listOfPattern.split(";"));
+  }
 
-  static {
-    Properties props = new Properties();
-    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("jetm.version");
-    if (in != null) {
-      try {
-        try {
-          props.load(in);
-        } catch (IOException e) {
-          // also ignored
-        }
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
-        }
+
+  /**
+   *
+   * Create a RegexAggregationFilter
+   *
+   * @param regexPattern The Java 5 regex patterm/
+   */
+  public RegexAggregationFilter(String[] regexPattern) {
+    this.pattern = new Pattern[regexPattern.length];
+
+    for (int i = 0; i < regexPattern.length; i++) {
+      String string = regexPattern[i].trim();
+      if (string.length() > 0) {
+        this.pattern[i] = Pattern.compile(string);
       }
     }
-    properties = props;
-  }
-  public static String getVersion() {
-    return (String) properties.get("jetm.version");
+
+    validNames = new HashSet();
   }
 
-  public static String getBuildDate() {
-    return (String) properties.get("jetm.build.date");
+  public boolean matches(MeasurementPoint aPoint) {
+    String name = aPoint.getName();
+    if (validNames.contains(name)) {
+      return true;
+    }
 
-  }
-
-  public static String getBuildBy() {
-    return (String) properties.get("jetm.build.by");
-
+    for (int i = 0; i < pattern.length; i++) {
+      Matcher matcher = pattern[i].matcher(name);
+      if (matcher.matches()) {
+        synchronized (validNames) {
+          validNames.add(name);
+        }
+        return true;
+      }
+    }
+    return false;
   }
 }

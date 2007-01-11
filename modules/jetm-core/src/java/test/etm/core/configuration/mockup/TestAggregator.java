@@ -38,6 +38,9 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Simple test aggregator used for xml config test.
  *
@@ -52,6 +55,9 @@ public class TestAggregator implements Aggregator {
   private long longValue;
   private int intValue;
   private String stringValue;
+  private Class clazzValue;
+  private List listValue;
+  private Map mapValue;
 
   public TestAggregator(Aggregator aTarget) {
     target = aTarget;
@@ -128,5 +134,30 @@ public class TestAggregator implements Aggregator {
 
   public void setStringValue(String aStringValue) {
     stringValue = aStringValue;
+  }
+
+  public Class getClazzValue() {
+    return clazzValue;
+  }
+
+  public void setClazzValue(Class aClazzValue) {
+    clazzValue = aClazzValue;
+  }
+
+
+  public List getListValue() {
+    return listValue;
+  }
+
+  public void setListValue(List aListValue) {
+    listValue = aListValue;
+  }
+
+  public Map getMapValue() {
+    return mapValue;
+  }
+
+  public void setMapValue(Map aMapValue) {
+    mapValue = aMapValue;
   }
 }

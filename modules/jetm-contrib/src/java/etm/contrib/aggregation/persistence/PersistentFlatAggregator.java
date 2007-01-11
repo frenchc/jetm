@@ -32,10 +32,80 @@
 package etm.contrib.aggregation.persistence;
 
 import etm.core.aggregation.FlatAggregator;
+import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
+
+import java.util.Map;
 
 /**
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class PersistentFlatAggregator extends FlatAggregator {
+
+   protected EtmMonitorContext context;
+  protected PersistenceBackend persistenceBackend;
+  protected Map persistenceBackendProperties;
+
+  public void init(EtmMonitorContext ctx) {
+    super.init(ctx);
+    context = ctx;
+
+    if (persistenceBackend == null) {
+      persistenceBackend = new FileSystemPersistenceBackend();
+    }
+    persistenceBackend.init(persistenceBackendProperties);
+  }
+
+  public void start() {
+    super.start();
+    PersistentEtmState state = persistenceBackend.load();
+    if (state != null) {
+      aggregates = state.getAggregates();
+      context.setEtmMonitorState(state.getStartTime(), state.getLastResetTime());
+    }
+  }
+
+  public void stop() {
+    PersistentEtmState state = new PersistentEtmState();
+    state.setStartTime(context.getEtmMonitor().getMetaData().getStartTime());
+    state.setLastResetTime(context.getEtmMonitor().getMetaData().getLastResetTime());
+
+    state.setAggregates(aggregates);
+    persistenceBackend.store(state);
+
+    super.stop();
+  }
+
+  public void setPersistenceBackend(PersistenceBackend aPersistenceBackend) {
+    if (persistenceBackend != null) {
+      throw new IllegalStateException("Persistence backend already set. Please use setPersistenceBackend or setPersistenceBackendClass");
+    }
+    persistenceBackend = aPersistenceBackend;
+  }
+
+  public void setPersistenceBackendProperties(Map someProperties) {
+    persistenceBackendProperties = someProperties;
+  }
+
+  public void setPersistenceBackendClass(Class aPersistenceBackendClazz) {
+    if (persistenceBackend != null) {
+      throw new IllegalStateException("Persistence backend already set. Please use setPersistenceBackend or setPersistenceBackendClass");
+    }
+    try {
+      persistenceBackend = (PersistenceBackend) aPersistenceBackendClazz.newInstance();
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Error instantiating persistence class " +
+        aPersistenceBackendClazz +
+        ":" +
+        e.getMessage());
+    }
+  }
+
+
+  public AggregatorMetaData getMetaData() {
+    return new AggregatorMetaData(PersistentFlatAggregator.class, "A cummulating aggregator for flat representation " +
+      "that restores previous state from a persistence backend.", false);
+  }
 }

@@ -52,6 +52,6 @@ public class SystemOutDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
 
   public void stop() {
     System.out.println("Dumping performance results...");
-    etmMonitor.render(new SimpleTextRenderer());
+    ctx.getEtmMonitor().render(new SimpleTextRenderer());
   }
 }

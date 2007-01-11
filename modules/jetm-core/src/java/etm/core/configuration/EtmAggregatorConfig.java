@@ -34,9 +34,6 @@ package etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
 
-import java.util.Map;
-import java.util.HashMap;
-
 /**
  *
  * EtmAggregatorConfig represents an aggregator chain
@@ -46,16 +43,11 @@ import java.util.HashMap;
  * @author void.fm
  *
  */
-public class EtmAggregatorConfig {
+public class EtmAggregatorConfig extends PropertySupport {
   private Class aggregatorClass;
-  private Map properties;
 
   public Class getAggregatorClass() {
     return aggregatorClass;
-  }
-
-  public Map getProperties() {
-    return properties;
   }
 
   public void setAggregatorClass(String aggregatorClassName) {
@@ -72,10 +64,4 @@ public class EtmAggregatorConfig {
     }
   }
 
-  public void addProperty(String propertyName, String propertyValue) {
-    if (properties == null) {
-      properties = new HashMap();
-    }
-    properties.put(propertyName, propertyValue);
-  }
 }

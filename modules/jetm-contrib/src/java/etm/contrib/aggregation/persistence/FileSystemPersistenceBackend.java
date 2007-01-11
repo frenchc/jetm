@@ -37,32 +37,33 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 
 /**
+ * A file based persistence store that uses Java Serialization. By default
+ *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class FileSystemPersistenceBackend implements PersistenceBackend {
 
   private File persistencePath = new File(System.getProperty("java.io.tmpdir"));
   private String persistenceFile = "jetm-state.ser";
 
-  public FileSystemPersistenceBackend() {
-  }
 
-  public FileSystemPersistenceBackend(String aPersistenceFile) {
-    persistenceFile = aPersistenceFile;
-  }
+  public void init(Map persistenceBackendProperties) {
+    if (persistenceBackendProperties != null) {
+      String value = (String) persistenceBackendProperties.get("persistencePath");
+      if (value != null) {
+        persistencePath = new File(value);
+      }
 
-
-  public FileSystemPersistenceBackend(File aPersistencePath) {
-    persistencePath = aPersistencePath;
-  }
-
-
-  public FileSystemPersistenceBackend(File aPersistencePath, String aPersistenceFile) {
-    persistencePath = aPersistencePath;
-    persistenceFile = aPersistenceFile;
+      value = (String) persistenceBackendProperties.get("persistenceFile");
+      if (value != null) {
+        persistenceFile = value;
+      }
+    }
   }
 
   public PersistentEtmState load() {
@@ -76,7 +77,10 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
           state = (PersistentEtmState) in.readObject();
         } catch (Exception e) {
           // ignored
-          e.printStackTrace();
+          System.err.println("Error loading state from file " +
+            file.getAbsolutePath() +
+            ":" +
+            e.getMessage());
         } finally {
           if (in != null) {
             try {
@@ -113,7 +117,9 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
       tmpFile.renameTo(dest);
     } catch (Exception e) {
       // ignored
-      e.printStackTrace();
+      System.err.println("Error writirng state to  file " +
+        tmpFile.getAbsolutePath() +
+        " : " + e.getMessage());
     } finally {
       if (out != null) {
         try {

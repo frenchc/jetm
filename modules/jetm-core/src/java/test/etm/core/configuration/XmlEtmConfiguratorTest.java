@@ -49,7 +49,9 @@ import test.etm.core.configuration.mockup.TestTimer;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Testing XML based configuration.
@@ -133,6 +135,21 @@ public class XmlEtmConfiguratorTest extends TestCase {
     assertEquals(12, testAggregator.getIntValue());
     assertEquals(12124234324234L, testAggregator.getLongValue());
     assertEquals("testString", testAggregator.getStringValue());
+    assertEquals(HashMap.class, testAggregator.getClazzValue());
+
+    Map map = testAggregator.getMapValue();
+    assertNotNull(map);
+    assertEquals(3, map.size());
+    assertEquals(map.get("key1"), "value1");
+    assertEquals(map.get("key2"), "value2");
+    assertEquals(map.get("key3"), "value3");
+
+    List list = testAggregator.getListValue();
+    assertNotNull(list);
+    assertEquals(2, list.size());
+    assertEquals(list.get(0), "value1");
+    assertEquals(list.get(1), "value2");
+
   }
 
 
@@ -155,6 +172,21 @@ public class XmlEtmConfiguratorTest extends TestCase {
     assertEquals(12, testPlugin.getIntValue());
     assertEquals(12124234324234L, testPlugin.getLongValue());
     assertEquals("testString", testPlugin.getStringValue());
+    assertEquals(HashMap.class, testPlugin.getClazzValue());
+
+
+    Map map = testPlugin.getMapValue();
+    assertNotNull(map);
+    assertEquals(3, map.size());
+    assertEquals(map.get("key1"), "value1");
+    assertEquals(map.get("key2"), "value2");
+    assertEquals(map.get("key3"), "value3");
+
+    List list = testPlugin.getListValue();
+    assertNotNull(list);
+    assertEquals(2, list.size());
+    assertEquals(list.get(0), "value1");
+    assertEquals(list.get(1), "value2");
 
     etmMonitor.start();
     assertTrue(testPlugin.isStarted());
@@ -182,11 +214,6 @@ public class XmlEtmConfiguratorTest extends TestCase {
     assertFalse(etmMonitor.isStarted());
     assertTrue(etmMonitor.isCollecting());
   }
-
-  public void testInvalidConfig() {
-
-  }
-
 
   private URL locateResource(String classPathName) throws IOException {
     URL url = getClass().getClassLoader().getResource(classPathName);

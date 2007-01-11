@@ -32,7 +32,7 @@
 
 package etm.contrib.integration.spring.web;
 
-import etm.contrib.console.HttpConsoleServlet;
+import etm.contrib.integration.web.HttpConsoleServlet;
 import etm.core.monitor.EtmMonitor;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -64,6 +64,7 @@ import javax.servlet.ServletException;
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class SpringHttpConsoleServlet extends HttpConsoleServlet {
 

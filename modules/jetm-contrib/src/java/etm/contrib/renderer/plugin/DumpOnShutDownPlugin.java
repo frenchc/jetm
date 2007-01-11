@@ -32,12 +32,12 @@
 
 package etm.contrib.renderer.plugin;
 
-import etm.core.plugin.EtmPlugin;
-import etm.core.monitor.EtmMonitor;
 import etm.core.metadata.PluginMetaData;
+import etm.core.monitor.EtmMonitorContext;
+import etm.core.plugin.EtmPlugin;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -49,9 +49,10 @@ import java.util.HashMap;
  *
  */
 public abstract class DumpOnShutDownPlugin implements EtmPlugin {
-  protected EtmMonitor etmMonitor;
   private static final String DEFAULT_LOG_NAME = "etm-dump";
+
   protected String logName = DEFAULT_LOG_NAME;
+  protected EtmMonitorContext ctx;
 
   private String description;
 
@@ -60,12 +61,12 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin {
     description = aDescription;
   }
 
-  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
-    etmMonitor = aEtmMonitor;
-  }
-
   public void setLogName(String aLogName) {
     logName = aLogName;
+  }
+
+  public void init(EtmMonitorContext aCtx) {
+    ctx = aCtx;
   }
 
   /**

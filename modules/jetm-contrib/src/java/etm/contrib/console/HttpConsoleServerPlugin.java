@@ -33,7 +33,7 @@
 package etm.contrib.console;
 
 import etm.core.metadata.PluginMetaData;
-import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.plugin.EtmPlugin;
 
 import java.util.HashMap;
@@ -53,10 +53,9 @@ public class HttpConsoleServerPlugin extends HttpConsoleServer implements EtmPlu
     super(null);
   }
 
-  public void setEtmMonitor(EtmMonitor aEtmMonitor) {
-    etmMonitor = aEtmMonitor;
+  public void init(EtmMonitorContext ctx) {
+    etmMonitor = ctx.getEtmMonitor();
   }
-
 
   /**
    * Returns the current HTTP console metadata. The provided map of properties contains

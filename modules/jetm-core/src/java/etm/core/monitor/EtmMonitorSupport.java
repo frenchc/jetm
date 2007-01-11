@@ -266,9 +266,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       plugins = new ArrayList();
     }
 
-    aEtmPlugin.setEtmMonitor(this);
     plugins.add(aEtmPlugin);
     if (started) {
+      aEtmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
       aEtmPlugin.start();
     }
   }

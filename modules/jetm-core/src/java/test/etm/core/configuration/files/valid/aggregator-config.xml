@@ -12,6 +12,12 @@
         <property name="longValue">12124234324234</property>
         <property name="intValue">12</property>
         <property name="stringValue">testString</property>
+        <property name="clazzValue">java.util.HashMap</property>
+        <property name="listValue">value1</property>
+        <property name="listValue">value2</property>
+        <property name="mapValue.key1">value1</property>
+        <property name="mapValue.key2">value2</property>
+        <property name="mapValue.key3">value3</property>
       </properties>
     </chain-element>
     <chain-root>

@@ -30,8 +30,9 @@
  *
  */
 
-package etm.contrib.console;
+package etm.contrib.integration.web;
 
+import etm.contrib.console.ConsoleAction;
 import etm.contrib.console.actions.ActionRegistry;
 import etm.contrib.console.servlet.ServletConsoleRequest;
 import etm.contrib.console.servlet.ServletConsoleResponse;
@@ -58,6 +59,7 @@ import java.io.IOException;
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class HttpConsoleServlet extends HttpServlet {
 

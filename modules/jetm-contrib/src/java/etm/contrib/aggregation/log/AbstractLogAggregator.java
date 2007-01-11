@@ -31,9 +31,9 @@
  */
 package etm.contrib.aggregation.log;
 
+import etm.contrib.aggregation.filter.RegexAggregationFilter;
+import etm.core.aggregation.AggregationFilter;
 import etm.core.aggregation.Aggregator;
-import etm.core.aggregation.filter.AggregationFilter;
-import etm.core.aggregation.filter.RegexAggregationFilter;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
@@ -101,10 +101,10 @@ public abstract class AbstractLogAggregator implements Aggregator {
    * Adds a filter for measurement point names that
    * should be logged. Uses {@link java.util.regex.Pattern}
    * for pattern matching. Multiple pattern may be supplied
-   * separated by a ";".
+   * separated by a ";". Requires JDK 1.4 or higher.
    *
    * @param matchingPattern One or more pattern, separated by ;
-   * @see etm.core.aggregation.filter.RegexAggregationFilter
+   * @see etm.contrib.aggregation.filter.RegexAggregationFilter
    */
   public void setFilterPattern(String matchingPattern) {
     filter = new RegexAggregationFilter(matchingPattern);

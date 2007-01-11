@@ -33,7 +33,7 @@
 package etm.core.plugin;
 
 import etm.core.metadata.PluginMetaData;
-import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmMonitorContext;
 
 /**
  * An EtmPlugin is an optional service which may be attached to
@@ -46,13 +46,16 @@ import etm.core.monitor.EtmMonitor;
  */
 public interface EtmPlugin {
 
+
   /**
-   * Sets the current monitor while registering it with
-   * and EtmMonitor. Will always be called before {@link #start()}.
+   * Lifecycle Method, will be called before {@link #start()}, after initalization of
+   * the current EtmMonitor runtime.
    *
-   * @param aEtmMonitor The associated etmMontor instance.
+   * @param ctx The current EtmMonitor Context.
+   * @since 1.2.0
    */
-  public void setEtmMonitor(EtmMonitor aEtmMonitor);
+  public void init(EtmMonitorContext ctx);
+
 
   /**
    * Callback for plugin start.
@@ -66,7 +69,6 @@ public interface EtmPlugin {
   public void stop();
 
   /**
-   *
    * Returns metadata of the plugin.
    *
    * @return The metadata.

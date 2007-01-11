@@ -30,74 +30,28 @@
  *
  */
 
-package etm.core.aggregation.filter;
+package etm.core.aggregation;
 
 import etm.core.monitor.MeasurementPoint;
 
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  *
- * The RegexAggregationFilter filters measurement point names based
- * on a list of JDK 1.5 regex.
+ * An AggregationFilter is used to filter whether a given MeasurementPoint
+ * is interesting or not.
  *
  * @version $Revision$
  * @author void.fm
  * @since 1.2.0
  */
-public class RegexAggregationFilter implements AggregationFilter {
-  protected final HashSet validNames;
-  protected Pattern[] pattern;
-
+public interface AggregationFilter {
 
   /**
    *
-   * Create a RegexAggregationFilter instance based on a list
-   * of regex pattern separated by semicolon.
+   * Checks whether the given measurementPoint matches or not.
    *
-   * @param listOfPattern Java 5 Regex separated by semicolon.
+   * @param measurementPoint The measurement point.
+   * @return True for match, otherwhise false.
    */
-  public RegexAggregationFilter(String listOfPattern) {
-    this(listOfPattern.split(";"));
-  }
+  public boolean matches(MeasurementPoint measurementPoint);
 
-
-  /**
-   *
-   * Create a RegexAggregationFilter
-   *
-   * @param regexPattern The Java 5 regex patterm/
-   */
-  public RegexAggregationFilter(String[] regexPattern) {
-    this.pattern = new Pattern[regexPattern.length];
-
-    for (int i = 0; i < regexPattern.length; i++) {
-      String string = regexPattern[i].trim();
-      if (string.length() > 0) {
-        this.pattern[i] = Pattern.compile(string);
-      }
-    }
-
-    validNames = new HashSet();
-  }
-
-  public boolean matches(MeasurementPoint aPoint) {
-    String name = aPoint.getName();
-    if (validNames.contains(name)) {
-      return true;
-    }
-
-    for (int i = 0; i < pattern.length; i++) {
-      Matcher matcher = pattern[i].matcher(name);
-      if (matcher.matches()) {
-        synchronized (validNames) {
-          validNames.add(name);
-        }
-        return true;
-      }
-    }
-    return false;
-  }
 }

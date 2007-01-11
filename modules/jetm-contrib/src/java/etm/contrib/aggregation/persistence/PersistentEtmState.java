@@ -40,7 +40,11 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * Represents aggregated state to be persistet.
  *
+ * @author void.fm
+ * @version $Revision$
+ * @since 1.2.0
  */
 public class PersistentEtmState implements Externalizable {
   private static final long serialVersionUID = 1L;

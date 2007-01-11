@@ -32,23 +32,32 @@
 package etm.contrib.aggregation.persistence;
 
 import etm.core.aggregation.NestedAggregator;
+import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 
+import java.util.Map;
+
 /**
+ * A nested aggregator that supports persistence provided by a [@link PersistenceBackend}. By default the persistence
+ * backend is {@link etm.contrib.aggregation.persistence.FileSystemPersistenceBackend}, ho
+ *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class PersistentNestedAggregator extends NestedAggregator {
-
   protected EtmMonitorContext context;
   protected PersistenceBackend persistenceBackend;
-
-
+  protected Map persistenceBackendProperties;
 
   public void init(EtmMonitorContext ctx) {
     super.init(ctx);
     context = ctx;
-    persistenceBackend = new FileSystemPersistenceBackend();
+
+    if (persistenceBackend == null) {
+      persistenceBackend = new FileSystemPersistenceBackend();
+    }
+    persistenceBackend.init(persistenceBackendProperties);
   }
 
   public void start() {
@@ -69,5 +78,35 @@ public class PersistentNestedAggregator extends NestedAggregator {
     persistenceBackend.store(state);
 
     super.stop();
+  }
+
+  public void setPersistenceBackend(PersistenceBackend aPersistenceBackend) {
+    if (persistenceBackend != null) {
+      throw new IllegalStateException("Persistence backend already set. Please use setPersistenceBackend or setPersistenceBackendClass");
+    }
+    persistenceBackend = aPersistenceBackend;
+  }
+
+  public void setPersistenceBackendProperties(Map someProperties) {
+    persistenceBackendProperties = someProperties;
+  }
+
+  public void setPersistenceBackendClass(Class aPersistenceBackendClazz) {
+    if (persistenceBackend != null) {
+      throw new IllegalStateException("Persistence backend already set. Please use setPersistenceBackend or setPersistenceBackendClass");
+    }
+    try {
+      persistenceBackend = (PersistenceBackend) aPersistenceBackendClazz.newInstance();
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Error instantiating persistence class " +
+        aPersistenceBackendClazz +
+        ":" +
+        e.getMessage());
+    }
+  }
+
+  public AggregatorMetaData getMetaData() {
+    return new AggregatorMetaData(PersistentNestedAggregator.class, "A cummulating aggregator for nested representation " +
+      "that restores previous state from a persistence backend.", false);
   }
 }

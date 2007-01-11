@@ -115,6 +115,7 @@ public interface Aggregator {
    * started at this point.
    *
    * @param ctx The current EtmMonitor Context.
+   * @since 1.2.0
    */
   public void init(EtmMonitorContext ctx);
 
