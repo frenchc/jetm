@@ -126,7 +126,7 @@
       </fileset>
     </copy>
 
-    <tar destfile="${build.dist.dir}/${release.name}-site-update.tar.gz" compression="gzip">
+    <tar destfile="${build.dist.dir}/${release.name}-site.tar.gz" compression="gzip">
       <tarfileset dir="${build.site.web.dir}"/>
     </tar>
   </target>
