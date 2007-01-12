@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://jetm.void.fm/schema/jetm-spring-config-1.2"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            targetNamespace="http://jetm.void.fm/schema/jetm-spring-config-1.2"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+  <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+  <xsd:element name="monitor">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="beans:identifiedType">
+          <xsd:sequence>
+            <xsd:choice minOccurs="0">
+              <xsd:element name="monitor-configuration" type="configurationType"></xsd:element>
+              <xsd:element name="aggregator-chain" type="aggregatorChainType"></xsd:element>
+            </xsd:choice>
+            <xsd:sequence minOccurs="0">
+              <xsd:element name="extension" type="extensionType"/>
+            </xsd:sequence>
+
+          </xsd:sequence>
+          <xsd:attribute name="type" type="xsd:string"/>
+          <xsd:attribute name="timer" type="xsd:string"/>
+
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="console">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="beans:identifiedType">
+          <xsd:attribute name="expanded" type="xsd:boolean"/>
+          <xsd:attribute name="listenPort" type="xsd:int"/>
+          <xsd:attribute name="workerSize" type="xsd:int"/>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="measurement">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="beans:identifiedType">
+          <xsd:sequence>
+            <xsd:element name="beans" type="xsd:string"/>
+            <xsd:element name="methods" type="xsd:string" minOccurs="0"/>
+          </xsd:sequence>
+          <xsd:attribute name="target" type="xsd:string"/>
+
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="configurationType">
+    <xsd:sequence>
+      <xsd:element name="buffer" type="bufferType"/>
+      <xsd:element name="raw-data-log" type="rawDataLogType"/>
+      <xsd:element name="persistence" type="persistenceType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="extensionType">
+    <xsd:sequence>
+      <xsd:element name="plugin" type="pluginType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="aggregatorChainType"></xsd:complexType>
+
+
+  <xsd:complexType name="pluginType">
+    <xsd:complexContent>
+      <xsd:extension base="propertySupportType">
+        <xsd:attribute name="class" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="bufferType">
+    <xsd:complexContent>
+      <xsd:extension base="propertySupportType">
+        <xsd:attribute name="type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="rawDataLogType">
+    <xsd:complexContent>
+      <xsd:extension base="propertySupportType">
+        <xsd:attribute name="type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="persistenceType">
+    <xsd:complexContent>
+      <xsd:extension base="propertySupportType">
+        <xsd:attribute name="enabled" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="propertySupportType">
+    <xsd:sequence>
+      <xsd:element name="property" type="propertyType" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="propertyType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="name" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+</xsd:schema>    
+    
