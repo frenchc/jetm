@@ -74,8 +74,7 @@
 
 
   <!--
-    Create proxy around our service classes and daos,
-    thus enabling performance monitoring for all public methods.
+    Measure method calls of these beans
   -->
   <jetm:measurement id="webMonitoring">
     <jetm:beans>*Controller,*Validator</jetm:beans>
