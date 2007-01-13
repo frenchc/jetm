@@ -32,18 +32,55 @@
 
 package etm.contrib.integration.spring.configuration;
 
+import etm.contrib.console.HttpConsoleServer;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 /**
  *
+ * @version $Revision$
+ * @author $Id$
+ * @since 1.2.0
  */
 public class ConsoleBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
-    return null;
+    String id = aElement.getAttribute("id");
+
+    String expanded = aElement.getAttribute("expanded");
+    String listenPort = aElement.getAttribute("listen-port");
+    String workerSize = aElement.getAttribute("worker-size");
+    String monitorRef = aElement.getAttribute("monitor-ref");
+
+    BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(HttpConsoleServer.class);
+    if (monitorRef != null && monitorRef.length() > 0) {
+      builder.addConstructorArgReference(monitorRef);
+    } else {
+      builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR); 
+    }
+
+    if (expanded != null && expanded.length() > 0) {
+      builder.addPropertyValue("expanded", expanded);
+    }
+    if (listenPort != null && listenPort.length() > 0) {
+      builder.addPropertyValue("listenPort", listenPort);
+    }
+    if (workerSize != null && workerSize.length() > 0) {
+      builder.addPropertyValue("workerSize", workerSize);
+    }
+
+
+    builder.setInitMethodName("start");
+    builder.setDestroyMethodName("stop");
+
+
+    return builder.getBeanDefinition();
   }
+
+
 }
+

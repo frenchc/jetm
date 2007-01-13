@@ -32,18 +32,57 @@
 
 package etm.contrib.integration.spring.configuration;
 
+import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
+import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
+
+import java.util.List;
 
 /**
  *
+ * @version $Revision$
+ * @author $Id$
+ * @since 1.2.0
  */
 public class MeasurementBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
-    return null;
+    String monitorRef = aElement.getAttribute("monitor-ref");
+
+    BeanDefinitionRegistry definitionRegistry = aParserContext.getRegistry();
+    String[] names = definitionRegistry.getBeanDefinitionNames();
+    boolean shouldInterceptorRegister = true;
+    for (int i = 0; i < names.length; i++) {
+      String name = names[i];
+      BeanDefinition definition = definitionRegistry.getBeanDefinition(name);
+
+      if (definition.getBeanClassName().equals("etm.contrib.aop.aopalliance.EtmMethodCallInterceptor")) {
+        shouldInterceptorRegister = false;
+      }
+    }
+    if (shouldInterceptorRegister) {
+      BeanDefinitionBuilder interceptorBuilder = BeanDefinitionBuilder.rootBeanDefinition(EtmMethodCallInterceptor.class);
+      if (monitorRef != null && monitorRef.length() > 0) {
+        interceptorBuilder.addConstructorArgReference(monitorRef);
+      } else {
+        interceptorBuilder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+      }
+      definitionRegistry.registerBeanDefinition("etmMethodCallInterceptor", interceptorBuilder.getBeanDefinition());
+    }
+    List list = DomUtils.getChildElementsByTagName(aElement, "beans");
+    Element childElement = (Element) list.get(0);
+    BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(BeanNameAutoProxyCreator.class);
+    builder.addPropertyValue("interceptorNames", "etmMethodCallInterceptor");
+    builder.addPropertyValue("beanNames", childElement.getTextContent());
+
+    return builder.getBeanDefinition();
   }
 }

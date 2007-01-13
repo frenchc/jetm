@@ -4,21 +4,9 @@
        xmlns:jetm="http://jetm.void.fm/schema/jetm-spring-config-1.2"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                            http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
-  <!--
-    Import JETM features.
-  -->
-
-  <bean id="userDao" class="etm.demo.webapp.dao.UserDaoImpl"/>
-
-  <bean id="userManagementService" class="etm.demo.webapp.service.UserManagementServiceImpl" autowire="constructor"/>
-
-  <bean id="messagingService" class="etm.demo.webapp.service.MessagingServiceImpl" autowire="constructor"/>
-
 
   <jetm:monitor id="etmMonitor"/>
 
-  <jetm:measurement id="daoServiceMonitoring">
-    <jetm:beans>*Dao,*Service</jetm:beans>
-  </jetm:measurement>
+  <jetm:console id="etmConsole" listen-port="41000"/>
 
 </beans>

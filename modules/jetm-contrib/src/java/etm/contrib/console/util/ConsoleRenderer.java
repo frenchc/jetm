@@ -446,8 +446,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     public SortedExecutionGraph(ExecutionAggregate aAggregate, ExecutionAggregateComparator aComparator) {
       super(aAggregate.getName());
       setMin(aAggregate.getMin());
-      setMax(aAggregate.getMin());
-      setTotal(aAggregate.getMin());
+      setMax(aAggregate.getMax());
+      setTotal(aAggregate.getTotal());
       setMeasurements(aAggregate.getMeasurements());
 
       if (aAggregate.hasChilds()) {

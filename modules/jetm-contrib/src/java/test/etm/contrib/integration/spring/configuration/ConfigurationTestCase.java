@@ -29,24 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package test.etm.contrib.integration.spring.configuration;
 
-package etm.contrib.integration.spring.configuration;
-
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import junit.framework.TestCase;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- *
- * Registers JETM namespace to spring configuration.
- * 
- * @version $Revision$
  * @author $Id$
- * @since 1.2.0
+ * @version $Revision$
  */
-public class SpringNamespaceHandler extends NamespaceHandlerSupport {
+public abstract class ConfigurationTestCase extends TestCase {
 
-  public void init() {
-    registerBeanDefinitionParser("monitor", new MonitorBeanDefinitionParser()); 
-    registerBeanDefinitionParser("console", new ConsoleBeanDefinitionParser());
-    registerBeanDefinitionParser("measurement", new MeasurementBeanDefinitionParser());   
+  protected ClassPathXmlApplicationContext getContext(String file) {
+    String path = "test/etm/contrib/integration/spring/configuration/resources/" + file;
+
+    return new ClassPathXmlApplicationContext(path);
   }
 }

@@ -32,18 +32,73 @@
 
 package etm.contrib.integration.spring.configuration;
 
+import etm.core.timer.DefaultTimer;
+import etm.core.timer.Java15NanoTimer;
+import etm.core.timer.SunHighResTimer;
+import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  *
+ * @version $Revision$
+ * @author $Id$
+ * @since 1.2.0
  */
 public class MonitorBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
-
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
-    return null;
+    String id = aElement.getAttribute("id");
+    String type = aElement.getAttribute("type");
+    String timer = aElement.getAttribute("timer");
+
+    NodeList features = aElement.getElementsByTagName("features");
+    NodeList aggregatorChain = aElement.getElementsByTagName("aggregator-chain");
+
+    NodeList extension = aElement.getElementsByTagName("extensions");
+
+    if (type == null || type.length() == 0) {
+      type = "nested";
+    }
+
+    BeanDefinitionBuilder builder;
+    if ("nested".equals(type)) {
+      builder = BeanDefinitionBuilder.rootBeanDefinition(etm.core.monitor.NestedMonitor.class);
+    } else if ("flat".equals(type)) {
+      builder = BeanDefinitionBuilder.rootBeanDefinition(etm.core.monitor.FlatMonitor.class);
+    } else {
+      try {
+        builder = BeanDefinitionBuilder.rootBeanDefinition(Class.forName(type));
+      } catch (ClassNotFoundException e) {
+        throw new FatalBeanException("Unable to locate monitor class " + type, e);
+      }
+    } 
+    if (timer != null && timer.length() > 0) {
+      addTimerDefinition(timer, builder);
+    }
+
+    builder.setInitMethodName("start");
+    builder.setDestroyMethodName("stop");
+    return builder.getBeanDefinition();
+
+  }
+
+  private void addTimerDefinition(String aTimer, BeanDefinitionBuilder builder) {
+    if ("jdk50".equals(aTimer)) {
+      builder.addConstructorArg(new Java15NanoTimer());
+    } else if ("sun".equals(aTimer)) {
+      builder.addConstructorArg(new SunHighResTimer());
+    } else if ("default".equals(aTimer)) {
+      builder.addConstructorArg(new DefaultTimer());
+    } else {
+      RootBeanDefinition timerBeanDefinition = new RootBeanDefinition();
+      timerBeanDefinition.setBeanClassName(aTimer);
+      builder.addConstructorArg(timerBeanDefinition);
+    }
   }
 }

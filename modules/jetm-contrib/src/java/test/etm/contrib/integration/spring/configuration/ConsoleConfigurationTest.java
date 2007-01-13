@@ -30,23 +30,28 @@
  *
  */
 
-package etm.contrib.integration.spring.configuration;
+package test.etm.contrib.integration.spring.configuration;
 
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- *
- * Registers JETM namespace to spring configuration.
- * 
- * @version $Revision$
  * @author $Id$
- * @since 1.2.0
+ * @version $Revision$
  */
-public class SpringNamespaceHandler extends NamespaceHandlerSupport {
+public class ConsoleConfigurationTest extends ConfigurationTestCase {
 
-  public void init() {
-    registerBeanDefinitionParser("monitor", new MonitorBeanDefinitionParser()); 
-    registerBeanDefinitionParser("console", new ConsoleBeanDefinitionParser());
-    registerBeanDefinitionParser("measurement", new MeasurementBeanDefinitionParser());   
+  public void testMonitorRef() {
+    ClassPathXmlApplicationContext ctx = getContext("console-monitor-ref.xml");
+    ctx.start();
+
+    ctx.destroy();
+  }
+
+  public void testMonitorAutowire() {
+    ClassPathXmlApplicationContext ctx = getContext("console-monitor-autowire.xml");
+
+    ctx.start();
+
+    ctx.destroy();
   }
 }

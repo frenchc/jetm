@@ -29,24 +29,19 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package test.etm.contrib.integration.spring.configuration;
 
-package etm.contrib.integration.spring.configuration;
-
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
- * Registers JETM namespace to spring configuration.
- * 
  * @version $Revision$
  * @author $Id$
- * @since 1.2.0
  */
-public class SpringNamespaceHandler extends NamespaceHandlerSupport {
+public class MonitorConfigurationTest extends ConfigurationTestCase {
 
-  public void init() {
-    registerBeanDefinitionParser("monitor", new MonitorBeanDefinitionParser()); 
-    registerBeanDefinitionParser("console", new ConsoleBeanDefinitionParser());
-    registerBeanDefinitionParser("measurement", new MeasurementBeanDefinitionParser());   
+  public void testReadParse() {
+    ClassPathXmlApplicationContext ctx = getContext("monitor-bean.xml");
+
   }
 }

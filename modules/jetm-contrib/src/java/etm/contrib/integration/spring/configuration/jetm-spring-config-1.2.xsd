@@ -14,17 +14,34 @@
         <xsd:extension base="beans:identifiedType">
           <xsd:sequence>
             <xsd:choice minOccurs="0">
-              <xsd:element name="monitor-configuration" type="configurationType"></xsd:element>
-              <xsd:element name="aggregator-chain" type="aggregatorChainType"></xsd:element>
+              <xsd:element name="feature" type="featureType"/>
+              <xsd:element name="aggregator-chain" type="aggregatorChainType"/>
             </xsd:choice>
             <xsd:sequence minOccurs="0">
               <xsd:element name="extension" type="extensionType"/>
             </xsd:sequence>
-
           </xsd:sequence>
-          <xsd:attribute name="type" type="xsd:string"/>
-          <xsd:attribute name="timer" type="xsd:string"/>
-
+          <xsd:attribute name="type" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                The type of monitor to use. Either one of the predefined monitors or a full qualified classname can
+                be specified. Predefined are
+                  nested - etm.core.monitor.NestedMonitor
+                  flat - etm.core.monitor.FlatMonitor
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="timer" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                The type of timer to use. Either one of the predefined timers or full qualified classname can be
+                specified. Predefined are
+                 jdk15   - etm.core.timer.Java15NanoTimer
+                 sun     - etm.core.timer.SunHighResTimer
+                 default - etm.core.timer.DefaultTimer
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -35,8 +52,10 @@
       <xsd:complexContent>
         <xsd:extension base="beans:identifiedType">
           <xsd:attribute name="expanded" type="xsd:boolean"/>
-          <xsd:attribute name="listenPort" type="xsd:int"/>
-          <xsd:attribute name="workerSize" type="xsd:int"/>
+          <xsd:attribute name="listen-port" type="xsd:int"/>
+          <xsd:attribute name="worker-size" type="xsd:int"/>
+          <xsd:attribute name="monitor-ref" type="xsd:string"/>
+
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -50,24 +69,24 @@
             <xsd:element name="beans" type="xsd:string"/>
             <xsd:element name="methods" type="xsd:string" minOccurs="0"/>
           </xsd:sequence>
-          <xsd:attribute name="target" type="xsd:string"/>
+          <xsd:attribute name="monitor-ref" type="xsd:string"/>
 
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
 
-  <xsd:complexType name="configurationType">
+  <xsd:complexType name="featureType">
     <xsd:sequence>
       <xsd:element name="buffer" type="bufferType"/>
-      <xsd:element name="raw-data-log" type="rawDataLogType"/>
       <xsd:element name="persistence" type="persistenceType"/>
+      <xsd:element name="raw-data-log" type="rawDataLogType"/>
     </xsd:sequence>
   </xsd:complexType>
 
   <xsd:complexType name="extensionType">
     <xsd:sequence>
-      <xsd:element name="plugin" type="pluginType" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="plugin" type="pluginType" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 
@@ -110,7 +129,7 @@
 
   <xsd:complexType name="propertySupportType">
     <xsd:sequence>
-      <xsd:element name="property" type="propertyType" />
+      <xsd:element name="property" type="propertyType"/>
     </xsd:sequence>
   </xsd:complexType>
 
