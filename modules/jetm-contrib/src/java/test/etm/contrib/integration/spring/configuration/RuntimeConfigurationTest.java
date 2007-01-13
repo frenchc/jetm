@@ -34,14 +34,18 @@ package test.etm.contrib.integration.spring.configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- *
- * @version $Revision$
  * @author $Id$
+ * @version $Revision$
  */
-public class MonitorConfigurationTest extends ConfigurationTestCase {
+public class RuntimeConfigurationTest extends ConfigurationTestCase {
 
-  public void testReadParse() {
-    ClassPathXmlApplicationContext ctx = getContext("monitor-bean.xml");
+  public void testRuntimeFeatures() {
+    ClassPathXmlApplicationContext ctx = getContext("monitor-features.xml");
+
+  }
+
+  public void testRuntimePlugins() {
+    ClassPathXmlApplicationContext ctx = getContext("monitor-plugin.xml");
 
   }
 }

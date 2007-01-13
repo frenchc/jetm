@@ -8,7 +8,7 @@
 
   <xsd:import namespace="http://www.springframework.org/schema/beans"/>
 
-  <xsd:element name="monitor">
+  <xsd:element name="runtime">
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="beans:identifiedType">
@@ -26,8 +26,8 @@
               <xsd:documentation>
                 The type of monitor to use. Either one of the predefined monitors or a full qualified classname can
                 be specified. Predefined are
-                  nested - etm.core.monitor.NestedMonitor
-                  flat - etm.core.monitor.FlatMonitor
+                nested - etm.core.monitor.NestedMonitor
+                flat - etm.core.monitor.FlatMonitor
               </xsd:documentation>
             </xsd:annotation>
           </xsd:attribute>
@@ -36,9 +36,9 @@
               <xsd:documentation>
                 The type of timer to use. Either one of the predefined timers or full qualified classname can be
                 specified. Predefined are
-                 jdk15   - etm.core.timer.Java15NanoTimer
-                 sun     - etm.core.timer.SunHighResTimer
-                 default - etm.core.timer.DefaultTimer
+                jdk15 - etm.core.timer.Java15NanoTimer
+                sun - etm.core.timer.SunHighResTimer
+                default - etm.core.timer.DefaultTimer
               </xsd:documentation>
             </xsd:annotation>
           </xsd:attribute>
@@ -54,23 +54,21 @@
           <xsd:attribute name="expanded" type="xsd:boolean"/>
           <xsd:attribute name="listen-port" type="xsd:int"/>
           <xsd:attribute name="worker-size" type="xsd:int"/>
-          <xsd:attribute name="monitor-ref" type="xsd:string"/>
-
+          <xsd:attribute name="runtime-ref" type="xsd:string"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
 
-  <xsd:element name="measurement">
+  <xsd:element name="monitoring">
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="beans:identifiedType">
           <xsd:sequence>
-            <xsd:element name="beans" type="xsd:string"/>
-            <xsd:element name="methods" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="bean-pattern" type="beanPatternType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="signature-pattern" type="signaturePatternType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
-          <xsd:attribute name="monitor-ref" type="xsd:string"/>
-
+          <xsd:attribute name="runtime-ref" type="xsd:string"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -91,7 +89,6 @@
   </xsd:complexType>
 
   <xsd:complexType name="aggregatorChainType"></xsd:complexType>
-
 
   <xsd:complexType name="pluginType">
     <xsd:complexContent>
@@ -140,5 +137,21 @@
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
-</xsd:schema>    
+
+  <xsd:complexType name="beanPatternType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="group" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="signaturePatternType">
+    <xsd:sequence>
+      <xsd:element name="bean-pattern" type="xsd:string"/>
+      <xsd:element name="method-pattern" type="xsd:string"/>
+    </xsd:sequence>
+    <xsd:attribute name="group" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>
     

@@ -45,8 +45,8 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class SpringNamespaceHandler extends NamespaceHandlerSupport {
 
   public void init() {
-    registerBeanDefinitionParser("monitor", new MonitorBeanDefinitionParser()); 
+    registerBeanDefinitionParser("runtime", new RuntimeBeanDefinitionParser());
     registerBeanDefinitionParser("console", new ConsoleBeanDefinitionParser());
-    registerBeanDefinitionParser("measurement", new MeasurementBeanDefinitionParser());   
+    registerBeanDefinitionParser("monitoring", new MonitoringBeanDefinitionParser());
   }
 }

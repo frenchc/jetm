@@ -16,10 +16,10 @@
     Enable JETM performance monitoring
   -->
 
-  <jetm:monitor id="etmMonitor"/>
+  <jetm:runtime id="etmMonitor"/>
 
-  <jetm:measurement id="daoServiceMonitoring">
-    <jetm:beans>*Dao,*Service</jetm:beans>
-  </jetm:measurement>
+  <jetm:monitoring id="daoServiceMonitoring">
+    <jetm:bean-pattern>*Dao,*Service</jetm:bean-pattern>
+  </jetm:monitoring>
 
 </beans>

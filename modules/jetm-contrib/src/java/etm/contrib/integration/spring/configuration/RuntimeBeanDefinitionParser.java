@@ -50,10 +50,9 @@ import org.w3c.dom.NodeList;
  * @author $Id$
  * @since 1.2.0
  */
-public class MonitorBeanDefinitionParser extends AbstractBeanDefinitionParser {
+public class RuntimeBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
-    String id = aElement.getAttribute("id");
     String type = aElement.getAttribute("type");
     String timer = aElement.getAttribute("timer");
 

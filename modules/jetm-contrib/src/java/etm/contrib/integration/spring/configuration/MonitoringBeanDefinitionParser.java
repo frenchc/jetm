@@ -51,11 +51,11 @@ import java.util.List;
  * @author $Id$
  * @since 1.2.0
  */
-public class MeasurementBeanDefinitionParser extends AbstractBeanDefinitionParser {
+public class MonitoringBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
-    String monitorRef = aElement.getAttribute("monitor-ref");
+    String monitorRef = aElement.getAttribute("runtime-ref");
 
     BeanDefinitionRegistry definitionRegistry = aParserContext.getRegistry();
     String[] names = definitionRegistry.getBeanDefinitionNames();
@@ -77,7 +77,7 @@ public class MeasurementBeanDefinitionParser extends AbstractBeanDefinitionParse
       }
       definitionRegistry.registerBeanDefinition("etmMethodCallInterceptor", interceptorBuilder.getBeanDefinition());
     }
-    List list = DomUtils.getChildElementsByTagName(aElement, "beans");
+    List list = DomUtils.getChildElementsByTagName(aElement, "bean-pattern");
     Element childElement = (Element) list.get(0);
     BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(BeanNameAutoProxyCreator.class);
     builder.addPropertyValue("interceptorNames", "etmMethodCallInterceptor");

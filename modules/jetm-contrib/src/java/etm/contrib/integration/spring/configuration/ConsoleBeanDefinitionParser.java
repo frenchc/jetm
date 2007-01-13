@@ -49,12 +49,10 @@ public class ConsoleBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
-    String id = aElement.getAttribute("id");
-
     String expanded = aElement.getAttribute("expanded");
     String listenPort = aElement.getAttribute("listen-port");
     String workerSize = aElement.getAttribute("worker-size");
-    String monitorRef = aElement.getAttribute("monitor-ref");
+    String monitorRef = aElement.getAttribute("runtime-ref");
 
     BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(HttpConsoleServer.class);
     if (monitorRef != null && monitorRef.length() > 0) {

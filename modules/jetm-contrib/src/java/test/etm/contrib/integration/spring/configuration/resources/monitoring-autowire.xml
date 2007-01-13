@@ -5,20 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                            http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
 
+  <jetm:runtime id="etmMonitor"/>
 
-  <jetm:monitor id="bla" type="nested" timer="etm.core.timer.Java15NanoTimer">
-    <jetm:feature>
-      <jetm:buffer type="threshold">
-        <jetm:property name="threshold">1000</jetm:property>
-      </jetm:buffer>
-      <jetm:persistence enabled="true">
-        <jetm:property name="key">value</jetm:property>
-      </jetm:persistence>
-
-      <jetm:raw-data-log type="log4j">
-        <jetm:property name="key">blabla</jetm:property>
-      </jetm:raw-data-log>
-    </jetm:feature>
-  </jetm:monitor>
+  <jetm:monitoring id="monitorAutoWireTest">
+    <jetm:bean-pattern>blabla</jetm:bean-pattern>
+  </jetm:monitoring>
 
 </beans>

@@ -40,7 +40,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @version $Revision$
  * @author $Id$
  */
-public class MeasurementConfigurationTest extends ConfigurationTestCase {
+public class MonitoringConfigurationTest extends ConfigurationTestCase {
 
 
   public void testMonitorRef() {

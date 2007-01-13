@@ -6,12 +6,12 @@
                            http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
 
 
-  <jetm:monitor id="bla" type="nested" timer="etm.core.timer.Java15NanoTimer">
+  <jetm:runtime id="bla" type="nested" timer="etm.core.timer.Java15NanoTimer">
     <jetm:extension>
       <jetm:plugin class="Foo.ba.yadda">
         <jetm:property name="foo">bar</jetm:property>
       </jetm:plugin>
     </jetm:extension>
-  </jetm:monitor>
+  </jetm:runtime>
 
 </beans>
