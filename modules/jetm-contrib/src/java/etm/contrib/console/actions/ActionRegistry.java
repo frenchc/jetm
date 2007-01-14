@@ -66,7 +66,8 @@ public class ActionRegistry {
     actions.put("/favicon.ico", new ResourceAction("image/x-icon", resourceAccessor.getFavicon()));
     actions.put("/down-arrow.png", new ResourceAction("image/png", resourceAccessor.getDownarrow()));
     actions.put("/up-arrow.png", new ResourceAction("image/png", resourceAccessor.getUparrow()));
-
+    actions.put("/detail", new DetailAction());
+    
     // workaround to alter actions at runtime
     actions.put("/expand", new RedirectAction("index") {
       public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
@@ -90,7 +91,6 @@ public class ActionRegistry {
 
   private void enableCollapsed() {
     actions.put("/index", new CollapsedResultViewAction());
-    actions.put("/detail", new DetailAction());
   }
 
   private void enableExpanded() {

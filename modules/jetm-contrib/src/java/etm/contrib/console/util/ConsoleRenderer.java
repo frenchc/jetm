@@ -92,6 +92,13 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
         "  <title>JETM Console</title>\n" +
         "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>\n" +
         "  <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\"/>" +
+        "  <script type=\"text/javascript\">" +
+        "   function confirmReset(text, url) {" +
+        "    if (confirm('Do you really want to reset ' + text + '?')) {" +
+        "     window.location=url;" +
+        "    };" +
+        "   }" +
+        "  </script>" +
         " </head>\n");
     response.write("<body>\n<h1>JETM Console</h1>");
 
@@ -101,21 +108,49 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     writeCommonHtmlHead();
     String pointEncoded = URLEncoder.encode(point, "UTF-8");
 
-    response.write("<b>");
-    response.write(point);
-    response.write("</b><br /><br />\n");
+    Date currentTime = new Date();
 
-    response.write("<a href=\"");
+    response.write("<table class=\"noborder\">\n");
+
+    response.write("  <tr class=\"noborder\">\n" +
+      "    <td class=\"noborder\">Application start:</td>\n" +
+      "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getStartTime() + "</td>\n" +
+      "  </tr>\n" +
+      "  <tr class=\"noborder\">\n" +
+      "    <td class=\"noborder\">Monitoring period:</td>\n" +
+      "    <td class=\"noborder\">" + request.getEtmMonitor().getMetaData().getLastResetTime() + " - " + currentTime + "</td>\n" +
+      "  </tr>\n");
+
+    response.write("  <tr class=\"noborder\">\n" +
+      "    <td class=\"noborder\">Point:</td>\n" +
+      "    <td class=\"noborder\">" + point + "</td>\n" +
+      "  </tr>\n");
+    response.write(
+      "  </tr>\n" +
+        "  <tr class=\"noborder\">\n" +
+        "    <td class=\"noborder\">&nbsp;</td>\n" +
+        "    <td class=\"noborder\">&nbsp;</td>\n" +
+        "  </tr>\n");
+
+
+    response.write("<tr class=\"noborder\">");
+    response.write(" <td class=\"noborder\"><a href=\"#\" onclick=\"confirmReset('");
+    response.write(point);
+    response.write("?','");
+    response.write(ConsoleUtil.appendParameters("reset?point=" + pointEncoded, request.getRequestParameters()));
+    response.write("');\" \">Reset point</a></td>");
+
+
+    response.write("<td class=\"noborder\"><a href=\"");
     response.write(ConsoleUtil.appendParameters("detail?point=" + pointEncoded, request.getRequestParameters()));
     response.write("\">Reload point</a>  &nbsp; \n");
 
-    response.write("<a href=\"");
-    response.write(ConsoleUtil.appendParameters("reset?point=" + pointEncoded, request.getRequestParameters()));
-    response.write("\">Reset point</a>  &nbsp; ");
 
     response.write(" <a href=\"");
     response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters(), true));
-    response.write("\">Back to overview</a>\n");
+    response.write("\">Back to overview</a></td>\n");
+
+    response.write("</table>\n");
   }
 
   protected void writeHtmlHead(boolean expanded) throws IOException {
@@ -148,9 +183,15 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
         "    <td class=\"noborder\">Collecting status:</td>\n");
 
     if (request.getEtmMonitor().isCollecting()) {
-      response.write("    <td class=\"noborder\"><span class=\"enabled\">enabled</span></td>\n");
+      response.write("    <td class=\"noborder\">\n");
+      response.write("<a href=\"");
+      response.write(ConsoleUtil.appendParameters("stop", request.getRequestParameters()));
+      response.write("\"><span class=\"enabled\">enabled</span></a></td>");
     } else {
-      response.write("    <td class=\"noborder\"><span class=\"disabled\">disabled</span></td>\n");
+      response.write("    <td class=\"noborder\">\n");
+      response.write("<a href=\"");
+      response.write(ConsoleUtil.appendParameters("start", request.getRequestParameters()));
+      response.write("\"><span class=\"disabled\">disabled</span></a></td>");
     }
 
     response.write(
@@ -158,40 +199,31 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
         "  <tr class=\"noborder\">\n" +
         "    <td class=\"noborder\">&nbsp;</td>\n" +
         "    <td class=\"noborder\">&nbsp;</td>\n" +
-        "  </tr>\n" +
-        "  <tr class=\"noborder\">\n");
+        "  </tr>\n");
 
-    response.write("    <td class=\"noborder\"><a href=\"");
-    response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters()));
-    response.write("\">Reload monitor</a></td>\n");
 
-    response.write("    <td class=\"noborder\"><a href=\"");
+    response.write("  <tr class=\"noborder\">\n");
+    response.write("    <td class=\"noborder\"><a href=\"#\" onclick=\"confirmReset('all performance results','");
     response.write(ConsoleUtil.appendParameters("reset", request.getRequestParameters()));
-    response.write("\">Reset monitor</a>  &nbsp; ");
-
-    if (request.getEtmMonitor().isCollecting()) {
-      response.write(" <a href=\"");
-      response.write(ConsoleUtil.appendParameters("stop", request.getRequestParameters()));
-      response.write("\">Stop collection</a> &nbsp; ");
-    } else {
-      response.write(" <a href=\"");
-      response.write(ConsoleUtil.appendParameters("start", request.getRequestParameters()));
-      response.write("\">Start collection</a> &nbsp; ");
-    }
+    response.write("')\">Reset monitor</a></td>");
 
     if (expanded) {
-      response.write(" <a href=\"");
+      response.write(" <td class=\"noborder\"><a href=\"");
       response.write(ConsoleUtil.appendParameters("collapse", request.getRequestParameters()));
-      response.write("\">Collapse results</a></td>\n");
+      response.write("\">Collapse results</a> &nbsp; \n");
     } else {
-      response.write(" <a href=\"");
+      response.write(" <td class=\"noborder\"><a href=\"");
       response.write(ConsoleUtil.appendParameters("expand", request.getRequestParameters()));
-      response.write("\">Expand results</a></td>\n");
+      response.write("\">Expand results</a> &nbsp; \n");
     }
 
+    response.write(" <a href=\"");
+    response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters()));
+    response.write("\">Reload monitor</a></td>\n");
     response.write("  </tr>\n");
-    response.write("</table>");
 
+
+    response.write("</table>");
   }
 
 
