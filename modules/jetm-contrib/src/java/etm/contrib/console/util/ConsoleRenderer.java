@@ -475,6 +475,9 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
   protected class SortedExecutionGraph extends ExecutionAggregate {
     private List sortedChilds;
 
+    public SortedExecutionGraph() {
+    }
+
     public SortedExecutionGraph(ExecutionAggregate aAggregate, ExecutionAggregateComparator aComparator) {
       super(aAggregate.getName());
       setMin(aAggregate.getMin());
