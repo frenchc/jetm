@@ -12,15 +12,17 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="beans:identifiedType">
+
           <xsd:sequence>
             <xsd:choice minOccurs="0">
-              <xsd:element name="feature" type="featureType"/>
+              <xsd:element name="features" type="featuresType"/>
               <xsd:element name="aggregator-chain" type="aggregatorChainType"/>
             </xsd:choice>
             <xsd:sequence minOccurs="0">
               <xsd:element name="extension" type="extensionType"/>
             </xsd:sequence>
           </xsd:sequence>
+
           <xsd:attribute name="type" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>
@@ -31,6 +33,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:attribute>
+
           <xsd:attribute name="timer" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>
@@ -41,6 +44,7 @@
                 default - etm.core.timer.DefaultTimer
               </xsd:documentation>
             </xsd:annotation>
+
           </xsd:attribute>
         </xsd:extension>
       </xsd:complexContent>
@@ -51,10 +55,36 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="beans:identifiedType">
-          <xsd:attribute name="expanded" type="xsd:boolean"/>
-          <xsd:attribute name="listen-port" type="xsd:int"/>
-          <xsd:attribute name="worker-size" type="xsd:int"/>
-          <xsd:attribute name="runtime-ref" type="xsd:string"/>
+          <xsd:attribute name="expanded" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                Whether the results should be rendered expanded or collapsed by default. Uses
+                collapsed rendering if not specified.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="listen-port" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                The port the console listens to. Defaults to 40000 if not specified.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="worker-size" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>
+                The number of worker threads to be used. Defaults to 2.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="runtime-ref" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Optional reference to JETM runtime, only required if there are more
+                than one EtmMonitor.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -65,93 +95,189 @@
       <xsd:complexContent>
         <xsd:extension base="beans:identifiedType">
           <xsd:sequence>
-            <xsd:element name="bean-pattern" type="beanPatternType" minOccurs="0" maxOccurs="unbounded"/>
-            <xsd:element name="signature-pattern" type="signaturePatternType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="bean-pattern" minOccurs="0" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:simpleContent>
+                  <xsd:extension base="xsd:string">
+                    <xsd:attribute name="group" type="xsd:string">
+                      <xsd:annotation>
+                        <xsd:documentation>
+                          The name to be used for performance results.
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:attribute>
+                  </xsd:extension>
+                </xsd:simpleContent>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="signature-pattern" minOccurs="0" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="bean-pattern" type="xsd:string"/>
+                  <xsd:element name="method-pattern" type="xsd:string"/>
+                </xsd:sequence>
+                <xsd:attribute name="group" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      The name to be used for performance results.
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:attribute>
+              </xsd:complexType>
+            </xsd:element>
           </xsd:sequence>
-          <xsd:attribute name="runtime-ref" type="xsd:string"/>
+          <xsd:attribute name="runtime-ref" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Optional reference to JETM runtime, only required if there are more
+                than one EtmMonitor.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
 
-  <xsd:complexType name="featureType">
+  <xsd:complexType name="featuresType">
     <xsd:sequence>
-      <xsd:element name="buffer" type="bufferType"/>
-      <xsd:element name="persistence" type="persistenceType"/>
-      <xsd:element name="raw-data-log" type="rawDataLogType"/>
+      <xsd:choice minOccurs="0">
+        <xsd:element name="threshold-buffer">
+          <xsd:complexType>
+            <xsd:attribute name="threshold" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation>
+                  The number of measurements before aggregation is triggered.
+                  Defaults to 1000 elements.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="interval-buffer">
+          <xsd:complexType>
+            <xsd:attribute name="interval" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation>
+                  The time interval in miliseconds before aggregation is triggered.
+                  Default is 5000 miliseconds, may not be less that 10 miliseconds.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+      <xsd:element name="persistence">
+        <xsd:complexType>
+          <xsd:choice minOccurs="0">
+            <xsd:element name="file-backend">
+              <xsd:complexType>
+                <xsd:annotation>
+                  <xsd:documentation>
+                    Enables file based state persistence.
+                  </xsd:documentation>
+                </xsd:annotation>
+                <xsd:attribute name="path" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      The path to the persistence file, defaults to java.io.tmpdir.
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="filename" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      The filename to persistence to, defaults to jetm-state.ser.
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:attribute>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="custom-backend">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Selects custom backend using specified class for persistence.
+                </xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:complexContent>
+                  <xsd:extension base="propertyType">
+                    <xsd:attribute name="class" type="xsd:string" use="required">
+                      <xsd:annotation>
+                        <xsd:documentation>
+                          The class to be used as persistence backend. Has to be a valid implementation
+                          of PersistenceBackend.
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:attribute>
+                  </xsd:extension>
+                </xsd:complexContent>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="raw-data-log" minOccurs="0">
+        <xsd:complexType>
+          <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="log4j"/>
+                <xsd:enumeration value="commons"/>
+                <xsd:enumeration value="jdk14"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute name="category" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                The log category to use. Defaults to 'etm-raw-data'.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="formatter-class" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Optional formatter class, defaults to DefaultOutputFormatter.
+                Needs to be a valid implementation of LogOutputFormatter.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="propertyType">
+    <xsd:sequence>
+      <xsd:element name="property" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
 
   <xsd:complexType name="extensionType">
     <xsd:sequence>
-      <xsd:element name="plugin" type="pluginType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="plugin" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="propertyType">
+              <xsd:attribute name="class" type="xsd:string"/>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
 
   <xsd:complexType name="aggregatorChainType"></xsd:complexType>
 
-  <xsd:complexType name="pluginType">
-    <xsd:complexContent>
-      <xsd:extension base="propertySupportType">
-        <xsd:attribute name="class" type="xsd:string"/>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
 
-
-  <xsd:complexType name="bufferType">
-    <xsd:complexContent>
-      <xsd:extension base="propertySupportType">
-        <xsd:attribute name="type" type="xsd:string"/>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <xsd:complexType name="rawDataLogType">
-    <xsd:complexContent>
-      <xsd:extension base="propertySupportType">
-        <xsd:attribute name="type" type="xsd:string"/>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-
-  <xsd:complexType name="persistenceType">
-    <xsd:complexContent>
-      <xsd:extension base="propertySupportType">
-        <xsd:attribute name="enabled" type="xsd:string"/>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <xsd:complexType name="propertySupportType">
-    <xsd:sequence>
-      <xsd:element name="property" type="propertyType"/>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="propertyType">
-    <xsd:simpleContent>
-      <xsd:extension base="xsd:string">
-        <xsd:attribute name="name" type="xsd:string"/>
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
-
-  <xsd:complexType name="beanPatternType">
-    <xsd:simpleContent>
-      <xsd:extension base="xsd:string">
-        <xsd:attribute name="group" type="xsd:string"/>
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
-
-  <xsd:complexType name="signaturePatternType">
-    <xsd:sequence>
-      <xsd:element name="bean-pattern" type="xsd:string"/>
-      <xsd:element name="method-pattern" type="xsd:string"/>
-    </xsd:sequence>
-    <xsd:attribute name="group" type="xsd:string"/>
-  </xsd:complexType>
 </xsd:schema>
     

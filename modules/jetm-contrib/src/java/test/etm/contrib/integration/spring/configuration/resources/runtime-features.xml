@@ -6,19 +6,12 @@
                            http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
 
 
-  <jetm:runtime id="bla" type="nested" timer="etm.core.timer.Java15NanoTimer">
-    <jetm:feature>
-      <jetm:buffer type="threshold">
-        <jetm:property name="threshold">1000</jetm:property>
-      </jetm:buffer>
-      <jetm:persistence enabled="true">
-        <jetm:property name="key">value</jetm:property>
-      </jetm:persistence>
-
-      <jetm:raw-data-log type="log4j">
-        <jetm:property name="key">blabla</jetm:property>
-      </jetm:raw-data-log>
-    </jetm:feature>
+  <jetm:runtime type="nested" timer="default">
+    <jetm:features>
+      <jetm:interval-buffer interval="5000"/>
+      <jetm:persistence />
+      <jetm:raw-data-log type="log4j" category="blabla"/>
+    </jetm:features>
   </jetm:runtime>
 
 </beans>

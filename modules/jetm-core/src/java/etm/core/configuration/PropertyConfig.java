@@ -44,7 +44,7 @@ import java.util.Map;
  * @version $Revision$
  * @since 1.2.0
  */
-public class PropertySupport {
+public class PropertyConfig {
   private Map properties;
 
   public Map getProperties() {

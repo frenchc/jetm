@@ -40,7 +40,7 @@ import etm.core.plugin.EtmPlugin;
  * @author void.fm
  * @version $Revision$
  */
-public class EtmPluginConfig extends PropertySupport {
+public class EtmPluginConfig extends PropertyConfig {
   private Class pluginClass;
 
   public Class getPluginClass() {

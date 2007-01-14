@@ -9,7 +9,7 @@
 
   <jetm:runtime id="etmMonitorTwo"/>
 
-  <jetm:monitoring id="monitorRefTest" runtime-ref="etmMonitor">
+  <jetm:monitoring runtime-ref="etmMonitor">
     <jetm:bean-pattern>blabla</jetm:bean-pattern>
   </jetm:monitoring>
 

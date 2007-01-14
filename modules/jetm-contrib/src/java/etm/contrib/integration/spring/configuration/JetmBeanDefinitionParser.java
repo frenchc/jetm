@@ -29,39 +29,36 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.integration.spring.configuration;
 
-package etm.core.configuration;
-
-import etm.core.aggregation.Aggregator;
+import org.springframework.beans.factory.BeanDefinitionStoreException;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
+import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
+import org.springframework.beans.factory.xml.ParserContext;
+import org.w3c.dom.Element;
 
 /**
  *
- * EtmAggregatorConfig represents an aggregator chain
- * configuration.
+ * Base class for our Spring BeanDefinitionParsers. This class alters the behavior of
+ * {@link AbstractBeanDefinitionParser} such that it automatically assign a id if none
+ * is given.
  *
  * @version $Revision$
  * @author void.fm
- *
  */
-public class EtmAggregatorConfig extends PropertyConfig {
-  private Class aggregatorClass;
+public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
-  public Class getAggregatorClass() {
-    return aggregatorClass;
+  protected String resolveId(Element element, AbstractBeanDefinition definition, ParserContext parserContext)
+    throws BeanDefinitionStoreException {
+    String id = super.resolveId(element, definition, parserContext);
+    if (id == null || id.length() ==0) {
+      return generateName(definition, parserContext);
+    }
+    return id;
   }
 
-  public void setAggregatorClass(String aggregatorClassName) {
-    Class clazz;
-    try {
-      clazz = Class.forName(aggregatorClassName);
-    } catch (ClassNotFoundException e) {
-      throw new EtmConfigurationException("Aggregator class " + aggregatorClassName + " not found.");
-    }
-    if (Aggregator.class.isAssignableFrom(clazz)) {
-      aggregatorClass = clazz;
-    } else {
-      throw new EtmConfigurationException("Class " + aggregatorClassName + " is not a valid Aggregator implementation.");
-    }
+  protected String generateName(AbstractBeanDefinition definition, ParserContext parserContext) {
+    return BeanDefinitionReaderUtils.generateBeanName(definition, parserContext.getRegistry(), parserContext.isNested());
   }
-
 }

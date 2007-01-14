@@ -37,7 +37,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
 
 /**
  * A file based persistence store that uses Java Serialization. By default
@@ -48,27 +47,12 @@ import java.util.Map;
  */
 public class FileSystemPersistenceBackend implements PersistenceBackend {
 
-  private File persistencePath = new File(System.getProperty("java.io.tmpdir"));
-  private String persistenceFile = "jetm-state.ser";
-
-
-  public void init(Map persistenceBackendProperties) {
-    if (persistenceBackendProperties != null) {
-      String value = (String) persistenceBackendProperties.get("persistencePath");
-      if (value != null) {
-        persistencePath = new File(value);
-      }
-
-      value = (String) persistenceBackendProperties.get("persistenceFile");
-      if (value != null) {
-        persistenceFile = value;
-      }
-    }
-  }
+  private File path = new File(System.getProperty("java.io.tmpdir"));
+  private String filename = "jetm-state.ser";
 
   public PersistentEtmState load() {
     PersistentEtmState state = null;
-    File file = new File(persistencePath, persistenceFile);
+    File file = new File(path, filename);
     if (file.exists()) {
       if (file.canRead()) {
         ObjectInputStream in = null;
@@ -95,12 +79,21 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
     return state;
   }
 
+
+  public void setPath(String aPath) {
+    path = new File(aPath);
+  }
+
+  public void setFilename(String aFilename) {
+    filename = aFilename;
+  }
+
   public void store(PersistentEtmState state) {
-    if (!persistencePath.exists()) {
-      persistencePath.mkdirs();
+    if (!path.exists()) {
+      path.mkdirs();
     }
 
-    File tmpFile = new File(persistencePath, persistenceFile + ".tmp");
+    File tmpFile = new File(path, filename + ".tmp");
 
     if (tmpFile.exists()) {
       tmpFile.delete();
@@ -110,7 +103,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
     try {
       out = new ObjectOutputStream(new FileOutputStream(tmpFile));
       out.writeObject(state);
-      File dest = new File(persistencePath, persistenceFile);
+      File dest = new File(path, filename);
       if (dest.exists()) {
         dest.delete();
       }

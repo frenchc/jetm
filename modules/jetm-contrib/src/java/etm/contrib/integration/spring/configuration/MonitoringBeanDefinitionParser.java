@@ -33,56 +33,213 @@
 package etm.contrib.integration.spring.configuration;
 
 import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
+import etm.core.monitor.EtmMonitor;
+import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
+ * BeanDefinitionParser that parses JETM monitoring configuration element. Adds an
+ * EtmMethodCallInterceptor or  instance
  *
- * @version $Revision$
  * @author $Id$
+ * @version $Revision$
  * @since 1.2.0
  */
-public class MonitoringBeanDefinitionParser extends AbstractBeanDefinitionParser {
+public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
 
+  // todo cleanup an generify
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
     String monitorRef = aElement.getAttribute("runtime-ref");
 
+    Set registeredProxies = new HashSet();
+
+    List signaturePattern = DomUtils.getChildElementsByTagName(aElement, "signature-pattern");
+    if (signaturePattern.size() > 0) {
+      throw new UnsupportedOperationException("Signature patterns currently not supported.");
+    }
+
+    List beanPattern = DomUtils.getChildElementsByTagName(aElement, "bean-pattern");
+    for (int i = 0; i < beanPattern.size(); i++) {
+      Element currentBeanPattern = (Element) beanPattern.get(i);
+      String registeredProxy = registerBeanPattern(aParserContext, currentBeanPattern, monitorRef);
+      registeredProxies.add(registeredProxy);
+    }
+
+
+
+    BeanDefinitionBuilder proxyWrapper = BeanDefinitionBuilder.rootBeanDefinition(MonitoringInfo.class);
+    proxyWrapper.addPropertyValue("proxyNames", registeredProxies);
+
+    return proxyWrapper.getBeanDefinition();
+  }
+
+  private String registerBeanPattern(ParserContext aParserContext, Element aCurrentBeanPattern, String monitorRef) {
+    BeanDefinitionRegistry definitionRegistry = aParserContext.getRegistry();
+
+    String group = aCurrentBeanPattern.getAttribute("group");
+
+
+    String interceptorName = null;
+
+    if (group != null && group.length() > 0) {
+      // use a named interceptor, locate definition for it
+      String[] names = definitionRegistry.getBeanDefinitionNames();
+      for (int i = 0; i < names.length; i++) {
+        BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
+        if (definition.getBeanClassName().equals("etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser$NamendEtmMethodCallInterceptor")) {
+          MutablePropertyValues propertyValues = definition.getPropertyValues();
+          PropertyValue propertyValue = propertyValues.getPropertyValue("name");
+          if (propertyValue.getValue().equals(group)) {
+            interceptorName = names[i];
+            break;
+          }
+        }
+      }
+      // interceptor not found, we register one
+      if (interceptorName == null) {
+        BeanDefinitionBuilder interceptorBuilder = BeanDefinitionBuilder.rootBeanDefinition(NamendEtmMethodCallInterceptor.class);
+        interceptorBuilder.addPropertyValue("name", group);
+        if (monitorRef != null && monitorRef.length() > 0) {
+          interceptorBuilder.addConstructorArgReference(monitorRef);
+        } else {
+          interceptorBuilder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+        }
+        AbstractBeanDefinition definition = interceptorBuilder.getBeanDefinition();
+        interceptorName = generateName(definition, aParserContext);
+        definitionRegistry.registerBeanDefinition(interceptorName, definition);
+      }
+
+    } else {
+      // use standard interceptor, locate definition for it
+      String[] names = definitionRegistry.getBeanDefinitionNames();
+      for (int i = 0; i < names.length; i++) {
+        BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
+        if (definition.getBeanClassName().equals("etm.contrib.aop.aopalliance.EtmMethodCallInterceptor")) {
+          interceptorName = names[i];
+          break;
+        }
+      }
+      // interceptor not found, we register one
+      if (interceptorName == null) {
+        BeanDefinitionBuilder interceptorBuilder = BeanDefinitionBuilder.rootBeanDefinition(EtmMethodCallInterceptor.class);
+        if (monitorRef != null && monitorRef.length() > 0) {
+          interceptorBuilder.addConstructorArgReference(monitorRef);
+        } else {
+          interceptorBuilder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+        }
+        AbstractBeanDefinition definition = interceptorBuilder.getBeanDefinition();
+        interceptorName = generateName(definition, aParserContext);
+        definitionRegistry.registerBeanDefinition(interceptorName, definition);
+      }
+    }
+
+    // locate beanDefinition
+    ProxyHolder proxyDefinition = locateBeanNameProxy(aParserContext, interceptorName);
+    MutablePropertyValues propertyValues = proxyDefinition.getDefinition().getPropertyValues();
+
+    String pattern = aCurrentBeanPattern.getTextContent().trim();
+
+    PropertyValue currentBeanNames = propertyValues.getPropertyValue("beanNames");
+    if (currentBeanNames == null) {
+      propertyValues.addPropertyValue("beanNames", pattern);
+    } else {
+      propertyValues.removePropertyValue("beanNames");
+      propertyValues.addPropertyValue("beanNames", currentBeanNames.getValue() + "," + pattern);
+    }
+
+    return proxyDefinition.getName();
+  }
+
+
+  private ProxyHolder locateBeanNameProxy(ParserContext aParserContext, String aInterceptorName) {
     BeanDefinitionRegistry definitionRegistry = aParserContext.getRegistry();
     String[] names = definitionRegistry.getBeanDefinitionNames();
-    boolean shouldInterceptorRegister = true;
+
     for (int i = 0; i < names.length; i++) {
-      String name = names[i];
-      BeanDefinition definition = definitionRegistry.getBeanDefinition(name);
+      BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
+      if (definition.getBeanClassName().equals("org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator")) {
+        MutablePropertyValues propertyValues = definition.getPropertyValues();
+        PropertyValue propertyValue = propertyValues.getPropertyValue("interceptorNames");
+        if (propertyValue.getValue().equals(aInterceptorName)) {
+          return new ProxyHolder(names[i], (AbstractBeanDefinition) definition);
+        }
+      }
+    }
 
-      if (definition.getBeanClassName().equals("etm.contrib.aop.aopalliance.EtmMethodCallInterceptor")) {
-        shouldInterceptorRegister = false;
-      }
-    }
-    if (shouldInterceptorRegister) {
-      BeanDefinitionBuilder interceptorBuilder = BeanDefinitionBuilder.rootBeanDefinition(EtmMethodCallInterceptor.class);
-      if (monitorRef != null && monitorRef.length() > 0) {
-        interceptorBuilder.addConstructorArgReference(monitorRef);
-      } else {
-        interceptorBuilder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
-      }
-      definitionRegistry.registerBeanDefinition("etmMethodCallInterceptor", interceptorBuilder.getBeanDefinition());
-    }
-    List list = DomUtils.getChildElementsByTagName(aElement, "bean-pattern");
-    Element childElement = (Element) list.get(0);
+    // we did not have one so far.
+    // register it
     BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(BeanNameAutoProxyCreator.class);
-    builder.addPropertyValue("interceptorNames", "etmMethodCallInterceptor");
-    builder.addPropertyValue("beanNames", childElement.getTextContent());
+    builder.addPropertyValue("interceptorNames", aInterceptorName);
+    AbstractBeanDefinition newDefinition = builder.getBeanDefinition();
 
-    return builder.getBeanDefinition();
+    String beanName = generateName(newDefinition, aParserContext);
+    definitionRegistry.registerBeanDefinition(beanName, newDefinition);
+
+    return new ProxyHolder(beanName, newDefinition);
   }
+
+  public static class NamendEtmMethodCallInterceptor extends EtmMethodCallInterceptor {
+
+    private String name;
+
+    public NamendEtmMethodCallInterceptor(EtmMonitor aEtmMonitor) {
+      super(aEtmMonitor);
+    }
+
+    public void setName(String aName) {
+      name = aName;
+    }
+
+    protected String calculateName(MethodInvocation aMethodInvocation) {
+      return name;
+    }
+  }
+
+  public static class MonitoringInfo {
+    private Set proxyNames;
+
+
+    public Set getProxyNames() {
+      return proxyNames;
+    }
+
+    public void setProxyNames(Set aProxyNames) {
+      proxyNames = aProxyNames;
+    }
+  }
+
+  class ProxyHolder {
+    private String name;
+    private AbstractBeanDefinition definition;
+
+
+    public ProxyHolder(String aName, AbstractBeanDefinition aDefinition) {
+      name = aName;
+      definition = aDefinition;
+    }
+
+
+    public String getName() {
+      return name;
+    }
+
+    public AbstractBeanDefinition getDefinition() {
+      return definition;
+    }
+  }
+
 }

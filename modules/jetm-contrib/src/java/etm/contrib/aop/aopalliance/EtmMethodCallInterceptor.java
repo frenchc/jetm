@@ -40,7 +40,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import java.lang.reflect.Method;
 
 /**
- * AopAlliance MethodInterceptor which may be used within Spring and
+ * AopAlliance MethodInterceptor that may be used within Spring and
  * other aop Alliance frameworks to collect method invocation times.
  *
  * @author void.fm

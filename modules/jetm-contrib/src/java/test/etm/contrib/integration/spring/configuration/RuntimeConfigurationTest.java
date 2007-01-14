@@ -31,6 +31,15 @@
  */
 package test.etm.contrib.integration.spring.configuration;
 
+import etm.contrib.aggregation.log.Log4jAggregator;
+import etm.contrib.aggregation.persistence.PersistentNestedAggregator;
+import etm.contrib.renderer.plugin.Log4jDumpOnShutdownPlugin;
+import etm.contrib.renderer.plugin.SystemOutDumpOnShutdownPlugin;
+import etm.core.aggregation.BufferedTimedAggregator;
+import etm.core.metadata.EtmMonitorMetaData;
+import etm.core.metadata.PluginMetaData;
+import etm.core.monitor.EtmMonitor;
+import etm.core.timer.DefaultTimer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -40,12 +49,46 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class RuntimeConfigurationTest extends ConfigurationTestCase {
 
   public void testRuntimeFeatures() {
-    ClassPathXmlApplicationContext ctx = getContext("monitor-features.xml");
+    ClassPathXmlApplicationContext ctx = getContext("runtime-features.xml");
+    try {
+      ctx.start();
+      String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
+      assertEquals(1, monitors.length);
+
+      EtmMonitor monitor = (EtmMonitor) ctx.getBean(monitors[0]);
+      EtmMonitorMetaData etmMonitorMetaData = monitor.getMetaData();
+      assertEquals(BufferedTimedAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getImplementationClass());
+      assertEquals(Log4jAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getNestedMetaData().getImplementationClass());
+      assertEquals(PersistentNestedAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getNestedMetaData().getNestedMetaData().getImplementationClass());
+      assertEquals(DefaultTimer.class, etmMonitorMetaData.getTimerMetaData().getImplementationClass());
+
+    } finally {
+      ctx.destroy();
+    }
+
 
   }
 
   public void testRuntimePlugins() {
-    ClassPathXmlApplicationContext ctx = getContext("monitor-plugin.xml");
+    ClassPathXmlApplicationContext ctx = getContext("runtime-plugin.xml");
+    try {
+      ctx.start();
+      String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
+      assertEquals(1, monitors.length);
+
+      EtmMonitor monitor = (EtmMonitor) ctx.getBean(monitors[0]);
+      EtmMonitorMetaData etmMonitorMetaData = monitor.getMetaData();
+
+      assertEquals(2, etmMonitorMetaData.getPluginMetaData().size());
+      PluginMetaData pluginOne = (PluginMetaData) etmMonitorMetaData.getPluginMetaData().get(0);
+      assertEquals(Log4jDumpOnShutdownPlugin.class, pluginOne.getImplementationClass());
+      assertEquals("fooBar", pluginOne.getProperties().get("logName"));
+      PluginMetaData pluginTwo = (PluginMetaData) etmMonitorMetaData.getPluginMetaData().get(1);
+      assertEquals(SystemOutDumpOnShutdownPlugin.class, pluginTwo.getImplementationClass());
+
+    } finally {
+      ctx.stop();
+    }
 
   }
 }

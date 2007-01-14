@@ -76,7 +76,7 @@
   <!--
     Measure method calls of these beans
   -->
-  <jetm:monitoring id="webMonitoring">
+  <jetm:monitoring>
     <jetm:bean-pattern>*Controller,*Validator</jetm:bean-pattern>
   </jetm:monitoring>
 

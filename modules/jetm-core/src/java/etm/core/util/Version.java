@@ -30,7 +30,7 @@
  *
  */
 
-package etm.core;
+package etm.core.util;
 
 import java.io.IOException;
 import java.io.InputStream;

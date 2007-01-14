@@ -5,9 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                            http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
 
-  <jetm:runtime id="etmMonitor"/>
+  <jetm:runtime/>
 
-  <jetm:monitoring id="monitorAutoWireTest">
+  <jetm:monitoring>
     <jetm:bean-pattern>blabla</jetm:bean-pattern>
   </jetm:monitoring>
 

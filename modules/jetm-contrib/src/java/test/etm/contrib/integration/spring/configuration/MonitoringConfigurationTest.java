@@ -31,20 +31,21 @@
  */
 package test.etm.contrib.integration.spring.configuration;
 
+import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
+import etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser;
 import etm.core.monitor.EtmMonitor;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- *
- * @version $Revision$
  * @author $Id$
+ * @version $Revision$
  */
 public class MonitoringConfigurationTest extends ConfigurationTestCase {
 
 
   public void testMonitorRef() {
-    ClassPathXmlApplicationContext ctx = getContext("measurement-monitor-ref.xml");
+    ClassPathXmlApplicationContext ctx = getContext("monitoring-runtime-ref.xml");
     ctx.start();
 
     try {
@@ -58,7 +59,7 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
   }
 
   public void testMonitorAutowire() {
-    ClassPathXmlApplicationContext ctx = getContext("measurement-monitor-autowire.xml");
+    ClassPathXmlApplicationContext ctx = getContext("monitoring-autowire.xml");
 
     ctx.start();
 
@@ -73,13 +74,19 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
   }
 
   public void testMultipleEntries() {
-    ClassPathXmlApplicationContext ctx = getContext("measurement-multiple-entries.xml");
-
+    ClassPathXmlApplicationContext ctx = getContext("monitoring-multiple-entries.xml");
     ctx.start();
 
     try {
-      String[] proxyCreator = ctx.getBeanNamesForType(BeanNameAutoProxyCreator.class);
-      assertEquals(2, proxyCreator.length);
+      String[] proxyCreators = ctx.getBeanNamesForType(BeanNameAutoProxyCreator.class);
+      assertEquals(3, proxyCreators.length);
+
+      String[] etmInterceptor = ctx.getBeanNamesForType(EtmMethodCallInterceptor.class);
+      assertEquals(3, etmInterceptor.length);
+
+      String[] namedInterceptor = ctx.getBeanNamesForType(MonitoringBeanDefinitionParser.NamendEtmMethodCallInterceptor.class);
+      assertEquals(2, namedInterceptor.length);
+
       String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
       assertEquals(1, monitors.length);
     } finally {

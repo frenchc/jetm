@@ -16,9 +16,16 @@
     Enable JETM performance monitoring
   -->
 
-  <jetm:runtime id="etmMonitor"/>
+  <jetm:runtime type="nested">
+    <jetm:features>
+      <jetm:interval-buffer interval="1000" />
+      <jetm:persistence>
+        <jetm:file-backend filename="jetm-demo-state.ser" />
+      </jetm:persistence>
+    </jetm:features>
+  </jetm:runtime>
 
-  <jetm:monitoring id="daoServiceMonitoring">
+  <jetm:monitoring>
     <jetm:bean-pattern>*Dao,*Service</jetm:bean-pattern>
   </jetm:monitoring>
 

@@ -35,18 +35,18 @@ package etm.contrib.integration.spring.configuration;
 import etm.contrib.console.HttpConsoleServer;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 /**
  *
+ * BeanDefinitionParser that parses a JETM console configuration element.
+ *
  * @version $Revision$
  * @author $Id$
  * @since 1.2.0
  */
-public class ConsoleBeanDefinitionParser extends AbstractBeanDefinitionParser {
-
+public class ConsoleBeanDefinitionParser extends JetmBeanDefinitionParser {
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
     String expanded = aElement.getAttribute("expanded");
@@ -71,10 +71,8 @@ public class ConsoleBeanDefinitionParser extends AbstractBeanDefinitionParser {
       builder.addPropertyValue("workerSize", workerSize);
     }
 
-
     builder.setInitMethodName("start");
     builder.setDestroyMethodName("stop");
-
 
     return builder.getBeanDefinition();
   }

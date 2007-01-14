@@ -9,6 +9,6 @@
 
   <jetm:runtime id="etmMonitorTwo"/>
 
-  <jetm:console id="etmConsole" runtime-ref="etmMonitor" listen-port="41001"/>
+  <jetm:console runtime-ref="etmMonitor" listen-port="41001"/>
 
 </beans>

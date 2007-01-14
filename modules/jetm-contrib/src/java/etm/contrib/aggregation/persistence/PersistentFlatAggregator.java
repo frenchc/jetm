@@ -34,6 +34,7 @@ package etm.contrib.aggregation.persistence;
 import etm.core.aggregation.FlatAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
+import etm.core.util.PropertySupport;
 
 import java.util.Map;
 
@@ -44,9 +45,9 @@ import java.util.Map;
  */
 public class PersistentFlatAggregator extends FlatAggregator {
 
-   protected EtmMonitorContext context;
+  protected EtmMonitorContext context;
   protected PersistenceBackend persistenceBackend;
-  protected Map persistenceBackendProperties;
+  protected Map backendProperties;
 
   public void init(EtmMonitorContext ctx) {
     super.init(ctx);
@@ -55,7 +56,11 @@ public class PersistentFlatAggregator extends FlatAggregator {
     if (persistenceBackend == null) {
       persistenceBackend = new FileSystemPersistenceBackend();
     }
-    persistenceBackend.init(persistenceBackendProperties);
+
+    if (backendProperties != null) {
+      PropertySupport.setProperties(persistenceBackend, backendProperties);
+    }
+
   }
 
   public void start() {
@@ -85,8 +90,9 @@ public class PersistentFlatAggregator extends FlatAggregator {
     persistenceBackend = aPersistenceBackend;
   }
 
-  public void setPersistenceBackendProperties(Map someProperties) {
-    persistenceBackendProperties = someProperties;
+
+  public void setBackendProperties(Map someProperties) {
+    backendProperties = someProperties;
   }
 
   public void setPersistenceBackendClass(Class aPersistenceBackendClazz) {

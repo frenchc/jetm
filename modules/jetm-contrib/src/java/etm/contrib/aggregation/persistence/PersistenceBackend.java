@@ -31,8 +31,6 @@
  */
 package etm.contrib.aggregation.persistence;
 
-import java.util.Map;
-
 /**
  *
  * A PersistenceBackend will be used to store and load aggregated performance
@@ -43,8 +41,6 @@ import java.util.Map;
  * @since 1.2.0
  */
 public interface PersistenceBackend {
-
-  public void init(Map persistenceBackendProperties);
 
   public PersistentEtmState load();
 

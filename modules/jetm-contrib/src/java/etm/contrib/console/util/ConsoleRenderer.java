@@ -35,9 +35,9 @@ package etm.contrib.console.util;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
-import etm.core.Version;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.renderer.MeasurementRenderer;
+import etm.core.util.Version;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

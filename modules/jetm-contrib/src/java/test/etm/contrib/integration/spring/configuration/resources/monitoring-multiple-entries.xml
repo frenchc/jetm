@@ -5,14 +5,20 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                            http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
 
-  <jetm:runtime id="etmMonitor"/>
+  <jetm:runtime/>
 
-  <jetm:monitoring id="measurementOne">
-    <jetm:bean-pattern>blabla</jetm:bean-pattern>
+  <jetm:monitoring>
+    <jetm:bean-pattern>One</jetm:bean-pattern>
+    <jetm:bean-pattern group="foo">123</jetm:bean-pattern>
+
   </jetm:monitoring>
 
-  <jetm:monitoring id="measurementTwo">
-    <jetm:bean-pattern>BLubLbu</jetm:bean-pattern>
+  <jetm:monitoring>
+    <jetm:bean-pattern group="foo">456</jetm:bean-pattern>   
+    <jetm:bean-pattern group="bar">123</jetm:bean-pattern>
+    <jetm:bean-pattern>Two</jetm:bean-pattern>
+    <jetm:bean-pattern>Three</jetm:bean-pattern>
+    <jetm:bean-pattern>Four</jetm:bean-pattern>
   </jetm:monitoring>
 
 </beans>

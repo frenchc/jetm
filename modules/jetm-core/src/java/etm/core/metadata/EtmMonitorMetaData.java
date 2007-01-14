@@ -33,6 +33,7 @@
 package etm.core.metadata;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,9 @@ public class EtmMonitorMetaData implements Serializable {
     startTime = aStartTime;
     lastResetTime = aLastReset;
     pluginMetaData = aPluginMetaData;
+    if (pluginMetaData == null) {
+      pluginMetaData = new ArrayList();
+    }
   }
 
   /**
@@ -128,8 +132,8 @@ public class EtmMonitorMetaData implements Serializable {
 
 
   /**
-   * Returns the plugin Metadata. May be null;
-   * @return A list of {@link etm.core.metadata.PluginMetaData} or null;
+   * Returns the plugin Metadata, may be empty.
+   * @return A list of {@link etm.core.metadata.PluginMetaData};
    * @since 1.2.0
    */
   public List getPluginMetaData() {
