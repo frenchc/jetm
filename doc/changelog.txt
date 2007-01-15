@@ -1,7 +1,9 @@
 Release 1.2.0
  New features
+  - Improved Spring integration by using Spring 2.x namespaces
   - Sort by name, executions and times in HTTP console
   - Switch collapsed/expanded mode in HTTP console during runtime
+  - Added support for persistent aggregation results
   - Added HTTP console servlet for EtmManager and Spring Managed EtmMonitors
   - Activated JMX support again (deprecated old JMX MBeans)
   - Added EtmPluginMetada - thus enabling lookup for runtime configuration such as HTTP Console listen port
