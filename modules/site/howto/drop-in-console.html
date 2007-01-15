@@ -35,35 +35,17 @@
   </p>
 
   <p>
-    Once enabled it can be accessed through HTTP port 40000 (e.g. http://localhost:40000).
+    Currently there are three ways to activate the HTTP console: It can either be automatically enabled
+    using the <a href="../@api@/etm/contrib/console/HttpConsoleServerPlugin.html">HttpConsoleServerPlugin</a> or
+    <a href="../@api@/etm/contrib/integration/web//HttpConsoleServlet.html">HttpConsoleServlet</a> or
+    manually instantiated using <a href="../@api@/etm/contrib/console/HttpConsoleServer.html">HttpConsoleServer</a>.
   </p>
 
-  <p>
-    Currently there are two ways to activate the HTTP console: It can either be manually instantiated using
-    <a href="../@api@/etm/contrib/console/HttpConsoleServer.html">HttpConsoleServer</a> or enabled
-    as <a href="../@api@/etm/contrib/console/HttpConsoleServerPlugin.html">HttpConsoleServerPlugin</a>.
-  </p>
+  <h4>HTTP Console Servlet</h4>
 
-  <h4>Standalone HTTP Console Server</h4>
+  <p>Please see <a href="web_integration.html">generic web application</a> and
+    <a href="spring_integration.html">Springframework</a> integration for further details.</p>
 
-  <p>
-    Starting the HTTP Console Server is as simple as providing an instance of EtmMonitor to <i>HttpConsoleServer</i>.
-    Optionally the listen port (<i>setListenPort</i>) and the number of worker threads (<i>setWorkerSize</i>) can be
-    configured.
-  </p>
-
-  <div class="code"><pre>EtmMonitor etmMonitor = ...;
-
-<b>HttpConsoleServer server = new HttpConsoleServer(etmMonitor);</b>
-<span class="java-quote">// override default listen port</span>
-server.setListenPort(45000);
-server.start();</pre>
-  </div>
-
-  <p>
-    Please note that <i>HttpConsoleServer</i> can easily be used within a spring managed application.
-    See <a href="spring_integration.html">Spring Framework integration howto</a> for further details.
-  </p>
   <h4>HTTP Console Plugin</h4>
 
   <p>
@@ -82,18 +64,39 @@ server.start();</pre>
   &lt;extension&gt;
     &lt;plugin&gt;
       &lt;plugin-class&gt;<b>etm.contrib.console.HttpConsoleServerPlugin</b>&lt;/plugin-class&gt;
-      &lt;properties&gt;
-        &lt;property name="listenPort"&gt;45000&lt;/property&gt;
-      &lt;/properties&gt;
     &lt;/plugin&gt;
   &lt;/extension&gt;
 &lt;/jetm-config&gt;
 </pre>
   </div>
 
+  <p>
+    Once enabled it can be accessed through HTTP port 40000 (e.g. http://localhost:40000).
+  </p>
+  
+  <h4>Standalone HTTP Console Server</h4>
+
+  <p>
+    Starting the HTTP Console Server is as simple as providing an instance of EtmMonitor to <i>HttpConsoleServer</i>.
+    Optionally the listen port (<i>setListenPort</i>) and the number of worker threads (<i>setWorkerSize</i>) can be
+    configured.
+  </p>
+
+  <div class="code"><pre>EtmMonitor etmMonitor = ...;
+
+<b>HttpConsoleServer server = new HttpConsoleServer(etmMonitor);</b>
+<span class="java-quote">// override default listen port</span>
+server.setListenPort(45000);
+server.start();</pre></div>
+
+  <p>
+    Please note that <i>HttpConsoleServer</i> can easily be used within a spring managed application.
+    See <a href="spring_integration.html">Spring Framework integration howto</a> for further details.
+  </p>
+
   <h4>HTTP console properties</h4>
 
-  <p>The HTTPConsole supports the following properties:</p>
+  <p>Both the plugin and the standalone HTTPConsole support the following properties:</p>
   <table class="list">
     <tr>
       <th>Property</th>
