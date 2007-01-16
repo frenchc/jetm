@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+
+<body>
+
+<div id="content">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+
+<div id="subheader">The swiss army knife of the poor</div>
+
+<div id="main">
+  <h3>JETM Springframework 1.x/2.x integration</h3>
+  <p>
+    
+  </p>
+
+  <p>
+    If you already use Springframework 2.x configuration please use <a href="spring_2_x_integration.html">JETM
+    Springframework 2.x integration</a>.
+  </p>
+  <h4>Option A: Declarative performance monitoring using spring "autoproxy" facility</h4>
+
+  <p>
+    The Spring Framework comes with an extremly powerful concept called "autoproxy" facility, which can automatically
+    proxy selected bean definitions. In the example below the so-called <i>BeanNameAutoProxyCreator</i> will apply
+    a list of interceptors (here our <i>etmMethodCallInterceptor</i>) to a selected list of spring managed beans (here
+    all
+    beans ending with <i>Service</i>) and thus enable performance monitoring.
+  </p>
+
+  <p>
+    The following three bean definitions add performance monitoring code to your application. There is no need
+    to alter application code or bean definitions at all.
+  </p>
+
+  <div class="code"><pre>  &lt;bean id="etmAutoProxy"
+        class="<b>org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator</b>"
+        singleton="false"&gt;
+  
+    &lt;property name="interceptorNames"&gt;
+      &lt;list&gt;
+        &lt;value&gt;etmMethodCallInterceptor&lt;/value&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="beanNames"&gt;
+      &lt;value&gt;<b>*Service</b>&lt;/value&gt;
+    &lt;/property&gt;
+
+  &lt;/bean&gt;
+
+  &lt;bean id="etmMethodCallInterceptor"
+        class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
+        autowire="constructor"/&gt;
+
+  &lt;bean id="etmMonitor"
+        class="etm.core.monitor.NestedMonitor"
+        init-method="start" destroy-method="stop"/&gt;
+</pre>
+  </div>
+
+  <a name="http-console"/>
+
+  <p>
+    The JETM drop-in <a href="drop-in-console.html">HTTP console</a> can be used to visualize current performance
+    results.
+    The following bean definition
+    will enable the console that is accessible through
+    <a href="http://localhost:40000">http://localhost:40000</a>.
+  </p>
+
+  <div class="code"><pre>  &lt;bean id="etmHttpConsole"
+        class="<b>etm.contrib.console.HttpConsoleServer</b>"
+        init-method="start" destroy-method="stop" autowire="constructor"/&gt;</pre>
+  </div>
+
+
+  <h4>Option B: Declarative performance monitoring using EtmProxyFactoryBean</h4>
+
+  <p>
+    Similar to Spring framework TransactionProxyFactoryBean JETM ships with the class EtmProxyFactoryBean that
+    may be used to enhance Spring beans with performance monitoring code. The example below creates an instance of
+    <i>foo.bar.SomeService</i> using a template Factory.
+  </p>
+
+  <div class="code"><pre>  &lt;bean id="<b>etmProxyTemplate</b>" abstract="true"
+        class="<b>etm.contrib.aop.spring.EtmProxyFactoryBean</b>"&gt;
+    &lt;property name="etmMonitor" ref="etmMonitor"/&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="someService" parent="<b>etmProxyTemplate</b>"&gt;
+    &lt;property name="target"&gt;
+      <b>&lt;bean class="foo.bar.SomeService" autowire="constructor"/&gt;</b>
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="etmMonitor"
+        class="etm.core.monitor.NestedMonitor"
+        init-method="start" destroy-method="stop"/&gt;
+</pre>
+  </div>
+  <p>
+    For performance result visualization see <a href="#http-console">HTTP console</a> in the example above.
+  </p>
+
+</div>
+
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+</div>
+</body>
+<!-- Last modified  $Date$ -->
+</html>
