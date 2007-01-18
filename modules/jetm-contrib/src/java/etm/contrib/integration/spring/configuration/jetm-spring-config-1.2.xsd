@@ -281,8 +281,8 @@
       <xsd:element name="chain-element" minOccurs="0" maxOccurs="unbounded">
          <xsd:annotation>
           <xsd:documentation>
-            A chain element. every chain element should implement the interface Aggregator and
-            provide a constructor argument that takes a child aggregator.
+            A chain element. Every chain element should implement the interface Aggregator and
+            provide a constructor that takes one argument: the child aggregator.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
