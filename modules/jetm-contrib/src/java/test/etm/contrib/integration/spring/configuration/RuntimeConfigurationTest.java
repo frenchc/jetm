@@ -31,14 +31,18 @@
  */
 package test.etm.contrib.integration.spring.configuration;
 
+import etm.contrib.aggregation.log.CommonsLoggingAggregator;
 import etm.contrib.aggregation.log.Log4jAggregator;
 import etm.contrib.aggregation.persistence.PersistentNestedAggregator;
 import etm.contrib.renderer.plugin.Log4jDumpOnShutdownPlugin;
 import etm.contrib.renderer.plugin.SystemOutDumpOnShutdownPlugin;
 import etm.core.aggregation.BufferedTimedAggregator;
+import etm.core.aggregation.NestedAggregator;
+import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.NestedMonitor;
 import etm.core.timer.DefaultTimer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -85,6 +89,33 @@ public class RuntimeConfigurationTest extends ConfigurationTestCase {
       assertEquals("fooBar", pluginOne.getProperties().get("logName"));
       PluginMetaData pluginTwo = (PluginMetaData) etmMonitorMetaData.getPluginMetaData().get(1);
       assertEquals(SystemOutDumpOnShutdownPlugin.class, pluginTwo.getImplementationClass());
+
+    } finally {
+      ctx.stop();
+    }
+
+  }
+
+
+  public void testRuntimeChain() {
+    ClassPathXmlApplicationContext ctx = getContext("runtime-chain.xml");
+    try {
+      ctx.start();
+      String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
+      assertEquals(1, monitors.length);
+
+      EtmMonitor monitor = (EtmMonitor) ctx.getBean(monitors[0]);
+      assertEquals(NestedMonitor.class, monitor.getClass());
+
+      EtmMonitorMetaData etmMonitorMetaData = monitor.getMetaData();
+      AggregatorMetaData firstElement = etmMonitorMetaData.getAggregatorMetaData();
+      assertEquals(BufferedTimedAggregator.class, firstElement.getImplementationClass());
+
+      AggregatorMetaData secondElement = firstElement.getNestedMetaData();
+      assertEquals(CommonsLoggingAggregator.class, secondElement.getImplementationClass());
+
+      AggregatorMetaData thirdElement = secondElement.getNestedMetaData();
+      assertEquals(NestedAggregator.class, thirdElement.getImplementationClass());
 
     } finally {
       ctx.stop();

@@ -71,6 +71,7 @@ public class PropertySupport {
   }
 
   public static void setProperties(Object aObj, Map properties) {
+    
     try {
       Method[] methods = aObj.getClass().getMethods();
       for (int i = 0; i < methods.length; i++) {

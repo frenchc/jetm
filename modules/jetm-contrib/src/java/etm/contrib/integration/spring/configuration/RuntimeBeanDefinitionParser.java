@@ -99,7 +99,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     if (features != null) {
       buildChainFromFeatures(builder, features, type);
     } else if (aggregatorChain != null) {
-      buildChainFromChain(builder, aggregatorChain, type);
+      buildChainFromChain(builder, aggregatorChain);
     }
 
     if (extension != null) {
@@ -146,8 +146,47 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     }
   }
 
-  private void buildChainFromChain(BeanDefinitionBuilder aBuilder, Element aAggregatorChain, String aType) {
-    throw new UnsupportedOperationException("Aggregator chain not supported yet.");
+  private void buildChainFromChain(BeanDefinitionBuilder aBuilder, Element aAggregatorChain) {
+    List chainElements = DomUtils.getChildElementsByTagName(aAggregatorChain, "chain-element");
+    Element chainRoot = DomUtils.getChildElementByTagName(aAggregatorChain, "chain-root");
+    BeanDefinitionBuilder chainBuilder;
+
+    String rootClassName = chainRoot.getAttribute("class");
+
+    try {
+      chainBuilder = BeanDefinitionBuilder.rootBeanDefinition(Class.forName(rootClassName));
+    } catch (ClassNotFoundException e) {
+      throw new FatalBeanException("Unable to locate chain root class " + rootClassName, e);
+    }
+
+    if (chainElements.size() > 0) {
+      for (int i = chainElements.size() -1; i >= 0; i--) {
+        Element chainElement = (Element) chainElements.get(i);
+        String chainClassName = chainElement.getAttribute("class");
+
+        BeanDefinitionBuilder nestedBuilder;
+        try {
+          nestedBuilder = BeanDefinitionBuilder.rootBeanDefinition(Class.forName(chainClassName));
+        } catch (ClassNotFoundException e) {
+          throw new FatalBeanException("Unable to locate chain element class " + chainClassName, e);
+        }
+
+        List propertyElements = DomUtils.getChildElementsByTagName(chainElement, "property");
+        if (propertyElements.size() > 0) {
+          for (int j = 0; j < propertyElements.size(); j++) {
+            Element property = (Element) propertyElements.get(j);
+            nestedBuilder.addPropertyValue(property.getAttribute("name"), DomUtils.getTextValue(property));
+          }
+        }
+
+        nestedBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+        chainBuilder = nestedBuilder;  
+
+      }
+    }
+
+    // register our chain
+    aBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
   }
 
   private void buildChainFromFeatures(BeanDefinitionBuilder runtimeBuilder, Element aElement, String monitorType) {

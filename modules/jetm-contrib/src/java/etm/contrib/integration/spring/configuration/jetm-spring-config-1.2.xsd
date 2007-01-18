@@ -276,8 +276,42 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="aggregatorChainType"></xsd:complexType>
+  <xsd:complexType name="aggregatorChainType">
+    <xsd:sequence>
+      <xsd:element name="chain-element" minOccurs="0" maxOccurs="unbounded">
+         <xsd:annotation>
+          <xsd:documentation>
+            A chain element. every chain element should implement the interface Aggregator and
+            provide a constructor argument that takes a child aggregator.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="propertyType">
+              <xsd:attribute name="class" type="xsd:string"/>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="chain-root">
+        <xsd:annotation>
+          <xsd:documentation>
+            The root element in the aggregator chain. Should relate to
+            the monitor type. Has to implement the interface Aggregator and should
+            have a public no-arg constructor.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="propertyType">
+              <xsd:attribute name="class" type="xsd:string"/>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
 
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
 
 </xsd:schema>
     
