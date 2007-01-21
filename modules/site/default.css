@@ -8,26 +8,19 @@ body {
 }
 
 a:link {
-  color: #314E6C;
+  color: #333333;
   voice-family: inherit;
   cursor: pointer;
 }
 
 a:visited {
-  color: #314E6C;
+  color: #333333;
 }
 
 a:hover {
+  color: #314E6C;
   voice-family: inherit;
   cursor: pointer;
-}
-
-li a, dd a {
-  text-decoration: none !important;
-}
-
-li a:hover, dd a:hover {
-  text-decoration: underline !important;
 }
 
 #header {
@@ -101,12 +94,12 @@ dt {
 }
 
 #menu a:link {
-  text-decoration: none;
+  /*text-decoration: none;*/
   font-size: 8pt;
 }
 
 #menu a:visited {
-  text-decoration: none;
+  /*text-decoration: none;*/
   font-size: 8pt;
 }
 

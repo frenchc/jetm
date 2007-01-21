@@ -25,11 +25,17 @@
     </p>
 
     <p>
-      Therefore JETM comes with a simple and easy to use <a href="http://www.springframework.org">Springframework</a>
-      integration.
-      The following page lists prerequisites and constraints and refers to the detailed integration documentation.
+      Depending on your runtime environment choose on of the following integration strategies. Please note that the
+      these strategies rely on the prerequisites and constraints listed below.
     </p>
+    <ul>
+      <li><a href="spring_2_x_integration.html">Spring 2.x integration</a></li>
+      <li><a href="spring_1_x_integration.html">Spring 1.x/2.x integration</a></li>
+      <li><a href="spring_web_integration.html">Extensions for Spring managed web application</a></li>
+    </ul>
 
+    <a name="prerequisites_constraints"/>
+    
     <h4>Prerequisites and constraints</h4>
 
     <h5>Springframework 1.x or 2.x?</h5>
@@ -44,7 +50,6 @@
 
     <p>
       Featurewhise there is no difference between Springframework 2.x and 1.x, however in 2.x the configuration is
-      greatly
       simplified.
     </p>
 
@@ -54,32 +59,16 @@
       JETM depends on Springframework classes and it's dependencies. It is necessary to add the following jars to the
       application classpath.
     </p>
-    <table class="list">
-      <tr>
-        <th>Dependency</th>
-        <th>JAR File(s)</th>
-      </tr>
-      <tr>
-        <td>Spring Framework</td>
-        <td>spring.jar (Spring 1.x, 2.x) <i>or</i><br/>
-          spring-aop.jar, spring-beans.jar, spring-context.jar, spring-core.jar (Spring 1.x)
-        </td>
-      </tr>
-      <tr>
-        <td>AOP-Alliance API</td>
-        <td>aopalliance.jar</td>
-      </tr>
-      <tr>
-        <td>CGLIB</td>
-        <td>cglib-nodep-x.jar</td>
-      </tr>
-      <tr>
-        <td>Commons-Logging</td>
-        <td>commons-logging.jar</td>
-      </tr>
-    </table>
+    <ul>
+      <li>Spring Framework: spring.jar <i>or</i> spring-aop.jar, spring-beans.jar, spring-context.jar,
+        spring-core.jar
+      </li>
+      <li>AOP-Alliance API: aopalliance.jar</li>
+      <li>CGLIB: cglib-nodep-x.jar</li>
+      <li>Commons-Logging: commons-logging.jar</li>
+    </ul>
 
-    <a name="application-context"/>
+
     <h5>Using ApplicationContext</h5>
 
     <p>
@@ -89,17 +78,6 @@
       ContextLoaderServlet or any ApplicationContext subclass. If you just use a BeanFactory the following examples
       will not work (Hint: Register BeanPostProcessors - e.g. BeanNameAutoProxyCreator - manually).
     </p>
-
-    <h4>Integration documentation</h4>
-
-    <p>
-      Choose on of the following dedicated spring integration documents:
-    </p>
-    <ul>
-      <li><a href="spring_2_x_integration.html">Springframework 2.x integration</a></li>
-      <li><a href="spring_1_x_integration.html">Springframework 1.x/2.x integration</a></li>
-      <li><a href="spring_web_integration.html">JETM support for Spring managed web applications</a></li>
-    </ul>
   </div>
 
   <div id="menu">

@@ -39,6 +39,11 @@ import etm.core.util.PropertySupport;
 import java.util.Map;
 
 /**
+ *
+ * A flat aggregator that supports persistence provided by a [@link PersistenceBackend}. By default the persistence
+ * backend is {@link etm.contrib.aggregation.persistence.FileSystemPersistenceBackend}, however you may supply a
+ * custom backend during initialization.
+ *
  * @author void.fm
  * @version $Revision$
  * @since 1.2.0
