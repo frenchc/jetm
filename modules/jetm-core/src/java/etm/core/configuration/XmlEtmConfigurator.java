@@ -177,31 +177,31 @@ public class XmlEtmConfigurator {
     EtmMonitorConfig monitorConfig = new EtmMonitorConfig();
 
     Element documentElement = document.getDocumentElement();
-    String attribute = documentElement.getAttribute("autostart");
+    String attribute = getAttribute(documentElement, "autostart");
     if ("true".equals(attribute)) {
       monitorConfig.setAutostart(true);
     }
     NodeList monitorTypes = documentElement.getElementsByTagName("monitor-type");
     if (monitorTypes.getLength() != 0) {
       Node node = monitorTypes.item(0);
-      monitorConfig.setMonitorType(node.getFirstChild().getNodeValue());
+      monitorConfig.setMonitorType(getNodeFirstChildTextValue(node));
     } else {
       NodeList monitorClasses = documentElement.getElementsByTagName("monitor-class");
       if (monitorClasses.getLength() != 0) {
         Node node = monitorClasses.item(0);
-        monitorConfig.setMonitorClass(node.getFirstChild().getNodeValue());
+        monitorConfig.setMonitorClass(getNodeFirstChildTextValue(node));
       }
     }
 
     NodeList timerTypes = documentElement.getElementsByTagName("timer-type");
     if (timerTypes.getLength() != 0) {
       Node node = timerTypes.item(0);
-      monitorConfig.setTimerType(node.getFirstChild().getNodeValue());
+      monitorConfig.setTimerType(getNodeFirstChildTextValue(node));
     } else {
       NodeList timerClasses = documentElement.getElementsByTagName("timer-class");
       if (timerClasses.getLength() != 0) {
         Node node = timerClasses.item(0);
-        monitorConfig.setTimerClass(node.getFirstChild().getNodeValue());
+        monitorConfig.setTimerClass(getNodeFirstChildTextValue(node));
       }
     }
 
@@ -245,7 +245,7 @@ public class XmlEtmConfigurator {
     NodeList pluginClasses = aPlugin.getElementsByTagName("plugin-class");
     if (pluginClasses.getLength() != 0) {
       Node node = pluginClasses.item(0);
-      pluginConfig.setPluginClass(node.getFirstChild().getNodeValue());
+      pluginConfig.setPluginClass(getNodeFirstChildTextValue(node));
     } else {
       throw new EtmConfigurationException("No valid plugin class found");
     }
@@ -253,7 +253,7 @@ public class XmlEtmConfigurator {
     NodeList properties = aPlugin.getElementsByTagName("property");
     for (int j = 0; j < properties.getLength(); j++) {
       Element property = (Element) properties.item(j);
-      pluginConfig.addProperty(property.getAttribute("name"), property.getFirstChild().getNodeValue());
+      pluginConfig.addProperty(getAttribute(property, "name"), getNodeFirstChildTextValue(property));
     }
 
     return pluginConfig;
@@ -264,7 +264,7 @@ public class XmlEtmConfigurator {
     NodeList aggregatorClasses = aAggregator.getElementsByTagName("aggregator-class");
     if (aggregatorClasses.getLength() != 0) {
       Node node = aggregatorClasses.item(0);
-      aggregatorConfig.setAggregatorClass(node.getFirstChild().getNodeValue());
+      aggregatorConfig.setAggregatorClass(getNodeFirstChildTextValue(node));
     } else {
       throw new EtmConfigurationException("No valid aggregator class found");
     }
@@ -272,10 +272,26 @@ public class XmlEtmConfigurator {
     NodeList properties = aAggregator.getElementsByTagName("property");
     for (int j = 0; j < properties.getLength(); j++) {
       Element property = (Element) properties.item(j);
-      aggregatorConfig.addProperty(property.getAttribute("name"), property.getFirstChild().getNodeValue());
+      aggregatorConfig.addProperty(getAttribute(property, "name"), getNodeFirstChildTextValue(property));
     }
     return aggregatorConfig;
   }
 
+  private static String getAttribute(Element element, String attributeName) {
+    String attribute = element.getAttribute(attributeName);
+    if (attribute != null) {
+      return attribute.trim();
+    }
+
+    return attribute;
+  }
+
+  private static String getNodeFirstChildTextValue(Node aNode) {
+    String nodeValue = aNode.getFirstChild().getNodeValue();
+    if (nodeValue != null) {
+      return nodeValue.trim();
+    }
+    return nodeValue;
+  }
 
 }
