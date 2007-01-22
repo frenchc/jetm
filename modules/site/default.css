@@ -8,13 +8,13 @@ body {
 }
 
 a:link {
-  color: #333333;
+  color: #666666;
   voice-family: inherit;
   cursor: pointer;
 }
 
 a:visited {
-  color: #333333;
+  color: #666666;
 }
 
 a:hover {
