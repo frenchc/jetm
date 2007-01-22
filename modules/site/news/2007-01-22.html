@@ -20,7 +20,7 @@
 
     <p>
       JETM 1.2.0 has come a long way last days. It is pretty close to be finished, so far the migration to
-      RRD4j is missing only. As of today we are planning to release 1.2.0 end of January 2007.
+      RRD4j is missing only. As of today we are planning to release 1.2.0 end of January - early February 2007.
     </p>
     <p>
       In the meantime please try out the current daily
@@ -37,12 +37,12 @@
       <li>JMX Integration</li>
       <li>Lots of minor changes, such as improved error reporting, web demo improvements, extended plugin and aggregator lifecycle and more... </li>
     </ul>
-    <p>Please check <i>Using JETM HTTP Console</i>, <i>Generic web application integration</i>, <i>Springframework
-      integration primer</i> and <i>Aggregation persistence</i> in the snapshot documentation section for updated
+    <p>Please check <i>Using JETM HTTP Console</i>, <i>Web application integration</i>, <i>Springframework
+      integration</i> and <i>Aggregation persistence</i> in the snapshot documentation section for updated
       documentation.
     </p>
     <p>
-      Migrating to the new release should be a matter of switching to the new libraries unless you implemented a custom
+      <b>Attention:</b> Migrating to the new release should be a matter of switching to the new libraries unless you implemented a custom
       <i>Aggregator</i> or <i>Plugin</i>. In this case you need to alter your implementation and adapt the new
       interfaces containing an additional lifecycle method <i>init(EtmMonitorContext ctx)</i>. For plugins move logic in
       <i>EtmPlugin#setMonitor()</i> to this method.

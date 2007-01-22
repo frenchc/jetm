@@ -60,6 +60,7 @@
 &lt;/jetm-config&gt;</pre>
 </div>
 
+<a name="monitor_servlet"></a>
 <h4>Step II: Access aggregated results</h4>
 
 <p>
@@ -83,10 +84,9 @@
     &lt;url-pattern&gt;/performance/*&lt;/url-pattern&gt;
   &lt;/servlet-mapping&gt;</pre>
 </div>
-<p>
-  If you point your browser to the URL above JETM does not offer performance details at all. This is because you need
-  to enable monitoring explicitly.
-</p>
+
+<a name="http_filter"></a>
+
 <h4>Step III: Monitor HTTP or SOAP Requests</h4>
 <p>
   For high level performance monitoring JETM includes two HTTP servlet filters that may be used to record execution
@@ -97,7 +97,7 @@
 </p>
 
 <p>
-  The following web.xml exerpt enables SOAPAction based monitoring for a web service endpoint at <i>/services/*</i>.
+  The following web.xml excerpt enables SOAPAction based monitoring for a web service endpoint at <i>/services/*</i>.
 </p>
 
 <div class="code"><pre>  ...
@@ -212,5 +212,5 @@
 </div>
 </div>
 </body>
-<!-- Last modified  $Date$ -->
+<!-- Last modified  $Date:2007-01-16 01:50:19 +0100 (Tue, 16 Jan 2007) $ -->
 </html>
