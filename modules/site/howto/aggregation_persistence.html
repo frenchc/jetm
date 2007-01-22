@@ -25,18 +25,18 @@
 <p>
   By default all aggregated performance details are kept in memory only. If you want to have your results surviving
   VM restarts you need to alter the aggregation chain and use a persistent aggregator. Persistent aggregators are
-  backed by a <a href="../@api@/etm/core/contrib/persistence/PersistenceBackend.html">PersistenceBackend</a>. The
+  backed by a <a href="../@api@/etm/contrib/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>. The
   default implementation is a
-  <a href="../@api@/etm/core/contrib/persistence/FileSystemPersistenceBackend.html">FileSystemPersistenceBackend</a>
+  <a href="../@api@/etm/contrib/aggregation/persistence/FileSystemPersistenceBackend.html">FileSystemPersistenceBackend</a>
   that may be replaced with your own implementation.
 </p>
 <h4>Persistent Aggregators in jetm-config.xml (used by <a href="etm_manager_configuration.html">EtmManager</a>)</h4>
 
 <p>
   Enabling persitence in a jetm-config.xml is pretty simple: Either add
-  <a href="../@api@/etm/core/contrib/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
+  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
   or
-  <a href="../@api@/etm/core/contrib/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>
+  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>
   as chain root and you are done. See examples below.
 </p>
 
@@ -179,11 +179,11 @@
 
 
 <p>If you want to use a custom
-  <a href="../@api@/etm/core/contrib/persistence/PersistenceBackend.html">PersistenceBackend</a>
+  <a href="../@api@/etm/contrib/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>
   supply a valid implementation to either
-  <a href="../@api@/etm/core/contrib/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
+  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
   or
-  <a href="../@api@/etm/core/contrib/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>.
+  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>.
   See examples below for EtmManager and Spring managed JETM instances.
 </p>
 <p>
