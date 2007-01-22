@@ -16,99 +16,107 @@
 <div id="subheader">The swiss army knife of the poor</div>
 
 <div id="main">
-  <h3>JETM Springframework 1.x/2.x integration</h3>
-  <p>
-    
-  </p>
+<h3>JETM Springframework 1.x/2.x integration</h3>
 
-  <p>
-    If you already use Springframework 2.x configuration please use <a href="spring_2_x_integration.html">JETM
-    Springframework 2.x integration</a>.
-  </p>
-  <h4>Option A: Declarative performance monitoring using spring "autoproxy" facility</h4>
+<p>
+  This page describes the generic Springframework 1.x/2.x JETM integration. If you already use Spring 2.x schema
+  based configuration please use JETM <a href="spring_2_x_integration.html"> Spring 2.x integration</a>.
+</p>
 
-  <p>
-    The Spring Framework comes with an extremly powerful concept called "autoproxy" facility, which can automatically
-    proxy selected bean definitions. In the example below the so-called <i>BeanNameAutoProxyCreator</i> will apply
-    a list of interceptors (here our <i>etmMethodCallInterceptor</i>) to a selected list of spring managed beans (here
-    all
-    beans ending with <i>Service</i>) and thus enable performance monitoring.
-  </p>
+<p>
+  Be aware that these <a href="spring_integration.html#prerequisites_constraints">prerequisites
+  and constraints</a> apply.
+</p>
 
-  <p>
-    The following three bean definitions add performance monitoring code to your application. There is no need
-    to alter application code or bean definitions at all.
-  </p>
+<h4>Performance monitoring step-by-step</h4>
 
-  <div class="code"><pre>  &lt;bean id="etmAutoProxy"
-        class="<b>org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator</b>"
-        singleton="false"&gt;
-  
-    &lt;property name="interceptorNames"&gt;
-      &lt;list&gt;
-        &lt;value&gt;etmMethodCallInterceptor&lt;/value&gt;
-      &lt;/list&gt;
-    &lt;/property&gt;
-    &lt;property name="beanNames"&gt;
-      &lt;value&gt;<b>*Service</b>&lt;/value&gt;
-    &lt;/property&gt;
+<p>
+  The Spring Framework comes with an extremly powerful concept called "autoproxy" facility that can automatically
+  proxy selected bean definitions. These proxies can be used to intercept calls to these beans and thus
+  record execution times.
+</p>
 
-  &lt;/bean&gt;
+<h5>Step I: Initialize JETM monitoring</h5>
 
-  &lt;bean id="etmMethodCallInterceptor"
-        class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
-        autowire="constructor"/&gt;
+<p>
+  The following two bean definitions enable performance monitoring in your spring managed application. First we
+  registered an instance of EtmMonitor, second we register an Interceptor that will be used later.
+</p>
 
-  &lt;bean id="etmMonitor"
-        class="etm.core.monitor.NestedMonitor"
-        init-method="start" destroy-method="stop"/&gt;
+<div class="code"><pre>&lt;bean id="etmMonitor"
+      class="<b>etm.core.monitor.NestedMonitor</b>"
+      init-method="start" destroy-method="stop"/&gt;
+
+&lt;bean id="etmMethodCallInterceptor"
+      class="<b>etm.contrib.aop.aopalliance.EtmMethodCallInterceptor</b>"
+      autowire="constructor"/&gt;</pre>
+</div>
+<p>
+  Since the instance of EtmMonitor should exist globally you need to ensure that the bean definition happens in your
+  spring configuration root. Otherwhise child definitions may not be able to access the monitor.
+</p>
+
+<h5>Step II: Monitor Spring managed beans</h5>
+
+<p>
+  The class <i>BeanNameAutoProxyCreator</i> is one option to enable the "autoproxy" facility. It creates proxies
+  of selected beans and applies interceptors to them. In the example below we apply our previously registered
+  <i>EtmMethodCallInterceptor</i> to beans that end with <i>Service</i>. You can use concrete names or wildcards
+  if you want.
+</p>
+
+<div class="code"><pre>&lt;bean id="etmAutoProxy"
+      class="<b>org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator</b>"
+      singleton="false"&gt;
+
+  &lt;property name="interceptorNames"&gt;
+    &lt;list&gt;
+      &lt;value&gt;<b>etmMethodCallInterceptor</b>&lt;/value&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+  &lt;property name="beanNames"&gt;
+    &lt;value&gt;<b>*Service</b>&lt;/value&gt;
+  &lt;/property&gt;
+
+&lt;/bean&gt;</pre>
+</div>
+<h5>Step III: Access aggregated results</h5>
+
+<p>
+  The <a href="drop-in-console.html">standalone HTTP console</a> provides access to aggregated performance results.
+  Simply add the following fragment to your Spring configuration and point your browser to
+  <i>http://{HOSTNAME}:40000</i> to access it.
+</p>
+
+<div class="code"><pre>&lt;bean id="etmHttpConsole"
+      class="<b>etm.contrib.console.HttpConsoleServer</b>"
+      init-method="start" destroy-method="stop" autowire="constructor"/&gt;</pre>
+</div>
+
+<p> If your application is a web application you probably want to use the servlet based monitoring console instead.
+  See <a href="spring_web_integration.html">Spring web integration</a> for further details.</p>
+
+<h5>Monitoring alternative: EtmProxyFactoryBean</h5>
+
+
+<p>
+  Similar to Spring framework TransactionProxyFactoryBean JETM ships with the class EtmProxyFactoryBean that
+  may be used to enhance Spring beans with performance monitoring code. The example below creates an instance of
+  <i>foo.bar.SomeService</i> using a template Factory.
+</p>
+
+<div class="code"><pre>&lt;bean id="<b>etmProxyTemplate</b>" abstract="true"
+      class="<b>etm.contrib.aop.spring.EtmProxyFactoryBean</b>"&gt;
+  &lt;property name="etmMonitor" ref="etmMonitor"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="someService" parent="<b>etmProxyTemplate</b>"&gt;
+  &lt;property name="target"&gt;
+    <b>&lt;bean class="foo.bar.SomeService" autowire="constructor"/&gt;</b>
+  &lt;/property&gt;
+&lt;/bean&gt;
 </pre>
-  </div>
-
-  <a name="http-console"/>
-
-  <p>
-    The JETM drop-in <a href="drop-in-console.html">HTTP console</a> can be used to visualize current performance
-    results.
-    The following bean definition
-    will enable the console that is accessible through
-    <a href="http://localhost:40000">http://localhost:40000</a>.
-  </p>
-
-  <div class="code"><pre>  &lt;bean id="etmHttpConsole"
-        class="<b>etm.contrib.console.HttpConsoleServer</b>"
-        init-method="start" destroy-method="stop" autowire="constructor"/&gt;</pre>
-  </div>
-
-
-  <h4>Option B: Declarative performance monitoring using EtmProxyFactoryBean</h4>
-
-  <p>
-    Similar to Spring framework TransactionProxyFactoryBean JETM ships with the class EtmProxyFactoryBean that
-    may be used to enhance Spring beans with performance monitoring code. The example below creates an instance of
-    <i>foo.bar.SomeService</i> using a template Factory.
-  </p>
-
-  <div class="code"><pre>  &lt;bean id="<b>etmProxyTemplate</b>" abstract="true"
-        class="<b>etm.contrib.aop.spring.EtmProxyFactoryBean</b>"&gt;
-    &lt;property name="etmMonitor" ref="etmMonitor"/&gt;
-  &lt;/bean&gt;
-
-  &lt;bean id="someService" parent="<b>etmProxyTemplate</b>"&gt;
-    &lt;property name="target"&gt;
-      <b>&lt;bean class="foo.bar.SomeService" autowire="constructor"/&gt;</b>
-    &lt;/property&gt;
-  &lt;/bean&gt;
-
-  &lt;bean id="etmMonitor"
-        class="etm.core.monitor.NestedMonitor"
-        init-method="start" destroy-method="stop"/&gt;
-</pre>
-  </div>
-  <p>
-    For performance result visualization see <a href="#http-console">HTTP console</a> in the example above.
-  </p>
-
+</div>
 </div>
 
 <div id="menu">

@@ -24,12 +24,16 @@
 
 <p>
   If you already use the new Spring 2.x schema based configuration you can use the JETM namespace to configure
-  performance monitoring. Be aware that these <a href="spring_integration.html#prerequisites_constraints">prerequisites
-  and
-  constraints</a> apply.
+  performance monitoring. Otherwhise use Spring 1.x <a href="spring_1_x_integration.html">dtd based configuration</a>. 
+</p>
+<p>
+  Be aware that these <a href="spring_integration.html#prerequisites_constraints">prerequisites
+  and constraints</a> apply.
 </p>
 
-<h4>Step I: Initialize JETM runtime</h4>
+<h4>Performance monitoring step-by-step</h4>
+<h5>Step I: Initialize JETM runtime</h5>
+
 
 <p>
   In order to enable performance monitoring the JETM runtime has to be configured.
@@ -53,10 +57,10 @@
 &lt;/beans&gt;</pre>
 </div>
 <p>
-  Since the runtime should exist globally you need to ensure that the runtime definitions happens in your spring
+  Since the runtime should exist globally you need to ensure that the runtime definition happens in your spring
   configuration root. Otherwhise child definitions may not be able to access the runtime.
 </p>
-<h4>Step II: Enable performance monitoring for Spring managed beans</h4>
+<h5>Step II: Monitor Spring managed beans</h5>
 
 <p>
   The tag <i>jetm:monitoring</i> will register Spring managed beans for performance monitoring. Once registered the
@@ -69,11 +73,12 @@
 &lt;/jetm:monitoring&gt;</pre>
 </div>
 
-<h4>Step III: Enable access to aggregated results</h4>
+<h5>Step III: Access aggregated results</h5>
 
 <p>
-  The standalone HTTP console provides access to aggregated performance results. Simply add the following fragment to
-  your Spring configuration and point your browser to <i>http://{HOSTNAME}:40000</i> to access it.
+  The <a href="drop-in-console.html">standalone HTTP console</a> provides access to aggregated performance results.
+  Simply add the following fragment to your Spring configuration and point your browser to
+  <i>http://{HOSTNAME}:40000</i> to access it.
 </p>
 
 
@@ -81,10 +86,10 @@
   <pre>&lt;jetm:console /&gt;</pre>
 </div>
 
-<p> If you application is a web application you probably want to use the servlet based monitoring console instead.
+<p> If your application is a web application you probably want to use the servlet based monitoring console instead.
   See <a href="spring_web_integration.html">Spring web integration</a> for further details.</p>
 
-<h4>Step IV: (Optionally) alter default configurations</h4>
+<h4>Further configuration options</h4>
 
 <p>
   So far we have been using default configurations only.
