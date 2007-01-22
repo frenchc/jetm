@@ -45,7 +45,7 @@ import java.io.IOException;
  * A Servlet Filter that spans performance monitoring around WebService document/literal
  * requests that contain a SoapAction HTTP header. Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
  * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link @EtmMonitorContextListener}.
+ * this filter in conjunction with {@link EtmMonitorContextListener}.
  * <p/>
  * Delegates monitoring to {@link HttpRequestPerformanceFilter} for missing or empty soap actions.
  *

@@ -49,7 +49,7 @@ import java.io.IOException;
  * A Servlet Filter that spans performance monitoring around HTTP requests.
  * Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
  * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link @EtmMonitorContextListener}.
+ * this filter in conjunction with {@link EtmMonitorContextListener}.
  *
  * @author void.fm
  * @version $Revision$

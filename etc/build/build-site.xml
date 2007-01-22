@@ -8,6 +8,8 @@
         <filter token="api" value="${site.filter.api}"/>
         <filter token="samples" value="${site.filter.samples}"/>
         <filter token="dtd" value="${site.filter.dtd}"/>
+        <filter token="schema" value="${site.filter.schema}"/>
+
       </filterset>
     </copy>
     <copy todir="${site.dest.dir}" preservelastmodified="true">

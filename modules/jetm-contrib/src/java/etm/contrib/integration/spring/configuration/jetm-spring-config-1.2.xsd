@@ -6,6 +6,20 @@
             elementFormDefault="qualified"
             attributeFormDefault="unqualified">
 
+  <!--
+   Enable JETM namespace by using the following namespace declaration.
+
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:jetm="http://jetm.void.fm/schema/jetm-spring-config-1.2"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                             http://jetm.void.fm/schema/jetm-spring-config-1.2 http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd">
+
+   ...
+
+  </beans>
+  -->
+
   <xsd:import namespace="http://www.springframework.org/schema/beans"/>
 
   <xsd:element name="runtime">

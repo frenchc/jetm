@@ -57,6 +57,7 @@
       <param name="site.filter.api" value="../api"/>
       <param name="site.filter.samples" value="../../samples"/>
       <param name="site.filter.dtd" value="../dtd"/>
+      <param name="site.filter.schema" value="../schema"/>
     </antcall>
 
     <tar destfile="${build.dist.dir}/${release.name}-${release.version}.tar.gz" compression="gzip">
@@ -73,8 +74,10 @@
       <tarfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </tarfileset>
+      <tarfileset prefix="${release.name}-${release.version}/doc/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+        <include name="**/*.xsd"/>
+      </tarfileset>
     </tar>
-
 
     <zip destfile="${build.dist.dir}/${release.name}-${release.version}.zip">
       <zipfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
@@ -90,6 +93,10 @@
       <zipfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </zipfileset>
+      <zipfileset prefix="${release.name}-${release.version}/doc/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+        <include name="**/*.xsd"/>
+      </zipfileset>
+
     </zip>
 
     <!-- Create website -->
@@ -98,6 +105,7 @@
       <param name="site.filter.api" value="api"/>
       <param name="site.filter.samples" value="samples"/>
       <param name="site.filter.dtd" value="dtd"/>
+      <param name="site.filter.schema" value="schema"/>
     </antcall>
 
     <copy todir="${build.site.web.dir}/api" filtering="true" preservelastmodified="true">
@@ -111,6 +119,11 @@
     <copy todir="${build.site.web.dir}/dtd" filtering="true" preservelastmodified="true">
       <fileset dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
+      </fileset>
+    </copy>
+    <copy todir="${build.site.web.dir}/schema" filtering="true" preservelastmodified="true">
+      <fileset dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+        <include name="**/*.xsd"/>
       </fileset>
     </copy>
     <copy todir="${build.site.web.dir}/snapshots/jetm" preservelastmodified="true">

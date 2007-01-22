@@ -23,6 +23,19 @@ a:hover {
   cursor: pointer;
 }
 
+li a:link {
+  text-decoration: none;
+}
+
+li a:visited {
+  text-decoration: none;
+}
+
+li a:hover {
+  text-decoration: underline;     
+}
+
+
 #header {
   font-size: 200%;
   font-weight: 400;
@@ -94,12 +107,12 @@ dt {
 }
 
 #menu a:link {
-  /*text-decoration: none;*/
+  text-decoration: none;
   font-size: 8pt;
 }
 
 #menu a:visited {
-  /*text-decoration: none;*/
+  text-decoration: none;
   font-size: 8pt;
 }
 

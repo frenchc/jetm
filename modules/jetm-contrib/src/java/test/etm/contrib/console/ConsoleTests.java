@@ -62,7 +62,10 @@ public abstract class ConsoleTests extends TestCase {
 
   public void testResultRendering() throws Exception {
 
+    String serverResponse = executeRequest("/index");
+
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
     StandaloneConsoleRequest request = new StandaloneConsoleRequest(monitor);
     ConsoleResponse testResponse = new ConsoleResponse() {
       OutputStreamWriter writer = new OutputStreamWriter(out);
@@ -96,7 +99,6 @@ public abstract class ConsoleTests extends TestCase {
     );
     monitor.render(renderer);
 
-    String serverResponse = executeRequest("/index");
     String expected = new String(out.toByteArray(), "UTF-8");
 
     String s = serverResponse.substring(serverResponse.indexOf("close") + 5).trim();
@@ -128,7 +130,7 @@ public abstract class ConsoleTests extends TestCase {
 
   protected String executeRequest(String request) throws Exception {
     Socket socket = new Socket("127.0.0.1", 40000);
-    socket.setSoTimeout(4000);
+    socket.setSoTimeout(30000);
     OutputStream outputStream = socket.getOutputStream();
     outputStream.write(("GET " + request + " HTTP/1.0\n").getBytes());
     outputStream.flush();

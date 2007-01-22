@@ -19,23 +19,23 @@
     <h3>JETM Springframework integration</h3>
 
     <p>
-      Due to the nature of Spring managed applications JETM performance monitoring can easily be added without
+      Due to the nature of Spring managed applications JETM performance monitoring can easily added without
       touching application source code at all. This is done using Spring AOP. With it's help it
       is possible to monitor execution times purely by configuration.
     </p>
 
     <p>
-      Depending on your runtime environment choose on of the following integration strategies. Please note that the
-      these strategies rely on the prerequisites and constraints listed below.
+      Depending on your runtime environment choose one of the following integration strategies. Please note that these
+      strategies rely on prerequisites and come with constraints listed below.
     </p>
     <ul>
-      <li><a href="spring_2_x_integration.html">Spring 2.x integration</a></li>
-      <li><a href="spring_1_x_integration.html">Spring 1.x/2.x integration</a></li>
-      <li><a href="spring_web_integration.html">Extensions for Spring managed web application</a></li>
+      <li><a href="spring_2_x_integration.html">Spring 2.x integration</a> - requires XSD based configuration</li>
+      <li><a href="spring_1_x_integration.html">Spring 1.x/2.x integration</a> - uses DTD based configuration</li>
+      <li><a href="spring_web_integration.html">Extensions</a> for Spring managed web applications</li>
     </ul>
 
-    <a name="prerequisites_constraints"/>
-    
+
+    <a name="prerequisites_constraints"></a>
     <h4>Prerequisites and constraints</h4>
 
     <h5>Springframework 1.x or 2.x?</h5>
@@ -69,14 +69,14 @@
     </ul>
 
 
-    <h5>Using ApplicationContext</h5>
+    <h5>ApplicationContext required</h5>
 
     <p>
       Be aware that your spring configuration must be running within an <a
       href="http://www.springframework.org/docs/reference/beans.html#context-introduction">ApplicationContext</a>.
       Normally this is the case if you create the Spring runtime using a Web ContextLoaderListener or Web
-      ContextLoaderServlet or any ApplicationContext subclass. If you just use a BeanFactory the following examples
-      will not work (Hint: Register BeanPostProcessors - e.g. BeanNameAutoProxyCreator - manually).
+      ContextLoaderServlet or any ApplicationContext subclass. If you just use a BeanFactory JETM performance monitoring
+      will not work automatically (Hint: Register BeanPostProcessors - e.g. BeanNameAutoProxyCreator - manually).
     </p>
   </div>
 
