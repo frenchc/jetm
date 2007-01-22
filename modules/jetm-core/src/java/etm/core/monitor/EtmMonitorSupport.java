@@ -239,10 +239,11 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     collecting = false;
     started = false;
 
+    scheduler.cancel();
+
     aggregator.stop();
     shutdownPlugins();
 
-    scheduler.cancel();
   }
 
   public boolean isStarted() {

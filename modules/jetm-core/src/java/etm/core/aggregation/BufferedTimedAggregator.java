@@ -139,9 +139,31 @@ public class BufferedTimedAggregator implements Aggregator {
   public void start() {
     delegate.start();
 
+    // this one is dangerous
+    // if we run into VM level problems we might add a potential
+    // out of memory too
+    // we need to ensure that in those rare cases the OOM does not occur
+    // TODO
     ctx.getScheduler().scheduleAtFixedRate(new TimerTask() {
       public void run() {
-        flush();
+        try {
+          flush();
+        } catch (Throwable t) {
+          if (t instanceof ThreadDeath) {
+            started = false;
+            cancel();
+            System.err.println("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            throw (ThreadDeath)t;
+          }
+          if (t instanceof Error) {
+            started = false;
+            cancel();
+            System.err.println("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");            
+            throw (Error)t;
+          }
+          // TODO
+          t.printStackTrace();
+        }
       }
     }, sleepInterval, sleepInterval);
 
@@ -154,8 +176,13 @@ public class BufferedTimedAggregator implements Aggregator {
   public void stop() {
     started = false;
 
+
     // lets flush all we have.
     flush();
+
+    // we don't need to stop the time since this one is hopefully
+    // stopped by the enclosing EtmMonitor instance.
+
 
     delegate.stop();
   }
