@@ -40,7 +40,7 @@ import java.util.Map;
 
 /**
  *
- * A flat aggregator that supports persistence provided by a [@link PersistenceBackend}. By default the persistence
+ * A flat aggregator that supports persistence provided by a {@link PersistenceBackend}. By default the persistence
  * backend is {@link etm.contrib.aggregation.persistence.FileSystemPersistenceBackend}, however you may supply a
  * custom backend during initialization.
  *

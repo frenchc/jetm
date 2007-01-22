@@ -39,7 +39,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * A file based persistence store that uses Java Serialization. By default
+ * A file based persistence store that uses Java Serialization. By default serialized results will be stored
+ * at {java.io.tmpdir}/jetm-state.ser.
  *
  * @author void.fm
  * @version $Revision$
