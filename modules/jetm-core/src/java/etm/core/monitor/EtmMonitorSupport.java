@@ -115,9 +115,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
         return;
       }
 
-      synchronized (lock) {
-        doVisitPreMeasurement(measurementPoint);
-      }
+      doVisitPreMeasurement(measurementPoint);
 
       measurementPoint.setTicks(timer.getTicksPerSecond());
       measurementPoint.setStartTime(timer.getCurrentTime());
@@ -158,8 +156,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     try {
       measurementPoint.setEndTime(timer.getCurrentTime());
 
+      doVisitPostCollect(measurementPoint);
+      
       synchronized (lock) {
-        doVisitPostCollect(measurementPoint);
         aggregator.add(measurementPoint);
       }
       // catch all exceptions here
@@ -217,12 +216,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     // 1. init aggregators
     aggregator.init(new EtmMonitorSupportContext(this, scheduler));
 
-    // 2. init plugins
-
-    // 3. start aggregators
+    // 2. start aggregators
     aggregator.start();
 
-    // 4. start plugins
+    // 3. start plugins
     startPlugins();
 
 
@@ -345,6 +342,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       }
     }
   }
+
+
 
   private List getPluginMetaData() {
     if (plugins != null) {
