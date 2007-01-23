@@ -84,14 +84,15 @@ public class TestAggregator implements Aggregator {
   }
 
   public void init(EtmMonitorContext ctx) {
+    aggregator.init(ctx);
   }
 
   public void start() {
-
+    aggregator.start();
   }
 
   public void stop() {
-
+    aggregator.stop();
   }
  
 }

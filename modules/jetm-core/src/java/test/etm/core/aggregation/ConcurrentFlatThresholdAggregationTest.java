@@ -32,7 +32,7 @@
 
 package test.etm.core.aggregation;
 
-import etm.core.aggregation.BufferedThresholdAggregator;
+import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.FlatAggregator;
 import etm.core.monitor.EtmMonitor;
@@ -172,7 +172,6 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
     assertEquals(aggregates.size(), pointSize);
     assertEquals(pointSize * threadSize * iterations, aggregator.getCounter());
 
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
@@ -209,7 +208,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    aggregator = new TestAggregator(new BufferedThresholdAggregator(new FlatAggregator()));
+    aggregator = new TestAggregator(new BufferedTimedAggregator(new FlatAggregator()));
     monitor = new FlatMonitor(new DefaultTimer(), aggregator);
     monitor.start();
   }
