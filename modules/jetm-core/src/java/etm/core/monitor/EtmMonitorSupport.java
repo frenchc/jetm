@@ -128,15 +128,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
   }
 
-  private void showMonitorNotStartedMessage() {
-    System.err.println("Warning - Performance Monitoring currently disabled.");
-    System.err.println("If you did not start the current EtmMonitor on purpose,");
-    System.err.println("you may ignore this warning.");
-    System.err.println("Otherwhise ensure to call EtmMonitor.start() at some point");
-    System.err.println("in your application.");
-    noStartedErrorMessageFlag = true;
-  }
-
   public synchronized final void visitPostCollect(MeasurementPoint measurementPoint) {
     if (!collecting) {
       return;
@@ -157,7 +148,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       measurementPoint.setEndTime(timer.getCurrentTime());
 
       doVisitPostCollect(measurementPoint);
-      
+
       synchronized (lock) {
         aggregator.add(measurementPoint);
       }
@@ -333,7 +324,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       for (int i = 0; i < plugins.size(); i++) {
         EtmPlugin etmPlugin = (EtmPlugin) plugins.get(i);
         try {
-          etmPlugin.init(new EtmMonitorSupportContext(this, scheduler));          
+          etmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
           etmPlugin.start();
         } catch (Exception e) {
           // todo since I don't want to use a logging framework what do we do?
@@ -342,7 +333,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       }
     }
   }
-
 
 
   private List getPluginMetaData() {
@@ -356,6 +346,16 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
 
     return null;
+  }
+
+
+  private void showMonitorNotStartedMessage() {
+    System.err.println("Warning - Performance Monitoring currently disabled.");
+    System.err.println("If you did not start the current EtmMonitor on purpose,");
+    System.err.println("you may ignore this warning.");
+    System.err.println("Otherwhise ensure to call EtmMonitor.start() at some point");
+    System.err.println("in your application.");
+    noStartedErrorMessageFlag = true;
   }
 
   class EtmMonitorSupportContext implements EtmMonitorContext {
