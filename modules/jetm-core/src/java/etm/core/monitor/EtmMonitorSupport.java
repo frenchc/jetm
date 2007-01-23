@@ -334,7 +334,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
   }
 
-
   private List getPluginMetaData() {
     if (plugins != null) {
       List metaData = new ArrayList(plugins.size());
@@ -347,7 +346,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
     return null;
   }
-
 
   private void showMonitorNotStartedMessage() {
     System.err.println("Warning - Performance Monitoring currently disabled.");
