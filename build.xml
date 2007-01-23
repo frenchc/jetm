@@ -56,8 +56,8 @@
       <param name="site.dest.dir" value="${build.site.dist.dir}"/>
       <param name="site.filter.api" value="../api"/>
       <param name="site.filter.samples" value="../../samples"/>
-      <param name="site.filter.dtd" value="../dtd"/>
-      <param name="site.filter.schema" value="../schema"/>
+      <param name="site.filter.dtd" value="../support/dtd"/>
+      <param name="site.filter.schema" value="../support/schema"/>
     </antcall>
 
     <tar destfile="${build.dist.dir}/${release.name}-${release.version}.tar.gz" compression="gzip">
@@ -71,10 +71,10 @@
       <tarfileset prefix="${release.name}-${release.version}/samples" dir="${module.samples.dir}">
         <exclude name="**/classes/**"/>
       </tarfileset>
-      <tarfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
+      <tarfileset prefix="${release.name}-${release.version}/doc/support/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </tarfileset>
-      <tarfileset prefix="${release.name}-${release.version}/doc/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+      <tarfileset prefix="${release.name}-${release.version}/doc/support/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
         <include name="**/*.xsd"/>
       </tarfileset>
     </tar>
@@ -90,10 +90,10 @@
       <zipfileset prefix="${release.name}-${release.version}/samples" dir="${module.samples.dir}">
         <exclude name="**/classes/**"/>
       </zipfileset>
-      <zipfileset prefix="${release.name}-${release.version}/doc/dtd" dir="${module.core.src.java}">
+      <zipfileset prefix="${release.name}-${release.version}/doc/support/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </zipfileset>
-      <zipfileset prefix="${release.name}-${release.version}/doc/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+      <zipfileset prefix="${release.name}-${release.version}/doc/support/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
         <include name="**/*.xsd"/>
       </zipfileset>
 
