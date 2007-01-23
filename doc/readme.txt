@@ -1,1 +1,1 @@
-Please see documentation in "site" or http://jetm.void.fm for documentation. 
+The JETM documentation is located at site/index.html or at http://jetm.void.fm. 
