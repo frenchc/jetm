@@ -67,8 +67,9 @@ public class FlatAggregator implements Aggregator {
 
 
   public void reset(String measurementPoint) {
-    Object o = aggregates.remove(measurementPoint);
-    if (o != null) {
+    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(measurementPoint);
+    if (aggregate != null) {
+      aggregate.reset();
       ctx.fireEvent(new RootResetEvent(measurementPoint, this));
     }
   }
@@ -110,7 +111,7 @@ public class FlatAggregator implements Aggregator {
     if (aggregate == null) {
       aggregate = new ExecutionAggregate(aName);
       aggregates.put(aName, aggregate);
-      ctx.fireEvent(new RootCreateEvent(aName, this));
+      ctx.fireEvent(new RootCreateEvent(aggregate, this));
     }
 
     return aggregate;

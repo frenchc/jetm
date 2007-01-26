@@ -200,4 +200,13 @@ public class ExecutionAggregate implements Externalizable {
     total = in.readDouble();
     childs = (Map) in.readObject();
   }
+
+  public void reset() {
+    measurements = 0;
+
+    min = 0.0;
+    max = 0.0;
+    total = 0.0;
+    childs = null;
+  }
 }

@@ -31,6 +31,8 @@
  */
 package etm.core.monitor.event;
 
+import etm.core.aggregation.ExecutionAggregate;
+
 /**
  *
  * A event that indicates that a new top level aggregation result was created.
@@ -43,14 +45,14 @@ package etm.core.monitor.event;
  */
 public class RootCreateEvent extends EtmMonitorEvent {
 
-  private String name;
+  private ExecutionAggregate aggregate;
 
-  public RootCreateEvent(String aName, Object source) {
+  public RootCreateEvent(ExecutionAggregate aAggregate, Object source) {
     super(source);
-    name = aName;
+    aggregate = aAggregate;
   }
 
-  public String getName() {
-    return name;
+  public ExecutionAggregate getAggregate() {
+    return aggregate;
   }
 }
