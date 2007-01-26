@@ -35,6 +35,9 @@ package etm.core.aggregation;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.RootCreateEvent;
+import etm.core.monitor.event.RootResetEvent;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.util.HashMap;
@@ -52,17 +55,22 @@ import java.util.Map;
 public class FlatAggregator implements Aggregator {
 
   protected Map aggregates = new HashMap();
+  protected EtmMonitorContext ctx;
 
   public FlatAggregator() {
   }
 
   public void reset() {
     aggregates.clear();
+    ctx.fireEvent(new MonitorResetEvent(this));
   }
 
 
   public void reset(String measurementPoint) {
-    aggregates.remove(measurementPoint);
+    Object o = aggregates.remove(measurementPoint);
+    if (o != null) {
+      ctx.fireEvent(new RootResetEvent(measurementPoint, this));
+    }
   }
 
   public void render(MeasurementRenderer renderer) {
@@ -81,16 +89,6 @@ public class FlatAggregator implements Aggregator {
     // ignore
   }
 
-  protected ExecutionAggregate getAggregate(final String aName) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(aName);
-    if (aggregate == null) {
-      aggregate = new ExecutionAggregate(aName);
-      aggregates.put(aName, aggregate);
-    }
-
-    return aggregate;
-  }
-
   public AggregatorMetaData getMetaData() {
     return new AggregatorMetaData(FlatAggregator.class, "An cummulating aggregator for flat representation.", false);
   }
@@ -103,7 +101,19 @@ public class FlatAggregator implements Aggregator {
     // do nothing
   }
 
-  public void init(EtmMonitorContext ctx) {
-    // do nothing
+  public void init(EtmMonitorContext aCtx) {
+    ctx = aCtx;
   }
+
+  protected ExecutionAggregate getAggregate(final String aName) {
+    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(aName);
+    if (aggregate == null) {
+      aggregate = new ExecutionAggregate(aName);
+      aggregates.put(aName, aggregate);
+      ctx.fireEvent(new RootCreateEvent(aName, this));
+    }
+
+    return aggregate;
+  }
+
 }

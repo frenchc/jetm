@@ -115,15 +115,15 @@ public class DefaultEventDispatcher implements EventDispatcher {
       new DispatchingRule(CollectionStatusListener.class, "onCollectionDisabled"));
 
     dispatchingRules.put(MonitorResetEvent.class,
-      new DispatchingRule(EtmAggregationListener.class, "onStateReset"));
+      new DispatchingRule(AggregationListener.class, "onStateReset"));
     dispatchingRules.put(RootCreateEvent.class,
-      new DispatchingRule(EtmAggregationListener.class, "onRootCreate"));
+      new DispatchingRule(AggregationListener.class, "onRootCreate"));
     dispatchingRules.put(RootResetEvent.class,
-      new DispatchingRule(EtmAggregationListener.class, "onRootReset"));
+      new DispatchingRule(AggregationListener.class, "onRootReset"));
 
     listeners.put(AggregationStateListener.class, new HashSet());
     listeners.put(CollectionStatusListener.class, new HashSet());
-    listeners.put(EtmAggregationListener.class, new HashSet());
+    listeners.put(AggregationListener.class, new HashSet());
 
   }
 

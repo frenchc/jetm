@@ -35,6 +35,9 @@ package etm.core.aggregation;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.RootCreateEvent;
+import etm.core.monitor.event.RootResetEvent;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.util.HashMap;
@@ -52,14 +55,19 @@ public class RootAggregator implements Aggregator {
 
   protected Map aggregates = new HashMap();
 
+  protected EtmMonitorContext ctx;
+
 
   public void reset() {
     aggregates.clear();
+    ctx.fireEvent(new MonitorResetEvent(this));
   }
 
-
   public void reset(String measurementPoint) {
-    aggregates.remove(measurementPoint);
+    Object o = aggregates.remove(measurementPoint);
+    if (o != null) {
+      ctx.fireEvent(new RootResetEvent(measurementPoint, this));
+    }
   }
 
   public void render(MeasurementRenderer renderer) {
@@ -70,16 +78,6 @@ public class RootAggregator implements Aggregator {
 
   public void flush() {
     // ignore
-  }
-
-  protected ExecutionAggregate getAggregate(final String aName) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(aName);
-    if (aggregate == null) {
-      aggregate = new ExecutionAggregate(aName);
-      aggregates.put(aName, aggregate);
-    }
-
-    return aggregate;
   }
 
   public AggregatorMetaData getMetaData() {
@@ -94,12 +92,12 @@ public class RootAggregator implements Aggregator {
     // do nothing
   }
 
-  public void init(EtmMonitorContext ctx) {
-    // do nothing
+  public void init(EtmMonitorContext aCtx) {
+    ctx = aCtx;
   }
 
   public void add(MeasurementPoint point) {
-    // short cut for parent == null;
+    // shortcut for parent == null;
     if (point.getParent() == null) {
       ExecutionAggregate aggregate = getAggregate(point.getName());
       aggregate.addTransaction(point);
@@ -120,8 +118,18 @@ public class RootAggregator implements Aggregator {
     rootNode = (MeasurementPoint) path.removeFirst();
 
     ExecutionAggregate aggregate = getAggregate(rootNode.getName());
-
     aggregate.appendPath(path);
+  }
+
+  protected ExecutionAggregate getAggregate(String aName) {
+    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(aName);
+    if (aggregate == null) {
+      aggregate = new ExecutionAggregate(aName);
+      aggregates.put(aName, aggregate);
+      ctx.fireEvent(new RootCreateEvent(aName, this));
+    }
+
+    return aggregate;
   }
 
 }

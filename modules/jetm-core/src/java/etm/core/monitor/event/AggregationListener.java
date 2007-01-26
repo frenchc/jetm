@@ -39,7 +39,7 @@ package etm.core.monitor.event;
  * @version $Revision$
  * @since 1.2.0
  */
-public interface EtmAggregationListener extends EtmMonitorListener {
+public interface AggregationListener extends EtmMonitorListener {
 
   public void onRootCreate(RootCreateEvent event);
 

@@ -43,6 +43,7 @@ import etm.core.monitor.event.CollectionDisabledEvent;
 import etm.core.monitor.event.CollectionEnabledEvent;
 import etm.core.monitor.event.DefaultEventDispatcher;
 import etm.core.monitor.event.EtmMonitorEvent;
+import etm.core.monitor.event.EtmMonitorListener;
 import etm.core.monitor.event.EventDispatcher;
 import etm.core.monitor.event.MonitorResetEvent;
 import etm.core.monitor.event.RootResetEvent;
@@ -224,15 +225,14 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
     dispatcher.register(this);
 
-    // 1. init aggregators
-    aggregator.init(new EtmMonitorSupportContext(this, scheduler));
-
-    // 2. start aggregators
-    aggregator.start();
-
-    // 3. start plugins
+    // 1. start plugins
     startPlugins();
 
+    // 2. init aggregators
+    aggregator.init(new EtmMonitorSupportContext(this, scheduler));
+
+    // 3. start aggregators
+    aggregator.start();
 
     started = true;
     collecting = true;
@@ -274,20 +274,19 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   public void addPlugin(EtmPlugin aEtmPlugin) {
+    if (started) {
+      throw new IllegalStateException("Monitor already started.");
+    }
     if (plugins == null) {
       plugins = new ArrayList();
     }
 
     plugins.add(aEtmPlugin);
-    if (started) {
-      aEtmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
-      aEtmPlugin.start();
-    }
   }
 
   public void setPlugins(List newPlugins) {
     if (plugins != null) {
-      throw new IllegalStateException("Unable to set a list of plugins after a plugin exists.");
+      throw new IllegalStateException("Unable to set a list of plugins after plugins exists.");
     }
     for (int i = 0; i < newPlugins.size(); i++) {
       EtmPlugin plugin = (EtmPlugin) newPlugins.get(i);
@@ -341,6 +340,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       for (int i = 0; i < plugins.size(); i++) {
         EtmPlugin etmPlugin = (EtmPlugin) plugins.get(i);
         try {
+          if (etmPlugin instanceof EtmMonitorListener) {
+            dispatcher.deregister((EtmMonitorListener) etmPlugin);
+          }
           etmPlugin.stop();
         } catch (Exception e) {
           // todo since I don't want to use a logging framework what do we do?
@@ -357,6 +359,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
         try {
           etmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
           etmPlugin.start();
+          if (etmPlugin instanceof EtmMonitorListener) {
+            dispatcher.register((EtmMonitorListener) etmPlugin);
+          }
         } catch (Exception e) {
           // todo since I don't want to use a logging framework what do we do?
           e.printStackTrace();

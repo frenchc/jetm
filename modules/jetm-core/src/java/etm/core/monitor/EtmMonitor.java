@@ -58,25 +58,25 @@ import java.util.List;
  * {@link #visitPreMeasurement(MeasurementPoint)}.
  * </li>
  * <li>
- * Withing {@link #visitPreMeasurement} the EtmMonitor sets the start time
+ * Within {@link #visitPreMeasurement} the EtmMonitor sets the start time
  * of the measurement.
  * </li>
  * <li>
  * The calling business code executes.
  * </li>
  * <li>
- * After business code execution the Mesaurement Point calls
+ * After business code execution the Measurement Point calls
  * {@link #visitPostCollect(MeasurementPoint)}. This call is triggered by
  * {@link MeasurementPoint#collect()}.
  * </li>
  * <li>
- * Withing {@link #visitPostCollect} the EtmMonitor sets the end time
+ * Within {@link #visitPostCollect} the EtmMonitor sets the end time
  * of the measurement and stores this transaction for further aggregation.
  * </li>
  * </ol>
  * </p>
  * <p/>
- * EtmMonitor implementations have to provide at lease one of the following constructors
+ * EtmMonitor implementations have to provide at least one of the following constructors
  * <ul>
  * <li>Default Empty Constructor</li>
  * <li>Constructor taking a ExecutionTimer as argument</li>

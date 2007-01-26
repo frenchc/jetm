@@ -34,6 +34,12 @@ package etm.core.jmx;
 
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitorContext;
+import etm.core.monitor.event.AggregationListener;
+import etm.core.monitor.event.AggregationStateListener;
+import etm.core.monitor.event.AggregationStateLoadedEvent;
+import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.RootCreateEvent;
+import etm.core.monitor.event.RootResetEvent;
 import etm.core.plugin.EtmPlugin;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -57,9 +63,11 @@ import java.util.Map;
  * @since 1.2.0
  * 
  */
-public class EtmMonitorJmxPlugin implements EtmPlugin {
+public class EtmMonitorJmxPlugin implements EtmPlugin, AggregationStateListener, AggregationListener {
 
   public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm:service=PerformanceMonitor";
+  public static final String DEFAULT_MEASUREMENT_POINT_OBJECT_NAME_PREFIX = "etm:service=Measurement";
+
 
   private static final String DESCRIPTION = "A plugin the exports the current EtmMonitor to JMX.";
 
@@ -164,4 +172,21 @@ public class EtmMonitorJmxPlugin implements EtmPlugin {
     return new PluginMetaData(EtmMonitorJmxPlugin.class, DESCRIPTION, properties);
   }
 
+
+  public void onStateLoaded(AggregationStateLoadedEvent event) {
+    // TODO register root measurement points
+  }
+
+  public void onRootCreate(RootCreateEvent event) {
+    // TODO register child measurement point
+    // mbeanServer.registerMBean(new MeasurementPointMBean(), new ObjectName())
+  }
+
+  public void onRootReset(RootResetEvent event) {
+    // ignore
+  }
+
+  public void onStateReset(MonitorResetEvent event) {
+    // ignore
+  }
 }
