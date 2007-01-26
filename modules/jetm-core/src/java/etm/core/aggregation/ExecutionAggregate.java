@@ -201,6 +201,11 @@ public class ExecutionAggregate implements Externalizable {
     childs = (Map) in.readObject();
   }
 
+  /**
+   *
+   * Resets current state.
+   * @since 1.2.0
+   */
   public void reset() {
     measurements = 0;
 

@@ -32,6 +32,8 @@
 
 package etm.core.jmx;
 
+import etm.core.aggregation.ExecutionAggregate;
+
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
@@ -51,6 +53,12 @@ import javax.management.ReflectionException;
  */
 public class MeasurementPointMBean implements DynamicMBean {
 
+  private ExecutionAggregate aggregate;
+
+
+  public MeasurementPointMBean(ExecutionAggregate aAggregate) {
+    aggregate = aAggregate;
+  }
 
   public Object getAttribute(String aString) throws AttributeNotFoundException, MBeanException, ReflectionException {
     return null;

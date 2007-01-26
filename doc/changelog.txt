@@ -9,14 +9,19 @@ Release 1.2.0
   - Added EtmPluginMetada - thus enabling lookup for runtime configuration such as HTTP Console listen port
   - Added init(EtmMonitorContext) to plugin and aggregator lifecycle
   - Added Filter for aggregator chains.
+  - Added event system - especially useful for plugins
+
 
  Changes, Fixes and Improvements
   - Five minute tutorial added
   - Documentation improvements
+  - EtmMonitor locking section decreased
   - Added setter for Plugins for better Spring integration
-  - Now writing warnings to std.err if monitor is not running
+  - Now writing warnings if monitor is not running
   - Reverted to shared java.util.Timer for scheduling
   - Minor fixes to logging aggregators
+  - Deprecated Flat- and NestedAggregator in favour of one RootAggregator
+  - Altered order of plugin and aggregator startup
 
   - Switched from CVS to SVN (history not migrated)
 
