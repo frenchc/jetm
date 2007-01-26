@@ -33,8 +33,6 @@
 package etm.core.monitor;
 
 import etm.core.aggregation.Aggregator;
-import etm.core.aggregation.BufferedThresholdAggregator;
-import etm.core.aggregation.FlatAggregator;
 import etm.core.timer.ExecutionTimer;
 
 /**
@@ -80,9 +78,5 @@ public class FlatMonitor extends EtmMonitorSupport {
 
   public String toString() {
     return "etm.core.monitor.FlatMonitor{ timer=<" + timer + ">, aggregator=<" + aggregator + "> }";
-  }
-
-  protected Aggregator getDefaultAggregator() {
-    return new BufferedThresholdAggregator(new FlatAggregator());
   }
 }

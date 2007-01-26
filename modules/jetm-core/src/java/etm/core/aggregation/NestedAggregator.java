@@ -43,6 +43,7 @@ import java.util.LinkedList;
  *
  * @author void.fm
  * @version $Revision$
+ * @deprecated Use {@link etm.core.aggregation.RootAggregator} instead. This aggregator will be removed with JETM 2.0.0
  */
 public class NestedAggregator extends FlatAggregator {
 

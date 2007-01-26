@@ -38,23 +38,20 @@ import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * The FlatAggregator creates a flat mesurement result representation. Nesting elements
- * will be ignored.
+ * An Aggregator that cumulates results, supports both nested and flat aggregation.
  *
  * @author void.fm
  * @version $Revision$
- * @deprecated Use {@link etm.core.aggregation.RootAggregator} instead. This aggregator will be removed with JETM 2.0.0
+ * @since 1.2.0
  */
-
-public class FlatAggregator implements Aggregator {
+public class RootAggregator implements Aggregator {
 
   protected Map aggregates = new HashMap();
 
-  public FlatAggregator() {
-  }
 
   public void reset() {
     aggregates.clear();
@@ -69,12 +66,6 @@ public class FlatAggregator implements Aggregator {
     //todo fix concurrency issue
     // right now we block forever if rendering takes forever
     renderer.render(aggregates);
-  }
-
-
-  public void add(MeasurementPoint point) {
-    ExecutionAggregate aggregate = getAggregate(point.getName());
-    aggregate.addTransaction(point);
   }
 
   public void flush() {
@@ -92,7 +83,7 @@ public class FlatAggregator implements Aggregator {
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(FlatAggregator.class, "An cummulating aggregator for flat representation.", false);
+    return new AggregatorMetaData(RootAggregator.class, "An cummulating aggregator for flat and nested representation.", false);
   }
 
   public void start() {
@@ -106,4 +97,31 @@ public class FlatAggregator implements Aggregator {
   public void init(EtmMonitorContext ctx) {
     // do nothing
   }
+
+  public void add(MeasurementPoint point) {
+    // short cut for parent == null;
+    if (point.getParent() == null) {
+      ExecutionAggregate aggregate = getAggregate(point.getName());
+      aggregate.addTransaction(point);
+      return;
+    }
+
+    // TODO check alternative strategy to improve performance
+    // find tree root node
+    LinkedList path = new LinkedList();
+    path.add(point);
+
+    MeasurementPoint rootNode = point.getParent();
+    while (rootNode != null) {
+      path.addFirst(rootNode);
+      rootNode = rootNode.getParent();
+    }
+
+    rootNode = (MeasurementPoint) path.removeFirst();
+
+    ExecutionAggregate aggregate = getAggregate(rootNode.getName());
+
+    aggregate.appendPath(path);
+  }
+
 }

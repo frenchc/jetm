@@ -33,8 +33,6 @@
 package etm.core.monitor;
 
 import etm.core.aggregation.Aggregator;
-import etm.core.aggregation.BufferedThresholdAggregator;
-import etm.core.aggregation.NestedAggregator;
 import etm.core.timer.ExecutionTimer;
 
 /**
@@ -83,11 +81,6 @@ public class NestedMonitor extends EtmMonitorSupport {
       currentParent.set(point.getParent());
     }
   }
-
-  protected Aggregator getDefaultAggregator() {
-    return new BufferedThresholdAggregator(new NestedAggregator());
-  }
-
 
   public String toString() {
     return "etm.core.monitor.NestedMonitor{ timer=<" + timer + ">, aggregator=<" + aggregator + "> }";

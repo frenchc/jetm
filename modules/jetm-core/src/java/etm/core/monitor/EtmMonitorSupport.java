@@ -33,6 +33,8 @@
 package etm.core.monitor;
 
 import etm.core.aggregation.Aggregator;
+import etm.core.aggregation.BufferedThresholdAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.configuration.EtmMonitorFactory;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.monitor.event.AggregationStateListener;
@@ -328,9 +330,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
   protected abstract void doVisitPostCollect(MeasurementPoint aMeasurementPoint);
 
-  protected abstract Aggregator getDefaultAggregator();
 
-
+  protected Aggregator getDefaultAggregator(){
+     return new BufferedThresholdAggregator(new RootAggregator());
+  }
 
   protected void shutdownPlugins() {
     if (plugins != null) {

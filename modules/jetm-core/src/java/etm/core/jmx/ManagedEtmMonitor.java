@@ -54,7 +54,7 @@ import java.util.TreeMap;
  *
  * @author void.fm
  * @version $Revision$
- * @deprecated Please use {@link EtmMonitorMBean} and {@link EtmMonitorJmxPlugin} instead
+ * @deprecated Please use {@link EtmMonitorMBean} and {@link EtmMonitorJmxPlugin} instead. Will be removed with JETM 2.0.0.
  */
 public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
