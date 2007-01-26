@@ -30,63 +30,48 @@
  *
  */
 
-package etm.contrib.aggregation.persistence;
+package etm.core.jmx;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.util.Date;
-import java.util.Map;
+import javax.management.Attribute;
+import javax.management.AttributeList;
+import javax.management.AttributeNotFoundException;
+import javax.management.DynamicMBean;
+import javax.management.InvalidAttributeValueException;
+import javax.management.MBeanException;
+import javax.management.MBeanInfo;
+import javax.management.ReflectionException;
 
 /**
- * Represents aggregated state to be persistet.
  *
- * @author void.fm
+ * MBean for exporting a measurement point to JMX.
+ *
  * @version $Revision$
- * @since 1.2.0
+ * @author void.fm
+  * @since 1.2.0
  */
-public class PersistentEtmState implements Externalizable {
-  private static final long serialVersionUID = 1L;
+public class MeasurementPointMBean implements DynamicMBean {
 
-  private Date startTime;
-  private Date lastResetTime;
 
-  private Map aggregates;
-
-  public Date getStartTime() {
-    return startTime;
+  public Object getAttribute(String aString) throws AttributeNotFoundException, MBeanException, ReflectionException {
+    return null;
   }
 
-  public void setStartTime(Date aStartTime) {
-    startTime = aStartTime;
+  public void setAttribute(Attribute aAttribute) throws AttributeNotFoundException, InvalidAttributeValueException, MBeanException, ReflectionException {
   }
 
-  public Date getLastResetTime() {
-    return lastResetTime;
+  public AttributeList getAttributes(String[] aStrings) {
+    return null;
   }
 
-  public void setLastResetTime(Date aLastResetTime) {
-    lastResetTime = aLastResetTime;
+  public AttributeList setAttributes(AttributeList aAttributeList) {
+    return null;
   }
 
-  public Map getAggregates() {
-    return aggregates;
+  public Object invoke(String aString, Object[] aObjects, String[] aStrings) throws MBeanException, ReflectionException {
+    return null;
   }
 
-  public void setAggregates(Map aAggregates) {
-    aggregates = aAggregates;
-  }
-
-  public void writeExternal(ObjectOutput out) throws IOException {
-    out.writeObject(startTime);
-    out.writeObject(lastResetTime);
-    out.writeObject(aggregates);
-  }
-
-  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    startTime = (Date) in.readObject();
-    lastResetTime = (Date) in.readObject();
-    aggregates = (Map) in.readObject();
+  public MBeanInfo getMBeanInfo() {
+    return null;
   }
 }

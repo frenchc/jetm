@@ -29,28 +29,34 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.core.monitor.event;
 
-package etm.core.monitor;
-
-import etm.core.monitor.event.EtmMonitorEvent;
-
-import java.util.Timer;
+import etm.core.aggregation.persistence.PersistentEtmState;
 
 /**
  *
- * The EtmMonitorContext provides means to access certain runtime
- * details of a given EtmMonitor instance. The context will be passed
- * to plugins and aggregators within their life cycle.
+ * Indicates that the aggregation state was loaded.
  *
  * @author void.fm
  * @version $Revision$
- *
+ * @since 1.2.0
  */
-public interface EtmMonitorContext {
 
-  public EtmMonitor getEtmMonitor();
+public class AggregationStateLoadedEvent extends EtmMonitorEvent {
+  private PersistentEtmState state;
 
-  public Timer getScheduler();
+  public AggregationStateLoadedEvent(PersistentEtmState aState, Object source) {
+    super(source);
+    state = aState;
+  }
 
-  public void fireEvent(EtmMonitorEvent event);
+  /**
+   *
+   * The loaded state.
+   *
+   * @return the state object.
+   */
+  public PersistentEtmState getState() {
+    return state;
+  }
 }

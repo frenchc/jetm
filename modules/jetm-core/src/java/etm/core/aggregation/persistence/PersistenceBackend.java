@@ -29,28 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.core.monitor;
-
-import etm.core.monitor.event.EtmMonitorEvent;
-
-import java.util.Timer;
+package etm.core.aggregation.persistence;
 
 /**
  *
- * The EtmMonitorContext provides means to access certain runtime
- * details of a given EtmMonitor instance. The context will be passed
- * to plugins and aggregators within their life cycle.
+ * A PersistenceBackend will be used to store and load aggregated performance
+ * results.
  *
  * @author void.fm
  * @version $Revision$
- *
+ * @since 1.2.0
  */
-public interface EtmMonitorContext {
+public interface PersistenceBackend {
 
-  public EtmMonitor getEtmMonitor();
+  public PersistentEtmState load();
 
-  public Timer getScheduler();
+  public void store(PersistentEtmState state);
 
-  public void fireEvent(EtmMonitorEvent event);
 }

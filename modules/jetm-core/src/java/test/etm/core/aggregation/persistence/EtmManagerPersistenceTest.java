@@ -56,9 +56,9 @@ public class EtmManagerPersistenceTest extends TestCase {
       "  <monitor-class>test.etm.core.configuration.mockup.TestMonitor</monitor-class>" +
       "  <aggregator-chain>\n" +
       "    <chain-root>\n" +
-      "      <aggregator-class>test.etm.contrib.aggregation.persistence.mockup.TestPersistentNestedAggregator</aggregator-class>\n" +
+      "      <aggregator-class>test.etm.core.aggregation.persistence.mockup.TestPersistentNestedAggregator</aggregator-class>\n" +
       "      <properties>\n" +
-      "        <property name=\"persistenceBackendClass\">test.etm.contrib.aggregation.persistence.mockup.TestPersistenceBackend</property>\n" +
+      "        <property name=\"persistenceBackendClass\">test.etm.core.aggregation.persistence.mockup.TestPersistenceBackend</property>\n" +
       "        <property name=\"backendProperties.booleanTrue\">true</property>" +
       "        <property name=\"backendProperties.booleanFalse\">false</property>\n" +
       "        <property name=\"backendProperties.longValue\">12124234324234</property>\n" +

@@ -29,18 +29,19 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.aggregation.persistence;
+package etm.core.aggregation.persistence;
 
 import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
+import etm.core.monitor.event.AggregationStateLoadedEvent;
 import etm.core.util.PropertySupport;
 
 import java.util.Map;
 
 /**
  * A nested aggregator that supports persistence provided by a {@link PersistenceBackend}. By default the persistence
- * backend is {@link etm.contrib.aggregation.persistence.FileSystemPersistenceBackend}, however you may supply a
+ * backend is {@link etm.core.aggregation.persistence.FileSystemPersistenceBackend}, however you may supply a
  * custom backend during initialization.
  *
  * @author void.fm
@@ -70,7 +71,7 @@ public class PersistentNestedAggregator extends NestedAggregator {
     PersistentEtmState state = persistenceBackend.load();
     if (state != null) {
       aggregates = state.getAggregates();
-      context.setEtmMonitorState(state.getStartTime(), state.getLastResetTime());
+      context.fireEvent(new AggregationStateLoadedEvent(state, this));
     }
   }
 

@@ -29,28 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.core.monitor;
-
-import etm.core.monitor.event.EtmMonitorEvent;
-
-import java.util.Timer;
+package etm.core.monitor.event;
 
 /**
  *
- * The EtmMonitorContext provides means to access certain runtime
- * details of a given EtmMonitor instance. The context will be passed
- * to plugins and aggregators within their life cycle.
+ * An event that informs that a aggregation root was resetted. It does not indicate whether the
+ * given root existed - it just informs that a possible existing root was about to b resetted.
  *
  * @author void.fm
  * @version $Revision$
- *
+ * @since 1.2.0
  */
-public interface EtmMonitorContext {
+public class RootResetEvent extends EtmMonitorEvent {
 
-  public EtmMonitor getEtmMonitor();
+  private String name;
 
-  public Timer getScheduler();
 
-  public void fireEvent(EtmMonitorEvent event);
+  public RootResetEvent(String aName, Object source) {
+    super(source);
+    name = aName;
+  }
+
+
+  public String getName() {
+    return name;
+  }
 }

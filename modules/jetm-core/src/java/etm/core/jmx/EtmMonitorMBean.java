@@ -32,9 +32,11 @@
 
 package etm.core.jmx;
 
+import etm.core.aggregation.ExecutionAggregate;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.monitor.EtmMonitor;
+import etm.core.renderer.MeasurementRenderer;
 import etm.core.renderer.SimpleTextRenderer;
 
 import javax.management.Attribute;
@@ -50,6 +52,11 @@ import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.ReflectionException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An MBean that provides access to an EtmMonitor instance. The management
@@ -114,9 +121,11 @@ public class EtmMonitorMBean implements DynamicMBean {
     } else if ("startDate".equals(string)) {
       return (etmMonitor.getMetaData().getStartTime());
     } else if ("lastResetDate".equals(string)) {
-      return (etmMonitor.getMetaData().getLastResetTime());
+      return etmMonitor.getMetaData().getLastResetTime();
+    } else if ("performanceData".equals(string)) {
+      return getPerformanceData();
     } else {
-      return null;
+      throw new AttributeNotFoundException(string);
     }
   }
 
@@ -127,7 +136,15 @@ public class EtmMonitorMBean implements DynamicMBean {
   }
 
   public AttributeList getAttributes(String[] strings) {
-    return new AttributeList();
+    AttributeList list = new AttributeList();
+    for (int i=0; i < strings.length; i++) {
+      try {
+        list.add(i, new Attribute(strings[i], getAttribute(strings[i])));
+      } catch (Exception e) {
+        list.add(i, new Attribute(strings[i], null));        
+      }
+    }
+    return list;
   }
 
   public AttributeList setAttributes(AttributeList attributeList) {
@@ -197,12 +214,31 @@ public class EtmMonitorMBean implements DynamicMBean {
         new MBeanAttributeInfo("collecting", "Whether the monitor is collecting or not.", etmMonitor.getClass().getMethod("isCollecting", new Class[]{}), null),
         new MBeanAttributeInfo("startDate", "The date the application was started.", etmMonitor.getMetaData().getClass().getMethod("getStartTime", new Class[]{}), null),
         new MBeanAttributeInfo("lastResetDate", "The date the monitor was resetted.", etmMonitor.getMetaData().getClass().getMethod("getLastResetTime", new Class[]{}), null),
+        new MBeanAttributeInfo("performanceData", "All top level performance results..", EtmMonitorMBean.class.getMethod("getPerformanceData", new Class[]{}), null)
       };
+
+
     } catch (Exception e) {
       // this should be save
       throw new RuntimeException(e.getMessage());
     }
   }
 
+  public MeasurementPointMBean[] getPerformanceData() {
+    final List data = new ArrayList();
+    etmMonitor.render(new MeasurementRenderer() {
+
+      public void render(Map points) {
+        Collection collection = points.values();
+        for (Iterator iterator = collection.iterator(); iterator.hasNext();) {
+          ExecutionAggregate aggregate = (ExecutionAggregate) iterator.next();
+//          data.add(new MeasurementPointMBean(aggregate));
+        }
+      }
+    });
+
+
+    return (MeasurementPointMBean[]) data.toArray(new MeasurementPointMBean[data.size()]);
+  }
 
 }

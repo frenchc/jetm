@@ -29,21 +29,23 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.aggregation.persistence;
+
+package test.etm.contrib.aggregation.persistence.mockup;
+
+import etm.core.aggregation.persistence.PersistenceBackend;
+import etm.core.aggregation.persistence.PersistentNestedAggregator;
 
 /**
  *
- * A PersistenceBackend will be used to store and load aggregated performance
- * results.
+ * Extended aggregator to access persistence backend.
  *
- * @author void.fm
  * @version $Revision$
- * @since 1.2.0
+ * @author void.fm
+ *
  */
-public interface PersistenceBackend {
-
-  public PersistentEtmState load();
-
-  public void store(PersistentEtmState state);
-
+public class TestPersistentNestedAggregator extends PersistentNestedAggregator {
+  
+  public PersistenceBackend getPersistenceBackend() {
+    return persistenceBackend;
+  }
 }

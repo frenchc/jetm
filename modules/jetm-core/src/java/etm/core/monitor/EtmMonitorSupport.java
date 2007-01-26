@@ -35,6 +35,15 @@ package etm.core.monitor;
 import etm.core.aggregation.Aggregator;
 import etm.core.configuration.EtmMonitorFactory;
 import etm.core.metadata.EtmMonitorMetaData;
+import etm.core.monitor.event.AggregationStateListener;
+import etm.core.monitor.event.AggregationStateLoadedEvent;
+import etm.core.monitor.event.CollectionDisabledEvent;
+import etm.core.monitor.event.CollectionEnabledEvent;
+import etm.core.monitor.event.DefaultEventDispatcher;
+import etm.core.monitor.event.EtmMonitorEvent;
+import etm.core.monitor.event.EventDispatcher;
+import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.RootResetEvent;
 import etm.core.plugin.EtmPlugin;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.ExecutionTimer;
@@ -54,24 +63,25 @@ import java.util.Timer;
  * @version $Revision$
  */
 
-public abstract class EtmMonitorSupport implements EtmMonitor {
+public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateListener {
+
+  protected final Object lock = new Object();
 
   protected final String description;
   protected final ExecutionTimer timer;
   protected final Aggregator aggregator;
-  protected final Object lock = new Object();
+
+  protected List plugins;
+  private Timer scheduler;
+  private EventDispatcher dispatcher;
 
   private Date startTime;
   private Date lastReset;
-
-  protected List plugins;
-
   private boolean started = false;
   private boolean collecting = true;
 
+   
   private boolean noStartedErrorMessageFlag = false;
-
-  private Timer scheduler;
 
   /**
    * Creates a EtmMonitorSupport instance.
@@ -180,12 +190,14 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       aggregator.reset();
       lastReset = new Date();
     }
+    dispatcher.fire(new MonitorResetEvent(this));
   }
 
   public void reset(String measurementPoint) {
     synchronized (lock) {
       aggregator.reset(measurementPoint);
     }
+    dispatcher.fire(new RootResetEvent(measurementPoint, this));
   }
 
   public final EtmMonitorMetaData getMetaData() {
@@ -203,6 +215,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     }
 
     scheduler = new Timer(true);
+
+    if (dispatcher != null) {
+      dispatcher = new DefaultEventDispatcher();
+    }
 
     // 1. init aggregators
     aggregator.init(new EtmMonitorSupportContext(this, scheduler));
@@ -240,10 +256,12 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
 
   public void enableCollection() {
     collecting = true;
+    dispatcher.fire(new CollectionEnabledEvent(this));
   }
 
   public void disableCollection() {
     collecting = false;
+    dispatcher.fire(new CollectionDisabledEvent(this));
   }
 
   public boolean isCollecting() {
@@ -270,6 +288,12 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       EtmPlugin plugin = (EtmPlugin) newPlugins.get(i);
       addPlugin(plugin);
     }
+  }
+
+
+  public void onStateLoaded(AggregationStateLoadedEvent event) {
+    startTime = event.getState().getStartTime();
+    lastReset = event.getState().getLastResetTime();
   }
 
   /**
@@ -302,6 +326,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
   protected abstract void doVisitPostCollect(MeasurementPoint aMeasurementPoint);
 
   protected abstract Aggregator getDefaultAggregator();
+
 
 
   protected void shutdownPlugins() {
@@ -356,6 +381,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
     noStartedErrorMessageFlag = true;
   }
 
+
+
   class EtmMonitorSupportContext implements EtmMonitorContext {
     private EtmMonitor monitor;
     private Timer scheduler;
@@ -373,9 +400,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor {
       return scheduler;
     }
 
-    public void setEtmMonitorState(Date aStartTime, Date aLastResetTime) {
-      startTime = aStartTime;
-      lastReset = aLastResetTime;
+    public void fireEvent(EtmMonitorEvent event) {
+      dispatcher.fire(event);
     }
+
   }
 }

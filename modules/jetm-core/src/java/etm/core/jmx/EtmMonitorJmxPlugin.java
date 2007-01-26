@@ -163,4 +163,5 @@ public class EtmMonitorJmxPlugin implements EtmPlugin {
 
     return new PluginMetaData(EtmMonitorJmxPlugin.class, DESCRIPTION, properties);
   }
+
 }

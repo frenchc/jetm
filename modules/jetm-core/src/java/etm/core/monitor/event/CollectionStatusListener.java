@@ -29,28 +29,19 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.core.monitor;
-
-import etm.core.monitor.event.EtmMonitorEvent;
-
-import java.util.Timer;
+package etm.core.monitor.event;
 
 /**
  *
- * The EtmMonitorContext provides means to access certain runtime
- * details of a given EtmMonitor instance. The context will be passed
- * to plugins and aggregators within their life cycle.
+ * A listener that informs collection status changes.
  *
  * @author void.fm
  * @version $Revision$
- *
+ * @since 1.2.0
  */
-public interface EtmMonitorContext {
+public interface CollectionStatusListener extends EtmMonitorListener {
 
-  public EtmMonitor getEtmMonitor();
+  public void onCollectionDisabled(CollectionDisabledEvent event);
 
-  public Timer getScheduler();
-
-  public void fireEvent(EtmMonitorEvent event);
+  public void onCollectionEnabled(CollectionEnabledEvent event);
 }

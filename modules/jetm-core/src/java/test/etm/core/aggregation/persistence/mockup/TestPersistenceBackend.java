@@ -32,8 +32,8 @@
 
 package test.etm.contrib.aggregation.persistence.mockup;
 
-import etm.contrib.aggregation.persistence.PersistenceBackend;
-import etm.contrib.aggregation.persistence.PersistentEtmState;
+import etm.core.aggregation.persistence.PersistenceBackend;
+import etm.core.aggregation.persistence.PersistentEtmState;
 
 import java.util.List;
 import java.util.Map;

@@ -31,9 +31,9 @@
  */
 package test.etm.contrib.aggregation.persistence;
 
-import etm.contrib.aggregation.persistence.FileSystemPersistenceBackend;
-import etm.contrib.aggregation.persistence.PersistentFlatAggregator;
-import etm.contrib.aggregation.persistence.PersistentNestedAggregator;
+import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
+import etm.core.aggregation.persistence.PersistentFlatAggregator;
+import etm.core.aggregation.persistence.PersistentNestedAggregator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.FlatMonitor;
 import etm.core.monitor.MeasurementPoint;

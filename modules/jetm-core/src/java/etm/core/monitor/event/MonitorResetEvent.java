@@ -30,22 +30,19 @@
  *
  */
 
-package test.etm.contrib.aggregation.persistence.mockup;
-
-import etm.contrib.aggregation.persistence.PersistenceBackend;
-import etm.contrib.aggregation.persistence.PersistentNestedAggregator;
+package etm.core.monitor.event;
 
 /**
  *
- * Extended aggregator to access persistence backend.
+ * An event that informs that all aggregated details where deleted.
  *
- * @version $Revision$
  * @author void.fm
- *
+ * @version $Revision$
+ * @since 1.2.0
  */
-public class TestPersistentNestedAggregator extends PersistentNestedAggregator {
-  
-  public PersistenceBackend getPersistenceBackend() {
-    return persistenceBackend;
+public class MonitorResetEvent extends EtmMonitorEvent {
+
+  public MonitorResetEvent(Object source) {
+    super(source);
   }
 }

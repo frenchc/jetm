@@ -25,18 +25,18 @@
 <p>
   By default all aggregated performance details are kept in memory only. If you want to have your results surviving
   VM restarts you need to alter the aggregation chain and use a persistent aggregator. Persistent aggregators are
-  backed by a <a href="../@api@/etm/contrib/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>. The
+  backed by a <a href="../@api@/etm/core/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>. The
   default implementation is a
-  <a href="../@api@/etm/contrib/aggregation/persistence/FileSystemPersistenceBackend.html">FileSystemPersistenceBackend</a>
+  <a href="../@api@/etm/core/aggregation/persistence/FileSystemPersistenceBackend.html">FileSystemPersistenceBackend</a>
   that may be replaced with your own implementation.
 </p>
 <h4>Persistent Aggregators in jetm-config.xml (used by <a href="etm_manager_configuration.html">EtmManager</a>)</h4>
 
 <p>
   Enabling persitence in a jetm-config.xml is pretty simple: Either add
-  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
+  <a href="../@api@/etm/core/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
   or
-  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>
+  <a href="../@api@/etm/core/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>
   as chain root and you are done. See examples below.
 </p>
 
@@ -51,7 +51,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        <b>etm.contrib.aggregation.persistence.PersistentNestedAggregator</b>
+        <b>etm.core.aggregation.persistence.PersistentNestedAggregator</b>
       &lt;/aggregator-class&gt;
     &lt;/chain-root&gt;
   &lt;/aggregator-chain&gt;
@@ -69,7 +69,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        <b>etm.contrib.aggregation.persistence.PersistentFlatAggregator</b>
+        <b>etm.core.aggregation.persistence.PersistentFlatAggregator</b>
       &lt;/aggregator-class&gt;
     &lt;/chain-root&gt;
   &lt;/aggregator-chain&gt;
@@ -117,7 +117,7 @@
       autowire="constructor"/&gt;
 
   &lt;bean id="aggregatorChain"
-        class="<b>etm.contrib.aggregation.persistence.PersistentNestedAggregator</b>" /&gt;
+        class="<b>etm.core.aggregation.persistence.PersistentNestedAggregator</b>" /&gt;
 
 &lt;/beans&gt;
 </pre>
@@ -144,7 +144,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        etm.contrib.aggregation.persistence.PersistentNestedAggregator
+        etm.core.aggregation.persistence.PersistentNestedAggregator
       &lt;/aggregator-class&gt;
       &lt;properties&gt;
         &lt;!-- <i>&lt;property name="backendProperties.path"&gt;/foo/bar&lt;/property&gt;</i> --&gt;
@@ -179,11 +179,11 @@
 
 
 <p>If you want to use a custom
-  <a href="../@api@/etm/contrib/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>
+  <a href="../@api@/etm/core/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>
   supply a valid implementation to either
-  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
+  <a href="../@api@/etm/core/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
   or
-  <a href="../@api@/etm/contrib/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>.
+  <a href="../@api@/etm/core/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>.
   See examples below for EtmManager and Spring managed JETM instances.
 </p>
 <p>
@@ -197,7 +197,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        etm.contrib.aggregation.persistence.PersistentNestedAggregator
+        etm.core.aggregation.persistence.PersistentNestedAggregator
       &lt;/aggregator-class&gt;
       &lt;properties&gt;
         <b>&lt;property name="persistenceBackendClass"&gt;foo.bar.MyPersistenceBackend&lt;/property&gt;</b>
@@ -230,7 +230,7 @@
 
 
 <p>
-  Custom <a href="../@api@/etm/contrib/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>
+  Custom <a href="../@api@/etm/core/aggregation/persistence/PersistenceBackend.html">PersistenceBackend</a>
   implementations may require additional properties. Simply expose those properties as setter methods and
   they will be configured in a EtmManager or Spring 2.x environment automatically. See filename and path examples
   above for custom configuration properties. In Spring 1.x rely on Springframework IoC capabilities.

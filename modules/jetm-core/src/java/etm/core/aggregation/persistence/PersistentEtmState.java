@@ -30,27 +30,63 @@
  *
  */
 
-package etm.core.monitor;
+package etm.core.aggregation.persistence;
 
-import etm.core.monitor.event.EtmMonitorEvent;
-
-import java.util.Timer;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.Date;
+import java.util.Map;
 
 /**
- *
- * The EtmMonitorContext provides means to access certain runtime
- * details of a given EtmMonitor instance. The context will be passed
- * to plugins and aggregators within their life cycle.
+ * Represents aggregated state to be persistet.
  *
  * @author void.fm
  * @version $Revision$
- *
+ * @since 1.2.0
  */
-public interface EtmMonitorContext {
+public class PersistentEtmState implements Externalizable {
+  private static final long serialVersionUID = 1L;
 
-  public EtmMonitor getEtmMonitor();
+  private Date startTime;
+  private Date lastResetTime;
 
-  public Timer getScheduler();
+  private Map aggregates;
 
-  public void fireEvent(EtmMonitorEvent event);
+  public Date getStartTime() {
+    return startTime;
+  }
+
+  public void setStartTime(Date aStartTime) {
+    startTime = aStartTime;
+  }
+
+  public Date getLastResetTime() {
+    return lastResetTime;
+  }
+
+  public void setLastResetTime(Date aLastResetTime) {
+    lastResetTime = aLastResetTime;
+  }
+
+  public Map getAggregates() {
+    return aggregates;
+  }
+
+  public void setAggregates(Map aAggregates) {
+    aggregates = aAggregates;
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(startTime);
+    out.writeObject(lastResetTime);
+    out.writeObject(aggregates);
+  }
+
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    startTime = (Date) in.readObject();
+    lastResetTime = (Date) in.readObject();
+    aggregates = (Map) in.readObject();
+  }
 }

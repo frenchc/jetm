@@ -29,28 +29,28 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.core.monitor;
-
-import etm.core.monitor.event.EtmMonitorEvent;
-
-import java.util.Timer;
+package etm.core.monitor.event;
 
 /**
  *
- * The EtmMonitorContext provides means to access certain runtime
- * details of a given EtmMonitor instance. The context will be passed
- * to plugins and aggregators within their life cycle.
+ * A event that indicates that a new top level aggregation result was created.
+ * Flat monitoring will always create new top level aggregation results - nested monitoring
+ * will create monitoring roots and nested childs.
  *
  * @author void.fm
  * @version $Revision$
- *
+ * @since 1.2.0
  */
-public interface EtmMonitorContext {
+public class RootCreateEvent extends EtmMonitorEvent {
 
-  public EtmMonitor getEtmMonitor();
+  private String name;
 
-  public Timer getScheduler();
+  public RootCreateEvent(String aName, Object source) {
+    super(source);
+    name = aName;
+  }
 
-  public void fireEvent(EtmMonitorEvent event);
+  public String getName() {
+    return name;
+  }
 }

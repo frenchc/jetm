@@ -33,11 +33,11 @@ package test.etm.contrib.integration.spring.configuration;
 
 import etm.contrib.aggregation.log.CommonsLoggingAggregator;
 import etm.contrib.aggregation.log.Log4jAggregator;
-import etm.contrib.aggregation.persistence.PersistentNestedAggregator;
 import etm.contrib.renderer.plugin.Log4jDumpOnShutdownPlugin;
 import etm.contrib.renderer.plugin.SystemOutDumpOnShutdownPlugin;
 import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.NestedAggregator;
+import etm.core.aggregation.persistence.PersistentNestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.metadata.PluginMetaData;

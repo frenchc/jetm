@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.aggregation.persistence;
+package etm.core.aggregation.persistence;
 
 import java.io.File;
 import java.io.FileInputStream;
