@@ -32,15 +32,13 @@
 package etm.core.monitor.event;
 
 import java.lang.reflect.Method;
-import java.util.EventListener;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * Default event dispatcher implementation.
  *
  * @author void.fm
@@ -58,33 +56,43 @@ public class DefaultEventDispatcher implements EventDispatcher {
   }
 
 
-  public void register(EventListener listener) {
-    Set instances = (Set) listeners.get(listener.getClass());
-    if (instances != null) {
-      instances.add(listener);
+  public void register(EtmMonitorListener listener) {
+    for (Iterator iterator = listeners.keySet().iterator(); iterator.hasNext();) {
+      Class clazz = (Class) iterator.next();
+      if (clazz.isAssignableFrom(listener.getClass())) {
+        Set set = (Set) listeners.get(clazz);
+        set.add(listener);
+      }
     }
 
   }
 
-  public void deregister(EventListener listener) {
-     Set instances = (Set) listeners.get(listener.getClass());
-    if (instances != null) {
-      instances.remove(listener);
+  public void deregister(EtmMonitorListener listener) {
+    for (Iterator iterator = listeners.keySet().iterator(); iterator.hasNext();) {
+      Class clazz = (Class) iterator.next();
+      if (clazz.isAssignableFrom(listener.getClass())) {
+        Set set = (Set) listeners.get(clazz);
+        set.remove(listener);
+      }
     }
+
+
   }
 
   public void fire(EtmMonitorEvent event) {
     DispatchingRule rule = (DispatchingRule) dispatchingRules.get(event.getClass());
 
     if (rule != null) {
-      List currentListeners = (List) listeners.get(rule.getListener());
-      sendEvent(currentListeners.toArray(), rule.getMethod(), event);
+      Set currentListeners = (Set) listeners.get(rule.getListener());
+      if (currentListeners != null) {
+        sendEvent(currentListeners.toArray(), rule.getMethod(), event);
+      }
     } else {
       System.err.println("Unable to process event from type " + event.getClass());
     }
   }
 
-  private void sendEvent(Object[] aObjects, Method aMethod, EtmMonitorEvent aEvent) {
+  protected void sendEvent(Object[] aObjects, Method aMethod, EtmMonitorEvent aEvent) {
     for (int i = 0; i < aObjects.length; i++) {
       Object object = aObjects[i];
       try {
@@ -96,20 +104,26 @@ public class DefaultEventDispatcher implements EventDispatcher {
     }
   }
 
-  private void registerDispatchRules() {
+  protected void registerDispatchRules() {
     dispatchingRules.put(AggregationStateLoadedEvent.class,
       new DispatchingRule(AggregationStateListener.class, "onStateLoaded"));
 
 
     dispatchingRules.put(CollectionEnabledEvent.class,
-      new DispatchingRule(CollectionStatusListener.class, "onCollectionDEnabled"));
+      new DispatchingRule(CollectionStatusListener.class, "onCollectionEnabled"));
     dispatchingRules.put(CollectionDisabledEvent.class,
-      new DispatchingRule(CollectionDisabledEvent.class, "onCollectionDisabled"));
+      new DispatchingRule(CollectionStatusListener.class, "onCollectionDisabled"));
+
     dispatchingRules.put(MonitorResetEvent.class,
-      new DispatchingRule(EtmMonitorListener.class, "onMonitorReset"));
+      new DispatchingRule(EtmAggregationListener.class, "onStateReset"));
+    dispatchingRules.put(RootCreateEvent.class,
+      new DispatchingRule(EtmAggregationListener.class, "onRootCreate"));
+    dispatchingRules.put(RootResetEvent.class,
+      new DispatchingRule(EtmAggregationListener.class, "onRootReset"));
 
     listeners.put(AggregationStateListener.class, new HashSet());
-    listeners.put(EtmMonitorListener.class, new HashSet());
+    listeners.put(CollectionStatusListener.class, new HashSet());
+    listeners.put(EtmAggregationListener.class, new HashSet());
 
   }
 
@@ -131,7 +145,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
           break;
         }
       }
-      
+
       if (method == null) {
         throw new IllegalArgumentException("There is no matching method " + aMethodName + " in " + aListener.getName());
       }

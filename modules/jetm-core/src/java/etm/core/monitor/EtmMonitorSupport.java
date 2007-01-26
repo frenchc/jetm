@@ -216,9 +216,11 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
     scheduler = new Timer(true);
 
-    if (dispatcher != null) {
+    if (dispatcher == null) {
       dispatcher = new DefaultEventDispatcher();
     }
+
+    dispatcher.register(this);
 
     // 1. init aggregators
     aggregator.init(new EtmMonitorSupportContext(this, scheduler));
@@ -248,6 +250,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     aggregator.stop();
     shutdownPlugins();
 
+    dispatcher.deregister(this);
   }
 
   public boolean isStarted() {

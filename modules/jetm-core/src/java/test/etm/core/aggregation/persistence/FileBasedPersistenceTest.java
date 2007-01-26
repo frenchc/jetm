@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aggregation.persistence;
+package test.etm.core.aggregation.persistence;
 
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentFlatAggregator;
@@ -49,7 +49,7 @@ import java.util.Date;
  *
  * Tests store and load to file persistence for flat and nested monitors.
  * @author void.fm
- * @version $Revision$
+ * @version $Revision:96 $
  */
 public class FileBasedPersistenceTest extends TestCase {
 
@@ -97,8 +97,8 @@ public class FileBasedPersistenceTest extends TestCase {
     EtmMonitor persistentStateMonitor = new FlatMonitor(persistentStateAggregator);
     persistentStateMonitor.start();
 
-    assertEquals(startDate, persistentStateMonitor.getMetaData().getStartTime());
-    assertEquals(lastReset, persistentStateMonitor.getMetaData().getLastResetTime());
+    assertEquals(startDate.getTime(), persistentStateMonitor.getMetaData().getStartTime().getTime());
+    assertEquals(lastReset.getTime(), persistentStateMonitor.getMetaData().getLastResetTime().getTime());
 
     StringWriter persistentWriter = new StringWriter();
     SimpleTextRenderer persistentRenderer = new SimpleTextRenderer(persistentWriter);
@@ -138,8 +138,8 @@ public class FileBasedPersistenceTest extends TestCase {
     EtmMonitor persistentStateMonitor = new NestedMonitor(persistentStateAggregator);
     persistentStateMonitor.start();
 
-    assertEquals(startDate, persistentStateMonitor.getMetaData().getStartTime());
-    assertEquals(lastReset, persistentStateMonitor.getMetaData().getLastResetTime());
+    assertEquals(startDate.getTime(), persistentStateMonitor.getMetaData().getStartTime().getTime());
+    assertEquals(lastReset.getTime(), persistentStateMonitor.getMetaData().getLastResetTime().getTime());
 
     StringWriter persistentWriter = new StringWriter();
     SimpleTextRenderer persistentRenderer = new SimpleTextRenderer(persistentWriter);

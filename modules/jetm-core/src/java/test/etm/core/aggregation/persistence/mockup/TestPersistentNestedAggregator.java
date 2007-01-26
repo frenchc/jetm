@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.aggregation.persistence.mockup;
+package test.etm.core.aggregation.persistence.mockup;
 
 import etm.core.aggregation.persistence.PersistenceBackend;
 import etm.core.aggregation.persistence.PersistentNestedAggregator;
@@ -39,7 +39,7 @@ import etm.core.aggregation.persistence.PersistentNestedAggregator;
  *
  * Extended aggregator to access persistence backend.
  *
- * @version $Revision$
+ * @version $Revision:96 $
  * @author void.fm
  *
  */

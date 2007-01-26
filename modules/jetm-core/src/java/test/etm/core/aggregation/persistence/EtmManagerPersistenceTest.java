@@ -30,13 +30,13 @@
  *
  */
 
-package test.etm.contrib.aggregation.persistence;
+package test.etm.core.aggregation.persistence;
 
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
 import junit.framework.TestCase;
-import test.etm.contrib.aggregation.persistence.mockup.TestPersistenceBackend;
-import test.etm.contrib.aggregation.persistence.mockup.TestPersistentNestedAggregator;
+import test.etm.core.aggregation.persistence.mockup.TestPersistenceBackend;
+import test.etm.core.aggregation.persistence.mockup.TestPersistentNestedAggregator;
 import test.etm.core.configuration.mockup.TestMonitor;
 
 import java.util.HashMap;
@@ -45,7 +45,7 @@ import java.util.HashMap;
  * Tests whether its possible to set persistance details through an etm manager configuration.
  *
  * @author void.fm
- * @version $Revision$
+ * @version $Revision:96 $
  */
 public class EtmManagerPersistenceTest extends TestCase {
 

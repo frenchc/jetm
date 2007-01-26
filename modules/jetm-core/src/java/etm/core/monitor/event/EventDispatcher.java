@@ -31,8 +31,6 @@
  */
 package etm.core.monitor.event;
 
-import java.util.EventListener;
-
 /**
  *
  * The event dispatch will be used to dispatch events to registered listeners.
@@ -43,9 +41,9 @@ import java.util.EventListener;
  */
 public interface EventDispatcher {
 
-  public void register(EventListener listener);
+  public void register(EtmMonitorListener listener);
 
-  public void deregister(EventListener listener);
+  public void deregister(EtmMonitorListener listener);
 
   public void fire(EtmMonitorEvent event);
 }
