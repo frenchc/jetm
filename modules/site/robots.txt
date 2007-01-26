@@ -1,2 +1,6 @@
 User-agent: *
-Disallow: /jetm-demo/performance/ 
+Disallow: /jetm-demo/performance/start
+Disallow: /jetm-demo/performance/stop
+Disallow: /jetm-demo/performance/reset
+Disallow: /jetm-demo/performance/expand
+Disallow: /jetm-demo/performance/collapse
