@@ -1,0 +1,82 @@
+<!--
+  Copyright (c) 2004, 2005, 2006, 2007 void.fm
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without modification,
+  are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice, this list
+    of conditions and the following disclaimer.
+
+  * Redistributions in binary form must reproduce the above copyright notice, this
+    list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+  * Neither the name void.fm nor the names of its contributors may be
+    used to endorse or promote products derived from this software without specific
+    prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+  OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ -->
+
+<!--
+ Use this doctype for jetm xml configuration files.
+
+ <!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                              "http://jetm.void.fm/dtd/jetm_config_1_2.dtd">
+ -->
+
+
+<!ELEMENT jetm-config (features|aggregator-chain)?, extension?)>
+
+<!ATTLIST jetm-config type CDATA "nested">
+<!ATTLIST jetm-config timer CDATA #IMPLIED>
+<!ATTLIST jetm-config autostart (true|false) "false">
+
+<!ELEMENT features ((threshold-buffer|interval-buffer)?, persistence?, raw-data-log?, jmx?)>
+<!ELEMENT aggregator-chain (chain-element+,chain-root?)>
+<!ELEMENT extension (plugin)*>
+
+<!ELEMENT threshold-buffer (#PCDATA)>
+<!ATTLIST threshold-buffer threshold CDATA #IMPLIED>
+
+<!ELEMENT interval-buffer (#PCDATA)>
+<!ATTLIST threshold-buffer interval CDATA #IMPLIED>
+
+<!ELEMENT persistence (file-backend|custom-backend)?>
+
+<!ELEMENT file-backend EMPTY>
+<!ATTLIST file-backend path CDATA #IMPLIED>
+<!ATTLIST file-backend filename CDATA #IMPLIED>
+
+<!ELEMENT custom-backend property*>
+<!ATTLIST custom-backend class CDATA #REQUIRED>
+
+<!ELEMENT raw-data-log (#PCDATA)>
+<!ATTLIST raw-data-log type CDATA #REQUIRED>
+<!ATTLIST raw-data-log category CDATA #IMPLIED>
+<!ATTLIST raw-data-log formatter-class CDATA #IMPLIED>
+
+<!ELEMENT jmx (#PCDATA)>
+
+<!ELEMENT chain-element (property*)>
+<!ATTLIST chain-element class CDATA #REQUIRED>
+
+<!ELEMENT chain-root (property*)>
+<!ATTLIST chain-root class CDATA #REQUIRED>
+
+<!ELEMENT plugin (property*)>
+<!ATTLIST plugin class CDATA #REQUIRED>
+
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property name CDATA #REQUIRED>
