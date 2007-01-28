@@ -42,13 +42,17 @@ import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
 
 import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
+import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Simple base class that takes care of dynamic measurement point registration.
@@ -72,6 +76,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
   protected MBeanServer mbeanServer;
   protected EtmMonitor etmMonitor;
 
+  protected boolean isStopping = false;
 
   /**
    * Sets the name of the MBeanServer to use. Default is <code>null</code>.
@@ -125,20 +130,16 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
       //???
       e.printStackTrace();
     }
+
+    isStopping = false;
   }
 
   public void stop() {
+    isStopping = true;
+
     if (mbeanServer != null) {
       try {
-        // todo cleanup at shutdown
-//        QueryExp exp = Query.eq(Query.attr("type"), Query.value("MeasurementPoint"));
-//        ObjectName objectName = new ObjectName(etmMeasurementObjectNamePrefix);
-//        Set set = mbeanServer.queryNames(objectName,  exp);
-//        for (Iterator iterator = set.iterator(); iterator.hasNext();) {
-//          ObjectName o = (ObjectName) iterator.next();
-//          mbeanServer.unregisterMBean(o);
-//        }
-
+        deregisterPerformanceResults();
         mbeanServer.unregisterMBean(new ObjectName(etmMonitorObjectName));
       } catch (Exception e) {
         // ???
@@ -147,7 +148,12 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     }
   }
 
+
   public void onStateLoaded(AggregationStateLoadedEvent event) {
+    if (isStopping) {
+      return;
+    }
+
     PersistentEtmState persistentEtmState = event.getState();
     Map aggregates = persistentEtmState.getAggregates();
     for (Iterator iterator = aggregates.values().iterator(); iterator.hasNext();) {
@@ -157,15 +163,26 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
   }
 
   public void onRootCreate(RootCreateEvent event) {
+    if (isStopping) {
+      return;
+    }
+
     Aggregate aggregate = event.getAggregate();
     registerAggregate(aggregate);
   }
 
-  public void onRootReset(RootResetEvent event) {
-    // ignore
+  public void onStateReset(MonitorResetEvent event) {
+    if (isStopping) {
+      return;
+    }
+    try {
+      deregisterPerformanceResults();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
-  public void onStateReset(MonitorResetEvent event) {
+  public void onRootReset(RootResetEvent event) {
     // ignore
   }
 
@@ -193,6 +210,15 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
       registerMBean(new MeasurementPointMBean(etmMonitor, aAggregate), objectName);
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  protected void deregisterPerformanceResults() throws MalformedObjectNameException, InstanceNotFoundException, MBeanRegistrationException {
+    ObjectName objectName = new ObjectName(etmMeasurementObjectNamePrefix+":*");
+    Set set = mbeanServer.queryNames(objectName,  null);
+    for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+      ObjectName o = (ObjectName) iterator.next();
+      mbeanServer.unregisterMBean(o);
     }
   }
 
