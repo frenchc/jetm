@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN" "http://jetm.void.fm/dtd/jetm_config_1_2.dtd">
+<jetm-config type="test.etm.core.configuration.mockup.TestMonitor">
+
+</jetm-config>

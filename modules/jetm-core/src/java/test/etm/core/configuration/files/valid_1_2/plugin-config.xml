@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN" "http://jetm.void.fm/dtd/jetm_config_1_2.dtd">
+<jetm-config type="test.etm.core.configuration.mockup.TestMonitor">
+  <extension>
+    <plugin class="test.etm.core.configuration.mockup.TestPlugin">
+      <property name="booleanTrue">true</property>
+      <property name="booleanFalse">false</property>
+      <property name="longValue">12124234324234</property>
+      <property name="intValue">12</property>
+      <property name="stringValue">testString</property>
+      <property name="clazzValue">java.util.HashMap</property>
+      <property name="listValue">value1</property>
+      <property name="listValue">value2</property>
+      <property name="mapValue.key1">value1</property>
+      <property name="mapValue.key2">value2</property>
+      <property name="mapValue.key3">value3</property>
+    </plugin>
+  </extension>
+</jetm-config>

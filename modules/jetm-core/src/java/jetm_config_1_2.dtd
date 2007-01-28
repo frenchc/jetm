@@ -37,7 +37,7 @@
  -->
 
 
-<!ELEMENT jetm-config (features|aggregator-chain)?, extension?)>
+<!ELEMENT jetm-config ((features|aggregator-chain)?, extension?)>
 
 <!ATTLIST jetm-config type CDATA "nested">
 <!ATTLIST jetm-config timer CDATA #IMPLIED>
@@ -59,7 +59,7 @@
 <!ATTLIST file-backend path CDATA #IMPLIED>
 <!ATTLIST file-backend filename CDATA #IMPLIED>
 
-<!ELEMENT custom-backend property*>
+<!ELEMENT custom-backend (property*)>
 <!ATTLIST custom-backend class CDATA #REQUIRED>
 
 <!ELEMENT raw-data-log (#PCDATA)>

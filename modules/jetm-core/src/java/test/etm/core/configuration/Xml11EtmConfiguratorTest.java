@@ -59,7 +59,7 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public class XmlEtmConfiguratorTest extends TestCase {
+public class Xml11EtmConfiguratorTest extends TestCase {
 
   public void testConfigFromString() {
     String config = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
