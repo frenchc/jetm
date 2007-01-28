@@ -37,11 +37,9 @@ import etm.contrib.aggregation.log.Jdk14LogAggregator;
 import etm.contrib.aggregation.log.Log4jAggregator;
 import etm.core.aggregation.BufferedThresholdAggregator;
 import etm.core.aggregation.BufferedTimedAggregator;
-import etm.core.aggregation.FlatAggregator;
-import etm.core.aggregation.NestedAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
-import etm.core.aggregation.persistence.PersistentFlatAggregator;
-import etm.core.aggregation.persistence.PersistentNestedAggregator;
+import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.timer.DefaultTimer;
 import etm.core.timer.Java15NanoTimer;
 import etm.core.timer.SunHighResTimer;
@@ -97,7 +95,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     }
 
     if (features != null) {
-      buildChainFromFeatures(builder, features, type);
+      buildChainFromFeatures(builder, features);
     } else if (aggregatorChain != null) {
       buildChainFromChain(builder, aggregatorChain);
     }
@@ -151,16 +149,22 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     Element chainRoot = DomUtils.getChildElementByTagName(aAggregatorChain, "chain-root");
     BeanDefinitionBuilder chainBuilder;
 
-    String rootClassName = chainRoot.getAttribute("class");
-
-    try {
-      chainBuilder = BeanDefinitionBuilder.rootBeanDefinition(Class.forName(rootClassName));
-    } catch (ClassNotFoundException e) {
-      throw new FatalBeanException("Unable to locate chain root class " + rootClassName, e);
+    Class rootClazz;
+    if (chainRoot != null) {
+      String rootClassName = chainRoot.getAttribute("class");
+      try {
+        rootClazz = Class.forName(rootClassName);
+      } catch (ClassNotFoundException e) {
+        throw new FatalBeanException("Unable to locate chain root class " + rootClassName, e);
+      }
+    } else {
+      rootClazz = RootAggregator.class;
     }
 
+    chainBuilder = BeanDefinitionBuilder.rootBeanDefinition(rootClazz);
+
     if (chainElements.size() > 0) {
-      for (int i = chainElements.size() -1; i >= 0; i--) {
+      for (int i = chainElements.size() - 1; i >= 0; i--) {
         Element chainElement = (Element) chainElements.get(i);
         String chainClassName = chainElement.getAttribute("class");
 
@@ -180,7 +184,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         }
 
         nestedBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
-        chainBuilder = nestedBuilder;  
+        chainBuilder = nestedBuilder;
 
       }
     }
@@ -189,7 +193,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     aBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
   }
 
-  private void buildChainFromFeatures(BeanDefinitionBuilder runtimeBuilder, Element aElement, String monitorType) {
+  private void buildChainFromFeatures(BeanDefinitionBuilder runtimeBuilder, Element aElement) {
     Element thresholdBufferElement = DomUtils.getChildElementByTagName(aElement, "threshold-buffer");
     Element intervalBuffer = DomUtils.getChildElementByTagName(aElement, "interval-buffer");
 
@@ -201,12 +205,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     BeanDefinitionBuilder aggregationRootBuilder;
 
     if (persistence != null) {
-      if ("flat".equals(monitorType)) {
-        aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(PersistentFlatAggregator.class);
-      } else {
-        // fallback to nested
-        aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(PersistentNestedAggregator.class);
-      }
+      aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(PersistentRootAggregator.class);
 
       Element fileBackend = DomUtils.getChildElementByTagName(persistence, "file-backend");
       Element genericBackend = DomUtils.getChildElementByTagName(persistence, "custom-backend");
@@ -246,12 +245,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
       aggregationRootBuilder.addPropertyValue("persistenceBackend", backendBuilder.getBeanDefinition());
     } else {
-      if ("flat".equals(monitorType)) {
-        aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(FlatAggregator.class);
-      } else {
-        // fallback to nested
-        aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(NestedAggregator.class);
-      }
+      aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(RootAggregator.class);
     }
 
     if (rawDataLog != null) {

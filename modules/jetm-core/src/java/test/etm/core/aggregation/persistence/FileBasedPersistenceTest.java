@@ -32,10 +32,8 @@
 package test.etm.core.aggregation.persistence;
 
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
-import etm.core.aggregation.persistence.PersistentFlatAggregator;
-import etm.core.aggregation.persistence.PersistentNestedAggregator;
+import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.FlatMonitor;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.SimpleTextRenderer;
@@ -69,52 +67,11 @@ public class FileBasedPersistenceTest extends TestCase {
     }
   }
 
-  public void testFlatMonitor() {
+  public void testPersistence() {
     FileSystemPersistenceBackend backend = new FileSystemPersistenceBackend();
     backend.setFilename("junit-test.ser");
 
-    PersistentFlatAggregator memoryAggregator = new PersistentFlatAggregator();
-    memoryAggregator.setPersistenceBackend(backend);
-    EtmMonitor memoryMonitor = new FlatMonitor(memoryAggregator);
-    memoryMonitor.start();
-
-    MeasurementPoint point = new MeasurementPoint(memoryMonitor, "test");
-    point.collect();
-
-    StringWriter memoryWriter = new StringWriter();
-    SimpleTextRenderer memoryRenderer = new SimpleTextRenderer(memoryWriter);
-    memoryMonitor.render(memoryRenderer);
-
-    memoryMonitor.stop();
-
-    assertTrue(file.exists());
-    Date startDate = memoryMonitor.getMetaData().getStartTime();
-    Date lastReset = memoryMonitor.getMetaData().getLastResetTime();
-
-    // create new monitor and compare loaded details
-    PersistentFlatAggregator persistentStateAggregator = new PersistentFlatAggregator();
-    persistentStateAggregator.setPersistenceBackend(backend);
-    EtmMonitor persistentStateMonitor = new FlatMonitor(persistentStateAggregator);
-    persistentStateMonitor.start();
-
-    assertEquals(startDate.getTime(), persistentStateMonitor.getMetaData().getStartTime().getTime());
-    assertEquals(lastReset.getTime(), persistentStateMonitor.getMetaData().getLastResetTime().getTime());
-
-    StringWriter persistentWriter = new StringWriter();
-    SimpleTextRenderer persistentRenderer = new SimpleTextRenderer(persistentWriter);
-    persistentStateMonitor.render(persistentRenderer);
-
-    assertEquals(memoryWriter.toString(), persistentWriter.toString());
-
-    persistentStateMonitor.stop();
-  }
-
-
-  public void testNestedMonitor() {
-    FileSystemPersistenceBackend backend = new FileSystemPersistenceBackend();
-    backend.setFilename("junit-test.ser");
-
-    PersistentNestedAggregator memoryAggregator = new PersistentNestedAggregator();
+    PersistentRootAggregator memoryAggregator = new PersistentRootAggregator();
     memoryAggregator.setPersistenceBackend(backend);
     EtmMonitor memoryMonitor = new NestedMonitor(memoryAggregator);
     memoryMonitor.start();
@@ -133,7 +90,7 @@ public class FileBasedPersistenceTest extends TestCase {
     Date lastReset = memoryMonitor.getMetaData().getLastResetTime();
 
     // create new monitor and compare loaded details
-    PersistentNestedAggregator persistentStateAggregator = new PersistentNestedAggregator();
+    PersistentRootAggregator persistentStateAggregator = new PersistentRootAggregator();
     persistentStateAggregator.setPersistenceBackend(backend);
     EtmMonitor persistentStateMonitor = new NestedMonitor(persistentStateAggregator);
     persistentStateMonitor.start();

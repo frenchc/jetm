@@ -33,10 +33,8 @@
 <h4>Persistent Aggregators in jetm-config.xml (used by <a href="etm_manager_configuration.html">EtmManager</a>)</h4>
 
 <p>
-  Enabling persitence in a jetm-config.xml is pretty simple: Either add
-  <a href="../@api@/etm/core/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
-  or
-  <a href="../@api@/etm/core/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>
+  Enabling persitence in a jetm-config.xml is pretty simple: Add
+  <a href="../@api@/etm/core/aggregation/persistence/PersistentRootAggregator.html">PersistentRootAggregator</a>
   as chain root and you are done. See examples below.
 </p>
 
@@ -51,7 +49,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        <b>etm.core.aggregation.persistence.PersistentNestedAggregator</b>
+        <b>etm.core.aggregation.persistence.PersistentRootAggregator</b>
       &lt;/aggregator-class&gt;
     &lt;/chain-root&gt;
   &lt;/aggregator-chain&gt;
@@ -65,11 +63,11 @@
 &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
                                  "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
 &lt;jetm-config&gt;
-  &lt;monitor-class&gt;<b>etm.core.monitor.FlatMonitor</b>&lt;/monitor-class&gt;
+  &lt;monitor-type&gt;<b>flat</b>&lt;/monitor-type&gt;
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        <b>etm.core.aggregation.persistence.PersistentFlatAggregator</b>
+        <b>etm.core.aggregation.persistence.PersistentRootAggregator</b>
       &lt;/aggregator-class&gt;
     &lt;/chain-root&gt;
   &lt;/aggregator-chain&gt;
@@ -117,7 +115,7 @@
       autowire="constructor"/&gt;
 
   &lt;bean id="aggregatorChain"
-        class="<b>etm.core.aggregation.persistence.PersistentNestedAggregator</b>" /&gt;
+        class="<b>etm.core.aggregation.persistence.PersistentRootAggregator</b>" /&gt;
 
 &lt;/beans&gt;
 </pre>
@@ -144,7 +142,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        etm.core.aggregation.persistence.PersistentNestedAggregator
+        etm.core.aggregation.persistence.PersistentRootAggregator
       &lt;/aggregator-class&gt;
       &lt;properties&gt;
         &lt;!-- <i>&lt;property name="backendProperties.path"&gt;/foo/bar&lt;/property&gt;</i> --&gt;
@@ -183,7 +181,7 @@
   supply a valid implementation to either
   <a href="../@api@/etm/core/aggregation/persistence/PersistentFlatAggregator.html">PersistentFlatAggregator</a>
   or
-  <a href="../@api@/etm/core/aggregation/persistence/PersistentNestedAggregator.html">PersistentNestedAggregator</a>.
+  <a href="../@api@/etm/core/aggregation/persistence/PersistentRootAggregator.html">PersistentRootAggregator</a>.
   See examples below for EtmManager and Spring managed JETM instances.
 </p>
 <p>
@@ -197,7 +195,7 @@
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
-        etm.core.aggregation.persistence.PersistentNestedAggregator
+        etm.core.aggregation.persistence.PersistentRootAggregator
       &lt;/aggregator-class&gt;
       &lt;properties&gt;
         <b>&lt;property name="persistenceBackendClass"&gt;foo.bar.MyPersistenceBackend&lt;/property&gt;</b>

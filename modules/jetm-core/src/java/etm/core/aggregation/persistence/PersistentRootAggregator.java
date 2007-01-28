@@ -31,7 +31,7 @@
  */
 package etm.core.aggregation.persistence;
 
-import etm.core.aggregation.NestedAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.event.AggregationStateLoadedEvent;
@@ -40,15 +40,15 @@ import etm.core.util.PropertySupport;
 import java.util.Map;
 
 /**
- * A nested aggregator that supports persistence provided by a {@link PersistenceBackend}. By default the persistence
+ * An aggregator that supports persistence provided by a {@link PersistenceBackend}. By default the persistence
  * backend is {@link etm.core.aggregation.persistence.FileSystemPersistenceBackend}, however you may supply a
  * custom backend during initialization.
  *
  * @author void.fm
- * @version $Revision$
+ * @version $Revision:96 $
  * @since 1.2.0
  */
-public class PersistentNestedAggregator extends NestedAggregator {
+public class PersistentRootAggregator extends RootAggregator {
   protected EtmMonitorContext context;
   protected PersistenceBackend persistenceBackend;
   protected Map backendProperties;
@@ -112,7 +112,7 @@ public class PersistentNestedAggregator extends NestedAggregator {
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(PersistentNestedAggregator.class, "A cummulating aggregator for nested representation " +
+    return new AggregatorMetaData(PersistentRootAggregator.class, "A cummulating aggregator for nested and flat representation " +
       "that restores previous state from a persistence backend.", false);
   }
 }

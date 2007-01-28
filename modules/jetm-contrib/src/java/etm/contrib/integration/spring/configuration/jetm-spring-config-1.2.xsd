@@ -307,12 +307,12 @@
           </xsd:complexContent>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="chain-root">
+      <xsd:element name="chain-root" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The root element in the aggregator chain. Should relate to
             the monitor type. Has to implement the interface Aggregator and should
-            have a public no-arg constructor.
+            have a public no-arg constructor. Defaults to RootAggregator if omitted.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>

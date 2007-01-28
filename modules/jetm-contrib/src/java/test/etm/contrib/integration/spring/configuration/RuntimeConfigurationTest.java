@@ -37,7 +37,7 @@ import etm.contrib.renderer.plugin.Log4jDumpOnShutdownPlugin;
 import etm.contrib.renderer.plugin.SystemOutDumpOnShutdownPlugin;
 import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.NestedAggregator;
-import etm.core.aggregation.persistence.PersistentNestedAggregator;
+import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.metadata.PluginMetaData;
@@ -63,7 +63,7 @@ public class RuntimeConfigurationTest extends ConfigurationTestCase {
       EtmMonitorMetaData etmMonitorMetaData = monitor.getMetaData();
       assertEquals(BufferedTimedAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getImplementationClass());
       assertEquals(Log4jAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getNestedMetaData().getImplementationClass());
-      assertEquals(PersistentNestedAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getNestedMetaData().getNestedMetaData().getImplementationClass());
+      assertEquals(PersistentRootAggregator.class, etmMonitorMetaData.getAggregatorMetaData().getNestedMetaData().getNestedMetaData().getImplementationClass());
       assertEquals(DefaultTimer.class, etmMonitorMetaData.getTimerMetaData().getImplementationClass());
 
     } finally {

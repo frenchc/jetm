@@ -33,7 +33,7 @@
 package test.etm.core.aggregation.persistence.mockup;
 
 import etm.core.aggregation.persistence.PersistenceBackend;
-import etm.core.aggregation.persistence.PersistentNestedAggregator;
+import etm.core.aggregation.persistence.PersistentRootAggregator;
 
 /**
  *
@@ -43,7 +43,7 @@ import etm.core.aggregation.persistence.PersistentNestedAggregator;
  * @author void.fm
  *
  */
-public class TestPersistentNestedAggregator extends PersistentNestedAggregator {
+public class TestPersistentNestedAggregator extends PersistentRootAggregator {
   
   public PersistenceBackend getPersistenceBackend() {
     return persistenceBackend;
