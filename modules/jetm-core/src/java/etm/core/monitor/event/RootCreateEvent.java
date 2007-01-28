@@ -31,7 +31,7 @@
  */
 package etm.core.monitor.event;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 
 /**
  *
@@ -45,14 +45,14 @@ import etm.core.aggregation.ExecutionAggregate;
  */
 public class RootCreateEvent extends EtmMonitorEvent {
 
-  private ExecutionAggregate aggregate;
+  private Aggregate aggregate;
 
-  public RootCreateEvent(ExecutionAggregate aAggregate, Object source) {
+  public RootCreateEvent(Aggregate aAggregate, Object source) {
     super(source);
     aggregate = aAggregate;
   }
 
-  public ExecutionAggregate getAggregate() {
+  public Aggregate getAggregate() {
     return aggregate;
   }
 }

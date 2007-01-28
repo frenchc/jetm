@@ -35,7 +35,7 @@ package etm.contrib.console.util;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -80,7 +80,7 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
 
         Arrays.sort(values, comparator);
         for (int i = 0; i < values.length; i++) {
-          ExecutionAggregate point = (ExecutionAggregate) values[i];
+          Aggregate point = (Aggregate) values[i];
 
           response.write(" <tr>\n");
           response.write("  <td>");

@@ -31,7 +31,7 @@
  */
 package etm.core.jmx;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
@@ -184,7 +184,7 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
         TreeMap map = new TreeMap(points);
         for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-          ExecutionAggregate point = (ExecutionAggregate) iterator.next();
+          Aggregate point = (Aggregate) iterator.next();
 
           buffer.append(" <tr>\n");
           buffer.append("  <td align=\"left\">");
@@ -213,7 +213,7 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
       }
     }
 
-    private void writeNames(StringBuffer aBuffer, ExecutionAggregate aPoint, int depth) {
+    private void writeNames(StringBuffer aBuffer, Aggregate aPoint, int depth) {
       if (depth > 0) {
         writeNestingLevel(aBuffer, depth);
         aBuffer.append(TREE_SIGN);
@@ -227,14 +227,14 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
         Map childs = aPoint.getChilds();
         for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          ExecutionAggregate child = (ExecutionAggregate) iterator.next();
+          Aggregate child = (Aggregate) iterator.next();
           writeNames(aBuffer, child, currentDepth);
         }
       }
 
     }
 
-    private void writeTotals(StringBuffer aBuffer, ExecutionAggregate aPoint, int depth) {
+    private void writeTotals(StringBuffer aBuffer, Aggregate aPoint, int depth) {
       aBuffer.append(timeFormatter.format(aPoint.getTotal()));
       aBuffer.append("<br />");
 
@@ -244,14 +244,14 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         int currentDepth = depth + 1;
 
         for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          ExecutionAggregate child = (ExecutionAggregate) iterator.next();
+          Aggregate child = (Aggregate) iterator.next();
           writeTotals(aBuffer, child, currentDepth);
         }
       }
 
     }
 
-    private void writeTime(StringBuffer aBuffer, ExecutionAggregate aPoint, int depth) {
+    private void writeTime(StringBuffer aBuffer, Aggregate aPoint, int depth) {
       aBuffer.append(timeFormatter.format(aPoint.getAverage()));
       aBuffer.append("<br />");
 
@@ -260,14 +260,14 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
         int currentDepth = depth + 1;
         for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          ExecutionAggregate child = (ExecutionAggregate) iterator.next();
+          Aggregate child = (Aggregate) iterator.next();
           writeTime(aBuffer, child, currentDepth + 1);
         }
       }
 
     }
 
-    private void writeMinMax(StringBuffer aBuffer, ExecutionAggregate aPoint, int depth) {
+    private void writeMinMax(StringBuffer aBuffer, Aggregate aPoint, int depth) {
       aBuffer.append(timeFormatter.format(aPoint.getMin()));
       aBuffer.append("/");
       aBuffer.append(timeFormatter.format(aPoint.getMax()));
@@ -278,14 +278,14 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
         int currentDepth = depth + 1;
         for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          ExecutionAggregate child = (ExecutionAggregate) iterator.next();
+          Aggregate child = (Aggregate) iterator.next();
           writeMinMax(aBuffer, child, currentDepth + 1);
         }
       }
 
     }
 
-    private void writeMeasurements(StringBuffer aBuffer, ExecutionAggregate aPoint, int depth) {
+    private void writeMeasurements(StringBuffer aBuffer, Aggregate aPoint, int depth) {
       aBuffer.append(aPoint.getMeasurements());
       aBuffer.append("<br />");
 
@@ -294,7 +294,7 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
         int currentDepth = depth + 1;
         for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          ExecutionAggregate child = (ExecutionAggregate) iterator.next();
+          Aggregate child = (Aggregate) iterator.next();
           writeMeasurements(aBuffer, child, currentDepth);
         }
       }

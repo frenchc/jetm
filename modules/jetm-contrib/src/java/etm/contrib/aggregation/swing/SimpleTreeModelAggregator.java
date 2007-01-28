@@ -32,6 +32,7 @@
 
 package etm.contrib.aggregation.swing;
 
+import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
@@ -61,6 +62,7 @@ import java.util.LinkedList;
  *
  * @author void.fm
  * @version $Revision$
+ * @deprecated Please don't use this aggregator any more. With JETM 1.3.0 this aggregator will be removed.
  */
 
 public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggregator {
@@ -112,7 +114,7 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
 
       while (currentChild == null && childs.hasMoreElements()) {
         DefaultMutableTreeNode measurementNode = (DefaultMutableTreeNode) childs.nextElement();
-        ExecutionAggregate aggregate = (ExecutionAggregate) measurementNode.getUserObject();
+        Aggregate aggregate = (Aggregate) measurementNode.getUserObject();
         if (aggregate.getName().equals(currentString)) {
           currentChild = measurementNode;
         }

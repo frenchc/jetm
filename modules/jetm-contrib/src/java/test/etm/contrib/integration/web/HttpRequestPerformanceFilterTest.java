@@ -33,18 +33,18 @@
 package test.etm.contrib.integration.web;
 
 import etm.contrib.integration.web.HttpRequestPerformanceFilter;
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 import org.apache.log4j.BasicConfigurator;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -85,7 +85,7 @@ public class HttpRequestPerformanceFilterTest extends TestCase {
       public void render(Map points) {
         String key = "POST request /test/testrequest";
         assertTrue(points.containsKey(key));
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get(key);
+        Aggregate aggregate = (Aggregate) points.get(key);
         assertEquals(1, aggregate.getMeasurements());
         assertEquals(15d, aggregate.getMin(), 0);
       }

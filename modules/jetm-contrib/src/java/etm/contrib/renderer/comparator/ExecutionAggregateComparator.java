@@ -32,7 +32,7 @@
 
 package etm.contrib.renderer.comparator;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 
 import java.util.Comparator;
 
@@ -71,8 +71,8 @@ public class ExecutionAggregateComparator implements Comparator {
   }
 
   public int compare(Object o1, Object o2) {
-    ExecutionAggregate one = (ExecutionAggregate) o1;
-    ExecutionAggregate two = (ExecutionAggregate) o2;
+    Aggregate one = (Aggregate) o1;
+    Aggregate two = (Aggregate) o2;
     switch (type) {
       case TYPE_NAME:
         return compareName(one, two);
@@ -91,12 +91,12 @@ public class ExecutionAggregateComparator implements Comparator {
     }
   }
 
-  protected int compareName(ExecutionAggregate one, ExecutionAggregate two) {
+  protected int compareName(Aggregate one, Aggregate two) {
     int value = one.getName().compareTo(two.getName());
     return descending ? value : -1 * value;
   }
 
-  protected int compareExecutions(ExecutionAggregate one, ExecutionAggregate two) {
+  protected int compareExecutions(Aggregate one, Aggregate two) {
     if (one.getMeasurements() < two.getMeasurements()) {
       return descending ? 1 : -1;
     } else if (two.getMeasurements() < one.getMeasurements()) {
@@ -106,7 +106,7 @@ public class ExecutionAggregateComparator implements Comparator {
     }
   }
 
-  protected int compareAverage(ExecutionAggregate one, ExecutionAggregate two) {
+  protected int compareAverage(Aggregate one, Aggregate two) {
     if (one.getAverage() < two.getAverage()) {
       return descending ? 1 : -1;
     } else if (two.getAverage() < one.getAverage()) {
@@ -116,7 +116,7 @@ public class ExecutionAggregateComparator implements Comparator {
     }
   }
 
-  protected int compareMin(ExecutionAggregate one, ExecutionAggregate two) {
+  protected int compareMin(Aggregate one, Aggregate two) {
     if (one.getMin() < two.getMin()) {
       return descending ? 1 : -1;
     } else if (two.getMin() < one.getMin()) {
@@ -126,7 +126,7 @@ public class ExecutionAggregateComparator implements Comparator {
     }
   }
 
-  protected int compareMax(ExecutionAggregate one, ExecutionAggregate two) {
+  protected int compareMax(Aggregate one, Aggregate two) {
     if (one.getMax() < two.getMax()) {
       return descending ? 1 : -1;
     } else if (two.getMax() < one.getMax()) {
@@ -136,7 +136,7 @@ public class ExecutionAggregateComparator implements Comparator {
     }
   }
 
-  protected int compareTotal(ExecutionAggregate one, ExecutionAggregate two) {
+  protected int compareTotal(Aggregate one, Aggregate two) {
     if (one.getTotal() < two.getTotal()) {
       return descending ? 1 : -1;
     } else if (two.getTotal() < one.getTotal()) {

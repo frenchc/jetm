@@ -33,6 +33,7 @@
 
 package test.etm.core.monitor;
 
+import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.FlatAggregator;
 import etm.core.monitor.EtmMonitor;
@@ -114,7 +115,7 @@ public class ConcurrentFlatMonitorTest extends TestCase {
         assertNotNull(points);
         assertTrue(points.size() == 2);
 
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get(testPointGroup1);
+        Aggregate aggregate = (Aggregate) points.get(testPointGroup1);
 
         assertNotNull(aggregate);
         assertEquals(testPointGroup1, aggregate.getName());
@@ -124,7 +125,7 @@ public class ConcurrentFlatMonitorTest extends TestCase {
         assertEquals(group1.getMin(), aggregate.getMin(), 0.0);
         assertEquals(group1.getMax(), aggregate.getMax(), 0.0);
 
-        ExecutionAggregate aggregate2 = (ExecutionAggregate) points.get(testPointGroup2);
+        Aggregate aggregate2 = (Aggregate) points.get(testPointGroup2);
 
         assertNotNull(aggregate2);
         assertEquals(testPointGroup2, aggregate2.getName());

@@ -32,7 +32,7 @@
 
 package test.etm.contrib.aop;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
@@ -84,7 +84,7 @@ public abstract class AopTestBase extends TestCase {
     etmMonitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertTrue("No measurement result found.", points.size() > 0);
-        ExecutionAggregate topLevelBar = ((ExecutionAggregate) points.get("BarService::doBar"));
+        Aggregate topLevelBar = ((Aggregate) points.get("BarService::doBar"));
         assertTrue(topLevelBar.getTotal() > 0);
         assertTrue(topLevelBar.getMin() > 0);
         assertTrue(topLevelBar.getMax() > 0);
@@ -93,29 +93,29 @@ public abstract class AopTestBase extends TestCase {
 
         assertEquals(MEASUREMENTS, topLevelBar.getMeasurements());
 
-        assertEquals(MEASUREMENTS, ((ExecutionAggregate) points.get("BarService::doBarBar")).getMeasurements());
-        assertEquals(MEASUREMENTS, ((ExecutionAggregate) points.get("FooService::doFoo")).getMeasurements());
-        assertEquals(MEASUREMENTS, ((ExecutionAggregate) points.get("FooService::doFooFoo")).getMeasurements());
+        assertEquals(MEASUREMENTS, ((Aggregate) points.get("BarService::doBarBar")).getMeasurements());
+        assertEquals(MEASUREMENTS, ((Aggregate) points.get("FooService::doFoo")).getMeasurements());
+        assertEquals(MEASUREMENTS, ((Aggregate) points.get("FooService::doFooFoo")).getMeasurements());
 
-        ExecutionAggregate doYadda = ((ExecutionAggregate) points.get("YaddaService::doYadda"));
+        Aggregate doYadda = ((Aggregate) points.get("YaddaService::doYadda"));
         assertEquals(MEASUREMENTS, doYadda.getMeasurements());
         assertTrue(doYadda.hasChilds());
-        assertEquals(MEASUREMENTS * 2, ((ExecutionAggregate) doYadda.getChilds().get("BarService::doBar")).getMeasurements());
+        assertEquals(MEASUREMENTS * 2, ((Aggregate) doYadda.getChilds().get("BarService::doBar")).getMeasurements());
 
-        ExecutionAggregate doYaddaYadda = ((ExecutionAggregate) points.get("YaddaService::doYaddaYadda"));
+        Aggregate doYaddaYadda = ((Aggregate) points.get("YaddaService::doYaddaYadda"));
         assertEquals(MEASUREMENTS, doYaddaYadda.getMeasurements());
         assertTrue(doYaddaYadda.hasChilds());
 
-        ExecutionAggregate doBar = ((ExecutionAggregate) doYaddaYadda.getChilds().get("BarService::doBar"));
+        Aggregate doBar = ((Aggregate) doYaddaYadda.getChilds().get("BarService::doBar"));
         assertEquals(MEASUREMENTS * 2, doBar.getMeasurements());
         assertTrue(doBar.hasChilds());
-        assertEquals(MEASUREMENTS * 2, ((ExecutionAggregate) doBar.getChilds().get("FooService::doFoo")).getMeasurements());
+        assertEquals(MEASUREMENTS * 2, ((Aggregate) doBar.getChilds().get("FooService::doFoo")).getMeasurements());
 
-        ExecutionAggregate doBarBar = ((ExecutionAggregate) doYaddaYadda.getChilds().get("BarService::doBarBar"));
+        Aggregate doBarBar = ((Aggregate) doYaddaYadda.getChilds().get("BarService::doBarBar"));
         assertEquals(MEASUREMENTS, doBarBar.getMeasurements());
         assertTrue(doBarBar.hasChilds());
-        assertEquals(MEASUREMENTS, ((ExecutionAggregate) doBarBar.getChilds().get("FooService::doFoo")).getMeasurements());
-        assertEquals(MEASUREMENTS, ((ExecutionAggregate) doBarBar.getChilds().get("FooService::doFooFoo")).getMeasurements());
+        assertEquals(MEASUREMENTS, ((Aggregate) doBarBar.getChilds().get("FooService::doFoo")).getMeasurements());
+        assertEquals(MEASUREMENTS, ((Aggregate) doBarBar.getChilds().get("FooService::doFooFoo")).getMeasurements());
 
       }
     });

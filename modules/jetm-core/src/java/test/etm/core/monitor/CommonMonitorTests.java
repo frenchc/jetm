@@ -32,7 +32,7 @@
 
 package test.etm.core.monitor;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
@@ -69,7 +69,7 @@ public abstract class CommonMonitorTests extends TestCase {
         assertNotNull(points);
         assertEquals(1, points.size());
 
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
+        Aggregate aggregate = (Aggregate) points.get("test");
 
         assertNotNull(aggregate);
         assertEquals("test", aggregate.getName());
@@ -103,7 +103,7 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals(2, points.size());
 
         // analyze point one
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
+        Aggregate aggregate = (Aggregate) points.get("test");
 
         assertNotNull(aggregate);
         assertEquals("test", aggregate.getName());
@@ -114,7 +114,7 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.0);
 
         // analyze point two
-        ExecutionAggregate aggregate2 = (ExecutionAggregate) points.get("test2");
+        Aggregate aggregate2 = (Aggregate) points.get("test2");
 
         assertNotNull(aggregate2);
         assertEquals("test2", aggregate2.getName());
@@ -150,7 +150,7 @@ public abstract class CommonMonitorTests extends TestCase {
         assertNotNull(points);
         assertTrue(points.size() == 1);
 
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
+        Aggregate aggregate = (Aggregate) points.get("test");
 
         assertNotNull(aggregate);
         assertEquals("test", aggregate.getName());
@@ -194,7 +194,7 @@ public abstract class CommonMonitorTests extends TestCase {
         assertNotNull(points);
         assertTrue(points.size() == 2);
 
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
+        Aggregate aggregate = (Aggregate) points.get("test");
 
         assertNotNull(aggregate);
         assertEquals("test", aggregate.getName());
@@ -206,7 +206,7 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals(pointOne.getTransactionTime(), aggregate.getMax(), 0.0);
 
 
-        ExecutionAggregate aggregate2 = (ExecutionAggregate) points.get("test2");
+        Aggregate aggregate2 = (Aggregate) points.get("test2");
 
         assertNotNull(aggregate2);
         assertEquals("test2", aggregate2.getName());

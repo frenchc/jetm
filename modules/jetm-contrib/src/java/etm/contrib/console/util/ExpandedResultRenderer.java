@@ -3,7 +3,7 @@ package etm.contrib.console.util;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ public class ExpandedResultRenderer extends ConsoleRenderer {
 
         Arrays.sort(values, comparator);
         for (int i = 0; i < values.length; i++) {
-          SortedExecutionGraph graphSorted = new SortedExecutionGraph((ExecutionAggregate) values[i], comparator);
+          SortedExecutionGraph graphSorted = new SortedExecutionGraph((Aggregate) values[i], comparator);
 
           response.write(" <tr>\n");
           response.write("  <td>");

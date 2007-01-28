@@ -34,19 +34,8 @@ package etm.core.jmx;
 
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.event.AggregationListener;
-import etm.core.monitor.event.AggregationStateListener;
-import etm.core.monitor.event.AggregationStateLoadedEvent;
-import etm.core.monitor.event.MonitorResetEvent;
-import etm.core.monitor.event.RootCreateEvent;
-import etm.core.monitor.event.RootResetEvent;
 import etm.core.plugin.EtmPlugin;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanServer;
-import javax.management.MBeanServerFactory;
-import javax.management.ObjectName;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,95 +52,13 @@ import java.util.Map;
  * @since 1.2.0
  * 
  */
-public class EtmMonitorJmxPlugin implements EtmPlugin, AggregationStateListener, AggregationListener {
+public class EtmMonitorJmxPlugin extends AbstractJmxRegistry implements EtmPlugin {
 
-  public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm:service=PerformanceMonitor";
-  public static final String DEFAULT_MEASUREMENT_POINT_OBJECT_NAME_PREFIX = "etm:service=Measurement";
-
-
-  private static final String DESCRIPTION = "A plugin the exports the current EtmMonitor to JMX.";
-
-  private MBeanServer mbeanServer;
-
-  private String etmMonitorObjectName = DEFAULT_ETM_MONITOR_OBJECT_NAME;
-  // default mbeanservername is null
-  private String mbeanServerName;
-  private boolean overwriteRegistered = false;
-  private EtmMonitorContext ctx;
-
-  /**
-   * Sets the name of the MBeanServer to use. Default is <code>null</code>.
-   *
-   * @param aMbeanServerName The name.
-   */
-  public void setMbeanServerName(String aMbeanServerName) {
-    mbeanServerName = aMbeanServerName;
-  }
-
-  /**
-   * Sets the name to be used for Monitor registration. Default is
-   * {@link etm.core.jmx.EtmMonitorJmxPlugin#DEFAULT_ETM_MONITOR_OBJECT_NAME}
-   *
-   * @param aEtmMonitorObjectName The JMX Object name to be used for registration.
-   */
-  public void setEtmMonitorObjectName(String aEtmMonitorObjectName) {
-    if (aEtmMonitorObjectName == null || aEtmMonitorObjectName.trim().length() == 0) {
-      throw new IllegalArgumentException("ObjectName for EtmMonitor may not be null or empty ");
-    }
-    etmMonitorObjectName = aEtmMonitorObjectName;
-  }
-
-  /**
-   * If a MBean is found under the given name the
-   * existing instance will be overwritten. This behavior
-   * is disabled by default.
-   *
-   * @param flag True to overwrite, otherwhise false.
-   */
-
-  public void setOverwriteRegistered(boolean flag) {
-    overwriteRegistered = flag;
-  }
+  protected static final String DESCRIPTION = "A plugin the exports the current EtmMonitor to JMX.";
 
 
   public void init(EtmMonitorContext aCtx) {
-    ctx = aCtx;
-  }
-
-  public void start() {
-    try {
-      ArrayList mbeanServers = MBeanServerFactory.findMBeanServer(mbeanServerName);
-      mbeanServer = (MBeanServer) mbeanServers.get(0);
-      if (mbeanServer != null) {
-        ObjectName objectName = new ObjectName(etmMonitorObjectName);
-        try {
-          mbeanServer.registerMBean(new EtmMonitorMBean(ctx.getEtmMonitor()), objectName);
-        } catch (InstanceAlreadyExistsException e) {
-          if (overwriteRegistered) {
-            mbeanServer.unregisterMBean(objectName);
-            mbeanServer.registerMBean(new EtmMonitorMBean(ctx.getEtmMonitor()), objectName);
-          } else {
-            System.err.println("Error registering EtmMonitor MBean. An instance exists for name " + etmMonitorObjectName);
-          }
-        }
-      } else {
-        System.err.println("Unable to locate a valid MBean server. ");
-      }
-    } catch (Exception e) {
-      //???
-      e.printStackTrace();
-    }
-  }
-
-  public void stop() {
-    if (mbeanServer != null) {
-      try {
-        mbeanServer.unregisterMBean(new ObjectName(etmMonitorObjectName));
-      } catch (Exception e) {
-        // ???
-        e.printStackTrace();
-      }
-    }
+    etmMonitor = aCtx.getEtmMonitor();
   }
 
 
@@ -173,20 +80,4 @@ public class EtmMonitorJmxPlugin implements EtmPlugin, AggregationStateListener,
   }
 
 
-  public void onStateLoaded(AggregationStateLoadedEvent event) {
-    // TODO register root measurement points
-  }
-
-  public void onRootCreate(RootCreateEvent event) {
-    // TODO register child measurement point
-    // mbeanServer.registerMBean(new MeasurementPointMBean(), new ObjectName())
-  }
-
-  public void onRootReset(RootResetEvent event) {
-    // ignore
-  }
-
-  public void onStateReset(MonitorResetEvent event) {
-    // ignore
-  }
 }

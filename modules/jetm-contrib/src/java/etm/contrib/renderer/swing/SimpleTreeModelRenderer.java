@@ -32,7 +32,7 @@
 
 package etm.contrib.renderer.swing;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.renderer.MeasurementRenderer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -84,7 +84,7 @@ public class SimpleTreeModelRenderer extends DefaultTreeModel implements Measure
 
       DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) childs.nextElement();
       ExecutionPointWrapper currentAggregate = (ExecutionPointWrapper) currentNode.getUserObject();
-      ExecutionAggregate newAggregate = (ExecutionAggregate) workingCopy.get(currentAggregate.getName());
+      Aggregate newAggregate = (Aggregate) workingCopy.get(currentAggregate.getName());
 
       if (newAggregate == null) {
         toBeRemoved.add(currentNode);
@@ -104,7 +104,7 @@ public class SimpleTreeModelRenderer extends DefaultTreeModel implements Measure
     }
 
     for (Iterator iterator = workingCopy.keySet().iterator(); iterator.hasNext();) {
-      ExecutionAggregate aggregate = (ExecutionAggregate) workingCopy.get(iterator.next());
+      Aggregate aggregate = (Aggregate) workingCopy.get(iterator.next());
       DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(new ExecutionPointWrapper(aggregate));
       insertNodeInto(newChild, parent, parent.getChildCount());
       if (aggregate.hasChilds()) {
@@ -116,13 +116,13 @@ public class SimpleTreeModelRenderer extends DefaultTreeModel implements Measure
 
   class ExecutionPointWrapper {
 
-    private ExecutionAggregate aggregate;
+    private Aggregate aggregate;
 
-    public ExecutionPointWrapper(ExecutionAggregate aAggregate) {
+    public ExecutionPointWrapper(Aggregate aAggregate) {
       aggregate = aAggregate;
     }
 
-    public void setAggregate(ExecutionAggregate aAggregate) {
+    public void setAggregate(Aggregate aAggregate) {
       aggregate = aAggregate;
     }
 

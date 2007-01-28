@@ -32,7 +32,7 @@
 
 package etm.core.renderer;
 
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -156,12 +156,12 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     public Results(Map points) {
       Map map = new TreeMap(points);
       for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate point = (ExecutionAggregate) iterator.next();
+        Aggregate point = (Aggregate) iterator.next();
         addTopLevel(point);
       }
     }
 
-    public void addTopLevel(ExecutionAggregate aAggregate) {
+    public void addTopLevel(Aggregate aAggregate) {
       addLine(0, aAggregate);
 
       if (aAggregate.hasChilds()) {
@@ -172,7 +172,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
 
     public void addNested(int nestingLevel, Map childs) {
       for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        ExecutionAggregate point = (ExecutionAggregate) iterator.next();
+        Aggregate point = (Aggregate) iterator.next();
         addLine(nestingLevel, point);
         if (point.hasChilds()) {
           addNested(nestingLevel + 1, point.getChilds());
@@ -190,7 +190,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
 
 
-    public void addLine(int nestingLevel, ExecutionAggregate aAggregate) {
+    public void addLine(int nestingLevel, Aggregate aAggregate) {
       nameColumn.addEntry(new NestedEntry(nestingLevel, aAggregate.getName()));
       numberColumn.addEntry(new RightAlignedEntry(String.valueOf(aAggregate.getMeasurements())));
       avgColumn.addEntry(new RightAlignedEntry(timeFormatter.format(aAggregate.getAverage())));

@@ -32,6 +32,7 @@
 
 package test.etm.core.aggregation;
 
+import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.FlatAggregator;
@@ -109,7 +110,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
         assertNotNull(points);
         assertTrue(points.size() == 1);
 
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get(testPointGroup1);
+        Aggregate aggregate = (Aggregate) points.get(testPointGroup1);
 
         assertNotNull(aggregate);
         assertEquals(testPointGroup1, aggregate.getName());
@@ -180,8 +181,8 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
 
         for (Iterator iterator = points.keySet().iterator(); iterator.hasNext();) {
           String s = (String) iterator.next();
-          ExecutionAggregate renderAggregate = (ExecutionAggregate) points.get(s);
-          ExecutionAggregate actualAggregate = (ExecutionAggregate) aggregates.get(s);
+          Aggregate renderAggregate = (Aggregate) points.get(s);
+          Aggregate actualAggregate = (Aggregate) aggregates.get(s);
 
           assertNotNull(actualAggregate);
 

@@ -33,6 +33,7 @@
 
 package test.etm.core.monitor;
 
+import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.monitor.MeasurementPoint;
@@ -131,13 +132,13 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
         assertEquals(2, childs20.size());
 
-        ExecutionAggregate aggregate20 = (ExecutionAggregate) childs20.get("test-nest20");
+        Aggregate aggregate20 = (Aggregate) childs20.get("test-nest20");
 
         assertNotNull(aggregate20);
         assertEquals("test-nest20", aggregate20.getName());
         assertEquals(1, aggregate20.getMeasurements());
 
-        ExecutionAggregate aggregate21 = (ExecutionAggregate) childs20.get("test-nest21");
+        Aggregate aggregate21 = (Aggregate) childs20.get("test-nest21");
 
         assertNotNull(aggregate21);
         assertEquals("test-nest21", aggregate21.getName());
@@ -209,7 +210,7 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
         assertEquals(1, childs.size());
 
 
-        ExecutionAggregate aggregate2 = (ExecutionAggregate) childs.get("test2");
+        Aggregate aggregate2 = (Aggregate) childs.get("test2");
 
         assertNotNull(aggregate2);
         assertEquals("test2", aggregate2.getName());
@@ -268,7 +269,7 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
         assertEquals(2, childs.size());
 
 
-        ExecutionAggregate aggregate2 = (ExecutionAggregate) childs.get("test2");
+        Aggregate aggregate2 = (Aggregate) childs.get("test2");
 
         assertNotNull(aggregate2);
         assertEquals("test2", aggregate2.getName());
@@ -278,7 +279,7 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
         assertEquals(point2.getTransactionTime(), aggregate2.getMin(), 0.0);
         assertEquals(point2.getTransactionTime(), aggregate2.getMax(), 0.0);
 
-        ExecutionAggregate aggregate3 = (ExecutionAggregate) childs.get("test3");
+        Aggregate aggregate3 = (Aggregate) childs.get("test3");
 
         assertNotNull(aggregate3);
         assertEquals("test3", aggregate3.getName());

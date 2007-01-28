@@ -33,6 +33,7 @@
 
 package test.etm.core.monitor;
 
+import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.monitor.EtmMonitor;
@@ -138,7 +139,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         assertTrue(aggregate.hasChilds());
 
         Map childs1 = aggregate.getChilds();
-        ExecutionAggregate aggregateChild1 = (ExecutionAggregate) childs1.get("nested" + testPointGroup1);
+        Aggregate aggregateChild1 = (Aggregate) childs1.get("nested" + testPointGroup1);
 
         assertNotNull(aggregateChild1);
         assertEquals(nested1.getName(), aggregateChild1.getName());
@@ -162,7 +163,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         assertTrue(aggregate2.hasChilds());
 
         Map childs2 = aggregate2.getChilds();
-        ExecutionAggregate aggregateChild2 = (ExecutionAggregate) childs2.get("nested" + testPointGroup2);
+        Aggregate aggregateChild2 = (Aggregate) childs2.get("nested" + testPointGroup2);
 
         assertNotNull(aggregateChild2);
         assertEquals(nested2.getName(), aggregateChild2.getName());

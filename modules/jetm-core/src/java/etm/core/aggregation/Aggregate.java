@@ -30,27 +30,36 @@
  *
  */
 
-package etm.core.renderer;
+package etm.core.aggregation;
 
 import java.util.Map;
 
 /**
- * MeasurementRenderer instances are used to render currently available
- * aggregated performace results. A renderer has to implement a callback method
- * that will have access to those results. 
  *
- * @author void.fm
+ * The ExecutionAggregate represents aggregated information of
+ * an execution point. Please note that usally methods of this class
+ * are not synchronized.
+ *
  * @version $Revision$
+ * @author void.fm
+ * @since 1.2.0
+ *
  */
+public interface Aggregate {
+  
+  public String getName();
 
-public interface MeasurementRenderer {
+  public double getAverage();
 
-  /**
-   * Renders the results. The map contains current aggregate state.
-   * Keys are the names of the root measurement point, values are instances of {@link etm.core.aggregation.Aggregate}
-   *
-   * @param points All available results in no particular order.
-   */
-  public void render(Map points);
+  public double getMin();
 
+  public double getMax();
+
+  public long getMeasurements();
+
+  public double getTotal();
+
+  public boolean hasChilds();
+
+  public Map getChilds();
 }

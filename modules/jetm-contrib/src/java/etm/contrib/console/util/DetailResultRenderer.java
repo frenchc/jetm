@@ -35,7 +35,7 @@ package etm.contrib.console.util;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -58,7 +58,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
   }
 
   public void render(Map points) {
-    ExecutionAggregate point = (ExecutionAggregate) points.get(measurementPointName);
+    Aggregate point = (Aggregate) points.get(measurementPointName);
 
     try {
       writeDetailHtmlHead(measurementPointName);

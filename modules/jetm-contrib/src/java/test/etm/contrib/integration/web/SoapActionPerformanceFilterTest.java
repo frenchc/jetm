@@ -34,7 +34,7 @@
 package test.etm.contrib.integration.web;
 
 import etm.contrib.integration.web.SoapActionPerformanceFilter;
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.configuration.EtmManager;
 import etm.core.renderer.MeasurementRenderer;
 import org.apache.log4j.BasicConfigurator;
@@ -74,7 +74,7 @@ public class SoapActionPerformanceFilterTest extends HttpRequestPerformanceFilte
       public void render(Map points) {
         String key = "SoapAction ASoapRequest";
         assertTrue(points.containsKey(key));
-        ExecutionAggregate aggregate = (ExecutionAggregate) points.get(key);
+        Aggregate aggregate = (Aggregate) points.get(key);
         assertEquals(1, aggregate.getMeasurements());
         assertEquals(15d, aggregate.getMin(), 0);
       }

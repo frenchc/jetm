@@ -37,12 +37,15 @@ import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.MeasurementPoint;
 import etm.core.monitor.NullMonitor;
+import etm.core.monitor.event.EtmMonitorEvent;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * Tests basic behavior for logging aggregators.
@@ -94,6 +97,20 @@ public class AbstractLogAggregatorTest extends TestCase {
 
     public TestLogAggregator(Aggregator aAggregator) {
       super(aAggregator);
+      init(new EtmMonitorContext() {
+
+        public EtmMonitor getEtmMonitor() {
+          throw new UnsupportedOperationException();
+        }
+
+        public Timer getScheduler() {
+          throw new UnsupportedOperationException();
+        }
+
+        public void fireEvent(EtmMonitorEvent event) {
+          //ignore
+        }
+      });
     }
 
     protected void logMeasurement(MeasurementPoint aPoint) {

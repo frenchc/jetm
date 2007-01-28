@@ -181,7 +181,7 @@
           </xsd:complexType>
         </xsd:element>
       </xsd:choice>
-      <xsd:element name="persistence">
+      <xsd:element name="persistence" minOccurs="0">
         <xsd:complexType>
           <xsd:choice minOccurs="0">
             <xsd:element name="file-backend">

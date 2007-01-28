@@ -50,7 +50,7 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public class ExecutionAggregate implements Externalizable {
+public class ExecutionAggregate implements Externalizable, Aggregate {
 
   private static final long serialVersionUID = 1L;
 

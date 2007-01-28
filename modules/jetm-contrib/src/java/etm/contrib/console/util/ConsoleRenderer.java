@@ -35,7 +35,7 @@ package etm.contrib.console.util;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
-import etm.core.aggregation.ExecutionAggregate;
+import etm.core.aggregation.Aggregate;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.util.Version;
 
@@ -306,7 +306,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write(" </tr>\n");
   }
 
-  protected void writeName(ExecutionAggregate aPoint) throws IOException {
+  protected void writeName(Aggregate aPoint) throws IOException {
     String link = "detail?point=";
     try {
       link = link + URLEncoder.encode(aPoint.getName(), "UTF-8");
@@ -323,31 +323,31 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write("</a></div>");
   }
 
-  protected void writeTotals(ExecutionAggregate aPoint) throws IOException {
+  protected void writeTotals(Aggregate aPoint) throws IOException {
     response.write("<div class=\"parenttotal\" >");
     response.write(timeFormatter.format(aPoint.getTotal()));
     response.write("</div>");
   }
 
-  protected void writeAverage(ExecutionAggregate aPoint) throws IOException {
+  protected void writeAverage(Aggregate aPoint) throws IOException {
     response.write("<div class=\"parenttime\" >");
     response.write(timeFormatter.format(aPoint.getAverage()));
     response.write("</div>");
   }
 
-  protected void writeMin(ExecutionAggregate aPoint) throws IOException {
+  protected void writeMin(Aggregate aPoint) throws IOException {
     response.write("<div class=\"parenttime\" >");
     response.write(timeFormatter.format(aPoint.getMin()));
     response.write("</div>");
   }
 
-  protected void writeMax(ExecutionAggregate aPoint) throws IOException {
+  protected void writeMax(Aggregate aPoint) throws IOException {
     response.write("<div class=\"parenttime\" >");
     response.write(timeFormatter.format(aPoint.getMax()));
     response.write("</div>");
   }
 
-  protected void writeMeasurements(ExecutionAggregate aPoint) throws IOException {
+  protected void writeMeasurements(Aggregate aPoint) throws IOException {
     response.write("<div class=\"parentmeasurement\" >");
     response.write(numberFormatter.format(aPoint.getMeasurements()));
     response.write("</div>");
@@ -472,34 +472,59 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write("</div>");
   }
 
-  protected class SortedExecutionGraph extends ExecutionAggregate {
+  protected class SortedExecutionGraph implements Aggregate {
+    private Aggregate aggregate;
+
     private List sortedChilds;
 
     public SortedExecutionGraph() {
     }
 
-    public SortedExecutionGraph(ExecutionAggregate aAggregate, ExecutionAggregateComparator aComparator) {
-      super(aAggregate.getName());
-      setMin(aAggregate.getMin());
-      setMax(aAggregate.getMax());
-      setTotal(aAggregate.getTotal());
-      setMeasurements(aAggregate.getMeasurements());
+    public SortedExecutionGraph(Aggregate aAggregate, ExecutionAggregateComparator aComparator) {
+      aggregate = aAggregate;
 
       if (aAggregate.hasChilds()) {
         Map childs = aAggregate.getChilds();
         sortedChilds = new ArrayList();
         for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          SortedExecutionGraph child = new SortedExecutionGraph((ExecutionAggregate) iterator.next(), aComparator);
+          SortedExecutionGraph child = new SortedExecutionGraph((Aggregate) iterator.next(), aComparator);
           sortedChilds.add(child);
         }
         Collections.sort(sortedChilds, aComparator);
       }
     }
 
+    public String getName() {
+      return aggregate.getName();
+    }
+
+    public double getAverage() {
+      return aggregate.getAverage();
+    }
+
+    public double getMin() {
+      return aggregate.getMin();
+    }
+
+    public double getMax() {
+      return aggregate.getMax();
+    }
+
+    public long getMeasurements() {
+      return aggregate.getMeasurements();
+    }
+
+    public double getTotal() {
+      return aggregate.getTotal();
+    }
+
+    public Map getChilds() {
+      return aggregate.getChilds();
+    }
+
     public List getSortedChilds() {
       return sortedChilds;
     }
-
 
     public boolean hasChilds() {
       return sortedChilds != null;
