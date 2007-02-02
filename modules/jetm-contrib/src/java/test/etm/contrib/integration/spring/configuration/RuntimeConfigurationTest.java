@@ -36,7 +36,6 @@ import etm.contrib.aggregation.log.Log4jAggregator;
 import etm.contrib.renderer.plugin.Log4jDumpOnShutdownPlugin;
 import etm.contrib.renderer.plugin.SystemOutDumpOnShutdownPlugin;
 import etm.core.aggregation.BufferedTimedAggregator;
-import etm.core.aggregation.NestedAggregator;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
@@ -45,6 +44,7 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.NestedMonitor;
 import etm.core.timer.DefaultTimer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import test.etm.contrib.integration.spring.configuration.mockup.SpringRootAggregator;
 
 /**
  * @author $Id$
@@ -115,7 +115,7 @@ public class RuntimeConfigurationTest extends ConfigurationTestCase {
       assertEquals(CommonsLoggingAggregator.class, secondElement.getImplementationClass());
 
       AggregatorMetaData thirdElement = secondElement.getNestedMetaData();
-      assertEquals(NestedAggregator.class, thirdElement.getImplementationClass());
+      assertEquals(SpringRootAggregator.class, thirdElement.getImplementationClass());
 
     } finally {
       ctx.stop();

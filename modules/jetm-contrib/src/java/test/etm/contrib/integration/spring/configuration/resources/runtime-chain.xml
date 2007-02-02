@@ -14,7 +14,7 @@
       <jetm:chain-element class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
         <jetm:property name="logName">test.log</jetm:property>
       </jetm:chain-element>
-      <jetm:chain-root class="etm.core.aggregation.NestedAggregator" />
+      <jetm:chain-root class="test.etm.contrib.integration.spring.configuration.mockup.SpringRootAggregator" />
     </jetm:aggregator-chain>
   </jetm:runtime>
 

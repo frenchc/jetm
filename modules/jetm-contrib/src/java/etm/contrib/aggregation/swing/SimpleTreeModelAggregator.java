@@ -35,7 +35,7 @@ package etm.contrib.aggregation.swing;
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.ExecutionAggregate;
-import etm.core.aggregation.NestedAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
@@ -71,14 +71,14 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
   protected Aggregator delegate;
 
   /**
-   * Creates a new SimpleTreeModelAggregator with a NestedAggregator as
+   * Creates a new SimpleTreeModelAggregator with a RootAggregator as
    * backing aggregator instance.
    *
    * @param aName The name of the root node.
-   * @see NestedAggregator
+   * @see RootAggregator
    */
   public SimpleTreeModelAggregator(String aName) {
-    this(aName, new NestedAggregator());
+    this(aName, new RootAggregator());
   }
 
   /**

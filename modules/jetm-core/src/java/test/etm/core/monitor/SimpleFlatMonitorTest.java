@@ -33,7 +33,7 @@
 
 package test.etm.core.monitor;
 
-import etm.core.aggregation.FlatAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.FlatMonitor;
 import etm.core.timer.DefaultTimer;
 import test.etm.core.TestAggregator;
@@ -58,7 +58,7 @@ public class SimpleFlatMonitorTest extends CommonMonitorTests {
 
   protected void setUp() throws Exception {
     super.setUp();
-    aggregator = new TestAggregator(new FlatAggregator());
+    aggregator = new TestAggregator(new RootAggregator());
     monitor = new FlatMonitor(new DefaultTimer(), aggregator);
     monitor.start();
   }

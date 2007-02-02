@@ -33,7 +33,7 @@
 package test.etm.core.aggregation;
 
 import etm.core.aggregation.BufferedThresholdAggregator;
-import etm.core.aggregation.NestedAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
@@ -137,7 +137,7 @@ public class ConcurrentNestedThresholdAggregationTest extends TestCase {
 
 
   protected void setUp() throws Exception {
-    aggregator = new TestAggregator(new BufferedThresholdAggregator(new NestedAggregator()));
+    aggregator = new TestAggregator(new BufferedThresholdAggregator(new RootAggregator()));
     monitor = new NestedMonitor(new DefaultTimer(), aggregator);
     monitor.start();
   }

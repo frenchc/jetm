@@ -29,69 +29,48 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.core.configuration.mockup;
+package test.etm.contrib.integration.spring.configuration.mockup;
 
 import etm.core.aggregation.Aggregator;
-import etm.core.aggregation.RootAggregator;
-import etm.core.monitor.EtmMonitorSupport;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
-import etm.core.timer.ExecutionTimer;
-
-import java.util.List;
 
 /**
- *
- * Simple test monitor used for xml config test.
+ * Test aggregator for spring chain test.
  *
  * @version $Revision$
  * @author void.fm
- *
  */
-public class TestMonitor extends EtmMonitorSupport {
+public class SpringRootAggregator implements Aggregator {
 
-  private ExecutionTimer executionTimer;
-  private Aggregator aggregator;
 
-  public TestMonitor(ExecutionTimer aExecutionTimer, Aggregator aAggregator) {
-    super("testMonitor", aExecutionTimer, aAggregator);
-    executionTimer = aExecutionTimer;
-    aggregator = aAggregator;
+  public void add(EtmPoint point) {
   }
 
-  public Aggregator getAggregator() {
-    return aggregator;
-  }
-
-  public ExecutionTimer getExecutionTimer() {
-    return executionTimer;
-  }
-
-  public List getPlugins() {
-    return plugins;
-  }
-
-  public void render(MeasurementRenderer renderer) {
-    //To change body of implemented methods use File | Settings | File Templates.
+  public void flush() {
   }
 
   public void reset() {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public boolean isStarted() {
-    return false;  //To change body of implemented methods use File | Settings | File Templates.
+  public void reset(String symbolicName) {
   }
 
-  protected void doVisitPreMeasurement(MeasurementPoint aMeasurementPoint) {
-    //To change body of implemented methods use File | Settings | File Templates.
+  public void render(MeasurementRenderer renderer) {
   }
 
-  protected void doVisitPostCollect(MeasurementPoint aPoint) {
-    //To change body of implemented methods use File | Settings | File Templates.
+  public AggregatorMetaData getMetaData() {
+    return new AggregatorMetaData(SpringRootAggregator.class,"Test", false);
   }
 
-  protected Aggregator getDefaultAggregator() {
-    return new RootAggregator();
+  public void init(EtmMonitorContext ctx) {
+  }
+
+  public void start() {
+  }
+
+  public void stop() {
   }
 }

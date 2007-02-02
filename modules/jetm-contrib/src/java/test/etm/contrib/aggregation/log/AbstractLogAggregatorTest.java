@@ -34,7 +34,7 @@ package test.etm.contrib.aggregation.log;
 
 import etm.contrib.aggregation.log.AbstractLogAggregator;
 import etm.core.aggregation.Aggregator;
-import etm.core.aggregation.NestedAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmMonitorContext;
@@ -61,7 +61,7 @@ public class AbstractLogAggregatorTest extends TestCase {
    */
   public void testFilter() {
     EtmMonitor monitor = new NullMonitor();
-    TestLogAggregator aggregator = new TestLogAggregator(new NestedAggregator());
+    TestLogAggregator aggregator = new TestLogAggregator(new RootAggregator());
 
     aggregator.setFilterPattern("Action.+;ClassName;");
 
@@ -81,7 +81,7 @@ public class AbstractLogAggregatorTest extends TestCase {
    */
   public void testWithoutFilter() {
     EtmMonitor monitor = new NullMonitor();
-    TestLogAggregator aggregator = new TestLogAggregator(new NestedAggregator());
+    TestLogAggregator aggregator = new TestLogAggregator(new RootAggregator());
 
     aggregator.add(monitor.createPoint("Action Foo"));
     aggregator.add(monitor.createPoint("Action Bar"));

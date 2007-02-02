@@ -35,7 +35,7 @@ package test.etm.core.aggregation;
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.ExecutionAggregate;
-import etm.core.aggregation.FlatAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.FlatMonitor;
@@ -209,7 +209,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    aggregator = new TestAggregator(new BufferedTimedAggregator(new FlatAggregator()));
+    aggregator = new TestAggregator(new BufferedTimedAggregator(new RootAggregator()));
     monitor = new FlatMonitor(new DefaultTimer(), aggregator);
     monitor.start();
   }
