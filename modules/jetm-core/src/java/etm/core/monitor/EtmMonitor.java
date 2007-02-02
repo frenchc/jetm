@@ -72,6 +72,7 @@ public interface EtmMonitor {
    * @param symbolicName The symbolic name or null. Ensure to call {@link EtmPoint#alterName(String)}
    *        before collection if symbolic name was null.
    * @return A new EtmMpoint
+   * @since 1.2.0
    */
   public EtmPoint createPoint(String symbolicName);
 
