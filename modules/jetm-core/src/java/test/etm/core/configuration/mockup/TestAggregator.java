@@ -35,7 +35,7 @@ package test.etm.core.configuration.mockup;
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class TestAggregator implements Aggregator {
     return target;
   }
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
   }
 
   public void flush() {
@@ -76,7 +76,7 @@ public class TestAggregator implements Aggregator {
   public void reset() {
   }
 
-  public void reset(String measurementPoint) {
+  public void reset(String symbolicName) {
   }
 
   public void render(MeasurementRenderer renderer) {

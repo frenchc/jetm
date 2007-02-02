@@ -34,7 +34,7 @@ package etm.contrib.aop.aspectwerkz;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import org.codehaus.aspectwerkz.joinpoint.Signature;
 import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 
@@ -61,23 +61,23 @@ public class EtmAspectWerkzAspect {
 
 
   public Object monitor(StaticJoinPoint joinPoint) throws Throwable {
-    MeasurementPoint measurementPoint = new MeasurementPoint(etmMonitor, calculateName(joinPoint));
+    EtmPoint etmPoint = etmMonitor.createPoint(calculateName(joinPoint));
     try {
       return joinPoint.proceed();
     } catch (Throwable t) {
-      alterNamePostException(measurementPoint, t);
+      alterNamePostException(etmPoint, t);
       throw t;
     } finally {
-      measurementPoint.collect();
+      etmPoint.collect();
     }
 
   }
 
   /**
-   * Calculate measurement point name based on the method invocation.
+   * Calculate EtmPoint name based on the method invocation.
    *
    * @param joinPoint The method invocation.
-   * @return The name of the measurement point.
+   * @return The name of the EtmPoint.
    */
   protected String calculateName(StaticJoinPoint joinPoint) {
     Signature method = joinPoint.getSignature();
@@ -90,11 +90,11 @@ public class EtmAspectWerkzAspect {
    * name takes place after executing target method. Ensure that you never cause
    * an exception within this code.
    *
-   * @param aMeasurementPoint The measurement point to alter.
-   * @param t                 The caught throwable t.
+   * @param aEtmPoint The EtmPoint to alter.
+   * @param t The caught throwable t.
    */
-  protected void alterNamePostException(MeasurementPoint aMeasurementPoint, Throwable t) {
-    aMeasurementPoint.alterName(aMeasurementPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
+  protected void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
+    aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
   }
 
 

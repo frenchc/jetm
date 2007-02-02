@@ -33,7 +33,7 @@
 package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 import java.util.LinkedList;
 
@@ -47,7 +47,7 @@ import java.util.LinkedList;
  */
 public class NestedAggregator extends FlatAggregator {
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
     // short cut for parent == null;
     if (point.getParent() == null) {
       super.add(point);
@@ -59,13 +59,13 @@ public class NestedAggregator extends FlatAggregator {
     LinkedList path = new LinkedList();
     path.add(point);
 
-    MeasurementPoint rootNode = point.getParent();
+    EtmPoint rootNode = point.getParent();
     while (rootNode != null) {
       path.addFirst(rootNode);
       rootNode = rootNode.getParent();
     }
 
-    rootNode = (MeasurementPoint) path.removeFirst();
+    rootNode = (EtmPoint) path.removeFirst();
 
     ExecutionAggregate aggregate = getAggregate(rootNode.getName());
 

@@ -59,7 +59,7 @@ public class NullMonitor extends EtmMonitorSupport {
     }
   }
 
-  protected void doVisitPostCollect(MeasurementPoint aMeasurementPoint) {
+  protected void doVisitPostCollect(MeasurementPoint aPoint) {
   }
 
   public void render(MeasurementRenderer renderer) {
@@ -94,7 +94,7 @@ public class NullMonitor extends EtmMonitorSupport {
     NullAggregator() {
     }
 
-    public void add(MeasurementPoint point) {
+    public void add(EtmPoint point) {
     }
 
     public void flush() {
@@ -104,7 +104,7 @@ public class NullMonitor extends EtmMonitorSupport {
     }
 
 
-    public void reset(String measurementPoint) {
+    public void reset(String symbolicName) {
     }
 
     public void render(MeasurementRenderer renderer) {

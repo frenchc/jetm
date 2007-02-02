@@ -32,7 +32,7 @@
   <dd><a href="#start">2.3 How should I start using JETM?</a></dd>
 
   <dt><a href="#concepts">3 JETM Core Concepts</a></dt>
-  <dd><a href="#measurementpoint">3.1 What is an "Measurement Point"?</a></dd>
+  <dd><a href="#etmpoint">3.1 What is an "EtmPoint"?</a></dd>
   <dd><a href="#etmmonitor">3.2 What is an "Etm Monitor"?</a></dd>
   <dd><a href="#flatnested">3.3 What is the difference between flat and nested measurement?</a></dd>
   <dd><a href="#aggregator">3.4 What is an "Aggregator"?</a></dd>
@@ -98,10 +98,9 @@ Just start with <a href="intro/one_minute_tutorial.html">one minute tutorial</a>
 <hr width="98%"/>
 <a name="concepts"></a><h4>3 JETM Core Concepts</h4>
 
-<a name="measurementpoint"></a><h5>3.1 What is an "Measurement Point"?</h5>
-An <i>Measurement Point</i> is an arbitrary code fragment such as an method call, a constructor invocation or a limited
-number
-of Java instructions. The JETM API allows you to associate symbolic names to such fragments
+<a name="etmpoint"></a><h5>3.1 What is an "EtmPoint"?</h5>
+An <i>EtmPoint</i> is an arbitrary code fragment such as an method call, a constructor invocation or a limited
+number of Java instructions. The JETM API allows you to associate symbolic names to such fragments
 and collect their execution times automatically.
 
 <a name="etmmonitor"></a><h5>3.2 What is an "Etm Monitor"?</h5>
@@ -110,14 +109,14 @@ JETM ships with three different types: FlatMonitor, NestedMonitor and NullMonite
 
 <a name="flatnested"></a><h5>3.3 What is the difference between flat and nested ?</h5>
 Sometimes is is important to analyse code fragements depending on their execution path. As opposite to
-flat measurement nested measurement represents nested Measurement Points as a tree. See <a
+flat measurement nested measurement represents nested performance monitoring results as a tree. See <a
   href="intro/one_minute_tutorial.html">one minute tutorial</a>
 for an example.
 
 <a name="aggregator"></a><h5>3.4 What is an "Aggregator"?</h5>
 JETM will collect execution times only and delay the aggregation for performance reasons. An aggregator
 is used to trigger the aggreation process and might be based on the number of currently collected
-Measurement Points or an time interval. See <a href="@api@/etm/core/aggregation/Aggregator.html">Aggregator</a>
+performance results or an time interval. See <a href="@api@/etm/core/aggregation/Aggregator.html">Aggregator</a>
 for further details.
 
 <a name="aop"></a><h5>3.5 What is AOP?</h5>

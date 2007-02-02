@@ -1,6 +1,6 @@
 package etm.contrib.aop.aspectwerkz;
 
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import org.codehaus.aspectwerkz.AspectContext;
 import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 
@@ -28,21 +28,21 @@ public class NamedEtmAspectWerkzAspect extends EtmAspectWerkzAspect {
 
   private static final String PARAM_JOINPOINT_NAME = "name";
 
-  private String measurementPointName;
+  private String etmPointName;
 
   public NamedEtmAspectWerkzAspect(AspectContext aContext) {
-    measurementPointName = aContext.getParameter(PARAM_JOINPOINT_NAME);
+    etmPointName = aContext.getParameter(PARAM_JOINPOINT_NAME);
   }
 
   public Object monitor(StaticJoinPoint joinPoint) throws Throwable {
-    MeasurementPoint measurementPoint = new MeasurementPoint(etmMonitor, measurementPointName);
+    EtmPoint etmPoint = etmMonitor.createPoint(etmPointName);
     try {
       return joinPoint.proceed();
     } catch (Throwable t) {
-      alterNamePostException(measurementPoint, t);
+      alterNamePostException(etmPoint, t);
       throw t;
     } finally {
-      measurementPoint.collect();
+      etmPoint.collect();
     }
 
   }

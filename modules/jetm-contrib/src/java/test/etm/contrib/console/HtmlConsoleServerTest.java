@@ -48,7 +48,7 @@ public class HtmlConsoleServerTest extends ConsoleTests {
   protected void setUp() throws Exception {
     monitor = new NestedMonitor();
     TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
-    testPointGenerator.getMeasurementPoints(5, 2);
+    testPointGenerator.getEtmPoints(5, 2);
 
     httpConsoleServer = new HttpConsoleServer(monitor);
     httpConsoleServer.start();

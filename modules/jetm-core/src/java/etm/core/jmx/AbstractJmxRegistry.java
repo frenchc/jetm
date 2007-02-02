@@ -55,7 +55,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Simple base class that takes care of dynamic measurement point registration.
+ * Simple base class that takes care of dynamic etm point registration.
  *
  * @author void.fm
  * @version $Revision$
@@ -63,10 +63,10 @@ import java.util.Set;
  */
 public class AbstractJmxRegistry implements AggregationStateListener, AggregationListener {
   public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm.monitor:service=PerformanceMonitor";
-  public static final String DEFAULT_MEASUREMENT_POINT_OBJECT_NAME_PREFIX = "etm.performance";
+  public static final String DEFAULT_ETM_POINT_OBJECT_NAME_PREFIX = "etm.performance";
 
   protected String etmMonitorObjectName = DEFAULT_ETM_MONITOR_OBJECT_NAME;
-  protected String etmMeasurementObjectNamePrefix = DEFAULT_MEASUREMENT_POINT_OBJECT_NAME_PREFIX;
+  protected String etmMeasurementObjectNamePrefix = DEFAULT_ETM_POINT_OBJECT_NAME_PREFIX;
   // default mbeanservername is null
   protected String mbeanServerName;
 
@@ -207,7 +207,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     map.put("name", name);
     try {
       ObjectName objectName = new ObjectName(etmMeasurementObjectNamePrefix, map);
-      registerMBean(new MeasurementPointMBean(etmMonitor, aAggregate), objectName);
+      registerMBean(new EtmPointMBean(etmMonitor, aAggregate), objectName);
     } catch (Exception e) {
       e.printStackTrace();
     }

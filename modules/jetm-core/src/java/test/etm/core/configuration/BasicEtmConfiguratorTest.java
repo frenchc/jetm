@@ -35,8 +35,8 @@ package test.etm.core.configuration;
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.FlatMonitor;
-import etm.core.monitor.MeasurementPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
@@ -66,7 +66,7 @@ public class BasicEtmConfiguratorTest extends TestCase {
 
       etmMonitor.start();
 
-      MeasurementPoint point = new MeasurementPoint(etmMonitor, "testPoint");
+      EtmPoint point = etmMonitor.createPoint("testPoint");
       point.collect();
 
       etmMonitor.render(new MeasurementRenderer() {
@@ -91,7 +91,7 @@ public class BasicEtmConfiguratorTest extends TestCase {
 
     etmMonitor.start();
 
-    MeasurementPoint point = new MeasurementPoint(etmMonitor, "testPoint");
+    EtmPoint point = etmMonitor.createPoint("testPoint");
     point.collect();
 
     etmMonitor.render(new MeasurementRenderer() {
@@ -114,7 +114,7 @@ public class BasicEtmConfiguratorTest extends TestCase {
 
     etmMonitor.start();
 
-    MeasurementPoint point = new MeasurementPoint(etmMonitor, "testPoint");
+    EtmPoint point = etmMonitor.createPoint("testPoint");
     point.collect();
 
     etmMonitor.render(new MeasurementRenderer() {

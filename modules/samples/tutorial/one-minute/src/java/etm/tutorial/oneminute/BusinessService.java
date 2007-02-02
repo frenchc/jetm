@@ -33,7 +33,7 @@ package etm.tutorial.oneminute;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 /**
  * Business service containing manually added measurement
@@ -51,7 +51,7 @@ public class BusinessService {
 
   public void someMethod() {
 
-    MeasurementPoint point = new MeasurementPoint(etmMonitor, "BusinessService:someMethod");
+    EtmPoint point = etmMonitor.createPoint("BusinessService:someMethod");
 
     try {
 
@@ -67,7 +67,7 @@ public class BusinessService {
 
   public void nestedMethod() {
 
-    MeasurementPoint point = new MeasurementPoint(etmMonitor, "BusinessService:nestedMethod");
+    EtmPoint point = etmMonitor.createPoint( "BusinessService:nestedMethod");
 
     try {
 

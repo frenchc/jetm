@@ -34,7 +34,7 @@ package test.etm.core.monitor;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayOutputStream;
@@ -60,7 +60,7 @@ public class CheckMonitorWarningsTest extends TestCase {
       System.setErr(tmpErr);
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      MeasurementPoint point = new MeasurementPoint(etmMonitor, "test");
+      EtmPoint point = etmMonitor.createPoint("test");
       point.collect();
 
       tmpErr.flush();
@@ -84,7 +84,7 @@ public class CheckMonitorWarningsTest extends TestCase {
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
       etmMonitor.start();
-      MeasurementPoint point = new MeasurementPoint(etmMonitor, "test");
+      EtmPoint point = etmMonitor.createPoint("test");
       point.collect();
 
       tmpErr.flush();

@@ -38,7 +38,7 @@ import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,7 +50,7 @@ import java.util.LinkedList;
 /**
  * <p/>
  * The SimpleTreeModelAggregator builds up a Swing {@link javax.swing.tree.TreeModel}
- * for all measurement points.
+ * for all EtmPoints.
  * </p>
  * <p/>
  * Please note that the current implementation isn't very efficient, it definitly adds
@@ -83,7 +83,7 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
 
   /**
    * Creates a new SimpleTreeModelAggregator which delegates
-   * {@link #add(etm.core.monitor.MeasurementPoint)} calls to the provided
+   * {@link #add(etm.core.monitor.EtmPoint)} calls to the provided
    * aggregator instances after altering the treemodel.
    *
    * @param aName
@@ -94,11 +94,11 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
     delegate = aDelegate;
   }
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
     LinkedList path = new LinkedList();
     path.add(point.getName());
 
-    MeasurementPoint parent = point.getParent();
+    EtmPoint parent = point.getParent();
     while (parent != null) {
       path.addFirst(parent.getName());
       parent = parent.getParent();
@@ -147,7 +147,7 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
   }
 
 
-  public void reset(String measurementPoint) {
+  public void reset(String symbolicName) {
     // todo fix
     throw new UnsupportedOperationException();
   }

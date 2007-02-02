@@ -34,7 +34,7 @@ package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.event.MonitorResetEvent;
 import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
@@ -63,11 +63,11 @@ public class RootAggregator implements Aggregator {
     ctx.fireEvent(new MonitorResetEvent(this));
   }
 
-  public void reset(String measurementPoint) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(measurementPoint);
+  public void reset(String symbolicName) {
+    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(symbolicName);
     if (aggregate != null) {
       aggregate.reset();
-      ctx.fireEvent(new RootResetEvent(measurementPoint, this));
+      ctx.fireEvent(new RootResetEvent(symbolicName, this));
     }
   }
 
@@ -97,7 +97,7 @@ public class RootAggregator implements Aggregator {
     ctx = aCtx;
   }
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
     // shortcut for parent == null;
     if (point.getParent() == null) {
       ExecutionAggregate aggregate = getAggregate(point.getName());
@@ -110,13 +110,13 @@ public class RootAggregator implements Aggregator {
     LinkedList path = new LinkedList();
     path.add(point);
 
-    MeasurementPoint rootNode = point.getParent();
+    EtmPoint rootNode = point.getParent();
     while (rootNode != null) {
       path.addFirst(rootNode);
       rootNode = rootNode.getParent();
     }
 
-    rootNode = (MeasurementPoint) path.removeFirst();
+    rootNode = (EtmPoint) path.removeFirst();
 
     ExecutionAggregate aggregate = getAggregate(rootNode.getName());
     aggregate.appendPath(path);

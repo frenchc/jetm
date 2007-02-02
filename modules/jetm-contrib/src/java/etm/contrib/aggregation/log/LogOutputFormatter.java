@@ -32,17 +32,17 @@
 
 package etm.contrib.aggregation.log;
 
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 /**
  * A LogOutputFormatter is responsible for formatting a
- * given measurement point.
+ * given EtmPoint.
  *
  * @author void.fm
  * @version $Revision$
  */
 public interface LogOutputFormatter {
 
-  public String format(MeasurementPoint aMeasurementPoint);
+  public String format(EtmPoint aEtmPoint);
 
 }

@@ -34,7 +34,7 @@ package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.event.MonitorResetEvent;
 import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
@@ -66,11 +66,11 @@ public class FlatAggregator implements Aggregator {
   }
 
 
-  public void reset(String measurementPoint) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(measurementPoint);
+  public void reset(String symbolicName) {
+    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(symbolicName);
     if (aggregate != null) {
       aggregate.reset();
-      ctx.fireEvent(new RootResetEvent(measurementPoint, this));
+      ctx.fireEvent(new RootResetEvent(symbolicName, this));
     }
   }
 
@@ -81,7 +81,7 @@ public class FlatAggregator implements Aggregator {
   }
 
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
     ExecutionAggregate aggregate = getAggregate(point.getName());
     aggregate.addTransaction(point);
   }

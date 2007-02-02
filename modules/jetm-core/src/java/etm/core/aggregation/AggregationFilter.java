@@ -32,11 +32,11 @@
 
 package etm.core.aggregation;
 
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 /**
  *
- * An AggregationFilter is used to filter whether a given MeasurementPoint
+ * An AggregationFilter is used to filter whether a given EtmPoint
  * is interesting or not.
  *
  * @version $Revision$
@@ -47,11 +47,11 @@ public interface AggregationFilter {
 
   /**
    *
-   * Checks whether the given measurementPoint matches or not.
+   * Checks whether the given EtmPoint matches or not.
    *
-   * @param measurementPoint The measurement point.
+   * @param aEtmPoint The EtmPoint.
    * @return True for match, otherwhise false.
    */
-  public boolean matches(MeasurementPoint measurementPoint);
+  public boolean matches(EtmPoint aEtmPoint);
 
 }

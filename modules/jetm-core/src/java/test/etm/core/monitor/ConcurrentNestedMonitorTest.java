@@ -37,7 +37,7 @@ import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
@@ -103,7 +103,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
     final ExecutionAggregate nested2 = new ExecutionAggregate("nested" + testPointGroup2);
 
     for (int i = 0; i < allPoints.size(); i++) {
-      MeasurementPoint point = (MeasurementPoint) allPoints.get(i);
+      EtmPoint point = (EtmPoint) allPoints.get(i);
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else if (point.getName().equals(testPointGroup2)) {
@@ -210,10 +210,10 @@ public class ConcurrentNestedMonitorTest extends TestCase {
       try {
 
         while (runs > 0) {
-          final MeasurementPoint point = new MeasurementPoint(monitor, testPointName);
+          final EtmPoint point = monitor.createPoint(testPointName);
           Thread.sleep(1);
 
-          final MeasurementPoint nested = new MeasurementPoint(monitor, "nested" + testPointName);
+          final EtmPoint nested = monitor.createPoint("nested" + testPointName);
           Thread.sleep(1);
           nested.collect();
 

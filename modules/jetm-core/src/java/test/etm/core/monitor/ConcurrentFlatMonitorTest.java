@@ -37,8 +37,8 @@ import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.FlatAggregator;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.FlatMonitor;
-import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
@@ -99,7 +99,7 @@ public class ConcurrentFlatMonitorTest extends TestCase {
     final ExecutionAggregate group2 = new ExecutionAggregate(testPointGroup2);
 
     for (int i = 0; i < allPoints.size(); i++) {
-      MeasurementPoint point = (MeasurementPoint) allPoints.get(i);
+      EtmPoint point = (EtmPoint) allPoints.get(i);
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else {
@@ -174,7 +174,7 @@ public class ConcurrentFlatMonitorTest extends TestCase {
       try {
 
         while (runs > 0) {
-          final MeasurementPoint point = new MeasurementPoint(monitor, testPointName);
+          final EtmPoint point = monitor.createPoint(testPointName);
           Thread.sleep(1);
           point.collect();
 

@@ -47,7 +47,7 @@ public interface MeasurementRenderer {
 
   /**
    * Renders the results. The map contains current aggregate state.
-   * Keys are the names of the root measurement point, values are instances of {@link etm.core.aggregation.Aggregate}
+   * Keys are the names of the root EtmPoint, values are instances of {@link etm.core.aggregation.Aggregate}
    *
    * @param points All available results in no particular order.
    */

@@ -49,19 +49,19 @@ import java.util.Map;
  */
 public class DetailResultRenderer extends ConsoleRenderer {
 
-  private String measurementPointName;
+  private String etmPointName;
 
   public DetailResultRenderer(ConsoleRequest aRequest, ConsoleResponse aResponse,
-                              ExecutionAggregateComparator aComparator, String aMeasurementPointName) {
+                              ExecutionAggregateComparator aComparator, String aEtmPointName) {
     super(aRequest, aResponse, aComparator);
-    measurementPointName = aMeasurementPointName;
+    etmPointName = aEtmPointName;
   }
 
   public void render(Map points) {
-    Aggregate point = (Aggregate) points.get(measurementPointName);
+    Aggregate point = (Aggregate) points.get(etmPointName);
 
     try {
-      writeDetailHtmlHead(measurementPointName);
+      writeDetailHtmlHead(etmPointName);
 
       response.write("<table>\n");
       writeTableHeader();
@@ -110,12 +110,12 @@ public class DetailResultRenderer extends ConsoleRenderer {
     response.write("  <th width=\"200\" ");
     if (ExecutionAggregateComparator.TYPE_NAME == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=name&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Measurement Point</a>");
+        response.write("class=\"descending\"><a href=\"?sort=name&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Measurement Point</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=name&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Measurement Point</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=name&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Measurement Point</a>");
       }
     } else {
-      response.write("><a href=\"?sort=name&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Measurement Point</a>");
+      response.write("><a href=\"?sort=name&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Measurement Point</a>");
 
     }
     response.write("</th>\n");
@@ -123,12 +123,12 @@ public class DetailResultRenderer extends ConsoleRenderer {
     response.write("  <th width=\"30\" ");
     if (ExecutionAggregateComparator.TYPE_EXCECUTIONS == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=executions&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">#</a>");
+        response.write("class=\"descending\"><a href=\"?sort=executions&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">#</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=executions&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">#</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=executions&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">#</a>");
       }
     } else {
-      response.write("><a href=\"?sort=executions&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">#</a> ");
+      response.write("><a href=\"?sort=executions&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">#</a> ");
     }
     response.write("</th>\n");
 
@@ -136,48 +136,48 @@ public class DetailResultRenderer extends ConsoleRenderer {
     response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_AVERAGE == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=average&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Average</a>");
+        response.write("class=\"descending\"><a href=\"?sort=average&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Average</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=average&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Average</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=average&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Average</a>");
       }
     } else {
-      response.write("><a href=\"?sort=average&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Average</a> ");
+      response.write("><a href=\"?sort=average&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Average</a> ");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_MIN == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=min&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Min</a>");
+        response.write("class=\"descending\"><a href=\"?sort=min&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Min</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=min&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Min</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=min&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Min</a>");
       }
     } else {
-      response.write("><a href=\"?sort=min&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Min</a> ");
+      response.write("><a href=\"?sort=min&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Min</a> ");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_MAX == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=max&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Max</a>");
+        response.write("class=\"descending\"><a href=\"?sort=max&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Max</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=max&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Max</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=max&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Max</a>");
       }
     } else {
-      response.write("><a href=\"?sort=max&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Max</a>");
+      response.write("><a href=\"?sort=max&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Max</a>");
     }
     response.write("</th>\n");
 
     response.write("  <th width=\"80\" ");
     if (ExecutionAggregateComparator.TYPE_TOTAL == comparator.getType()) {
       if (comparator.isDescending()) {
-        response.write("class=\"descending\"><a href=\"?sort=total&amp;order=asc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Total</a>");
+        response.write("class=\"descending\"><a href=\"?sort=total&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Total</a>");
       } else {
-        response.write("class=\"ascending\"><a href=\"?sort=total&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Total</a>");
+        response.write("class=\"ascending\"><a href=\"?sort=total&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Total</a>");
       }
     } else {
-      response.write("><a href=\"?sort=total&amp;order=desc&amp;point=" + URLEncoder.encode(measurementPointName, "UTF-8") + "\">Total</a> ");
+      response.write("><a href=\"?sort=total&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Total</a> ");
     }
     response.write("</th>\n");
 

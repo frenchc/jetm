@@ -61,7 +61,34 @@ import java.util.Timer;
  * Abstract base class for the execution time measurement monitors.
  * Derived class should synchronize on the internal lock object while
  * accessing shared resources, especially the attribute <code>aggregator</code>.
- *
+ * <p>
+ * An EtmMonitor mandates the following life cycle for measurement
+ * points.
+ * </p>
+ * <ol>
+ * <li>
+ * Newly created MeasurementPoint instances register
+ * themself automatically before the actual measurement process using
+ * {@link #visitPreMeasurement(MeasurementPoint)}.
+ * </li>
+ * <li>
+ * Within {@link #visitPreMeasurement} the EtmMonitor sets the start time
+ * of the measurement.
+ * </li>
+ * <li>
+ * The calling business code executes.
+ * </li>
+ * <li>
+ * After business code execution the Measurement Point calls
+ * {@link #visitPostCollect(MeasurementPoint)}. This call is triggered by
+ * {@link MeasurementPoint#collect()}.
+ * </li>
+ * <li>
+ * Within {@link #visitPostCollect} the EtmMonitor sets the end time
+ * of the measurement and stores this transaction for further aggregation.
+ * </li>
+ * </ol>
+
  * @author void.fm
  * @version $Revision$
  */
@@ -111,6 +138,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     lastReset = startTime;
   }
 
+  public EtmPoint createPoint(String symbolicName) {
+    return new MeasurementPoint(this, symbolicName);
+  }
+
   public final void visitPreMeasurement(MeasurementPoint measurementPoint) {
     try {
       if (!collecting) {
@@ -141,7 +172,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     }
   }
 
-  public synchronized final void visitPostCollect(MeasurementPoint measurementPoint) {
+  public final void visitPostCollect(MeasurementPoint measurementPoint) {
     if (!collecting) {
       return;
     }
@@ -324,10 +355,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
    * closed. At that point the all required information are valid for that measurement point.
    * </p>
    *
-   * @param aMeasurementPoint The measurement point just collected.
+   * @param aPoint
    */
 
-  protected abstract void doVisitPostCollect(MeasurementPoint aMeasurementPoint);
+  protected abstract void doVisitPostCollect(MeasurementPoint aPoint);
 
 
   protected Aggregator getDefaultAggregator(){

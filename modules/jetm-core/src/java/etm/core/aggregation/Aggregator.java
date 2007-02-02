@@ -34,7 +34,7 @@ package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 /**
@@ -62,11 +62,11 @@ import etm.core.renderer.MeasurementRenderer;
 public interface Aggregator {
 
   /**
-   * Adds a new measurement point to the aggregator.
+   * Adds a new EtmPoint to the aggregator.
    *
-   * @param point A new collected measurement point.
+   * @param point A new collected EtmPoint.
    */
-  public void add(MeasurementPoint point);
+  public void add(EtmPoint point);
 
   /**
    * Flushes the current aggregation details.
@@ -83,13 +83,13 @@ public interface Aggregator {
   public void reset();
 
   /**
-   * Resets the internal aggregator state for a measurement point.
+   * Resets the internal aggregator state for a etm point.
    * Persistent states usually aren't affected.
    *
-   * @param measurementPoint The name of the measurement point to be resetted.
+   * @param symbolicName The name of the etm point to be resetted.
    */
 
-  public void reset(String measurementPoint);
+  public void reset(String symbolicName);
 
   /**
    * Renders the current state of the aggregator

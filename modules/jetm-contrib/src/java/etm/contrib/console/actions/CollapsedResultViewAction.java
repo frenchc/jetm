@@ -8,7 +8,7 @@ import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
 import java.io.IOException;
 
 /**
- * Renders Top Level Measurement Points Only.
+ * Renders Top Level EtmPoints Only.
  *
  * @author void.fm
  * @version $Revision$

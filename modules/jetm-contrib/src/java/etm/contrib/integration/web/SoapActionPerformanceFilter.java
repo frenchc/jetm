@@ -32,7 +32,7 @@
 
 package etm.contrib.integration.web;
 
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -59,7 +59,7 @@ public class SoapActionPerformanceFilter extends HttpRequestPerformanceFilter {
     if (soapAction == null || soapAction.length() == 0) {
       super.doFilter(servletRequest, servletResponse, filterChain);
     } else {
-      MeasurementPoint point = new MeasurementPoint(etmMonitor, "SoapAction " + soapAction);
+      EtmPoint point = etmMonitor.createPoint("SoapAction " + soapAction);
       try {
         filterChain.doFilter(servletRequest, servletResponse);
       } finally {

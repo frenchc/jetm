@@ -31,18 +31,14 @@
  */
 package test.etm.core.configuration.mockup;
 
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
-import etm.core.monitor.EtmMonitorSupport;
-import etm.core.renderer.MeasurementRenderer;
-import etm.core.metadata.EtmMonitorMetaData;
-import etm.core.timer.ExecutionTimer;
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.FlatAggregator;
-import etm.core.plugin.EtmPlugin;
+import etm.core.monitor.EtmMonitorSupport;
+import etm.core.monitor.MeasurementPoint;
+import etm.core.renderer.MeasurementRenderer;
+import etm.core.timer.ExecutionTimer;
 
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  *
@@ -91,7 +87,7 @@ public class TestMonitor extends EtmMonitorSupport {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  protected void doVisitPostCollect(MeasurementPoint aMeasurementPoint) {
+  protected void doVisitPostCollect(MeasurementPoint aPoint) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 

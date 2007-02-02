@@ -32,7 +32,7 @@
 package test.etm.contrib.aggregation.log;
 
 import etm.contrib.aggregation.log.DefaultOutputFormatter;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import junit.framework.TestCase;
 import test.etm.core.TestPointGenerator;
 
@@ -49,7 +49,7 @@ public class DefaultOutputFormatterTest extends TestCase {
 
 
   public void testOutput() {
-    MeasurementPoint measurementPoint = new TestPointGenerator().getMeasurementPoint();
+    EtmPoint etmPoint = new TestPointGenerator().getEtmPoint();
     DefaultOutputFormatter formatter = new DefaultOutputFormatter();
 
     // validate MS format
@@ -58,13 +58,13 @@ public class DefaultOutputFormatterTest extends TestCase {
     numberFormat.setMaximumFractionDigits(3);
     numberFormat.setGroupingUsed(false);
 
-    String s = formatter.format(measurementPoint);
-    assertTrue(s.indexOf(measurementPoint.getName()) > 0);
-    if (measurementPoint.getParent() != null) {
-      assertTrue(s.indexOf("parent=<" + measurementPoint.getParent().getName() + ">") > 0);
+    String s = formatter.format(etmPoint);
+    assertTrue(s.indexOf(etmPoint.getName()) > 0);
+    if (etmPoint.getParent() != null) {
+      assertTrue(s.indexOf("parent=<" + etmPoint.getParent().getName() + ">") > 0);
     }
-    assertTrue(s.indexOf(String.valueOf(measurementPoint.getStartTimeMillis())) > 0);
-    assertTrue(s.indexOf(numberFormat.format(measurementPoint.getTransactionTime())) > 0);
+    assertTrue(s.indexOf(String.valueOf(etmPoint.getStartTimeMillis())) > 0);
+    assertTrue(s.indexOf(numberFormat.format(etmPoint.getTransactionTime())) > 0);
 
   }
 

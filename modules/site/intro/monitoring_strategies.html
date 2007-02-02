@@ -30,7 +30,7 @@
       can
       be used at the same time or separately.
     </p>
-    <a name="programmatic"/>
+    <a name="programmatic"></a>
     <h4>Programmatic performance monitoring</h4>
 
     <p>
@@ -41,7 +41,9 @@
       to distinct code blocks as seen in the example below.
     </p>
 
-    <div class="code"><pre><b>MeasurementPoint point = new MeasurementPoint(<i>"symbolic name"</i>);</b>
+    <div class="code"><pre><b>EtmMonitor monitor = ...</b>
+
+<b>EtmPoint point = monitor.beginMonitoring(<i>"SymbolicName"</i>);</b>
 
 <span class="java-keyword">try</span> {
 
@@ -57,12 +59,12 @@
       <li><a href="../howto/etm_manager_configuration.html">EtmManager configuration</a></li>
     </ul>
 
-    <a name="declarative"/>
+    <a name="declarative"></a>
     <h4>Declarative performance monitoring</h4>
 
     <p>
       Although programmatic performance monitoring is a good place to start with it will clutter your source code
-      pretty soon. Usually you will end up with inconsistent measurement points accross your application
+      pretty soon. Usually you will end up with inconsistent measurements accross your application
       that exist purely based on developer needs.
     </p>
 

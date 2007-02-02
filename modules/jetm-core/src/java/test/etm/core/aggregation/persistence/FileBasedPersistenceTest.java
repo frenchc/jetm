@@ -34,7 +34,7 @@ package test.etm.core.aggregation.persistence;
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.SimpleTextRenderer;
 import junit.framework.TestCase;
@@ -76,7 +76,7 @@ public class FileBasedPersistenceTest extends TestCase {
     EtmMonitor memoryMonitor = new NestedMonitor(memoryAggregator);
     memoryMonitor.start();
 
-    MeasurementPoint point = new MeasurementPoint(memoryMonitor, "test");
+    EtmPoint point = memoryMonitor.createPoint("test");
     point.collect();
 
     StringWriter memoryWriter = new StringWriter();

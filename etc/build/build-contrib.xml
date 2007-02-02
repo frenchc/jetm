@@ -56,7 +56,7 @@
     <formatter type="plain"/>
     <batchtest todir="${module.contrib.dest.test}">
       <fileset dir="${module.contrib.src.java}">
-        <include name="**/*Test.java"/>
+        <include name="**/test/**/*Test.java"/>
       </fileset>
     </batchtest>
 

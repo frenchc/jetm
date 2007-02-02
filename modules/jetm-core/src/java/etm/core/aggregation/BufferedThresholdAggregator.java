@@ -34,7 +34,7 @@ package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.util.ArrayList;
@@ -43,16 +43,14 @@ import java.util.List;
 /**
  * <p/>
  * The BufferedThresholdAggregator wraps an Aggregator
- * instance and prevents processing of every measurement results
+ * instance and prevents processing of every measurement result
  * by buffering them until specified threshold is reached. If this
  * threshold is reached all buffered measurements will be flushed to
  * the underlying aggregator.
  * </p>
- * <p/>
- * Please note that this aggregator blocks further measurement point
- * collection while processing the buffered MeasurementPoints.
- * As an alternative you may use an buffering aggregator from the optional
- * package.
+ * <p>
+ * Please note that this aggregator blocks further collection while processing the buffered EtmPoints.
+ * As an alternative you may use an buffering aggregator {@link etm.core.aggregation.BufferedThresholdAggregator}
  * </p>
  *
  * @author void.fm
@@ -94,7 +92,7 @@ public class BufferedThresholdAggregator implements Aggregator {
     threshold = aThreshold;
   }
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
     list.add(point);
     if (list.size() > threshold) {
       flush();
@@ -106,7 +104,7 @@ public class BufferedThresholdAggregator implements Aggregator {
     list = new ArrayList(threshold);
 
     for (int i = 0; i < collectedList.size(); i++) {
-      delegate.add((MeasurementPoint) collectedList.get(i));
+      delegate.add((EtmPoint) collectedList.get(i));
     }
   }
 
@@ -116,8 +114,8 @@ public class BufferedThresholdAggregator implements Aggregator {
   }
 
 
-  public void reset(String measurementPoint) {
-    delegate.reset(measurementPoint);
+  public void reset(String symbolicName) {
+    delegate.reset(symbolicName);
   }
 
   public void render(MeasurementRenderer renderer) {

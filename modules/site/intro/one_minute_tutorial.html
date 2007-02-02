@@ -18,8 +18,9 @@
 <p>
   This short tutorial explains in one minute the basic features of JETM performance monitoring.
   It assumes you read <a href="basic_concepts.html">basic concepts</a> before.
-  For more advanced features see <a href="advanced_concepts.html">advanced concepts</a> and
-  <a href="five_minute_tutorial.html">five minute tutorial</a>.
+  For more advanced features (such as declarative performance monitoring) see
+  <a href="advanced_concepts.html">advanced concepts</a> and <a href="five_minute_tutorial.html">five minute
+  tutorial</a>.
 </p>
 <h4>Step 1: Download dependencies</h4>
 
@@ -55,7 +56,7 @@
 
   <span class="java-keyword">public void</span> someMethod() {
 
-    <b>MeasurementPoint point = new MeasurementPoint(etmMonitor, "BusinessService:someMethod");</b>
+    <b>EtmPoint point = etmMonitor.beginMonitoring("BusinessService:someMethod");</b>
 
     <span class="java-keyword">try</span> {
 
@@ -72,7 +73,7 @@
 
   <span class="java-keyword">public void</span> nestedMethod() {
 
-    <b>MeasurementPoint point = new MeasurementPoint(etmMonitor, "BusinessService:nestedMethod");</b>
+    <b>EtmPoint point = etmMonitor.beginMonitoring("BusinessService:nestedMethod");</b>
 
     <span class="java-keyword">try</span> {
 
@@ -88,9 +89,9 @@
 </pre>
 </div>
 
-<p>The JETM class <a href="../@api@/etm/core/monitor/MeasurementPoint.html">MeasurementPoint</a> takes two arguments:
-  an instance of EtmMonitor and the name of the measurement point itself. A MeasurementPoint will use the given
-  EtmMonitor reference to collect execution statistics under the given name. There are serveral ways to access
+<p>The method <a href="../@api@/etm/core/monitor/EtmMonitor.html#beginMonitoring(String)">beginMonitoring()</a> is used
+  to retrieve a monitoring object and takes one arguments: a symbolic name for the code fragment to be monitored.
+  The created EtmPoint is responseable to maintain and collect execution statistics. There are serveral ways to access
   an EtmMonitor instance. The example above uses an EtmManager which pretty much works like log4j Logger or
   commons-logging LogFactory.
 </p>

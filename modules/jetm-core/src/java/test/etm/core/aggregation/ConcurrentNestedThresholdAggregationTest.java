@@ -35,7 +35,7 @@ package test.etm.core.aggregation;
 import etm.core.aggregation.BufferedThresholdAggregator;
 import etm.core.aggregation.NestedAggregator;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
@@ -64,7 +64,7 @@ public class ConcurrentNestedThresholdAggregationTest extends TestCase {
 
 
   /**
-   * Tests one measurement point with multiple threads.
+   * Tests one etm point with multiple threads.
    */
   public void testManyThreadsOnePoint() throws Exception {
     final int testSize = 100;
@@ -163,9 +163,9 @@ public class ConcurrentNestedThresholdAggregationTest extends TestCase {
       try {
 
         while (runs > 0) {
-          final MeasurementPoint point = new MeasurementPoint(monitor, testPointName);
+          final EtmPoint point = monitor.createPoint(testPointName);
 
-          final MeasurementPoint nested = new MeasurementPoint(monitor, "nested" + testPointName);
+          final EtmPoint nested = monitor.createPoint("nested" + testPointName);
           Thread.sleep(1);
 
           nested.collect();

@@ -87,7 +87,7 @@ jetm.build.date=${build.time}
     <formatter type="plain"/>
     <batchtest todir="${module.core.dest.test}">
       <fileset dir="${module.core.src.java}">
-        <include name="**/*Test.java"/>
+        <include name="**/test/**/*Test.java"/>
       </fileset>
     </batchtest>
 

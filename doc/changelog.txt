@@ -6,8 +6,8 @@ Release 1.2.0
   - Added support for persistent aggregation results
   - Added HTTP console servlet for EtmManager and Spring Managed EtmMonitors
   - Activated JMX support again (deprecated old JMX MBeans), now export top level performance results as JMX Bean
+  - Simplified XML based configuration (use jetm_config_1_2.dtd therefore)
   - Added EtmPluginMetada - thus enabling lookup for runtime configuration such as HTTP Console listen port
-  - Added init(EtmMonitorContext) to plugin and aggregator lifecycle
   - Added Filter for aggregator chains.
   - Added event system - especially useful for plugins
 
@@ -15,13 +15,15 @@ Release 1.2.0
  Changes, Fixes and Improvements
   - Five minute tutorial added
   - Documentation improvements
-  - Deprecated Flat- and NestedAggregator in favour of one RootAggregator
+  - Deprecated Flat- and NestedAggregator in favour of one common RootAggregator
+  - Deprecated MeasurementPoint in favour of EtmMonitor#createPoint()
   - EtmMonitor locking section decreased
   - Added setter for Plugins for better Spring integration
   - Now writing warnings if monitor is not running
   - Reverted to shared java.util.Timer for scheduling
   - Minor fixes to logging aggregators
   - Altered order of plugin and aggregator startup
+  - Added init(EtmMonitorContext) to plugin and aggregator lifecycle
 
   - Switched from CVS to SVN (history not migrated)
 

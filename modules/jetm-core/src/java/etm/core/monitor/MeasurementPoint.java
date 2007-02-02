@@ -43,9 +43,9 @@ package etm.core.monitor;
  *  EtmMonitor monitor = ...;
  *  MeasurementPoint point = new MeasurementPoint(monitor, "name");
  *  try {
- *
+ * <p/>
  *   // execute business code
- *
+ * <p/>
  *  } finally {
  *    point.collect();
  *  }
@@ -54,12 +54,14 @@ package etm.core.monitor;
  * @author void.fm
  * @version $Revision$
  * @see EtmMonitor
+ * @deprecated Please use {@link etm.core.monitor.EtmMonitor#createPoint(String)} instead. Will be made
+ *  package visible with JETM 2.0.0.
  */
 
-public class MeasurementPoint {
+public class MeasurementPoint implements EtmPoint {
   private static final long SECOND_MULTIPLIER = 1000L;
 
-  private final EtmMonitor monitor;
+  private final EtmMonitorSupport monitor;
   private MeasurementPoint parent = null;
 
   private String name;
@@ -79,7 +81,8 @@ public class MeasurementPoint {
    */
 
   public MeasurementPoint(EtmMonitor aMonitor, String aName) {
-    monitor = aMonitor;
+    // will be removed with JETM 2.0.0
+    monitor = (EtmMonitorSupport) aMonitor;
     name = aName;
     startTimeMillis = System.currentTimeMillis();
     monitor.visitPreMeasurement(this);
@@ -95,6 +98,7 @@ public class MeasurementPoint {
     if (name == null) {
       throw new IllegalStateException("A measurement point may not be collected without a proper name.");
     }
+
     monitor.visitPostCollect(this);
   }
 
@@ -165,7 +169,7 @@ public class MeasurementPoint {
    *
    * @return The parent, may be null.
    */
-  public MeasurementPoint getParent() {
+  public EtmPoint getParent() {
     return parent;
   }
 
@@ -192,7 +196,7 @@ public class MeasurementPoint {
   /**
    * Sets the number of ticks per millsecond.
    *
-   * @param aTicks
+   * @param aTicks The number of ticks.
    */
 
   protected void setTicks(long aTicks) {

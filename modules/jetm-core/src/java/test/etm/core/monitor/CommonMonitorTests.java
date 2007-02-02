@@ -34,7 +34,7 @@ package test.etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 import test.etm.core.TestAggregator;
@@ -53,11 +53,11 @@ public abstract class CommonMonitorTests extends TestCase {
   protected TestAggregator aggregator;
 
   /**
-   * Tests adding one measurement point.
+   * Tests adding one etm point.
    */
 
   public void testAddPoint() throws Exception {
-    final MeasurementPoint point = new MeasurementPoint(monitor, "test");
+    final EtmPoint point = monitor.createPoint("test");
     Thread.sleep(10);
     point.collect();
 
@@ -83,15 +83,15 @@ public abstract class CommonMonitorTests extends TestCase {
   }
 
   /**
-   * Tests adding two measurement points.
+   * Tests adding two etm points.
    */
 
   public void testAddTwoPoints() throws Exception {
-    final MeasurementPoint point = new MeasurementPoint(monitor, "test");
+    final EtmPoint point = monitor.createPoint("test");
     Thread.sleep(10);
     point.collect();
 
-    final MeasurementPoint point2 = new MeasurementPoint(monitor, "test2");
+    final EtmPoint point2 = monitor.createPoint("test2");
     Thread.sleep(5);
     point2.collect();
 
@@ -131,15 +131,15 @@ public abstract class CommonMonitorTests extends TestCase {
 
 
   /**
-   * Tests aggregation of one measurement point.
+   * Tests aggregation of one etm point.
    */
 
   public void testOnePointAggregation() throws Exception {
-    final MeasurementPoint point = new MeasurementPoint(monitor, "test");
+    final EtmPoint point = monitor.createPoint("test");
     Thread.sleep(200);
     point.collect();
 
-    final MeasurementPoint point2 = new MeasurementPoint(monitor, "test");
+    final EtmPoint point2 = monitor.createPoint("test");
     Thread.sleep(2);
     point2.collect();
 
@@ -166,23 +166,23 @@ public abstract class CommonMonitorTests extends TestCase {
   }
 
   /**
-   * Tests aggregation of two measurement points.
+   * Tests aggregation of two etm points.
    */
 
   public void testTwoPointAggregation() throws Exception {
-    final MeasurementPoint pointOne = new MeasurementPoint(monitor, "test");
+    final EtmPoint pointOne = monitor.createPoint("test");
     Thread.sleep(150);
     pointOne.collect();
 
-    final MeasurementPoint pointOne2 = new MeasurementPoint(monitor, "test");
+    final EtmPoint pointOne2 = monitor.createPoint("test");
     Thread.sleep(100);
     pointOne2.collect();
 
-    final MeasurementPoint pointTwo = new MeasurementPoint(monitor, "test2");
+    final EtmPoint pointTwo = monitor.createPoint("test2");
     Thread.sleep(50);
     pointTwo.collect();
 
-    final MeasurementPoint pointTwo2 = new MeasurementPoint(monitor, "test2");
+    final EtmPoint pointTwo2 = monitor.createPoint("test2");
     Thread.sleep(1);
     pointTwo2.collect();
 
@@ -220,12 +220,12 @@ public abstract class CommonMonitorTests extends TestCase {
   }
 
   /**
-   * Tests wether measurement points are visible before being collected.
+   * Tests wether etm points are visible before being collected.
    */
 
   public void testVisibility() {
 
-    MeasurementPoint pointOne = new MeasurementPoint(monitor, "test");
+    EtmPoint pointOne = monitor.createPoint("test");
 
     assertEquals(0, aggregator.getCounter());
 

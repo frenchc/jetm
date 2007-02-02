@@ -34,7 +34,7 @@ package etm.contrib.integration.web;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -69,7 +69,7 @@ public class HttpRequestPerformanceFilter implements Filter {
     String request = httpServletRequest.getRequestURI();
     String method = httpServletRequest.getMethod();
 
-    MeasurementPoint point = new MeasurementPoint(etmMonitor, method + " request " + request);
+    EtmPoint point = etmMonitor.createPoint(method + " request " + request);
     try {
       filterChain.doFilter(servletRequest, servletResponse);
     } finally {

@@ -38,7 +38,7 @@ import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NullMonitor;
 import etm.core.monitor.event.EtmMonitorEvent;
 import junit.framework.TestCase;
@@ -65,11 +65,11 @@ public class AbstractLogAggregatorTest extends TestCase {
 
     aggregator.setFilterPattern("Action.+;ClassName;");
 
-    aggregator.add(new MeasurementPoint(monitor, "Action Foo"));
-    aggregator.add(new MeasurementPoint(monitor, "Action Bar"));
-    aggregator.add(new MeasurementPoint(monitor, "AnotherPoint"));
-    aggregator.add(new MeasurementPoint(monitor, "ClassName"));
-    aggregator.add(new MeasurementPoint(monitor, "Action Bar"));
+    aggregator.add(monitor.createPoint("Action Foo"));
+    aggregator.add(monitor.createPoint("Action Bar"));
+    aggregator.add(monitor.createPoint("AnotherPoint"));
+    aggregator.add(monitor.createPoint("ClassName"));
+    aggregator.add(monitor.createPoint("Action Bar"));
 
     assertEquals(4, aggregator.points.size());
   }
@@ -83,11 +83,11 @@ public class AbstractLogAggregatorTest extends TestCase {
     EtmMonitor monitor = new NullMonitor();
     TestLogAggregator aggregator = new TestLogAggregator(new NestedAggregator());
 
-    aggregator.add(new MeasurementPoint(monitor, "Action Foo"));
-    aggregator.add(new MeasurementPoint(monitor, "Action Bar"));
-    aggregator.add(new MeasurementPoint(monitor, "AnotherPoint"));
-    aggregator.add(new MeasurementPoint(monitor, "ClassName"));
-    aggregator.add(new MeasurementPoint(monitor, "Action Bar"));
+    aggregator.add(monitor.createPoint("Action Foo"));
+    aggregator.add(monitor.createPoint("Action Bar"));
+    aggregator.add(monitor.createPoint("AnotherPoint"));
+    aggregator.add(monitor.createPoint("ClassName"));
+    aggregator.add(monitor.createPoint("Action Bar"));
 
     assertEquals(5, aggregator.points.size());
   }
@@ -113,7 +113,7 @@ public class AbstractLogAggregatorTest extends TestCase {
       });
     }
 
-    protected void logMeasurement(MeasurementPoint aPoint) {
+    protected void logMeasurement(EtmPoint aPoint) {
       points.add(aPoint);
     }
 

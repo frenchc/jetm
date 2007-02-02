@@ -37,12 +37,12 @@ import etm.core.timer.ExecutionTimer;
 
 /**
  * <p/>
- * The NestedMonitor records nested MeasurementPoint as a tree using ThreadLocals
+ * The NestedMonitor records nested EtmPoints as a tree using ThreadLocals
  * to maintain thread depend calling trees.
  * </p>
  * <p/>
- * Be aware that leaking MeasurementPoints will lead to unexpected results - so
- * always ensure you call MeasurementPoint.collect() in a finally clause.
+ * Be aware that leaking EtmPoints will lead to unexpected results - so
+ * always ensure you call EtmPoint.collect() in a finally clause.
  * </p>
  *
  * @author Jens Schumann
@@ -75,8 +75,8 @@ public class NestedMonitor extends EtmMonitorSupport {
     measurementPoint.setParent(point);
   }
 
-  protected void doVisitPostCollect(MeasurementPoint measurementPoint) {
-    MeasurementPoint point = (MeasurementPoint) currentParent.get();
+  protected void doVisitPostCollect(MeasurementPoint aPoint) {
+    EtmPoint point = (EtmPoint) currentParent.get();
     if (point != null) {
       currentParent.set(point.getParent());
     }

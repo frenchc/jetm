@@ -47,7 +47,7 @@ public class HtmlConsoleServerPluginTest extends ConsoleTests {
     monitor = new NestedMonitor();
     monitor.addPlugin(new HttpConsoleServerPlugin());
     TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
-    testPointGenerator.getMeasurementPoints(5, 2);
+    testPointGenerator.getEtmPoints(5, 2);
     monitor.start();
 
     // sleep shortly to let the console start

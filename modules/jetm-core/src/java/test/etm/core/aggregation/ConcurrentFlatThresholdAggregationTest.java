@@ -37,8 +37,8 @@ import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.FlatAggregator;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.FlatMonitor;
-import etm.core.monitor.MeasurementPoint;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
@@ -68,7 +68,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
 
 
   /**
-   * Tests one measurement point with multiple threads.
+   * Tests one etm point with multiple threads.
    */
   public void testManyThreadsOnePoint() throws Exception {
     int testSize = 100;
@@ -94,7 +94,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
     final ExecutionAggregate group1 = new ExecutionAggregate(testPointGroup1);
 
     for (int i = 0; i < allPoints.size(); i++) {
-      MeasurementPoint point = (MeasurementPoint) allPoints.get(i);
+      EtmPoint point = (EtmPoint) allPoints.get(i);
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else {
@@ -158,7 +158,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
     final Map aggregates = new HashMap();
 
     for (int i = 0; i < allPoints.size(); i++) {
-      MeasurementPoint point = (MeasurementPoint) allPoints.get(i);
+      EtmPoint point = (EtmPoint) allPoints.get(i);
 
       ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(point.getName());
       if (aggregate == null) {
@@ -235,7 +235,7 @@ public class ConcurrentFlatThresholdAggregationTest extends TestCase {
       try {
 
         while (runs > 0) {
-          final MeasurementPoint point = new MeasurementPoint(monitor, testPointName);
+          final EtmPoint point = monitor.createPoint(testPointName);
           Thread.sleep(10);
           point.collect();
 

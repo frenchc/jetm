@@ -35,12 +35,12 @@ import etm.contrib.aggregation.filter.RegexAggregationFilter;
 import etm.core.aggregation.AggregationFilter;
 import etm.core.aggregation.Aggregator;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 /**
  * Sometimes it is important to have access to raw measurement results. This
- * base class wrap an existing aggregator and dumps all measurement points to a
+ * base class wrap an existing aggregator and dumps all EtmPoints to a
  * certain logging implementation using a common log format. Before dumping
  * the measurement poin the nested aggregator {@link Aggregator#add} method is
  * called.
@@ -48,7 +48,7 @@ import etm.core.renderer.MeasurementRenderer;
  * Logger implementations will use the default logger name {@link #DEFAULT_LOG_NAME}
  * unless this name was altered using {@link #setLogName(String)}.
  * <p/>
- * A Measurement Point will logged using the {@link DefaultOutputFormatter}. You may override
+ * A EtmPoint will logged using the {@link DefaultOutputFormatter}. You may override
  * the default implementation by using {@link #setFormatter}.
  * <p/>
  * Due to the direct performance impact this aggregator
@@ -98,7 +98,7 @@ public abstract class AbstractLogAggregator implements Aggregator {
   }
 
   /**
-   * Adds a filter for measurement point names that
+   * Adds a filter for symbolic EtmPoint names that
    * should be logged. Uses {@link java.util.regex.Pattern}
    * for pattern matching. Multiple pattern may be supplied
    * separated by a ";". Requires JDK 1.4 or higher.
@@ -110,7 +110,7 @@ public abstract class AbstractLogAggregator implements Aggregator {
     filter = new RegexAggregationFilter(matchingPattern);
   }
 
-  public void add(MeasurementPoint point) {
+  public void add(EtmPoint point) {
     delegate.add(point);
     if (filter == null || filter.matches(point)) {
       logMeasurement(point);
@@ -125,8 +125,8 @@ public abstract class AbstractLogAggregator implements Aggregator {
     delegate.reset();
   }
 
-  public void reset(String measurementPoint) {
-    delegate.reset(measurementPoint);
+  public void reset(String symbolicName) {
+    delegate.reset(symbolicName);
   }
 
   public void render(MeasurementRenderer renderer) {
@@ -154,6 +154,6 @@ public abstract class AbstractLogAggregator implements Aggregator {
    *
    * @param aPoint The point to be logged.
    */
-  protected abstract void logMeasurement(MeasurementPoint aPoint);
+  protected abstract void logMeasurement(EtmPoint aPoint);
 
 }

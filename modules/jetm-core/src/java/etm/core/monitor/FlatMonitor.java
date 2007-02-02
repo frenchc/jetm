@@ -72,7 +72,7 @@ public class FlatMonitor extends EtmMonitorSupport {
     // don't do anything
   }
 
-  protected void doVisitPostCollect(MeasurementPoint measurementPoint) {
+  protected void doVisitPostCollect(MeasurementPoint aPoint) {
     // don't do anything
   }
 

@@ -32,7 +32,7 @@
 
 package etm.core.aggregation;
 
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -101,7 +101,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
   }
 
   /**
-   * Returns whether the given measurement point has childs
+   * Returns whether the given aggregate has childs
    * or not.
    *
    * @return True for available childs, otherwise false.
@@ -111,12 +111,12 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
   }
 
   /**
-   * Adds a transaction to the current measurement point.
+   * Adds a transaction to the current aggregate.
    *
    * @param transaction The transaction to add.
    */
 
-  public void addTransaction(MeasurementPoint transaction) {
+  public void addTransaction(EtmPoint transaction) {
     double miliseconds = transaction.getTransactionTime();
 
     measurements++;
@@ -133,7 +133,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
    */
 
   public void appendPath(LinkedList newTree) {
-    MeasurementPoint current = (MeasurementPoint) newTree.removeFirst();
+    EtmPoint current = (EtmPoint) newTree.removeFirst();
 
     ExecutionAggregate aggregate = getChild(current.getName());
 

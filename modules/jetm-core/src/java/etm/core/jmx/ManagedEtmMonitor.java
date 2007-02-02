@@ -145,7 +145,7 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
     private static final String HEAD =
       "<table border=\"1\" cellpadding=\"5\" >\n" +
         " <tr>\n" +
-        "  <th>Measurement Point</th>\n" +
+        "  <th>Etm Point</th>\n" +
         "  <th>Measurements</th>\n" +
         "  <th>Average</th>\n" +
         "  <th>Min/Max</th>\n" +

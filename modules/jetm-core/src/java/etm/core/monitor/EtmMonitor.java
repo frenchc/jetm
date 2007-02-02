@@ -45,35 +45,7 @@ import java.util.List;
  * different EtmMonitor types: The {@link FlatMonitor} for flat
  * collection, the {@link NestedMonitor} for nested collection
  * and the {@link NullMonitor} for no collection at all.
- * See {@link MeasurementPoint} for EtmMonitor usage.
- * </p>
- * <p/>
- * An EtmMonitor mandates the following life cycle for measurement
- * points.
- * <p/>
- * <ol>
- * <li>
- * Newly created MeasurementPoint instances register
- * themself automatically before the actual measurement process using
- * {@link #visitPreMeasurement(MeasurementPoint)}.
- * </li>
- * <li>
- * Within {@link #visitPreMeasurement} the EtmMonitor sets the start time
- * of the measurement.
- * </li>
- * <li>
- * The calling business code executes.
- * </li>
- * <li>
- * After business code execution the Measurement Point calls
- * {@link #visitPostCollect(MeasurementPoint)}. This call is triggered by
- * {@link MeasurementPoint#collect()}.
- * </li>
- * <li>
- * Within {@link #visitPostCollect} the EtmMonitor sets the end time
- * of the measurement and stores this transaction for further aggregation.
- * </li>
- * </ol>
+ * See {@link etm.core.monitor.EtmPoint} for EtmMonitor usage.
  * </p>
  * <p/>
  * EtmMonitor implementations have to provide at least one of the following constructors
@@ -87,30 +59,21 @@ import java.util.List;
  *
  * @author void.fm
  * @version $Revision$
- * @see MeasurementPoint
+ * @see etm.core.monitor.EtmPoint
  */
 
 public interface EtmMonitor {
 
   /**
-   * Callback method for measurement point registration.
-   * <p/>
-   * Within this method the start timestamp of the measurement will be set.
    *
-   * @param measurementPoint The new measurement point.
-   */
-
-  public void visitPreMeasurement(MeasurementPoint measurementPoint);
-
-  /**
-   * Callback method for measurement point collection.
-   * <p/>
-   * Within this method the end timestamp of the measurement will be set.
+   * Creates a new EtmPoint with the given name. The name may be
+   * null until EtmMonitor#collect is called.
    *
-   * @param measurementPoint The new measurement point.
+   * @param symbolicName The symbolic name or null. Ensure to call {@link EtmPoint#alterName(String)}
+   *        before collection if symbolic name was null.
+   * @return A new EtmMpoint
    */
-
-  public void visitPostCollect(MeasurementPoint measurementPoint);
+  public EtmPoint createPoint(String symbolicName);
 
   /**
    * Aggregates the current measurement details.
@@ -134,12 +97,12 @@ public interface EtmMonitor {
 
 
   /**
-   * Resets a specific measurements.
+   * Resets a specific measurement.
    *
-   * @param measurementPoint The name of the measurement point to reset.
+   * @param symbolicName The symbolic name of the measurement to reset.
    */
 
-  public void reset(String measurementPoint);
+  public void reset(String symbolicName);
 
   /**
    * Returns metadata for the monitor.

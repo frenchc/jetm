@@ -36,7 +36,7 @@ package test.etm.core.monitor;
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.aggregation.NestedAggregator;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
@@ -57,38 +57,38 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
   public void testNestedLevels() throws Exception {
 
 
-    final MeasurementPoint point = new MeasurementPoint(monitor, "test");
+    final EtmPoint point = monitor.createPoint("test");
     Thread.sleep(10);
 
-    final MeasurementPoint point10 = new MeasurementPoint(monitor, "test-nest10");
+    final EtmPoint point10 = monitor.createPoint("test-nest10");
     Thread.sleep(10);
 
     // inner measurements
-    final MeasurementPoint point20 = new MeasurementPoint(monitor, "test-nest20");
+    final EtmPoint point20 = monitor.createPoint("test-nest20");
     Thread.sleep(10);
     point20.collect();
 
-    final MeasurementPoint point21 = new MeasurementPoint(monitor, "test-nest21");
+    final EtmPoint point21 = monitor.createPoint("test-nest21");
     Thread.sleep(10);
     point21.collect();
 
     point10.collect();
 
-    final MeasurementPoint point11 = new MeasurementPoint(monitor, "test-nest11");
+    final EtmPoint point11 = monitor.createPoint("test-nest11");
     Thread.sleep(10);
     point11.collect();
 
-    final MeasurementPoint point12 = new MeasurementPoint(monitor, "test-nest12");
+    final EtmPoint point12 = monitor.createPoint("test-nest12");
     Thread.sleep(10);
     point12.collect();
 
     point.collect();
 
 
-    final MeasurementPoint pointNew = new MeasurementPoint(monitor, "test");
+    final EtmPoint pointNew = monitor.createPoint("test");
     Thread.sleep(10);
 
-    final MeasurementPoint pointNew10 = new MeasurementPoint(monitor, "test-nest10");
+    final EtmPoint pointNew10 = monitor.createPoint("test-nest10");
     Thread.sleep(10);
 
     pointNew10.collect();
@@ -171,14 +171,14 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
 
   /**
-   * Tests adding one nesting measurement point.
+   * Tests adding one nesting etm point.
    */
 
   public void testSingleNestedPoints() throws Exception {
-    final MeasurementPoint point = new MeasurementPoint(monitor, "test");
+    final EtmPoint point = monitor.createPoint("test");
     Thread.sleep(10);
 
-    final MeasurementPoint point2 = new MeasurementPoint(monitor, "test2");
+    final EtmPoint point2 = monitor.createPoint("test2");
     Thread.sleep(5);
     point2.collect();
 
@@ -226,18 +226,18 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
 
   /**
-   * Tests adding multiple nesting measurement point.
+   * Tests adding multiple nesting etm point.
    */
 
   public void testMultipleNestedPoints() throws Exception {
-    final MeasurementPoint point = new MeasurementPoint(monitor, "test");
+    final EtmPoint point = monitor.createPoint("test");
     Thread.sleep(15);
 
-    final MeasurementPoint point2 = new MeasurementPoint(monitor, "test2");
+    final EtmPoint point2 = monitor.createPoint("test2");
     Thread.sleep(5);
     point2.collect();
 
-    final MeasurementPoint point3 = new MeasurementPoint(monitor, "test3");
+    final EtmPoint point3 = monitor.createPoint("test3");
     Thread.sleep(10);
     point3.collect();
 
@@ -300,9 +300,9 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
   public void testDeepNesting() throws Exception {
 
-    final MeasurementPoint[] measurementPoints = new MeasurementPoint[10];
+    final EtmPoint[] etmPoints = new EtmPoint[10];
 
-    doNested(measurementPoints, measurementPoints.length);
+    doNested(etmPoints, etmPoints.length);
 
     assertEquals(10, aggregator.getCounter());
 
@@ -311,15 +311,15 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
         assertNotNull(points);
         assertTrue(points.size() == 1);
 
-        analyzeNested(points, measurementPoints, measurementPoints.length);
+        analyzeNested(points, etmPoints, etmPoints.length);
       }
     });
 
   }
 
 
-  private void analyzeNested(Map aggregationPoints, MeasurementPoint[] measurementPoints, int i) {
-    MeasurementPoint current = measurementPoints[i - 1];
+  private void analyzeNested(Map aggregationPoints, EtmPoint[] aEtmPoints, int i) {
+    EtmPoint current = aEtmPoints[i - 1];
 
     ExecutionAggregate aggregate = (ExecutionAggregate) aggregationPoints.get(current.getName());
 
@@ -334,14 +334,14 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
     i--;
     if (i != 0) {
       assertTrue(aggregate.hasChilds());
-      analyzeNested(aggregate.getChilds(), measurementPoints, i);
+      analyzeNested(aggregate.getChilds(), aEtmPoints, i);
     }
 
 
   }
 
-  private void doNested(MeasurementPoint[] points, int i) throws Exception {
-    MeasurementPoint point = new MeasurementPoint(monitor, "test" + i);
+  private void doNested(EtmPoint[] points, int i) throws Exception {
+    EtmPoint point = monitor.createPoint("test" + i);
     Thread.sleep(2 * i);
 
     points[i - 1] = point;

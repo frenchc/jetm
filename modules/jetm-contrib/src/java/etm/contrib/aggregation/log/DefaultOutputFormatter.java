@@ -32,7 +32,7 @@
 
 package etm.contrib.aggregation.log;
 
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -40,11 +40,11 @@ import java.util.Locale;
 /**
  * Default log output formatter. It writes log messages in the format
  * <pre>
- *  measurementPoint=&lt;$1&gt;, parent=&lt;$2&gt;, transactionTime=&lt;$3&gt;, recordingTime=&lt;$4&gt;
+ *  etmPoint=&lt;$1&gt;, parent=&lt;$2&gt;, transactionTime=&lt;$3&gt;, recordingTime=&lt;$4&gt;
  * </pre>
  * where
  * <pre>
- *  $1 is the name of the measurement point,
+ *  $1 is the name of the EtmPoint,
  *  $2 the of the parent if any (is empty otherwhise),
  *  $3 the transactionTime in ms
  *  $4 the time of the measurement taken using {@link System#currentTimeMillis()}
@@ -79,25 +79,25 @@ public class DefaultOutputFormatter implements LogOutputFormatter {
     numberFormat.setGroupingUsed(false);
   }
 
-  public String format(MeasurementPoint aMeasurementPoint) {
-    String parentName = aMeasurementPoint.getParent() == null ? "" : calculateParentHierarchie(aMeasurementPoint);
+  public String format(EtmPoint aEtmPoint) {
+    String parentName = aEtmPoint.getParent() == null ? "" : calculateParentHierarchie(aEtmPoint);
 
     return new StringBuffer().
       append("measurementPoint=<").
-      append(aMeasurementPoint.getName()).
+      append(aEtmPoint.getName()).
       append(">, parent=<").
       append(parentName).
       append(">, transactionTime=<").
-      append(numberFormat.format(aMeasurementPoint.getTransactionTime())).
+      append(numberFormat.format(aEtmPoint.getTransactionTime())).
       append(">, recordingTime=<").
-      append(aMeasurementPoint.getStartTimeMillis()).
+      append(aEtmPoint.getStartTimeMillis()).
       append(">").toString();
   }
 
-  protected String calculateParentHierarchie(MeasurementPoint aMeasurementPoint) {
+  protected String calculateParentHierarchie(EtmPoint aEtmPoint) {
     // todo remove string concat
     String hierarchie = "";
-    MeasurementPoint parent = aMeasurementPoint.getParent();
+    EtmPoint parent = aEtmPoint.getParent();
 
     while (parent != null) {
       hierarchie = ";" + parent.getName() + hierarchie;

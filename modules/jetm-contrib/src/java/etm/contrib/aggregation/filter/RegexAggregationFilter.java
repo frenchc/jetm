@@ -33,7 +33,7 @@
 package etm.contrib.aggregation.filter;
 
 import etm.core.aggregation.AggregationFilter;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 
 import java.util.HashSet;
 import java.util.regex.Matcher;
@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * The RegexAggregationFilter filters measurement point names based
+ * The RegexAggregationFilter filters etm point names based
  * on a list of JDK 1.4 regex.
  *
  * @version $Revision$
@@ -84,7 +84,7 @@ public class RegexAggregationFilter implements AggregationFilter {
     validNames = new HashSet();
   }
 
-  public boolean matches(MeasurementPoint aPoint) {
+  public boolean matches(EtmPoint aPoint) {
     String name = aPoint.getName();
     if (validNames.contains(name)) {
       return true;

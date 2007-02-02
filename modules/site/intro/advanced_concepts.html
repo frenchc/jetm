@@ -25,11 +25,11 @@
     and extension points.
   </p>
 
-  <h4>Bits and Pieces: MeasurementPoint, EtmMonitor, Aggregator</h4>
+  <h4>Bits and Pieces: EtmPoint, EtmMonitor, Aggregator</h4>
 
   <p>
     JETM uses a simple concept to measure and visualize application performance. With the help of an
-    MeasurementPoint an
+    EtmPoint an
     EtmMonitor collects individual performance statistics and uses a chain of Aggregators to
     process those raw results. This aggregator chain was introduced to support flexible multistaged processing of raw
     performance data.
@@ -46,8 +46,8 @@
 
   <p>
     There are two different types of EtmMonitor available: The NestedMonitor collects performance data such
-    that nested MeasurementPoints will retain their execution path. The FlatMonitor however will identify
-    MeasurementPoints points by name and discard the execution path. Please note that nested collection
+    that nested EtmPoints will retain their execution path. The FlatMonitor however will identify
+    EtmPoints points by name and discard the execution path. Please note that nested collection
     adds some overhead (due to the usage of ThreadLocals).
   </p>
 
@@ -103,7 +103,7 @@
     It is recommended to add an asynchronous buffering aggregator in front of an logging aggregator
     in order to limit negative side effects (performancewise). A typical logging aggregator chain should look like this:
   </p>
-  <center><i>BufferedTimedAggregator -> CommonsLoggingAggregator -> NestedAggregator</i></center>
+  <center><i>BufferedTimedAggregator -> CommonsLoggingAggregator -> RootAggregator</i></center>
 
   <p>
     The aggregator chain above will buffer raw performance results for a certain period of time (default is 5 seconds).

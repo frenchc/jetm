@@ -29,55 +29,47 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.contrib.aggregation.log;
-
-import etm.core.aggregation.Aggregator;
-import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.EtmPoint;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+package etm.core.monitor;
 
 /**
- * The CommonsLoggingAggregator uses jakarta commons logging
- * to log raw measurement results. Raw results will be logged at level
- * <code>INFO</code>.
+ * The EtmPoint represents one measurement.
  * <p/>
- * See {@link etm.contrib.aggregation.log.AbstractLogAggregator} for performance impact and
- * further details/configurations.
+ * <p/>
+ * Usage example:
+ * </p>
+ * <pre>
+ *  EtmMonitor monitor = ...;
+ *  EtmPoint point = monitor.createPoint"name");
+ *  try {
+ * <p/>
+ *   // execute business code
+ * <p/>
+ *  } finally {
+ *    point.collect();
+ *  }
+ *  </pre>
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
+public interface EtmPoint {
 
-public class CommonsLoggingAggregator extends AbstractLogAggregator {
+  public void collect();
 
-  private static final String DESCRIPTION = "An aggregator that logs raw results using jakarta commons-logging logger. Log name: ";
+  public  void alterName(String newName);
 
-  protected Log log;
+  public String getName();
 
-  // just remeber the used name since we can't access the log name
-  // throug LogFactory.
-  private String name;
+  public long getStartTime();
 
-  public CommonsLoggingAggregator(Aggregator aAggregator) {
-    super(aAggregator);
-  }
+  public long getEndTime();
 
-  protected void logMeasurement(EtmPoint aPoint) {
-    if (log.isInfoEnabled()) {
-      log.info(formatter.format(aPoint));
-    }
-  }
+  public long getTicks();
 
-  public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(CommonsLoggingAggregator.class, DESCRIPTION + name, false, delegate.getMetaData());
-  }
+  public EtmPoint getParent();
 
-  public void start() {
-    log = LogFactory.getLog(logName);
-    name = logName;
-    super.start();
-  }
+  public double getTransactionTime();
 
+  public long getStartTimeMillis();
 }

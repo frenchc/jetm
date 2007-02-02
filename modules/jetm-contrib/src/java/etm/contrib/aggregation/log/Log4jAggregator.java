@@ -34,7 +34,7 @@ package etm.contrib.aggregation.log;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,7 +59,7 @@ public class Log4jAggregator extends AbstractLogAggregator {
     super(aAggregator);
   }
 
-  protected void logMeasurement(MeasurementPoint aPoint) {
+  protected void logMeasurement(EtmPoint aPoint) {
     if (log.isInfoEnabled()) {
       log.info(formatter.format(aPoint));
     }

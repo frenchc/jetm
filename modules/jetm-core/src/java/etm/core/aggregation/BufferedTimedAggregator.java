@@ -34,7 +34,7 @@ package etm.core.aggregation;
 
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.util.ArrayList;
@@ -80,8 +80,8 @@ public class BufferedTimedAggregator implements Aggregator {
     buffer = new ArrayList(BufferedTimedAggregator.DEFAULT_BUFFER_SIZE);
   }
 
-  public void add(MeasurementPoint point) {
-    // prevent memory leaks by collecting measurement points
+  public void add(EtmPoint point) {
+    // prevent memory leaks by collecting EtmPoints
     // for non started aggregators.
     if (!started) {
       return;
@@ -103,7 +103,7 @@ public class BufferedTimedAggregator implements Aggregator {
 
     synchronized (delegate) {
       for (int i = 0; i < collectedList.size(); i++) {
-        delegate.add((MeasurementPoint) collectedList.get(i));
+        delegate.add((EtmPoint) collectedList.get(i));
       }
     }
   }
@@ -115,9 +115,9 @@ public class BufferedTimedAggregator implements Aggregator {
   }
 
 
-  public void reset(String measurementPoint) {
+  public void reset(String symbolicName) {
     synchronized (delegate) {
-      delegate.reset(measurementPoint);
+      delegate.reset(symbolicName);
     }
   }
 

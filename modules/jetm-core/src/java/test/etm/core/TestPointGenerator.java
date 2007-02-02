@@ -37,7 +37,7 @@ import etm.core.aggregation.NestedAggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
@@ -67,11 +67,11 @@ public class TestPointGenerator {
     monitor = aMonitor;
   }
 
-  public MeasurementPoint getMeasurementPoint() {
+  public EtmPoint getEtmPoint() {
     monitor.start();
 
     try {
-      MeasurementPoint point = new MeasurementPoint(monitor, "Testpoint");
+      EtmPoint point = monitor.createPoint("Testpoint");
       try {
         Thread.sleep((long) (10d * Math.random()));
       } catch (InterruptedException e) {
@@ -86,12 +86,12 @@ public class TestPointGenerator {
     }
   }
 
-  public List getMeasurementPoints(int topLevel, int nestedSize) {
+  public List getEtmPoints(int topLevel, int nestedSize) {
     monitor.start();
 
     try {
       for (int i = 0; i < topLevel; i++) {
-        MeasurementPoint parent = new MeasurementPoint(monitor, "Parent::" + i);
+        EtmPoint parent = monitor.createPoint("Parent::" + i);
 
         try {
           Thread.sleep((long) (10d * Math.random()));
@@ -118,7 +118,7 @@ public class TestPointGenerator {
   public Map getAggregates(int topLevel, int nestedSize) {
 
     for (int i = 0; i < topLevel; i++) {
-      MeasurementPoint parent = new MeasurementPoint(monitor, "Testpoint" + i);
+      EtmPoint parent = monitor.createPoint("Testpoint" + i);
 
       try {
         Thread.sleep((long) (10d * Math.random()));
@@ -154,7 +154,7 @@ public class TestPointGenerator {
   }
 
   private void doFlat(final int parentId, final int currentLevel, final int maxLevel, final int flatCounter) {
-    MeasurementPoint point = new MeasurementPoint(monitor, "N" + parentId + "-L" + currentLevel + "-C" + flatCounter);
+    EtmPoint point = monitor.createPoint( "N" + parentId + "-L" + currentLevel + "-C" + flatCounter);
 
     try {
       Thread.sleep((long) (10d * Math.random()));
@@ -196,7 +196,7 @@ public class TestPointGenerator {
       delegate = aDelegate;
     }
 
-    public void add(MeasurementPoint point) {
+    public void add(EtmPoint point) {
       points.add(point);
       delegate.add(point);
     }
@@ -208,7 +208,7 @@ public class TestPointGenerator {
     }
 
 
-    public void reset(String measurementPoint) {
+    public void reset(String symbolicName) {
 
     }
 
@@ -229,7 +229,7 @@ public class TestPointGenerator {
     }
 
     public void init(EtmMonitorContext ctx) {
-
+      delegate.init(ctx);
     }
   }
 

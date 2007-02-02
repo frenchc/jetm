@@ -33,7 +33,7 @@
 package etm.contrib.aop.aopalliance;
 
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.MeasurementPoint;
+import etm.core.monitor.EtmPoint;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -57,23 +57,23 @@ public class EtmMethodCallInterceptor implements MethodInterceptor {
 
   public Object invoke(MethodInvocation aMethodInvocation) throws Throwable {
 
-    MeasurementPoint measurementPoint = new MeasurementPoint(etmMonitor, calculateName(aMethodInvocation));
+    EtmPoint etmPoint = etmMonitor.createPoint(calculateName(aMethodInvocation));
     try {
       return aMethodInvocation.proceed();
     } catch (Throwable t) {
-      alterNamePostException(measurementPoint, t);
+      alterNamePostException(etmPoint, t);
       throw t;
     } finally {
-      measurementPoint.collect();
+      etmPoint.collect();
     }
 
   }
 
   /**
-   * Calculate measurement point name based on the method invocation.
+   * Calculate EtmPoint name based on the method invocation.
    *
    * @param aMethodInvocation The method invocation.
-   * @return The name of the measurement point.
+   * @return The name of the EtmPoint.
    */
   protected String calculateName(MethodInvocation aMethodInvocation) {
     Object target = aMethodInvocation.getThis();
@@ -87,12 +87,12 @@ public class EtmMethodCallInterceptor implements MethodInterceptor {
    * name takes place after executing target method. Ensure that you never cause
    * an exception within this code.
    *
-   * @param aMeasurementPoint The measurement point to alter.
-   * @param t                 The caught throwable t.
+   * @param aEtmPoint The EtmPoint to alter.
+   * @param t The caught throwable t.
    * 
    */
-  protected void alterNamePostException(MeasurementPoint aMeasurementPoint, Throwable t) {
-    aMeasurementPoint.alterName(aMeasurementPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
+  protected void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
+    aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
   }
 
 
