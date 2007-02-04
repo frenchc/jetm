@@ -43,7 +43,7 @@
 <!ATTLIST jetm-config timer CDATA #IMPLIED>
 <!ATTLIST jetm-config autostart (true|false) "false">
 
-<!ELEMENT features ((threshold-buffer|interval-buffer)?, persistence?, raw-data-log?, jmx?)>
+<!ELEMENT features ((threshold-buffer|interval-buffer)?, persistence?, jmx?, raw-data-log?)>
 <!ELEMENT aggregator-chain (chain-element+,chain-root?)>
 <!ELEMENT extension (plugin)*>
 
@@ -62,12 +62,16 @@
 <!ELEMENT custom-backend (property*)>
 <!ATTLIST custom-backend class CDATA #REQUIRED>
 
+<!ELEMENT jmx EMPTY>
+<!ATTLIST jmx monitorObjectName CDATA #IMPLIED>
+<!ATTLIST jmx mbeanServerName CDATA #IMPLIED>
+<!ATTLIST jmx measurementDomain CDATA #IMPLIED>
+<!ATTLIST jmx overwrite (true|false| "false">
+
 <!ELEMENT raw-data-log (#PCDATA)>
 <!ATTLIST raw-data-log type CDATA #REQUIRED>
 <!ATTLIST raw-data-log category CDATA #IMPLIED>
 <!ATTLIST raw-data-log formatter-class CDATA #IMPLIED>
-
-<!ELEMENT jmx (#PCDATA)>
 
 <!ELEMENT chain-element (property*)>
 <!ATTLIST chain-element class CDATA #REQUIRED>

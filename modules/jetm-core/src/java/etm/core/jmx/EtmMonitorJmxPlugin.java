@@ -40,12 +40,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A plugin that registers the EtmMonitor in JMX. Default name is
- * etm:service=PerformanceMonitor.
- * <p/>
- * By default the plugin will fail if the an mbean exists under the
- * given name. You may disable this by setting {@link #setOverwriteRegistered(boolean)}
- * to true.
+ *
+ * A plugin that exports the current ETM Monitor and all top level
+ * performance results via JMX.
  *
  * @author void.fm
  * @version $Revision$
@@ -56,28 +53,28 @@ public class EtmMonitorJmxPlugin extends AbstractJmxRegistry implements EtmPlugi
 
   protected static final String DESCRIPTION = "A plugin the exports the current EtmMonitor to JMX.";
 
-
   public void init(EtmMonitorContext aCtx) {
     etmMonitor = aCtx.getEtmMonitor();
   }
-
 
   /**
    * Returns the current JMX Plugin console metadata. The provided map of properties contains
    * <ul>
    * <li><i>jmxObjectName</i> - the JMX ObjectName used for registration</li>
    * <li><i>mbeanServerName</i> - the name of the JMX MBeanServer, may be null</li>
+   * <li><i>overwrite</i> - whether an already existing MBean will be overwritten or not.</li>
    * </ul>
    *
    * @return The plugin metadata
    */
   public PluginMetaData getPluginMetaData() {
     Map properties = new HashMap();
-    properties.put("jmxObjectName", etmMonitorObjectName);
+    properties.put("monitorObjectName", monitorObjectName);
     properties.put("mbeanServerName", mbeanServerName);
+    properties.put("measurementDomain",measurementDomain);
+    properties.put("overwrite", String.valueOf(overwrite));
 
     return new PluginMetaData(EtmMonitorJmxPlugin.class, DESCRIPTION, properties);
   }
-
 
 }

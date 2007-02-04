@@ -55,7 +55,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Simple base class that takes care of dynamic etm point registration.
+ * JMX base class. Registers an EtmMonitor on startup and performance
+ * measurements mbeans on demand.
+ * <p/>
+ * By default the monitor will be available at
+ * {@link AbstractJmxRegistry#DEFAULT_ETM_MONITOR_OBJECT_NAME} and register
+ * performance details in the domain {@link etm.core.jmx.AbstractJmxRegistry#DEFAULT_ETM_POINT_DOMAIN}.
+ * You may disable this behavior by setting {@link #setOverwrite(boolean)} to true.
  *
  * @author void.fm
  * @version $Revision$
@@ -63,20 +69,19 @@ import java.util.Set;
  */
 public class AbstractJmxRegistry implements AggregationStateListener, AggregationListener {
   public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm.monitor:service=PerformanceMonitor";
-  public static final String DEFAULT_ETM_POINT_OBJECT_NAME_PREFIX = "etm.performance";
+  public static final String DEFAULT_ETM_POINT_DOMAIN = "etm.performance";
 
-  protected String etmMonitorObjectName = DEFAULT_ETM_MONITOR_OBJECT_NAME;
-  protected String etmMeasurementObjectNamePrefix = DEFAULT_ETM_POINT_OBJECT_NAME_PREFIX;
+  protected String monitorObjectName = DEFAULT_ETM_MONITOR_OBJECT_NAME;
+  protected String measurementDomain = DEFAULT_ETM_POINT_DOMAIN;
   // default mbeanservername is null
   protected String mbeanServerName;
-
-  protected boolean overwriteRegistered = true;
-
+  protected boolean overwrite = false;
 
   protected MBeanServer mbeanServer;
   protected EtmMonitor etmMonitor;
 
-  protected boolean isStopping = false;
+  // flag to prevent registration during shutdown
+  private boolean isStopping = false;
 
   /**
    * Sets the name of the MBeanServer to use. Default is <code>null</code>.
@@ -89,19 +94,27 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
 
   /**
    * Sets the name to be used for Monitor registration. Default is
-   * {@link EtmMonitorJmxPlugin#DEFAULT_ETM_MONITOR_OBJECT_NAME}
+   * {@link AbstractJmxRegistry#DEFAULT_ETM_MONITOR_OBJECT_NAME}
    *
-   * @param aEtmMonitorObjectName The JMX Object name to be used for registration.
+   * @param aMonitorObjectName The JMX Object name to be used for registration.
    */
-  public void setEtmMonitorObjectName(String aEtmMonitorObjectName) {
-    if (aEtmMonitorObjectName == null || aEtmMonitorObjectName.trim().length() == 0) {
+  public void setMonitorObjectName(String aMonitorObjectName) {
+    if (aMonitorObjectName == null || aMonitorObjectName.trim().length() == 0) {
       throw new IllegalArgumentException("ObjectName for EtmMonitor may not be null or empty ");
     }
-    etmMonitorObjectName = aEtmMonitorObjectName;
+    monitorObjectName = aMonitorObjectName;
   }
 
-  public void setEtmMeasurementObjectNamePrefix(String aEtmMeasurementObjectNamePrefix) {
-    etmMeasurementObjectNamePrefix = aEtmMeasurementObjectNamePrefix;
+
+  /**
+   * Sets the prefix for measurement results. Default is
+   * {@link etm.core.jmx.AbstractJmxRegistry#DEFAULT_ETM_POINT_DOMAIN}
+   *
+   * @param aMeasurementDomain The prefix.
+   */
+
+  public void setMeasurementDomain(String aMeasurementDomain) {
+    measurementDomain = aMeasurementDomain;
   }
 
   /**
@@ -112,23 +125,24 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
    * @param flag True to overwrite, otherwhise false.
    */
 
-  public void setOverwriteRegistered(boolean flag) {
-    overwriteRegistered = flag;
+  public void setOverwrite(boolean flag) {
+    overwrite = flag;
   }
 
   public void start() {
-    try {
-      ArrayList mbeanServers = MBeanServerFactory.findMBeanServer(mbeanServerName);
-      mbeanServer = (MBeanServer) mbeanServers.get(0);
-      if (mbeanServer != null) {
-        ObjectName objectName = new ObjectName(etmMonitorObjectName);
-        registerMBean(new EtmMonitorMBean(etmMonitor), objectName);
-      } else {
-        System.err.println("Unable to locate a valid MBeanServer. ");
+    if (mbeanServer == null) {
+      try {
+        ArrayList mbeanServers = MBeanServerFactory.findMBeanServer(mbeanServerName);
+        mbeanServer = (MBeanServer) mbeanServers.get(0);
+        if (mbeanServer != null) {
+          ObjectName objectName = new ObjectName(monitorObjectName);
+          registerMBean(new EtmMonitorMBean(etmMonitor), objectName);
+        } else {
+          System.err.println("Unable to locate a valid MBeanServer. ");
+        }
+      } catch (Exception e) {
+        System.err.println("Error while registering EtmMonitorMBean " + e.getMessage());
       }
-    } catch (Exception e) {
-      //???
-      e.printStackTrace();
     }
 
     isStopping = false;
@@ -140,10 +154,9 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     if (mbeanServer != null) {
       try {
         deregisterPerformanceResults();
-        mbeanServer.unregisterMBean(new ObjectName(etmMonitorObjectName));
+        mbeanServer.unregisterMBean(new ObjectName(monitorObjectName));
       } catch (Exception e) {
-        // ???
-        e.printStackTrace();
+        System.err.println("Error while unregistering EtmMonitorMBean " + e.getMessage());
       }
     }
   }
@@ -178,7 +191,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     try {
       deregisterPerformanceResults();
     } catch (Exception e) {
-      e.printStackTrace();
+      System.err.println("Error while deregistering all performance results " + e.getMessage());
     }
   }
 
@@ -190,32 +203,19 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     try {
       mbeanServer.registerMBean(object, objectName);
     } catch (InstanceAlreadyExistsException e) {
-      if (overwriteRegistered) {
+      if (overwrite) {
         mbeanServer.unregisterMBean(objectName);
         mbeanServer.registerMBean(object, objectName);
       } else {
-        System.err.println("Error registering EtmMonitor MBean. An instance exists for name " + etmMonitorObjectName);
+        System.err.println("Error registering EtmMonitor MBean. An instance called " + monitorObjectName + " already exists.");
       }
     }
   }
 
-  protected void registerAggregate(Aggregate aAggregate) {
-    String name = calculateJmxName(aAggregate);
-
-    Hashtable map = new Hashtable();
-    map.put("type", "Measurement");
-    map.put("name", name);
-    try {
-      ObjectName objectName = new ObjectName(etmMeasurementObjectNamePrefix, map);
-      registerMBean(new EtmPointMBean(etmMonitor, aAggregate), objectName);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
   protected void deregisterPerformanceResults() throws MalformedObjectNameException, InstanceNotFoundException, MBeanRegistrationException {
-    ObjectName objectName = new ObjectName(etmMeasurementObjectNamePrefix+":*");
-    Set set = mbeanServer.queryNames(objectName,  null);
+    ObjectName objectName = new ObjectName(measurementDomain + ":*");
+    Set set = mbeanServer.queryNames(objectName, null);
     for (Iterator iterator = set.iterator(); iterator.hasNext();) {
       ObjectName o = (ObjectName) iterator.next();
       mbeanServer.unregisterMBean(o);
@@ -238,5 +238,18 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     return new String(chars);
   }
 
+  protected void registerAggregate(Aggregate aAggregate) {
+     String name = calculateJmxName(aAggregate);
+
+     Hashtable map = new Hashtable();
+     map.put("type", "Measurement");
+     map.put("name", name);
+     try {
+       ObjectName objectName = new ObjectName(measurementDomain, map);
+       registerMBean(new EtmPointMBean(etmMonitor, aAggregate), objectName);
+     } catch (Exception e) {
+       System.err.println("Error registering performance result " + name + ": " + e.getMessage());
+     }
+   }
 
 }
