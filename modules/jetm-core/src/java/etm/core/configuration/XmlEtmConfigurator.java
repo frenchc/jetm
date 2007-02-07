@@ -33,16 +33,7 @@
 package etm.core.configuration;
 
 import etm.core.monitor.EtmMonitor;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +43,7 @@ import java.net.URL;
 
 /**
  * Xml based configurator. Requires a xml configuration which is valid
- * to <code>jetm_config_1_0.dtd</code>.
+ * to jetm_config DTD.
  * <p/>
  * Be aware that you need to start and stop the EtmMonitor before
  * using it. See {@link etm.core.monitor.EtmMonitor} lifecycle.
@@ -61,9 +52,6 @@ import java.net.URL;
  * @version $Revision$
  */
 public class XmlEtmConfigurator {
-  public static final String PUBLIC_DTD_ID = "-// void.fm //DTD JETM Config 1.0//EN";
-  public static final String JETM_CONFIG_1_0_DTD_NAME = "jetm_config_1_0.dtd";
-
 
   private XmlEtmConfigurator() {
   }
@@ -79,8 +67,7 @@ public class XmlEtmConfigurator {
     InputStream inStream = null;
     try {
       inStream = new ByteArrayInputStream(config.getBytes());
-      Document doc = parse(inStream);
-      loadConfig(doc);
+      doConfigure(inStream);        
     } catch (EtmConfigurationException e) {
       throw e;
     } catch (Exception e) {
@@ -107,8 +94,7 @@ public class XmlEtmConfigurator {
 
     try {
       inStream = configLocation.openStream();
-      Document doc = parse(inStream);
-      loadConfig(doc);
+      doConfigure(inStream);
     } catch (EtmConfigurationException e) {
       throw e;
     } catch (Exception e) {
@@ -133,8 +119,7 @@ public class XmlEtmConfigurator {
    */
   public static void configure(InputStream in) {
     try {
-      Document doc = parse(in);
-      loadConfig(doc);
+      doConfigure(in);
     } catch (EtmConfigurationException e) {
       throw e;
     } catch (Exception e) {
@@ -157,141 +142,11 @@ public class XmlEtmConfigurator {
     }
   }
 
-  private static Document parse(InputStream inStream) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-    documentBuilder.setEntityResolver(new EntityResolver() {
-      public InputSource resolveEntity(String string, String string1) throws SAXException {
-        if (PUBLIC_DTD_ID.equals(string)) {
-          return new InputSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(JETM_CONFIG_1_0_DTD_NAME));
-        }
-        throw new SAXException("Unsupported entity " + string);
-      }
-    });
+  private static void doConfigure(InputStream in) throws Exception {
+    EtmMonitorConfig monitorConfig = XmlConfigParser.extractConfig(in);
 
-    return documentBuilder.parse(inStream);
-
-  }
-
-  private static void loadConfig(Document document) throws Exception {
-    EtmMonitorConfig monitorConfig = new EtmMonitorConfig();
-
-    Element documentElement = document.getDocumentElement();
-    String attribute = getAttribute(documentElement, "autostart");
-    if ("true".equals(attribute)) {
-      monitorConfig.setAutostart(true);
-    }
-    NodeList monitorTypes = documentElement.getElementsByTagName("monitor-type");
-    if (monitorTypes.getLength() != 0) {
-      Node node = monitorTypes.item(0);
-      monitorConfig.setMonitorType(getNodeFirstChildTextValue(node));
-    } else {
-      NodeList monitorClasses = documentElement.getElementsByTagName("monitor-class");
-      if (monitorClasses.getLength() != 0) {
-        Node node = monitorClasses.item(0);
-        monitorConfig.setMonitorClass(getNodeFirstChildTextValue(node));
-      }
-    }
-
-    NodeList timerTypes = documentElement.getElementsByTagName("timer-type");
-    if (timerTypes.getLength() != 0) {
-      Node node = timerTypes.item(0);
-      monitorConfig.setTimerType(getNodeFirstChildTextValue(node));
-    } else {
-      NodeList timerClasses = documentElement.getElementsByTagName("timer-class");
-      if (timerClasses.getLength() != 0) {
-        Node node = timerClasses.item(0);
-        monitorConfig.setTimerClass(getNodeFirstChildTextValue(node));
-      }
-    }
-
-
-    NodeList aggregatorChain = documentElement.getElementsByTagName("aggregator-chain");
-    if (aggregatorChain.getLength() != 0) {
-      Element element = ((Element) aggregatorChain.item(0));
-      NodeList aggregatorRoot = element.getElementsByTagName("chain-root");
-      if (aggregatorRoot.getLength() == 0) {
-        throw new EtmConfigurationException("At least one aggregator-root element has to be specified");
-      } else {
-        EtmAggregatorConfig rootConfig = extractAggregatorConfig((Element) aggregatorRoot.item(0));
-        monitorConfig.setAggregatorRoot(rootConfig);
-      }
-
-      NodeList aggregators = documentElement.getElementsByTagName("chain-element");
-      for (int i = 0; i < aggregators.getLength(); i++) {
-        Element aggregator = (Element) aggregators.item(i);
-        EtmAggregatorConfig aggregatorConfig = extractAggregatorConfig(aggregator);
-        monitorConfig.appendAggregator(aggregatorConfig);
-      }
-    }
-
-
-    NodeList extension = documentElement.getElementsByTagName("extension");
-    if (extension.getLength() != 0) {
-      NodeList plugins = ((Element) extension.item(0)).getElementsByTagName("plugin");
-      for (int i = 0; i < plugins.getLength(); i++) {
-        Element plugin = (Element) plugins.item(i);
-        EtmPluginConfig pluginConfig = extractPluginConfig(plugin);
-        monitorConfig.addExtension(pluginConfig);
-      }
-    }
     EtmMonitor etmMonitor = EtmMonitorFactory.createEtmMonitor(monitorConfig);
     EtmManager.configure(etmMonitor);
-  }
-
-  private static EtmPluginConfig extractPluginConfig(Element aPlugin) {
-    EtmPluginConfig pluginConfig = new EtmPluginConfig();
-
-    NodeList pluginClasses = aPlugin.getElementsByTagName("plugin-class");
-    if (pluginClasses.getLength() != 0) {
-      Node node = pluginClasses.item(0);
-      pluginConfig.setPluginClass(getNodeFirstChildTextValue(node));
-    } else {
-      throw new EtmConfigurationException("No valid plugin class found");
-    }
-
-    NodeList properties = aPlugin.getElementsByTagName("property");
-    for (int j = 0; j < properties.getLength(); j++) {
-      Element property = (Element) properties.item(j);
-      pluginConfig.addProperty(getAttribute(property, "name"), getNodeFirstChildTextValue(property));
-    }
-
-    return pluginConfig;
-  }
-
-  private static EtmAggregatorConfig extractAggregatorConfig(Element aAggregator) {
-    EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
-    NodeList aggregatorClasses = aAggregator.getElementsByTagName("aggregator-class");
-    if (aggregatorClasses.getLength() != 0) {
-      Node node = aggregatorClasses.item(0);
-      aggregatorConfig.setAggregatorClass(getNodeFirstChildTextValue(node));
-    } else {
-      throw new EtmConfigurationException("No valid aggregator class found");
-    }
-
-    NodeList properties = aAggregator.getElementsByTagName("property");
-    for (int j = 0; j < properties.getLength(); j++) {
-      Element property = (Element) properties.item(j);
-      aggregatorConfig.addProperty(getAttribute(property, "name"), getNodeFirstChildTextValue(property));
-    }
-    return aggregatorConfig;
-  }
-
-  private static String getAttribute(Element element, String attributeName) {
-    String attribute = element.getAttribute(attributeName);
-    if (attribute != null) {
-      return attribute.trim();
-    }
-
-    return attribute;
-  }
-
-  private static String getNodeFirstChildTextValue(Node aNode) {
-    String nodeValue = aNode.getFirstChild().getNodeValue();
-    if (nodeValue != null) {
-      return nodeValue.trim();
-    }
-    return nodeValue;
   }
 
 }
