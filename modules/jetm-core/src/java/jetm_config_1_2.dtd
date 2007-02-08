@@ -44,7 +44,7 @@
 <!ATTLIST jetm-config autostart (true|false) "false">
 
 <!ELEMENT features ((threshold-buffer|interval-buffer)?, persistence?, jmx?, raw-data-log?)>
-<!ELEMENT aggregator-chain (chain-element+,chain-root?)>
+<!ELEMENT aggregator-chain (chain-element*,chain-root?)>
 <!ELEMENT extension (plugin)*>
 
 <!ELEMENT threshold-buffer (#PCDATA)>

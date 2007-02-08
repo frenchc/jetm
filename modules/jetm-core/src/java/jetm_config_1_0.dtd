@@ -43,7 +43,7 @@
 <!ELEMENT monitor-class (#PCDATA)>
 <!ELEMENT timer-type (#PCDATA)>
 <!ELEMENT timer-class (#PCDATA)>
-<!ELEMENT aggregator-chain (chain-element+,chain-root)>
+<!ELEMENT aggregator-chain (chain-element*,chain-root)>
 <!ELEMENT extension (plugin)*>
 
 <!ELEMENT chain-root (aggregator-class, properties?)>
