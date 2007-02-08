@@ -33,6 +33,7 @@
 package etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
+import etm.core.aggregation.BufferedThresholdAggregator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.plugin.EtmPlugin;
 import etm.core.timer.DefaultTimer;
@@ -147,6 +148,11 @@ public class  EtmMonitorFactory {
           if (properties != null) {
             setProperties(current, properties);
           }
+        }
+      } else {
+        // always add buffering to aggregators if root aggregator does not buffer
+        if (!current.getMetaData().isBuffering()) {
+          current = new BufferedThresholdAggregator(current);
         }
       }
       return current;

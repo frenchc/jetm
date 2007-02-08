@@ -233,7 +233,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
 
     TestMonitor etmMonitor = (TestMonitor) EtmManager.getEtmMonitor();
     etmMonitor.start();
-    assertEquals(PersistentRootAggregator.class, etmMonitor.getAggregator().getClass());
+    assertEquals(PersistentRootAggregator.class, etmMonitor.getAggregator().getMetaData().getNestedMetaData().getImplementationClass());
 
     etmMonitor.stop();
   }
