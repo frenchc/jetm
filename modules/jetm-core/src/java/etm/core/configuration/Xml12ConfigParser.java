@@ -32,16 +32,29 @@
 package etm.core.configuration;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
- *
  * Config parser for jetm_config_1_2.dtd configurations.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
 class Xml12ConfigParser extends XmlConfigParser {
   public EtmMonitorConfig parse(Document aDocument) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    EtmMonitorConfig monitorConfig = new EtmMonitorConfig();
+
+    Element documentElement = aDocument.getDocumentElement();
+    String attribute = getAttribute(documentElement, "autostart");
+    if ("true".equals(attribute)) {
+      monitorConfig.setAutostart(true);
+    }
+
+    String type = getAttribute(documentElement, "type");
+    if (type != null && type.length() > 0) {
+      monitorConfig.setMonitorType(type);
+    }
+
+    return monitorConfig;
   }
 }

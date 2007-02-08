@@ -32,6 +32,8 @@
 package etm.core.configuration;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -54,6 +56,7 @@ abstract class XmlConfigParser {
   public static final String PUBLIC_DTD_1_2 = "-// void.fm //DTD JETM Config 1.2//EN";
   public static final String JETM_CONFIG_1_2_DTD_NAME = "jetm_config_1_2.dtd";
 
+  public abstract EtmMonitorConfig parse(Document aDocument);
 
   public static EtmMonitorConfig extractConfig(InputStream inStream) throws Exception {
     Document document = load(inStream);
@@ -62,13 +65,12 @@ abstract class XmlConfigParser {
     return parser.parse(document);
   }
 
-  public abstract EtmMonitorConfig parse(Document aDocument);
 
   protected static XmlConfigParser getParser(String publicId) {
     if (PUBLIC_DTD_1_0.equals(publicId)) {
       return new Xml10ConfigParser();
     } else if (PUBLIC_DTD_1_2.equals(publicId)) {
-      return new Xml10ConfigParser();
+      return new Xml12ConfigParser();
     } else {
       throw new EtmConfigurationException("Unsupported public ID " + publicId);
     }
@@ -76,6 +78,7 @@ abstract class XmlConfigParser {
 
   protected static Document load(InputStream inStream) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setValidating(true);
     DocumentBuilder documentBuilder = factory.newDocumentBuilder();
     documentBuilder.setEntityResolver(new EntityResolver() {
       public InputSource resolveEntity(String string, String string1) throws SAXException {
@@ -90,6 +93,24 @@ abstract class XmlConfigParser {
 
     return documentBuilder.parse(inStream);
 
+  }
+
+
+  protected String getAttribute(Element element, String attributeName) {
+    String attribute = element.getAttribute(attributeName);
+    if (attribute != null) {
+      return attribute.trim();
+    }
+
+    return attribute;
+  }
+
+  protected String getNodeFirstChildTextValue(Node aNode) {
+    String nodeValue = aNode.getFirstChild().getNodeValue();
+    if (nodeValue != null) {
+      return nodeValue.trim();
+    }
+    return nodeValue;
   }
 
 

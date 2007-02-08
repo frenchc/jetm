@@ -149,20 +149,5 @@ class Xml10ConfigParser extends XmlConfigParser {
     return aggregatorConfig;
   }
 
-  private String getAttribute(Element element, String attributeName) {
-    String attribute = element.getAttribute(attributeName);
-    if (attribute != null) {
-      return attribute.trim();
-    }
 
-    return attribute;
-  }
-
-  private String getNodeFirstChildTextValue(Node aNode) {
-    String nodeValue = aNode.getFirstChild().getNodeValue();
-    if (nodeValue != null) {
-      return nodeValue.trim();
-    }
-    return nodeValue;
-  }
 }
