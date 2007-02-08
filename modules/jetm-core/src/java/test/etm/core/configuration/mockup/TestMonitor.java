@@ -72,23 +72,21 @@ public class TestMonitor extends EtmMonitorSupport {
   }
 
   public void render(MeasurementRenderer renderer) {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
   public void reset() {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
   public boolean isStarted() {
-    return false;  //To change body of implemented methods use File | Settings | File Templates.
+    return false;
   }
+
 
   protected void doVisitPreMeasurement(MeasurementPoint aMeasurementPoint) {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
+
   protected void doVisitPostCollect(MeasurementPoint aPoint) {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
   protected Aggregator getDefaultAggregator() {

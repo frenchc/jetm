@@ -52,6 +52,11 @@ public class PropertyConfig {
   }
 
   public void addProperty(String propertyName, String propertyValue) {
+    if (propertyValue.startsWith("${") && propertyValue.endsWith("}")) {
+      String systemKey = propertyValue.substring(2, propertyValue.length() - 1);
+      propertyValue = System.getProperty(systemKey, propertyValue);
+    }
+
     if (properties == null) {
       properties = new HashMap();
     }

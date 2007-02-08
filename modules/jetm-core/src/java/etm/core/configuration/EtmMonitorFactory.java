@@ -51,7 +51,7 @@ import java.util.Map;
  * @version $Revision$
  */
 
-public class EtmMonitorFactory {
+public class  EtmMonitorFactory {
 
   private static final String[] jetmTimer = new String[]{
     "etm.core.timer.Java15NanoTimer",

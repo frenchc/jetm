@@ -29,41 +29,36 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package test.etm.core.configuration.mockup;
 
-package etm.core.configuration;
-
-import etm.core.plugin.EtmPlugin;
+import etm.core.aggregation.persistence.PersistenceBackend;
+import etm.core.aggregation.persistence.PersistentEtmState;
 
 /**
- * Configuration for an EtmPlugin
  *
- * @author void.fm
+ * Custom backend implementation
+ *
  * @version $Revision$
+ * @author void.fm
+ *
  */
-public class EtmPluginConfig extends PropertyConfig {
-  private Class pluginClass;
+public class TestBackend implements PersistenceBackend {
 
-  public Class getPluginClass() {
-    return pluginClass;
+  private String yadda;
+
+  public void setYadda(String aYadda) {
+    yadda = aYadda;
   }
 
-
-  public void setPluginClass(Class aPluginClass) {
-    pluginClass = aPluginClass;
+  public String getYadda() {
+    return yadda;
   }
 
-  public void setPluginClass(String pluginClassName) {
-    Class clazz;
-    try {
-      clazz = Class.forName(pluginClassName);
-    } catch (ClassNotFoundException e) {
-      throw new EtmConfigurationException("Plugin class " + pluginClassName + " not found.");
-    }
-    if (EtmPlugin.class.isAssignableFrom(clazz)) {
-      pluginClass = clazz;
-    } else {
-      throw new EtmConfigurationException("Class " + pluginClassName + " is not a valid plugin implementation.");
-    }
+  public PersistentEtmState load() {
+    return null;
   }
-  
+
+  public void store(PersistentEtmState state) {
+
+  }
 }

@@ -91,7 +91,7 @@ class Xml10ConfigParser extends XmlConfigParser {
         monitorConfig.setAggregatorRoot(rootConfig);
       }
 
-      NodeList aggregators = documentElement.getElementsByTagName("chain-element");
+      NodeList aggregators = element.getElementsByTagName("chain-element");
       for (int i = 0; i < aggregators.getLength(); i++) {
         Element aggregator = (Element) aggregators.item(i);
         EtmAggregatorConfig aggregatorConfig = extractAggregatorConfig(aggregator);

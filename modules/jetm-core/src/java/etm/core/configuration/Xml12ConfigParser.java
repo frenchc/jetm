@@ -31,7 +31,11 @@
  */
 package etm.core.configuration;
 
+import etm.core.aggregation.BufferedThresholdAggregator;
+import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.RootAggregator;
+import etm.core.aggregation.persistence.PersistentRootAggregator;
+import etm.core.jmx.EtmMonitorJmxPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -58,33 +62,20 @@ class Xml12ConfigParser extends XmlConfigParser {
       monitorConfig.setMonitorType(type);
     }
 
-     String timer = getAttribute(documentElement, "timer");
+    String timer = getAttribute(documentElement, "timer");
     if (timer != null && timer.length() > 0) {
       monitorConfig.setTimerType(timer);
     }
 
+    NodeList features = documentElement.getElementsByTagName("features");
     NodeList aggregatorChain = documentElement.getElementsByTagName("aggregator-chain");
-    if (aggregatorChain.getLength() != 0) {
-      Element element = ((Element) aggregatorChain.item(0));
-      NodeList aggregatorRoot = element.getElementsByTagName("chain-root");
-      if (aggregatorRoot.getLength() == 0) {
-        EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
-        aggregatorConfig.setAggregatorClass(RootAggregator.class);
-        monitorConfig.setAggregatorRoot(aggregatorConfig);
-      } else {
-        EtmAggregatorConfig rootConfig = extractAggregatorConfig((Element) aggregatorRoot.item(0));
-        monitorConfig.setAggregatorRoot(rootConfig);
-      }
-
-      NodeList aggregators = documentElement.getElementsByTagName("chain-element");
-      for (int i = 0; i < aggregators.getLength(); i++) {
-        Element aggregator = (Element) aggregators.item(i);
-        EtmAggregatorConfig aggregatorConfig = extractAggregatorConfig(aggregator);
-        monitorConfig.appendAggregator(aggregatorConfig);
-      }
+    if (features.getLength() != 0) {
+      parseFeatures(features, monitorConfig);
+    } else if (aggregatorChain.getLength() != 0) {
+      parseChain(aggregatorChain, monitorConfig);
     }
 
-     NodeList extension = documentElement.getElementsByTagName("extension");
+    NodeList extension = documentElement.getElementsByTagName("extension");
     if (extension.getLength() != 0) {
       NodeList plugins = ((Element) extension.item(0)).getElementsByTagName("plugin");
       for (int i = 0; i < plugins.getLength(); i++) {
@@ -97,8 +88,132 @@ class Xml12ConfigParser extends XmlConfigParser {
     return monitorConfig;
   }
 
+  protected void parseFeatures(NodeList features, EtmMonitorConfig aMonitorConfig) {
+    Element featureConfig = ((Element) features.item(0));
 
-   protected EtmPluginConfig extractPluginConfig(Element aPlugin) {
+    //(threshold-buffer|interval-buffer)?, persistence?, jmx?, raw-data-log?
+    NodeList thresholdBuffer = featureConfig.getElementsByTagName("threshold-buffer");
+    NodeList intervalBuffer = featureConfig.getElementsByTagName("interval-buffer");
+    NodeList persistence = featureConfig.getElementsByTagName("persistence");
+    NodeList jmxConfig = featureConfig.getElementsByTagName("jmx");
+    NodeList rawDataConfig = featureConfig.getElementsByTagName("raw-data-log");
+
+    if (persistence.getLength() != 0) {
+      Element element = ((Element) persistence.item(0));
+
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      aggregatorConfig.setAggregatorClass(PersistentRootAggregator.class);
+
+      // file based backend or custom backend??
+      NodeList fileBackend = element.getElementsByTagName("file-backend");
+      NodeList customBackend = element.getElementsByTagName("custom-backend");
+      if (fileBackend.getLength() != 0) {
+        Element fileBackendElement = ((Element) fileBackend.item(0));
+
+        addPropertyByAttribute(fileBackendElement, aggregatorConfig, "filename", "backendProperties.filename");
+        addPropertyByAttribute(fileBackendElement, aggregatorConfig, "path", "backendProperties.path");
+
+      } else if (customBackend.getLength() != 0) {
+        Element customBackendElement = ((Element) customBackend.item(0));
+
+        addPropertyByAttribute(customBackendElement, aggregatorConfig, "class", "persistenceBackendClass");
+
+        NodeList properties = customBackendElement.getElementsByTagName("property");
+        for (int j = 0; j < properties.getLength(); j++) {
+          Element property = (Element) properties.item(j);
+          aggregatorConfig.addProperty("backendProperties." + getAttribute(property, "name"), getNodeFirstChildTextValue(property));
+        }
+
+      }
+
+      aMonitorConfig.setAggregatorRoot(aggregatorConfig);
+    } else {
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      aggregatorConfig.setAggregatorClass(RootAggregator.class);
+      aMonitorConfig.setAggregatorRoot(aggregatorConfig);
+    }
+
+    if (thresholdBuffer.getLength() != 0) {
+      Element element = ((Element) thresholdBuffer.item(0));
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      aggregatorConfig.setAggregatorClass(BufferedThresholdAggregator.class);
+
+      addPropertyByAttribute(element, aggregatorConfig, "threshold", "threshold");
+
+      aMonitorConfig.appendAggregator(aggregatorConfig);
+
+    } else if (intervalBuffer.getLength() != 0) {
+      Element element = ((Element) thresholdBuffer.item(0));
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      aggregatorConfig.setAggregatorClass(BufferedTimedAggregator.class);
+
+      addPropertyByAttribute(element, aggregatorConfig, "interval", "aggregationInterval");
+
+      aMonitorConfig.appendAggregator(aggregatorConfig);
+    }
+
+
+    if (rawDataConfig.getLength() != 0) {
+      Element element = ((Element) rawDataConfig.item(0));
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      String type = element.getAttribute("type");
+      // dependency to contrib!??!
+
+      if ("log4j".equals(type)) {
+        aggregatorConfig.setAggregatorClass("etm.contrib.aggregation.log.Log4jAggregator");
+      } else if ("jdk14".equals(type)) {
+        aggregatorConfig.setAggregatorClass("etm.contrib.aggregation.log.Jdk14LogAggregator");
+      } else if ("commons".equals(type)) {
+        aggregatorConfig.setAggregatorClass("etm.contrib.aggregation.log.CommonsLoggingAggregator");
+      }
+
+      addPropertyByAttribute(element, aggregatorConfig, "category", "logName");
+      addPropertyByAttribute(element, aggregatorConfig, "formatter-class", "formatterClass");
+      addPropertyByAttribute(element, aggregatorConfig, "filter-pattern", "filterPattern");
+
+      aMonitorConfig.appendAggregator(aggregatorConfig);
+    }
+
+    // plugins
+    if (jmxConfig.getLength() != 0) {
+      Element jmxConfigElement = ((Element) jmxConfig.item(0));
+      EtmPluginConfig config = new EtmPluginConfig();
+      config.setPluginClass(EtmMonitorJmxPlugin.class);
+
+      addPropertyByAttribute(jmxConfigElement, config, "mbeanServerName", "mbeanServerName");
+      addPropertyByAttribute(jmxConfigElement, config, "monitorObjectName", "monitorObjectName");
+      addPropertyByAttribute(jmxConfigElement, config, "measurementDomain", "measurementDomain");
+      addPropertyByAttribute(jmxConfigElement, config, "overwrite", "overwrite");
+
+      aMonitorConfig.addExtension(config);
+    }
+
+
+  }
+
+
+  protected void parseChain(NodeList aAggregatorChain, EtmMonitorConfig aMonitorConfig) {
+    Element element = ((Element) aAggregatorChain.item(0));
+    NodeList aggregatorRoot = element.getElementsByTagName("chain-root");
+    if (aggregatorRoot.getLength() == 0) {
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      aggregatorConfig.setAggregatorClass(RootAggregator.class);
+      aMonitorConfig.setAggregatorRoot(aggregatorConfig);
+    } else {
+      EtmAggregatorConfig rootConfig = extractAggregatorConfig((Element) aggregatorRoot.item(0));
+      aMonitorConfig.setAggregatorRoot(rootConfig);
+    }
+
+    NodeList aggregators = element.getElementsByTagName("chain-element");
+    for (int i = 0; i < aggregators.getLength(); i++) {
+      Element aggregator = (Element) aggregators.item(i);
+      EtmAggregatorConfig aggregatorConfig = extractAggregatorConfig(aggregator);
+      aMonitorConfig.appendAggregator(aggregatorConfig);
+    }
+  }
+
+
+  protected EtmPluginConfig extractPluginConfig(Element aPlugin) {
     EtmPluginConfig pluginConfig = new EtmPluginConfig();
 
     String pluginClass = aPlugin.getAttribute("class");
@@ -133,7 +248,6 @@ class Xml12ConfigParser extends XmlConfigParser {
     }
     return aggregatorConfig;
   }
-
 
 
 }

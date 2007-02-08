@@ -24,6 +24,7 @@ Release 1.2.0
   - Minor fixes to logging aggregators
   - Altered order of plugin and aggregator startup
   - Added init(EtmMonitorContext) to plugin and aggregator lifecycle
+  - Added System Property support for jetm-config.xml
 
   - Switched from CVS to SVN (history not migrated)
 

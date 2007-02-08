@@ -81,7 +81,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
   protected EtmMonitor etmMonitor;
 
   // flag to prevent registration during shutdown
-  private boolean isStopping = false;
+  private boolean isStopping = true;
 
   /**
    * Sets the name of the MBeanServer to use. Default is <code>null</code>.
@@ -133,19 +133,21 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     if (mbeanServer == null) {
       try {
         ArrayList mbeanServers = MBeanServerFactory.findMBeanServer(mbeanServerName);
-        mbeanServer = (MBeanServer) mbeanServers.get(0);
-        if (mbeanServer != null) {
+        if (mbeanServers.size() > 0) {
+          mbeanServer = (MBeanServer) mbeanServers.get(0);
           ObjectName objectName = new ObjectName(monitorObjectName);
           registerMBean(new EtmMonitorMBean(etmMonitor), objectName);
+
+          isStopping = false;
+
         } else {
-          System.err.println("Unable to locate a valid MBeanServer. ");
+          System.err.println("Unable to locate a valid MBeanServer. Disable JMX support.");
         }
       } catch (Exception e) {
         System.err.println("Error while registering EtmMonitorMBean " + e.getMessage());
       }
     }
 
-    isStopping = false;
   }
 
   public void stop() {
@@ -239,17 +241,17 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
   }
 
   protected void registerAggregate(Aggregate aAggregate) {
-     String name = calculateJmxName(aAggregate);
+    String name = calculateJmxName(aAggregate);
 
-     Hashtable map = new Hashtable();
-     map.put("type", "Measurement");
-     map.put("name", name);
-     try {
-       ObjectName objectName = new ObjectName(measurementDomain, map);
-       registerMBean(new EtmPointMBean(etmMonitor, aAggregate), objectName);
-     } catch (Exception e) {
-       System.err.println("Error registering performance result " + name + ": " + e.getMessage());
-     }
-   }
+    Hashtable map = new Hashtable();
+    map.put("type", "Measurement");
+    map.put("name", name);
+    try {
+      ObjectName objectName = new ObjectName(measurementDomain, map);
+      registerMBean(new EtmPointMBean(etmMonitor, aAggregate), objectName);
+    } catch (Exception e) {
+      System.err.println("Error registering performance result " + name + ": " + e.getMessage());
+    }
+  }
 
 }

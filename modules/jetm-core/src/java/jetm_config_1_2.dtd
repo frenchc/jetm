@@ -51,7 +51,7 @@
 <!ATTLIST threshold-buffer threshold CDATA #IMPLIED>
 
 <!ELEMENT interval-buffer (#PCDATA)>
-<!ATTLIST threshold-buffer interval CDATA #IMPLIED>
+<!ATTLIST interval-buffer interval CDATA #IMPLIED>
 
 <!ELEMENT persistence (file-backend|custom-backend)?>
 
@@ -69,9 +69,11 @@
 <!ATTLIST jmx overwrite (true|false) "false">
 
 <!ELEMENT raw-data-log (#PCDATA)>
-<!ATTLIST raw-data-log type CDATA #REQUIRED>
+<!ATTLIST raw-data-log type (log4j|jdk14|commons) #REQUIRED>
 <!ATTLIST raw-data-log category CDATA #IMPLIED>
 <!ATTLIST raw-data-log formatter-class CDATA #IMPLIED>
+<!ATTLIST raw-data-log filter-pattern CDATA #IMPLIED>
+
 
 <!ELEMENT chain-element (property*)>
 <!ATTLIST chain-element class CDATA #REQUIRED>

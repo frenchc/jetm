@@ -1,8 +1,13 @@
 package test.etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
+import etm.core.aggregation.BufferedThresholdAggregator;
+import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
+import etm.core.jmx.EtmMonitorJmxPlugin;
+import etm.core.metadata.AggregatorMetaData;
+import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.FlatMonitor;
 import etm.core.monitor.NestedMonitor;
@@ -14,6 +19,8 @@ import test.etm.core.configuration.mockup.TestMonitor;
 import test.etm.core.configuration.mockup.TestPlugin;
 import test.etm.core.configuration.mockup.TestTimer;
 
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -178,6 +185,57 @@ public class Xml12EtmConfiguratorTest extends TestCase {
     etmMonitor = EtmManager.getEtmMonitor();
     assertFalse(etmMonitor.isStarted());
     assertTrue(etmMonitor.isCollecting());
+  }
+
+
+  public void testFeatures() throws Exception {
+
+    MBeanServer server = MBeanServerFactory.createMBeanServer();
+    try {
+      URL url = locateResource("test/etm/core/configuration/files/valid_1_2/features.xml");
+      EtmManager.reset();
+      XmlEtmConfigurator.configure(url);
+
+      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+
+      etmMonitor.start();
+
+      AggregatorMetaData bufferMetaData = etmMonitor.getMetaData().getAggregatorMetaData();
+      assertEquals(BufferedThresholdAggregator.class, bufferMetaData.getImplementationClass());
+
+      assertNotNull(bufferMetaData.getNestedMetaData());
+
+
+      AggregatorMetaData rootMetaData = bufferMetaData.getNestedMetaData();
+      assertEquals(PersistentRootAggregator.class, rootMetaData.getImplementationClass());
+
+      List list = etmMonitor.getMetaData().getPluginMetaData();
+      assertEquals(1, list.size());
+
+      PluginMetaData pluginMetaData = (PluginMetaData) list.get(0);
+      assertEquals(EtmMonitorJmxPlugin.class, pluginMetaData.getImplementationClass());
+
+      Map properties = pluginMetaData.getProperties();
+      assertEquals("test:service=Foo", properties.get("monitorObjectName"));
+      assertEquals("test.performance", properties.get("measurementDomain"));
+      assertEquals("true", properties.get("overwrite"));
+
+      etmMonitor.stop();
+    } finally {
+      MBeanServerFactory.releaseMBeanServer(server);
+    }
+  }
+
+  public void testCustomBackend() throws Exception {
+    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/features-custom-persistence.xml");
+    EtmManager.reset();
+    XmlEtmConfigurator.configure(url);
+
+    TestMonitor etmMonitor = (TestMonitor) EtmManager.getEtmMonitor();
+    etmMonitor.start();
+    assertEquals(PersistentRootAggregator.class, etmMonitor.getAggregator().getClass());
+
+    etmMonitor.stop();
   }
 
   private URL locateResource(String classPathName) throws IOException {

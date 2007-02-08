@@ -97,6 +97,16 @@ public abstract class AbstractLogAggregator implements Aggregator {
     formatter = aFormatter;
   }
 
+  public void setFormatterClass(Class aFormatterClazz) {
+    try {
+      formatter = (LogOutputFormatter) aFormatterClazz.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+
+
   /**
    * Adds a filter for symbolic EtmPoint names that
    * should be logged. Uses {@link java.util.regex.Pattern}
