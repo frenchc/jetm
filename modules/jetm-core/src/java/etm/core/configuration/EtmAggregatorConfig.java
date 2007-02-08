@@ -50,6 +50,10 @@ public class EtmAggregatorConfig extends PropertyConfig {
     return aggregatorClass;
   }
 
+  public void setAggregatorClass(Class aAggregatorClass) {
+    aggregatorClass = aAggregatorClass;
+  }
+
   public void setAggregatorClass(String aggregatorClassName) {
     Class clazz;
     try {

@@ -46,7 +46,8 @@ import java.io.InputStream;
  * Abstract configuration factory.
  *
  * @author void.fm
- * @version $Revision@
+ * @version $Revision$
+ * @since 1.2.0
  */
 abstract class XmlConfigParser {
 
@@ -113,5 +114,5 @@ abstract class XmlConfigParser {
     return nodeValue;
   }
 
-
+ 
 }

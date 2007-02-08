@@ -42,6 +42,8 @@ import org.w3c.dom.NodeList;
  *
  * @version $Revision$
  * @author void.fm
+ * @since 1.2.0
+ *
  */
 class Xml10ConfigParser extends XmlConfigParser {
 
@@ -61,7 +63,7 @@ class Xml10ConfigParser extends XmlConfigParser {
       NodeList monitorClasses = documentElement.getElementsByTagName("monitor-class");
       if (monitorClasses.getLength() != 0) {
         Node node = monitorClasses.item(0);
-        monitorConfig.setMonitorClass(getNodeFirstChildTextValue(node));
+        monitorConfig.setMonitorType(getNodeFirstChildTextValue(node));
       }
     }
 
@@ -73,7 +75,7 @@ class Xml10ConfigParser extends XmlConfigParser {
       NodeList timerClasses = documentElement.getElementsByTagName("timer-class");
       if (timerClasses.getLength() != 0) {
         Node node = timerClasses.item(0);
-        monitorConfig.setTimerClass(getNodeFirstChildTextValue(node));
+        monitorConfig.setTimerType(getNodeFirstChildTextValue(node));
       }
     }
 
@@ -111,7 +113,7 @@ class Xml10ConfigParser extends XmlConfigParser {
     return monitorConfig;
   }
 
-  private EtmPluginConfig extractPluginConfig(Element aPlugin) {
+  protected EtmPluginConfig extractPluginConfig(Element aPlugin) {
     EtmPluginConfig pluginConfig = new EtmPluginConfig();
 
     NodeList pluginClasses = aPlugin.getElementsByTagName("plugin-class");
@@ -131,7 +133,7 @@ class Xml10ConfigParser extends XmlConfigParser {
     return pluginConfig;
   }
 
-  private EtmAggregatorConfig extractAggregatorConfig(Element aAggregator) {
+  protected EtmAggregatorConfig extractAggregatorConfig(Element aAggregator) {
     EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
     NodeList aggregatorClasses = aAggregator.getElementsByTagName("aggregator-class");
     if (aggregatorClasses.getLength() != 0) {
@@ -148,6 +150,5 @@ class Xml10ConfigParser extends XmlConfigParser {
     }
     return aggregatorConfig;
   }
-
 
 }

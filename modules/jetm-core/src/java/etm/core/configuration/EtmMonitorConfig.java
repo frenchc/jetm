@@ -32,23 +32,21 @@
 
 package etm.core.configuration;
 
-import etm.core.monitor.NestedMonitor;
-import etm.core.monitor.FlatMonitor;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.FlatMonitor;
+import etm.core.monitor.NestedMonitor;
 import etm.core.monitor.NullMonitor;
 import etm.core.timer.DefaultTimer;
 import etm.core.timer.ExecutionTimer;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * Represent the configuration for an EtmMonitor instance.
  *
- * @version $Revision$
  * @author void.fm
- *
+ * @version $Revision$
  */
 public class EtmMonitorConfig {
   private boolean autostart;
@@ -79,11 +77,9 @@ public class EtmMonitorConfig {
   }
 
   /**
-   *
    * Returns the timer class. May return null.
    *
    * @return The timer class or null.
-   *
    */
   public Class getTimerClass() {
     return timerClass;
@@ -114,7 +110,6 @@ public class EtmMonitorConfig {
   }
 
   /**
-   *
    * Returns a list of EtmPluginConfig or null
    *
    * @return The plugin config.
@@ -124,10 +119,9 @@ public class EtmMonitorConfig {
   }
 
   /**
-   *
    * Sets the ExecutionMonitor type. Valid values are
    * <code>flat</code> ({@link FlatMonitor}), <code>nested</code> ({@link NestedMonitor})
-   * and <code>null</code> ({@link NullMonitor}).
+   * and <code>null</code> ({@link NullMonitor}) or EtmMonitor classname.
    *
    * @param monitorType The type of the EtmMonitor.
    * @throws EtmConfigurationException Thrown to indicate that given monitor type is not supported.
@@ -141,38 +135,24 @@ public class EtmMonitorConfig {
     } else if ("null".equalsIgnoreCase(monitorType)) {
       monitorClass = NullMonitor.class;
     } else {
-      throw new EtmConfigurationException("Unsupported monitor type " + monitorType);
+      Class clazz;
+      try {
+        clazz = Class.forName(monitorType);
+      } catch (ClassNotFoundException e) {
+        throw new EtmConfigurationException("Unsupported monitor type or invalid monitor class " + monitorType + ".");
+      }
+      if (EtmMonitor.class.isAssignableFrom(clazz)) {
+        monitorClass = clazz;
+      } else {
+        throw new EtmConfigurationException("Class " + monitorClass + " is not a valid EtmMonitor implementation.");
+      }
     }
   }
 
   /**
-   *
-   * Set the EtmMonitor class to be used. Validates whether the given class is
-   * a valid EtmMonitor implementation.
-   *
-   * @param monitorClass The class to be used.
-   * @throws EtmConfigurationException Thrown to indicate that either the class is not a valid
-   * EtmMonitor implementation or cannot be loaded.
-   */
-  public void setMonitorClass(String monitorClass) {
-    Class clazz;
-    try {
-      clazz = Class.forName(monitorClass);
-    } catch (ClassNotFoundException e) {
-      throw new EtmConfigurationException("Class " + monitorClass + " not found.");
-    }
-    if (EtmMonitor.class.isAssignableFrom(clazz)) {
-      this.monitorClass = clazz;
-    } else {
-      throw new EtmConfigurationException("Class " + monitorClass + " is not a valid EtmMonitor implementation.");
-    }
-  }
-
-  /**
-   *
    * Sets the timer type for the monitor. Supported values are
    * <code>default</code> ({@link DefaultTimer}), <code>sun</code> ({@link etm.core.timer.SunHighResTimer})
-   * and <code>jdk50</code> ({@link etm.core.timer.Java15NanoTimer}).
+   * and <code>jdk50</code> ({@link etm.core.timer.Java15NanoTimer}) or valid Timer class name.
    *
    * @param timerType The timer type name.
    * @throws EtmConfigurationException Thrown to indicate that the given configuration is invalid or not supported
@@ -194,35 +174,21 @@ public class EtmMonitorConfig {
         throw new EtmConfigurationException("Java 5.0 Nano Timer not available.");
       }
     } else {
-      throw new EtmConfigurationException("Unsupported timer type " + timerType);
+      Class clazz;
+      try {
+        clazz = Class.forName(timerType);
+      } catch (ClassNotFoundException e) {
+        throw new EtmConfigurationException("Unsupported timer type or invalid timer class " + timerClass + ".");
+      }
+      if (ExecutionTimer.class.isAssignableFrom(clazz)) {
+        this.timerClass = clazz;
+      } else {
+        throw new EtmConfigurationException("Class " + timerClass + " is not a valid ExecutionTimer implementation.");
+      }
     }
   }
 
   /**
-    *
-    * Set the ExecutionTimer class to be used. Validates whether the given class is
-    * a valid ExecutionTimer implementation.
-    *
-    * @param timerClass The class to be used.
-    * @throws EtmConfigurationException Thrown to indicate that either the class is not a valid
-    * ExecutionTimer implementation or cannot be loaded.
-    */
-   public void setTimerClass(String timerClass) {
-    Class clazz;
-    try {
-      clazz = Class.forName(timerClass);
-    } catch (ClassNotFoundException e) {
-      throw new EtmConfigurationException("Timer class " + timerClass + " not found.");
-    }
-    if (ExecutionTimer.class.isAssignableFrom(clazz)) {
-      this.timerClass = clazz;
-    } else {
-      throw new EtmConfigurationException("Class " + timerClass + " is not a valid ExecutionTimer implementation.");
-    }
-  }
-
-  /**
-   *
    * Appends a given config at the end of the currently existing
    * Aggregator configurations.
    *
@@ -236,7 +202,6 @@ public class EtmMonitorConfig {
   }
 
   /**
-   *
    * Sets the aggregator root config, which is the aggregator that is called
    * after a potentially exisiting list of aggregators has processed raw
    * performance results.
@@ -249,7 +214,6 @@ public class EtmMonitorConfig {
   }
 
   /**
-   *
    * Appends a new plugin config.
    *
    * @param aPluginConfig The plugin config.

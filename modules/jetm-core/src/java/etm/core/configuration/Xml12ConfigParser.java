@@ -31,14 +31,17 @@
  */
 package etm.core.configuration;
 
+import etm.core.aggregation.RootAggregator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * Config parser for jetm_config_1_2.dtd configurations.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 class Xml12ConfigParser extends XmlConfigParser {
   public EtmMonitorConfig parse(Document aDocument) {
@@ -55,6 +58,82 @@ class Xml12ConfigParser extends XmlConfigParser {
       monitorConfig.setMonitorType(type);
     }
 
+     String timer = getAttribute(documentElement, "timer");
+    if (timer != null && timer.length() > 0) {
+      monitorConfig.setTimerType(timer);
+    }
+
+    NodeList aggregatorChain = documentElement.getElementsByTagName("aggregator-chain");
+    if (aggregatorChain.getLength() != 0) {
+      Element element = ((Element) aggregatorChain.item(0));
+      NodeList aggregatorRoot = element.getElementsByTagName("chain-root");
+      if (aggregatorRoot.getLength() == 0) {
+        EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+        aggregatorConfig.setAggregatorClass(RootAggregator.class);
+        monitorConfig.setAggregatorRoot(aggregatorConfig);
+      } else {
+        EtmAggregatorConfig rootConfig = extractAggregatorConfig((Element) aggregatorRoot.item(0));
+        monitorConfig.setAggregatorRoot(rootConfig);
+      }
+
+      NodeList aggregators = documentElement.getElementsByTagName("chain-element");
+      for (int i = 0; i < aggregators.getLength(); i++) {
+        Element aggregator = (Element) aggregators.item(i);
+        EtmAggregatorConfig aggregatorConfig = extractAggregatorConfig(aggregator);
+        monitorConfig.appendAggregator(aggregatorConfig);
+      }
+    }
+
+     NodeList extension = documentElement.getElementsByTagName("extension");
+    if (extension.getLength() != 0) {
+      NodeList plugins = ((Element) extension.item(0)).getElementsByTagName("plugin");
+      for (int i = 0; i < plugins.getLength(); i++) {
+        Element plugin = (Element) plugins.item(i);
+        EtmPluginConfig pluginConfig = extractPluginConfig(plugin);
+        monitorConfig.addExtension(pluginConfig);
+      }
+    }
+
     return monitorConfig;
   }
+
+
+   protected EtmPluginConfig extractPluginConfig(Element aPlugin) {
+    EtmPluginConfig pluginConfig = new EtmPluginConfig();
+
+    String pluginClass = aPlugin.getAttribute("class");
+    if (pluginClass != null && pluginClass.length() > 0) {
+      pluginConfig.setPluginClass(pluginClass);
+    } else {
+      throw new EtmConfigurationException("No valid plugin class found");
+    }
+
+    NodeList properties = aPlugin.getElementsByTagName("property");
+    for (int j = 0; j < properties.getLength(); j++) {
+      Element property = (Element) properties.item(j);
+      pluginConfig.addProperty(getAttribute(property, "name"), getNodeFirstChildTextValue(property));
+    }
+
+    return pluginConfig;
+  }
+
+  protected EtmAggregatorConfig extractAggregatorConfig(Element aAggregator) {
+    EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+    String aggregatorClass = aAggregator.getAttribute("class");
+    if (aggregatorClass != null && aggregatorClass.length() > 0) {
+      aggregatorConfig.setAggregatorClass(aggregatorClass);
+    } else {
+      throw new EtmConfigurationException("No valid aggregator class in cahin element found");
+    }
+
+    NodeList properties = aAggregator.getElementsByTagName("property");
+    for (int j = 0; j < properties.getLength(); j++) {
+      Element property = (Element) properties.item(j);
+      aggregatorConfig.addProperty(getAttribute(property, "name"), getNodeFirstChildTextValue(property));
+    }
+    return aggregatorConfig;
+  }
+
+
+
 }
