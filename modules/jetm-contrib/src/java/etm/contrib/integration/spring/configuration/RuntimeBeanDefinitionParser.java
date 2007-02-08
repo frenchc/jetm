@@ -40,6 +40,7 @@ import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
+import etm.core.jmx.EtmMonitorJmxPlugin;
 import etm.core.timer.DefaultTimer;
 import etm.core.timer.Java15NanoTimer;
 import etm.core.timer.SunHighResTimer;
@@ -101,7 +102,14 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     }
 
     if (extension != null) {
-      addExtensions(builder, extension);
+      if (features != null) {
+        addExtensions(builder, extension, DomUtils.getChildElementByTagName(features, "jmx"));
+
+      } else {
+        addExtensions(builder, extension, null);
+      }
+
+
     }
 
     builder.setInitMethodName("start");
@@ -110,7 +118,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
   }
 
-  private void addExtensions(BeanDefinitionBuilder aBuilder, Element aExtension) {
+  private void addExtensions(BeanDefinitionBuilder aBuilder, Element aExtension, Element jmx) {
     List pluginConfigs = DomUtils.getChildElementsByTagName(aExtension, "plugin");
 
     if (pluginConfigs.size() > 0) {
@@ -140,7 +148,36 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
       }
       ManagedList list = new ManagedList(plugins.size());
       list.addAll(plugins);
+
+      if (jmx != null) {
+        String monitorObjectName = jmx.getAttribute("monitorObjectName");
+        String mbeanServerName = jmx.getAttribute("mbeanServerName");
+        String measurementDomain = jmx.getAttribute("measurementDomain");
+        String overwrite = jmx.getAttribute("overwrite");
+
+        BeanDefinitionBuilder jmxBuilder =
+          BeanDefinitionBuilder.rootBeanDefinition(EtmMonitorJmxPlugin.class);
+        if (monitorObjectName != null && monitorObjectName.length() > 0) {
+          jmxBuilder.addPropertyValue("monitorObjectName", monitorObjectName);
+        }
+        if (mbeanServerName != null && mbeanServerName.length() > 0) {
+          jmxBuilder.addPropertyValue("mbeanServerName", mbeanServerName);
+
+        }
+        if (measurementDomain != null && measurementDomain.length() > 0) {
+          jmxBuilder.addPropertyValue("measurementDomain", measurementDomain);
+
+        }
+        if (overwrite != null && overwrite.length() > 0) {
+          jmxBuilder.addPropertyValue("overwrite", overwrite);
+
+        }
+        list.add(jmxBuilder.getBeanDefinition());
+      }
+
+
       aBuilder.addPropertyValue("plugins", list);
+
     }
   }
 
@@ -252,6 +289,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
       String logType = rawDataLog.getAttribute("type");
       String logCategory = rawDataLog.getAttribute("category");
       String logFormaterClass = rawDataLog.getAttribute("formatter-class");
+      String filterPattern = rawDataLog.getAttribute("filter-pattern");
 
 
       if ("log4j".equals(logType)) {
@@ -266,6 +304,10 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
       if (logCategory != null && logCategory.length() > 0) {
         rawDataBuilder.addPropertyValue("logName", logCategory);
+      }
+
+      if (filterPattern != null && filterPattern.length() > 0) {
+        rawDataBuilder.addPropertyValue("filterPattern", filterPattern);
       }
 
       if (logFormaterClass != null && logFormaterClass.length() > 0) {

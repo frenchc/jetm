@@ -231,6 +231,42 @@
           </xsd:choice>
         </xsd:complexType>
       </xsd:element>
+
+      <xsd:element name="jmx" minOccurs="0">
+        <xsd:complexType>
+
+          <xsd:attribute name="monitorObjectName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                The name of the MBean representing the EtmMonitor.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="mbeanServerName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                The agent ID of the MBeanServer.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="measurementDomain" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                The domain that should be used for registering measurement result MBeans.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="overwrite" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                Whether already registered MBeans will be overwritten or not.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+
+      </xsd:element>
+
       <xsd:element name="raw-data-log" minOccurs="0">
         <xsd:complexType>
           <xsd:attribute name="type" use="required">
@@ -254,6 +290,14 @@
               <xsd:documentation>
                 Optional formatter class, defaults to DefaultOutputFormatter.
                 Needs to be a valid implementation of LogOutputFormatter.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="filter-pattern" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Optional filter pattern that allows filtering of logged
+                measurement points. Uses Java 1.4 regex separated by ;.
               </xsd:documentation>
             </xsd:annotation>
           </xsd:attribute>
@@ -293,7 +337,7 @@
   <xsd:complexType name="aggregatorChainType">
     <xsd:sequence>
       <xsd:element name="chain-element" minOccurs="0" maxOccurs="unbounded">
-         <xsd:annotation>
+        <xsd:annotation>
           <xsd:documentation>
             A chain element. Every chain element should implement the interface Aggregator and
             provide a constructor that takes one argument: the child aggregator.
