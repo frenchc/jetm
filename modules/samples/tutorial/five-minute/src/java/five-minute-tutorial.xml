@@ -56,7 +56,7 @@
   <!--
     <bean id="aggregatorChain" class="etm.core.aggregation.BufferedTimedAggregator">
           <constructor-arg>
-            <bean class="etm.core.aggregation.NestedAggregator"/>
+            <bean class="etm.core.aggregation.RootAggregator"/>
           </constructor-arg>
       <property name="aggregationInterval" value="1000" />
     </bean>
@@ -68,7 +68,7 @@
       <constructor-arg>
         <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
           <constructor-arg>
-            <bean class="etm.core.aggregation.NestedAggregator"/>
+            <bean class="etm.core.aggregation.RootAggregator"/>
           </constructor-arg>
         </bean>
       </constructor-arg>

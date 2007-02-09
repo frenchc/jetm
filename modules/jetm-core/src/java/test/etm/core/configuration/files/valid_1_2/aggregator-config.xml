@@ -15,6 +15,6 @@
       <property name="mapValue.key2">value2</property>
       <property name="mapValue.key3">value3</property>
     </chain-element>
-    <chain-root class="etm.core.aggregation.NestedAggregator" />
+    <chain-root class="etm.core.aggregation.RootAggregator" />
   </aggregator-chain>
 </jetm-config>

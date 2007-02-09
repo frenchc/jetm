@@ -53,7 +53,7 @@
   for the first time. Otherwhise performance measurements may create unexpected results.
 </p>
 
-<a name="java_config"/>
+<a name="java_config"></a>
 <h4>Java runtime configuration</h4>
 
 <p>
@@ -142,7 +142,7 @@
 <h5>Using specific aggregator</h5>
 
 <div class="code"><pre>  <span class="java-quote">// initialize measurement subsystem</span>
-  <b>Aggregator aggregatorChain = new BufferedTimedAggregator(new NestedAggregator());
+  <b>Aggregator aggregatorChain = new BufferedTimedAggregator(new RootAggregator());
     BasicEtmConfigurator.configure(true, aggregatorChain);</b>
 
   <span class="java-quote">// startup measurement subsystem</span>
@@ -169,12 +169,12 @@
   <a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html#configure()">BasicEtmConfigurator JavaDoc</a>.
 </p>
 
-<a name="xml_config"/>
+<a name="xml_config"></a>
 <h4>Xml configuration</h4>
 
 <p>With the help of <a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>
-  the EtmManager can be configured using an xml file that complies to the
-  <a href="../@dtd@/jetm_config_1_0.dtd">Jetm Configuration DTD</a>. The configuration file allows you to specify
+  the EtmManager can be configured using an xml file that complies to a
+  <a href="../@dtd@/">JETM configuration DTD</a>. The configuration file allows you to specify
   the EtmMonitor and ExecutionTimer by full qualified classname or type and the used aggregator chain that processes
   measurement results.
 </p>
@@ -208,74 +208,93 @@
 </div>
 
 <p>
-  XmlEtmConfigurator uses the given xml configuration to override internal specified defaults. Therefore the xml
-  config needs to contain only those elements that differ from these defaults.
+  XmlEtmConfigurator uses the given xml configuration to override internal defaults.
+  The defaults are: A NestedMonitor that uses the best available timer implementation and buffers collected details
+  until a threshold of 1000 performance results is reached.
 </p>
 
-<p>
-  The defaults are: A NestedMonitor using the default aggregator chain and best available timer implementation.
-</p>
-
-<a name="xml_type_config"/>
+<a name="xml_type_config"></a>
 <h5>EtmMonitor type configuration</h5>
 
-<p>It is possible to select the used EtmMonitor implementation by specifying a full qualified
+<p>It is possible to select a certain EtmMonitor implementation by specifying a full qualified
   classname or a type property. Currently supported types are <i>nested</i> (NestedMonitor),
   <i>flat</i> (FlatMonitor) and <i>null</i> (NullMonitor). See <a href="../@api@/index.html">JavaDoc</a>
   for further details.
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
-&lt;jetm-config&gt;
-  &lt;monitor-class&gt;<b>etm.core.monitor.NestedMonitor</b>&lt;/monitor-class&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 
-  <i>&lt;!--
-    You may use monitor-type instead
-    &lt;monitor-type&gt;<b>nested</b>&lt;/monitor-type&gt;
-    --&gt;</i>
-
-&lt;/jetm-config&gt;</pre>
+&lt;jetm-config type="<b>nested</b>"/&gt;
+</pre>
 </div>
 
 
 <h5>Custom timer configuration</h5>
 
-<p>You can select the used ExecutionTimer implementation by specifying a full qualified
+<p>You can select an ExecutionTimer implementation by specifying a full qualified
   classname or a type property. Currently supported types are <i>default</i> (DefaultTimer),
   <i>sun</i> (SunHighResTimer) and <i>jdk50</i> (Java15NanoTimer). See <a href="../@api@/index.html">JavaDoc</a>
   for further details.
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
-&lt;jetm-config&gt;
-  &lt;timer-class&gt;<b>etm.core.timer.DefaultTimer</b>&lt;/timer-class&gt;
-
-  <i>&lt;!--
-    You may use timer-type instead
-    &lt;timer-type&gt;<b>default</b>&lt;/timer-type&gt;
-    --&gt;</i>
-&lt;/jetm-config&gt;</pre>
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
+  
+&lt;jetm-config timer="<b>etm.core.timer.DefaultTimer</b>"/&gt;</pre>
 </div>
 
-<h5>Custom aggregator chain configuration</h5>
+<h5>JETM configuration chaing</h5>
 
 <p>
-  The aggregator chain for an EtmMonitor may be configured using the <i>aggregator-chain</i> element. This element takes
-  an unlimited number of <i>chain-element</i>s and one <i>chain-root</i> element. Every EtmPoint will be
-  processed
-  by the list of chain-elements in descending order and finally by the given chain-root aggregator.
-  <br/>You have to specify at least one <i>chain-root</i> element.
+  As stated above the default aggregation chain uses a threshold based buffer. If you want to alter this behavior you
+  may chose between activating a distinct feature from a predefined set or specifying the complete aggregator chain
+  manually.
 </p>
 
 <p>
-  Both <i>chain-element</i> and <i>chain-root</i> support a <i>properties</i> element that may be used to
-  set runtime aggregator properties. For each property the aggregator class has to offer a set<i>Name</i>
-  method that takes either a <i>boolean</i>, <i>int</i>, <i>long</i> or <i>String</i> argument. XmlEtmConfigurator will
-  automatically convert the given string values to the appropriate type of the setter method.
+  The nested element <i>features</i> supports access to predefined JETM aggregation features. Currently it is
+  possible to alter the buffering capabilities, enable aggregation persistence and raw data logging. For further details
+  see nested elements <i>interval-buffer</i>, <i>threshold-buffer</i>,<i>persistence</i> and
+  <i>raw-data-log</i> in <a href="../@dtd@/jetm_config_1_2.dtd">JETM configuration DTD</a>.
+</p>
+
+<p>The following example buffers collected details for 5000 miliseconds before aggregation. Furthermore aggregated
+  performance results are persistent and will survive VM restarts, see
+  <a href="aggregation_persistence.html">Aggregation Persistence</a> for details.</p>
+
+
+<div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
+
+&lt;jetm-config&gt;
+  &lt;features&gt;
+    <b>&lt;interval-buffer interval="5000"/&gt;
+      &lt;persistence&gt;
+      &lt;file-backend path="${java.io.tmpdir}"&gt;
+      &lt;/persistence&gt;</b>
+  &lt;/features&gt;
+&lt;/jetm-config&gt;</pre>
+</div>
+
+
+<p>
+  Alternatively the aggregator chain can be configured using the <i>aggregator-chain</i> element. This element takes
+  an unlimited number of <i>chain-element</i>s and one (optional) <i>chain-root</i> element. Every EtmPoint will be
+  processed by the list of chain-elements in descending order and finally by the given chain-root aggregator. If there
+  is no <i>chain-root</i> element it will default to
+  <a href="../@api@/etm/core/aggregation/RootAggregator.html">RootAggregator</a> automatically.
+</p>
+
+<p>
+  Both <i>chain-element</i> and <i>chain-root</i> may depend on runtime properties. These runtime properties can be
+  configured using the nested <i>property</i> elements. For each property the aggregator class has to offer a
+  set<i>Name</i> method that takes either a <i>boolean</i>, <i>int</i>, <i>long</i>, <i>String</i> or <i>Class</i>
+  argument. XmlEtmConfigurator will automatically convert the given string values to the appropriate type of the setter
+  method.
 </p>
 
 <p>
@@ -285,31 +304,28 @@
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 &lt;jetm-config&gt;
-  &lt;monitor-class&gt;<b>etm.core.monitor.NestedMonitor</b>&lt;/monitor-class&gt;
   &lt;aggregator-chain&gt;
-    &lt;chain-element&gt;
-      &lt;aggregator-class&gt;<b>etm.core.aggregation.BufferedTimedAggregator</b>&lt;/aggregator-class&gt;
-      &lt;properties&gt;
-        &lt;!-- Set aggregation interval to 1 second --&gt;
-        &lt;property name="<b>aggregationInterval</b>"&gt;<b>1000</b>&lt;/property&gt;
-      &lt;/properties&gt;
+
+    &lt;chain-element class="<b>etm.core.aggregation.BufferedTimedAggregator</b>&gt;
+      &lt;!-- Set aggregation interval to 1 second --&gt;
+      &lt;property name="<b>aggregationInterval</b>"&gt;<b>1000</b>&lt;/property&gt;
     &lt;/chain-element&gt;
-    &lt;chain-element&gt;
-      &lt;aggregator-class&gt;<b>etm.contrib.aggregation.log.CommonsLoggingAggregator</b>&lt;/aggregator-class&gt;
-      &lt;properties&gt;
-        &lt;!-- Set commons-logging log category --&gt;
-        &lt;property name="<b>logName</b>"&gt;<b>etm-result</b>&lt;/property&gt;
-      &lt;/properties&gt;
+
+    &lt;chain-element class="<b>etm.contrib.aggregation.log.CommonsLoggingAggregator</b>"&gt;
+      &lt;!-- Set commons-logging log category --&gt;
+      &lt;property name="<b>logName</b>"&gt;<b>etm-result</b>&lt;/property&gt;
     &lt;/chain-element&gt;
-    &lt;chain-root&gt;
-      &lt;aggregator-class&gt;<b>etm.core.aggregation.NestedAggregator</b>&lt;/aggregator-class&gt;
-    &lt;/chain-root&gt;
+
   &lt;/aggregator-chain&gt;
 &lt;/jetm-config&gt;</pre>
 </div>
+<p>
+  Similar to <i>features</i> ant-style property values will be expanded by looking for System.getProperty() values with
+  the given name.
+</p>
 
 <h5>Using EtmMonitor plugins</h5>
 
@@ -325,8 +341,8 @@
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 &lt;jetm-config <b>autostart="true"</b>&gt;
 
  ...
@@ -337,13 +353,6 @@
   Warning: Do not use this mechanism within Java&trade; EE applications if you plan to use hot redeploy. In this
   environment the ShutDown Hook will never be called and therefore allocated resources will never
   be freed.
-</p>
-
-<h4>Conclusion</h4>
-
-<p>
-  Both BasicEtmConfigurator and XmlEtmConfigurator provide means to alter the runtime configuration of an EtmMonitor
-  while using as defaults as often as possible.
 </p>
 
 </div>

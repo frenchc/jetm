@@ -16,9 +16,6 @@
 <div id="subheader">The swiss army knife of the poor</div>
 
 <div id="main">
-<p style="color: red">
-  <b>Warning:</b> This feature is currently under development and may undergo changes before JETM 1.2.0 final.
-</p>
 
 <h3>JETM Springframework 2.x integration</h3>
 
@@ -43,11 +40,11 @@
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       <b>xmlns:jetm="http://jetm.void.fm/schema/jetm-spring-config-1.2"</b>
+       <b>xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"</b>
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-                           <b>http://jetm.void.fm/schema/jetm-spring-config-1.2
-                           http://jetm.void.fm/schema/jetm-spring-config-1.2.xsd</b>"&gt;
+                           <b>http://jetm.void.fm/schema/jetm_spring_config_1_2
+                           http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd</b>"&gt;
 
   ...
     
@@ -130,7 +127,7 @@
   The nested element <i>jetm:features</i> supports access to predefined JETM aggregation features. Currently it is
   possible to alter the buffering capabilities, enable aggregation persistence and raw data logging. For further details
   see nested elements <i>jetm:interval-buffer</i>, <i>jetm:threshold-buffer</i>,<i>jetm:persistence</i> and
-  <i>jetm:raw-data-log</i> in <a href="../@schema@/jetm-spring-config-1.2.xsd">JETM spring configuration schema</a>.   
+  <i>jetm:raw-data-log</i> in <a href="../@schema@/jetm_spring_config_1_2.xsd">JETM spring configuration schema</a>.
 </p>
 
 <p>The following example buffers collected details for 5000 miliseconds before aggregation. Furthermore aggregated
@@ -162,7 +159,7 @@
       &lt;jetm:property name="logName"&gt;my.application.raw-performance-data&lt;/jetm:property&gt;
     &lt;/jetm:chain-element&gt;
     
-    &lt;jetm:chain-root class="etm.core.aggregation.NestedAggregator" /&gt;
+    &lt;jetm:chain-root class="etm.core.aggregation.RootAggregator" /&gt;
   &lt;/jetm:aggregator-chain&gt;
 &lt;/jetm:runtime&gt;</pre>
 </div>

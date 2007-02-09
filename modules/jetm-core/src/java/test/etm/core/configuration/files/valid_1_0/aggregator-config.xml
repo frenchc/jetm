@@ -21,7 +21,7 @@
       </properties>
     </chain-element>
     <chain-root>
-      <aggregator-class>etm.core.aggregation.NestedAggregator</aggregator-class>
+      <aggregator-class>etm.core.aggregation.RootAggregator</aggregator-class>
     </chain-root>
   </aggregator-chain>
 </jetm-config>

@@ -240,14 +240,14 @@ Enter item id to order (or 0 exit):
 <p>
   In order to alter the default aggregation chain we just define a new instance of Aggregator that will be picked up by
   our NestedMonitor automatically. As you can see past <i> &lt;!-- Step 6: ... &gt;</i> the bean definition
-  of aggregaterChain defines a BufferedTimedAggregator that delegates all results to NestedAggregator. 
+  of aggregaterChain defines a BufferedTimedAggregator that delegates all results to RootAggregator.
 </p>
 
 <div class="code"><pre>&lt;!-- Step 6: Alter aggregation chain --&gt;
   
 &lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
       &lt;constructor-arg&gt;
-        &lt;bean class="<b>etm.core.aggregation.NestedAggregator</b>"/&gt;
+        &lt;bean class="<b>etm.core.aggregation.RootAggregator</b>"/&gt;
       &lt;/constructor-arg&gt;
       &lt;property name="aggregationInterval" value="1000" /&gt;
 &lt;/bean&gt;</pre>
@@ -274,7 +274,7 @@ Enter item id to order (or 0 exit):
       &lt;constructor-arg&gt;
         &lt;bean class="<b>etm.contrib.aggregation.log.CommonsLoggingAggregator</b>"&gt;
           &lt;constructor-arg&gt;
-            &lt;bean class="<b>etm.core.aggregation.NestedAggregator</b>"/&gt;
+            &lt;bean class="<b>etm.core.aggregation.RootAggregator</b>"/&gt;
           &lt;/constructor-arg&gt;
         &lt;/bean&gt;
       &lt;/constructor-arg&gt;
