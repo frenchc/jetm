@@ -34,7 +34,8 @@ package etm.core.monitor.event;
 /**
  *
  * A listener for receiving notifications on newly collected
- * performance results.
+ * performance results. By default {@link etm.core.monitor.event.CollectEvent}s will
+ * not be created. You can enable those events with a {@link etm.core.aggregation.NotifyingAggregator}.
  * 
  * @version $Revision$
  * @author void.fm
