@@ -39,6 +39,7 @@ package etm.core.monitor.event;
  * 
  * @version $Revision$
  * @author void.fm
+ * @since 1.2.0
  */
 public interface CollectionListener extends EtmMonitorListener {
 

@@ -47,6 +47,7 @@ import etm.core.renderer.MeasurementRenderer;
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
 public class NotifyingAggregator implements Aggregator {
 
