@@ -108,12 +108,6 @@ public class DefaultEventDispatcher implements EventDispatcher {
     dispatchingRules.put(AggregationStateLoadedEvent.class,
       new DispatchingRule(AggregationStateListener.class, "onStateLoaded"));
 
-
-    dispatchingRules.put(CollectionEnabledEvent.class,
-      new DispatchingRule(CollectionStatusListener.class, "onCollectionEnabled"));
-    dispatchingRules.put(CollectionDisabledEvent.class,
-      new DispatchingRule(CollectionStatusListener.class, "onCollectionDisabled"));
-
     dispatchingRules.put(MonitorResetEvent.class,
       new DispatchingRule(AggregationListener.class, "onStateReset"));
     dispatchingRules.put(RootCreateEvent.class,
@@ -121,10 +115,19 @@ public class DefaultEventDispatcher implements EventDispatcher {
     dispatchingRules.put(RootResetEvent.class,
       new DispatchingRule(AggregationListener.class, "onRootReset"));
 
-    listeners.put(AggregationStateListener.class, new HashSet());
-    listeners.put(CollectionStatusListener.class, new HashSet());
-    listeners.put(AggregationListener.class, new HashSet());
 
+    dispatchingRules.put(CollectionEnabledEvent.class,
+      new DispatchingRule(CollectionStatusListener.class, "onCollectionEnabled"));
+    dispatchingRules.put(CollectionDisabledEvent.class,
+      new DispatchingRule(CollectionStatusListener.class, "onCollectionDisabled"));
+
+    dispatchingRules.put(CollectEvent.class,
+      new DispatchingRule(CollectionListener.class, "onCollect"));
+
+    listeners.put(AggregationStateListener.class, new HashSet());
+    listeners.put(AggregationListener.class, new HashSet());
+    listeners.put(CollectionStatusListener.class, new HashSet());
+    listeners.put(CollectionListener.class, new HashSet());
   }
 
 
