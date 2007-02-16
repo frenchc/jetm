@@ -34,6 +34,7 @@ package etm.contrib.console.servlet;
 
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.console.util.ConsoleUtil;
+import etm.core.monitor.EtmException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class ServletConsoleResponse implements ConsoleResponse {
     try {
       response.sendRedirect(ConsoleUtil.appendParameters(target, parameters));
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new EtmException(e);
     }
   }
 
@@ -85,7 +86,7 @@ public class ServletConsoleResponse implements ConsoleResponse {
     try {
       response.sendError(statusCode, description);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new EtmException(e);
     }
   }
 }

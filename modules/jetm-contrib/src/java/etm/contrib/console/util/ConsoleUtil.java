@@ -32,6 +32,8 @@
 
 package etm.contrib.console.util;
 
+import etm.core.monitor.EtmException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -75,7 +77,7 @@ public class ConsoleUtil {
       return url;
     } catch (UnsupportedEncodingException e) {
       // will hopefully never happen since UTF-8 should be supported.
-      throw new RuntimeException(e);
+      throw new EtmException(e);
     }
   }
 

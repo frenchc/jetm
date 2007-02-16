@@ -33,6 +33,7 @@ package etm.core.jmx;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 
@@ -209,7 +210,7 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         responseWriter.write(FOOTER.toCharArray());
         responseWriter.flush();
       } catch (IOException e) {
-        throw new RuntimeException("Unable to write to writer: " + e);
+        throw new EtmException("Unable to write to writer: " + e);
       }
     }
 

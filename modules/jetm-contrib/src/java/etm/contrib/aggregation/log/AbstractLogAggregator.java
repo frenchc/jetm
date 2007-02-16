@@ -34,6 +34,7 @@ package etm.contrib.aggregation.log;
 import etm.contrib.aggregation.filter.RegexAggregationFilter;
 import etm.core.aggregation.AggregationFilter;
 import etm.core.aggregation.Aggregator;
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
@@ -101,7 +102,7 @@ public abstract class AbstractLogAggregator implements Aggregator {
     try {
       formatter = (LogOutputFormatter) aFormatterClazz.newInstance();
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new EtmException(e);
     }
   }
 

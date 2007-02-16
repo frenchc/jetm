@@ -33,6 +33,7 @@
 package etm.core.jmx;
 
 import etm.core.aggregation.Aggregate;
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitor;
 
 import javax.management.Attribute;
@@ -128,7 +129,7 @@ public class EtmPointMBean implements DynamicMBean {
     } catch (Exception e) {
       e.printStackTrace();
       // this should be save
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 
@@ -145,7 +146,7 @@ public class EtmPointMBean implements DynamicMBean {
 
     } catch (Exception e) {
       // this should be save
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 }

@@ -36,6 +36,7 @@ import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
 import etm.core.aggregation.Aggregate;
+import etm.core.monitor.EtmException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -110,7 +111,7 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
       response.write(" </body>\n</html>");
 
     } catch (IOException e) {
-      throw new RuntimeException("Unable to write to writer: " + e);
+      throw new EtmException("Unable to write to writer: " + e);
     }
   }
 

@@ -32,10 +32,10 @@
 package test.etm.contrib.aop.aopalliance;
 
 import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
-import etm.core.monitor.EtmMonitor;
-import etm.core.renderer.MeasurementRenderer;
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 import org.aopalliance.intercept.MethodInvocation;
 import test.etm.contrib.aop.resources.FooService;

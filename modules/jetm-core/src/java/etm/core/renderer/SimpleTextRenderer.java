@@ -33,6 +33,7 @@
 package etm.core.renderer;
 
 import etm.core.aggregation.Aggregate;
+import etm.core.monitor.EtmException;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -131,7 +132,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
    * Renders the map to the OutputStreamWriter.
    *
    * @param points The points.
-   * @throws RuntimeException Thrown to indicate that writing to the printer failed.
+   * @throws EtmException Thrown to indicate that writing to the printer failed.
    */
   public void render(Map points) {
 
@@ -141,7 +142,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
       results.render(writer);
       writer.flush();
     } catch (IOException e) {
-      throw new RuntimeException("Unable to write to writer: " + e);
+      throw new EtmException("Unable to write to writer: " + e);
     }
   }
 

@@ -33,6 +33,7 @@
 package etm.contrib.renderer;
 
 import etm.core.aggregation.Aggregate;
+import etm.core.monitor.EtmException;
 import etm.core.renderer.MeasurementRenderer;
 
 import java.io.IOException;
@@ -209,7 +210,7 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
       writer.write(FOOTER.toCharArray());
       writer.flush();
     } catch (IOException e) {
-      throw new RuntimeException("Unable to write to writer: " + e);
+      throw new EtmException("Unable to write to writer: " + e);
     }
   }
 

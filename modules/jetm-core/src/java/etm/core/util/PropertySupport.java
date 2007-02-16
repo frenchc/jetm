@@ -32,6 +32,8 @@
 
 package etm.core.util;
 
+import etm.core.monitor.EtmException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -50,7 +52,7 @@ public class PropertySupport {
     try {
       return create(Class.forName(aClassName), properties);
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 
@@ -64,9 +66,9 @@ public class PropertySupport {
       return obj;
 
     } catch (InstantiationException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 
@@ -113,11 +115,11 @@ public class PropertySupport {
       }
     }
     catch (IllegalAccessException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     } catch (InvocationTargetException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 }

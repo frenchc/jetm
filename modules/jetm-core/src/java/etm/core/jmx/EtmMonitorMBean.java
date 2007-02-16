@@ -34,6 +34,7 @@ package etm.core.jmx;
 
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.SimpleTextRenderer;
 
@@ -180,7 +181,7 @@ public class EtmMonitorMBean implements DynamicMBean {
     } catch (Exception e) {
       e.printStackTrace();
       // this should be save
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 
@@ -193,7 +194,7 @@ public class EtmMonitorMBean implements DynamicMBean {
     } catch (Exception e) {
       e.printStackTrace();
       // this should be save
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 
@@ -209,7 +210,7 @@ public class EtmMonitorMBean implements DynamicMBean {
 
     } catch (Exception e) {
       // this should be save
-      throw new RuntimeException(e.getMessage());
+      throw new EtmException(e.getMessage());
     }
   }
 
