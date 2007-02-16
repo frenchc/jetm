@@ -31,9 +31,9 @@
  */
 package etm.contrib.aggregation.log;
 
-import etm.contrib.aggregation.filter.RegexAggregationFilter;
-import etm.core.aggregation.AggregationFilter;
+import etm.contrib.aggregation.filter.RegexEtmFilter;
 import etm.core.aggregation.Aggregator;
+import etm.core.aggregation.EtmFilter;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
@@ -71,7 +71,7 @@ public abstract class AbstractLogAggregator implements Aggregator {
   protected String logName = DEFAULT_LOG_NAME;
   protected LogOutputFormatter formatter;
 
-  protected AggregationFilter filter;
+  protected EtmFilter filter;
 
   protected AbstractLogAggregator(Aggregator aAggregator) {
     delegate = aAggregator;
@@ -115,10 +115,10 @@ public abstract class AbstractLogAggregator implements Aggregator {
    * separated by a ";". Requires JDK 1.4 or higher.
    *
    * @param matchingPattern One or more pattern, separated by ;
-   * @see etm.contrib.aggregation.filter.RegexAggregationFilter
+   * @see etm.contrib.aggregation.filter.RegexEtmFilter
    */
   public void setFilterPattern(String matchingPattern) {
-    filter = new RegexAggregationFilter(matchingPattern);
+    filter = new RegexEtmFilter(matchingPattern);
   }
 
   public void add(EtmPoint point) {

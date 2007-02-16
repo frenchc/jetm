@@ -32,6 +32,7 @@
 package etm.contrib.rrd.rrd4j;
 
 import etm.contrib.rrd.core.AbstractRrdExecutionListener;
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmPoint;
 import org.rrd4j.core.RrdDb;
 import org.rrd4j.core.Sample;
@@ -96,7 +97,7 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
 
         sample.update();
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new EtmException(e);
       }
     }
   }
