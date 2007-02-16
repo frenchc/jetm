@@ -40,7 +40,7 @@ import etm.core.monitor.event.CollectionListener;
 import etm.core.plugin.EtmPlugin;
 
 /**
- * Abtract base class for plugins that use a
+ * Abtract base class for plugins that store collected details in a RRD database.
  *
  * @author void.fm
  * @version $Revision$
@@ -60,7 +60,6 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
     doValidateChain();
   }
 
-
   public void stop() {
   }
 
@@ -74,7 +73,6 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
     }
   }
 
-
   protected void doValidateChain() {
     AggregatorMetaData metaData = ctx.getEtmMonitor().getMetaData().getAggregatorMetaData();
     while (metaData != null) {
@@ -85,5 +83,4 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
 
     throw new EtmException("Missing NotifyingAggregator. There has to be a NotifyingAggregator im your aggregation chain. Rrd support disabled.");
   }
-
 }
