@@ -40,6 +40,8 @@ import etm.core.monitor.event.AggregationStateLoadedEvent;
 import etm.core.monitor.event.MonitorResetEvent;
 import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
@@ -68,6 +70,10 @@ import java.util.Set;
  * @since 1.2.0
  */
 public class AbstractJmxRegistry implements AggregationStateListener, AggregationListener {
+
+  private static final LogAdapter log = Log.getLog(AbstractJmxRegistry.class);
+
+
   public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm.monitor:service=PerformanceMonitor";
   public static final String DEFAULT_ETM_POINT_DOMAIN = "etm.performance";
 
@@ -141,10 +147,10 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
           isStopping = false;
 
         } else {
-          System.err.println("Unable to locate a valid MBeanServer. Disable JMX support.");
+          log.warn("Unable to locate a valid MBeanServer. Disable JMX support.");
         }
       } catch (Exception e) {
-        System.err.println("Error while registering EtmMonitorMBean " + e.getMessage());
+        log.error("Error while registering EtmMonitorMBean ", e);
       }
     }
 
@@ -158,7 +164,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
         deregisterPerformanceResults();
         mbeanServer.unregisterMBean(new ObjectName(monitorObjectName));
       } catch (Exception e) {
-        System.err.println("Error while unregistering EtmMonitorMBean " + e.getMessage());
+        log.warn("Error while unregistering EtmMonitorMBean ", e);
       }
     }
   }
@@ -193,7 +199,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
     try {
       deregisterPerformanceResults();
     } catch (Exception e) {
-      System.err.println("Error while deregistering all performance results " + e.getMessage());
+      log.warn("Error while deregistering all performance results ", e);
     }
   }
 
@@ -209,7 +215,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
         mbeanServer.unregisterMBean(objectName);
         mbeanServer.registerMBean(object, objectName);
       } else {
-        System.err.println("Error registering EtmMonitor MBean. An instance called " + monitorObjectName + " already exists.");
+        log.warn("Error registering EtmMonitor MBean. An instance called " + monitorObjectName + " already exists.");
       }
     }
   }
@@ -229,9 +235,9 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
 
     for (int i = 0; i < chars.length; i++) {
       switch (chars[i]) {
-        case':':
-        case',':
-        case';':
+        case ':':
+        case ',':
+        case ';':
           chars[i] = '_';
         default:
           // don't do anything
@@ -250,7 +256,7 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
       ObjectName objectName = new ObjectName(measurementDomain, map);
       registerMBean(new EtmPointMBean(etmMonitor, aAggregate), objectName);
     } catch (Exception e) {
-      System.err.println("Error registering performance result " + name + ": " + e.getMessage());
+      log.warn("Error registering performance result " + name, e);
     }
   }
 

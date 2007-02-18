@@ -29,26 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package etm.contrib.rrd.core;
-
-import etm.core.monitor.EtmPoint;
+package etm.core.util;
 
 /**
  *
- * @vrsion $Revision$
- * @author void.fm
- * @since 1.2.0
+ * Our adapter interface to logging implementations. See {@link etm.core.util.Log}
+ * for background details.
  *
+ * @author void.fm
+ * @version $Revision$
+ * @since 1.2.0
  */
-public interface RrdDestination {
+public interface LogAdapter {
+  
+  public void debug(String message);
 
-  public void start();
+  public void info(String message);
 
-  public void stop();
+  public void warn(String message);
 
-  public boolean matches(EtmPoint point);
+  public void warn(String message, Throwable t);
 
-  public void write(EtmPoint point);
+  public void error(String message, Throwable t);
+
+  public void fatal(String message, Throwable t);
 
 }

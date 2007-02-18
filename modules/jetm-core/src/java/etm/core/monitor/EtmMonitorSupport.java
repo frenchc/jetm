@@ -50,6 +50,8 @@ import etm.core.monitor.event.RootResetEvent;
 import etm.core.plugin.EtmPlugin;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.ExecutionTimer;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,7 +63,7 @@ import java.util.Timer;
  * Abstract base class for the execution time measurement monitors.
  * Derived class should synchronize on the internal lock object while
  * accessing shared resources, especially the attribute <code>aggregator</code>.
- * <p>
+ * <p/>
  * An EtmMonitor mandates the following life cycle for measurement
  * points.
  * </p>
@@ -88,12 +90,14 @@ import java.util.Timer;
  * of the measurement and stores this transaction for further aggregation.
  * </li>
  * </ol>
-
+ *
  * @author void.fm
  * @version $Revision$
  */
 
 public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateListener {
+
+  private static final LogAdapter log = Log.getLog(EtmMonitor.class);
 
   protected final Object lock = new Object();
 
@@ -110,7 +114,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   private boolean started = false;
   private boolean collecting = true;
 
-   
+
   private boolean noStartedErrorMessageFlag = false;
 
   /**
@@ -167,8 +171,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       // in order to avoid negative side effects for
       // our business logic
     } catch (Exception e) {
-      // for now don't use a logging framework
-      System.err.println("Caught exception within measurement code: " + e.toString());
+      log.warn("Caught exception within measurement code. ", e);
     }
   }
 
@@ -200,8 +203,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       // in order to avoid negative side effects for
       // our business logic
     } catch (Exception e) {
-      // for now don't use a logging framework
-      System.err.println("Caught exception within measurement code: " + e.toString());
+      log.warn("Caught exception within measurement code.", e);
     }
   }
 
@@ -355,14 +357,14 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
    * closed. At that point the all required information are valid for that measurement point.
    * </p>
    *
-   * @param aPoint
+   * @param aPoint The point to collect.
    */
 
   protected abstract void doVisitPostCollect(MeasurementPoint aPoint);
 
 
-  protected Aggregator getDefaultAggregator(){
-     return new BufferedThresholdAggregator(new RootAggregator());
+  protected Aggregator getDefaultAggregator() {
+    return new BufferedThresholdAggregator(new RootAggregator());
   }
 
   protected void shutdownPlugins() {
@@ -376,7 +378,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
           }
           etmPlugin.stop();
         } catch (Exception e) {
-          // todo since I don't want to use a logging framework what do we do?
+          log.warn("Error while shutting down " + etmPlugin.getPluginMetaData(), e);
         }
       }
     }
@@ -394,8 +396,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
             dispatcher.register((EtmMonitorListener) etmPlugin);
           }
         } catch (Exception e) {
-          // todo since I don't want to use a logging framework what do we do?
-          e.printStackTrace();
+          log.warn("Error starting plugin " + etmPlugin.getPluginMetaData() + ". Keep plugin disabled. ", e);
+
         }
       }
     }
@@ -415,14 +417,12 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   private void showMonitorNotStartedMessage() {
-    System.err.println("Warning - Performance Monitoring currently disabled.");
-    System.err.println("If you did not start the current EtmMonitor on purpose,");
-    System.err.println("you may ignore this warning.");
-    System.err.println("Otherwhise ensure to call EtmMonitor.start() at some point");
-    System.err.println("in your application.");
+    log.warn("Warning - Performance Monitoring currently disabled. " +
+      "If you did not start the current EtmMonitor on purpose, " +
+      "you may ignore this warning. Otherwhise ensure to call EtmMonitor.start() " +
+      "at some point in your application.");
     noStartedErrorMessageFlag = true;
   }
-
 
 
   class EtmMonitorSupportContext implements EtmMonitorContext {

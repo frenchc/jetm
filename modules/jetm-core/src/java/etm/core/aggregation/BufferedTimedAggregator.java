@@ -36,6 +36,8 @@ import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,9 @@ import java.util.TimerTask;
  * @version $Revision$
  */
 public class BufferedTimedAggregator implements Aggregator {
+  private static final LogAdapter log = Log.getLog(BufferedTimedAggregator.class);
+
+
   private static final String DESCRIPTION_PREFIX = "A time based buffering aggregator with a flush interval of ";
   private static final String DESCRIPTION_POSTFIX = " ms.";
 
@@ -143,7 +148,6 @@ public class BufferedTimedAggregator implements Aggregator {
     // if we run into VM level problems we might add a potential
     // out of memory too
     // we need to ensure that in those rare cases the OOM does not occur
-    // TODO
     ctx.getScheduler().scheduleAtFixedRate(new TimerTask() {
       public void run() {
         try {
@@ -152,17 +156,16 @@ public class BufferedTimedAggregator implements Aggregator {
           if (t instanceof ThreadDeath) {
             started = false;
             cancel();
-            System.err.println("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
-            throw (ThreadDeath)t;
+            log.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            throw (ThreadDeath) t;
           }
           if (t instanceof Error) {
             started = false;
             cancel();
-            System.err.println("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");            
-            throw (Error)t;
+            log.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            throw (Error) t;
           }
-          // TODO
-          t.printStackTrace();
+          log.fatal("Error in aggregation buffer.", t);
         }
       }
     }, sleepInterval, sleepInterval);
@@ -175,7 +178,6 @@ public class BufferedTimedAggregator implements Aggregator {
    */
   public void stop() {
     started = false;
-
 
     // lets flush all we have.
     flush();

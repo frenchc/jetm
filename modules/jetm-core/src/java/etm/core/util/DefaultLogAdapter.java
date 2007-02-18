@@ -29,26 +29,55 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.core.util;
 
-package etm.contrib.rrd.core;
-
-import etm.core.monitor.EtmPoint;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
+ * Default log implementation.
  *
- * @vrsion $Revision$
  * @author void.fm
+ * @version $Revision$
  * @since 1.2.0
- *
  */
-public interface RrdDestination {
+class DefaultLogAdapter implements LogAdapter {
 
-  public void start();
+  private String clazzName;
 
-  public void stop();
+  public DefaultLogAdapter(Class aClazz) {
+    int i = aClazz.getName().lastIndexOf('.');
+    clazzName = "[" + aClazz.getName().substring(i+1) + "] ";
+  }
 
-  public boolean matches(EtmPoint point);
+  public void debug(String message) {
+    System.out.println(clazzName + message);
+  }
 
-  public void write(EtmPoint point);
+  public void info(String message) {
+    System.out.println(clazzName + message);
+  }
 
+  public void warn(String message, Throwable t) {
+    System.err.println(clazzName + message + getThrowable(t));
+  }
+
+  public void warn(String message) {
+    System.out.println(clazzName + message);
+  }
+
+  public void error(String message, Throwable t) {
+    System.err.println(clazzName + message + getThrowable(t));
+  }
+
+  public void fatal(String message, Throwable t) {
+    System.err.println(clazzName + message + getThrowable(t));
+  }
+
+  private String getThrowable(Throwable t) {
+    StringWriter writer = new StringWriter();
+    t.printStackTrace(new PrintWriter(writer));
+
+    return writer.toString();
+  }
 }

@@ -179,7 +179,6 @@ public class EtmMonitorMBean implements DynamicMBean {
         new MBeanOperationInfo("Renders aggregated performance statistics in text format", getClass().getMethod("renderResultsAsText", new Class[]{}))
       };
     } catch (Exception e) {
-      e.printStackTrace();
       // this should be save
       throw new EtmException(e.getMessage());
     }
@@ -192,7 +191,6 @@ public class EtmMonitorMBean implements DynamicMBean {
         new MBeanOperationInfo("Renders aggregated performance statistics in text format", getClass().getMethod("renderResultsAsText", new Class[]{}))
       };
     } catch (Exception e) {
-      e.printStackTrace();
       // this should be save
       throw new EtmException(e.getMessage());
     }

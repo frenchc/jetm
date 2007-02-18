@@ -30,69 +30,61 @@
  *
  */
 
-package test.etm.core.monitor;
+package etm.core.util;
 
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
-import junit.framework.TestCase;
+import etm.core.monitor.EtmException;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
- *
- * Runs tests whether certain warnings are shown or not.
+ * While writing your own wrapper to a log framework seems to be pretty stupid
+ * JETM does not want to add a dependency to a log framework in its core package.
+ * Therefore this class acts as simple wrapper for the limited use of message output
+ * JETM requires.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
-public class CheckMonitorWarningsTest extends TestCase {
+public class Log {
 
-  public void testEtmMonitorSupportWarning() {
-    EtmManager.reset();
+  private static AdapterFactory adapterFactory = new AdapterFactory();
 
-    PrintStream writer = System.out;
-
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
-
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
-
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
-
-    } finally {
-      System.setOut(writer);
-    }
+  public static LogAdapter getLog(Class clazzName) {
+    return adapterFactory.getLog(clazzName);
   }
 
-  public void testNullMonitorWarning() {
-    EtmManager.reset();
+  static class AdapterFactory {
+    Constructor constructor;
 
-    PrintStream writer = System.out;
+    public AdapterFactory() {
+      Class adapterClazz = DefaultLogAdapter.class;
 
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
+      try {
+        Class aClass = Class.forName("etm.core.util.Log4jAdapter");
+        Method method = aClass.getMethod("isConfigured", new Class[]{});
+        Boolean available = (Boolean) method.invoke(null, new Object[]{});
+        if (available.booleanValue()) {
+          adapterClazz = aClass;
+        }
+      } catch (Throwable t) {
+        // ignore this one
+      }
 
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      etmMonitor.start();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
+      try {
+        constructor = adapterClazz.getConstructor(new Class[]{Class.class});
+      } catch (NoSuchMethodException e) {
+        throw new EtmException(e);
+      }
+    }
 
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
-      etmMonitor.stop();
-    } finally {
-      System.setOut(writer);
+    public LogAdapter getLog(Class aClazzName) {
+      try {
+        return (LogAdapter) constructor.newInstance(new Object[]{aClazzName});
+      } catch (Exception e) {
+        throw new EtmException(e);
+      }
     }
   }
 }

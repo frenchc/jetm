@@ -30,69 +30,73 @@
  *
  */
 
-package test.etm.core.monitor;
+package etm.contrib.rrd.rrd4j;
 
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
+import etm.contrib.aggregation.filter.RegexEtmFilter;
+import etm.contrib.rrd.core.RrdDestination;
+import etm.contrib.rrd.core.RrdExecutionListener;
+import etm.core.aggregation.EtmFilter;
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmPoint;
-import junit.framework.TestCase;
+import org.rrd4j.core.RrdDb;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
- *
- * Runs tests whether certain warnings are shown or not.
- *
+ * 
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
-public class CheckMonitorWarningsTest extends TestCase {
+public class Rrd4jDestination implements RrdDestination {
 
-  public void testEtmMonitorSupportWarning() {
-    EtmManager.reset();
+  private String pattern;
+  private File rrdFilePath;
 
-    PrintStream writer = System.out;
+  private RrdDb rrdDb;
+  private EtmFilter filter;
+  private RrdExecutionListener listener;
 
+  public Rrd4jDestination(String aPattern, File aRrdFilePath) {
+    pattern = aPattern;
+    rrdFilePath = aRrdFilePath;
+  }
+
+  public void start() {
+    if ("*".equals(pattern)) {
+      filter = new EtmFilter() {
+        public boolean matches(EtmPoint aEtmPoint) {
+          return true;
+        }
+      };
+    } else {
+      filter = new RegexEtmFilter(pattern);
+    }
     try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
+      rrdDb = new RrdDb(rrdFilePath.getAbsolutePath());
+    } catch (IOException e) {
+      throw new EtmException(e);
+    }
 
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
+    listener = new Rrd4jAggregationWriter(rrdDb);
+  }
 
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
-
-    } finally {
-      System.setOut(writer);
+  public void stop() {
+    try {
+      if (rrdDb != null) {
+        rrdDb.close();
+      }
+    } catch (IOException e) {
+      throw new EtmException(e);
     }
   }
 
-  public void testNullMonitorWarning() {
-    EtmManager.reset();
+  public boolean matches(EtmPoint point) {
+    return filter.matches(point);
+  }
 
-    PrintStream writer = System.out;
-
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
-
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      etmMonitor.start();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
-
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
-      etmMonitor.stop();
-    } finally {
-      System.setOut(writer);
-    }
+  public void write(EtmPoint point) {
+    listener.onNextMeasurement(point);
   }
 }

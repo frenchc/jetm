@@ -31,6 +31,9 @@
  */
 package etm.core.monitor.event;
 
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,6 +49,9 @@ import java.util.Set;
  * @since 1.2.0
  */
 public class DefaultEventDispatcher implements EventDispatcher {
+
+  private static final LogAdapter log = Log.getLog(DefaultEventDispatcher.class);
+
 
   private Map dispatchingRules = new HashMap();
   private Map listeners = new HashMap();
@@ -88,7 +94,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
         sendEvent(currentListeners.toArray(), rule.getMethod(), event);
       }
     } else {
-      System.err.println("Unable to process event from type " + event.getClass());
+      log.warn("Unable to process event from type " + event.getClass());
     }
   }
 
@@ -98,8 +104,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
       try {
         aMethod.invoke(object, new Object[]{aEvent});
       } catch (Exception e) {
-        // TODO
-        e.printStackTrace();
+       log.warn("Unable to send event " + aEvent, e);
       }
     }
   }

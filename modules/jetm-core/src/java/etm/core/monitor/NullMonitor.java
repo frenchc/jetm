@@ -35,6 +35,8 @@ package etm.core.monitor;
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.renderer.MeasurementRenderer;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 /**
  * The NullMonitor does nothing and this way may
@@ -45,6 +47,9 @@ import etm.core.renderer.MeasurementRenderer;
  */
 
 public class NullMonitor extends EtmMonitorSupport {
+  private static final LogAdapter log = Log.getLog(NullMonitor.class);
+
+
   private static final String DESCRIPTION = "A monitor that does not record executions at all.";
 
   private boolean notCollectionWarningFlag = false;
@@ -78,11 +83,11 @@ public class NullMonitor extends EtmMonitorSupport {
 
 
   private void showWarning() {
-    System.err.println("Warning - NullMonitor active. Performance results are discarded.");
-    System.err.println("This usually happens if you used EtmManager.getEtmMonitor() to retrieve");
-    System.err.println("the current EtmMonitor instance and did not configure the Performance");
-    System.err.println("sub system before. For further details see EtmManager documentation at ");
-    System.err.println("http://jetm.void.fm/howto/etm_manager_configuration.html");
+    log.warn("Warning - NullMonitor active. Performance results are discarded." +
+      "This usually happens if you used EtmManager.getEtmMonitor() to retrieve" +
+      "the current EtmMonitor instance and did not configure the Performance" +
+      "sub system before. For further details see EtmManager documentation at " +
+      "http://jetm.void.fm/howto/etm_manager_configuration.html");
 
 
     notCollectionWarningFlag = true;

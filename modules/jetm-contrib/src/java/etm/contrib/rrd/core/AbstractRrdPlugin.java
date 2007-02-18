@@ -39,6 +39,9 @@ import etm.core.monitor.event.CollectEvent;
 import etm.core.monitor.event.CollectionListener;
 import etm.core.plugin.EtmPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Abtract base class for plugins that store collected details in a RRD database.
  *
@@ -58,9 +61,32 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
   public void start() {
     // validate whether we find required aggregator
     doValidateChain();
+    RrdDestination[] tmp = getDestinations();
+
+    List dest = new ArrayList();
+    for (int i = 0; i < tmp.length; i++) {
+      RrdDestination rrdDestination = tmp[i];
+      try {
+        rrdDestination.start();
+        dest.add(rrdDestination);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
+    destinations = (RrdDestination[]) dest.toArray(new RrdDestination[dest.size()]);
   }
 
+
   public void stop() {
+    RrdDestination[] saved = destinations;
+    destinations = new RrdDestination[0];
+
+    if (saved != null) {
+      for (int i = 0; i < saved.length; i++) {
+        saved[i].stop();
+      }
+    }
   }
 
 
@@ -79,8 +105,12 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
       if (metaData.getImplementationClass().isAssignableFrom(NotifyingAggregator.class)) {
         return;
       }
+      metaData = metaData.getNestedMetaData();
     }
 
-    throw new EtmException("Missing NotifyingAggregator. There has to be a NotifyingAggregator im your aggregation chain. Rrd support disabled.");
+    throw new EtmException("Missing NotifyingAggregator. There has to be a " +
+      "NotifyingAggregator in your aggregation chain. Rrd support disabled.");
   }
+
+  protected abstract RrdDestination[] getDestinations();
 }

@@ -31,6 +31,9 @@
  */
 package etm.core.aggregation.persistence;
 
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,10 +46,12 @@ import java.io.ObjectOutputStream;
  * at {java.io.tmpdir}/jetm-state.ser.
  *
  * @author void.fm
- * @version $Revision$
+ * @version $Revision:96 $
  * @since 1.2.0
  */
 public class FileSystemPersistenceBackend implements PersistenceBackend {
+
+  private static final LogAdapter log = Log.getLog(FileSystemPersistenceBackend.class);
 
   private File path = new File(System.getProperty("java.io.tmpdir"));
   private String filename = "jetm-state.ser";
@@ -62,10 +67,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
           state = (PersistentEtmState) in.readObject();
         } catch (Exception e) {
           // ignored
-          System.err.println("Error loading state from file " +
-            file.getAbsolutePath() +
-            ":" +
-            e.getMessage());
+          log.warn("Error loading state from file " + file.getAbsolutePath(), e);
         } finally {
           if (in != null) {
             try {
@@ -111,9 +113,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
       tmpFile.renameTo(dest);
     } catch (Exception e) {
       // ignored
-      System.err.println("Error writirng state to  file " +
-        tmpFile.getAbsolutePath() +
-        " : " + e.getMessage());
+      log.warn("Error writing state to  file " + tmpFile.getAbsolutePath(), e);
     } finally {
       if (out != null) {
         try {

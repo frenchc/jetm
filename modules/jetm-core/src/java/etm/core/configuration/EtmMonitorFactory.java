@@ -38,6 +38,8 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.plugin.EtmPlugin;
 import etm.core.timer.DefaultTimer;
 import etm.core.timer.ExecutionTimer;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -52,7 +54,10 @@ import java.util.Map;
  * @version $Revision$
  */
 
-public class  EtmMonitorFactory {
+public class EtmMonitorFactory {
+
+  private static final LogAdapter log = Log.getLog(EtmMonitorFactory.class);
+
 
   private static final String[] jetmTimer = new String[]{
     "etm.core.timer.Java15NanoTimer",
@@ -103,7 +108,7 @@ public class  EtmMonitorFactory {
       try {
         return (ExecutionTimer) instantiateClass(jetmTimer[i]);
       } catch (Exception e) {
-        System.err.println("Unable to instantiate execution timer '" + jetmTimer[i] + "'. Trying next. " + e);
+        log.warn("Unable to instantiate execution timer '" + jetmTimer[i] + "'. Trying next. ", e);
       } catch (Throwable e) {
         // for our implementation we get a NoSuchMethodError for JDK's < 5.0
         // therefore ignore, unless it's ThreadDeath

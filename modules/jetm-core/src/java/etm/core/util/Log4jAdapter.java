@@ -29,70 +29,65 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.core.util;
 
-package test.etm.core.monitor;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
-import junit.framework.TestCase;
+import java.util.Enumeration;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 /**
- *
- * Runs tests whether certain warnings are shown or not.
+ * Adapter to log4j.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
-public class CheckMonitorWarningsTest extends TestCase {
+class Log4jAdapter implements LogAdapter {
 
-  public void testEtmMonitorSupportWarning() {
-    EtmManager.reset();
+  private Logger log;
 
-    PrintStream writer = System.out;
-
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
-
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
-
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
-
-    } finally {
-      System.setOut(writer);
-    }
+  public Log4jAdapter(Class aClazz) {
+    log = Logger.getLogger(aClazz);
   }
 
-  public void testNullMonitorWarning() {
-    EtmManager.reset();
+  public void debug(String message) {
+    log.debug(message);
+  }
 
-    PrintStream writer = System.out;
+  public void info(String message) {
+    log.info(message);
+  }
 
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
+  public void warn(String message) {
+    log.warn(message);
+  }
 
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      etmMonitor.start();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
+  public void warn(String message, Throwable t) {
+    log.warn(message, t);
+  }
 
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
-      etmMonitor.stop();
-    } finally {
-      System.setOut(writer);
+  public void error(String message, Throwable t) {
+    log.error(message, t);
+  }
+
+  public void fatal(String message, Throwable t) {
+    log.fatal(message, t);
+  }
+
+  public static boolean isConfigured() {
+    Enumeration appenders = Logger.getRoot().getAllAppenders();
+    if (appenders.hasMoreElements()) {
+      return true;
+    } else {
+      Enumeration loggers = LogManager.getCurrentLoggers();
+      while (loggers.hasMoreElements()) {
+        Logger c = (Logger) loggers.nextElement();
+        if (c.getAllAppenders().hasMoreElements())
+          return true;
+      }
     }
+    return false;
   }
 }

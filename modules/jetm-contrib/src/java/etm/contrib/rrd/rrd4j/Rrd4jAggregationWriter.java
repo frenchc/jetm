@@ -57,12 +57,12 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
    * Creates a new writer that stores
    *
    * @param aDb A writeable RRD DB.
-   * @throws IOException Thrown by RRD operation
+   * @throws IOException              Thrown by RRD operation
    * @throws IllegalArgumentException If the rrd db definition does not contain all required
    *                                  datasources
    */
-  public Rrd4jAggregationWriter(RrdDb aDb) throws IOException {
-    super(aDb.getLastUpdateTime(), aDb.getRrdDef().getStep());
+  public Rrd4jAggregationWriter(RrdDb aDb) {
+    super(extractLastTimestamp(aDb), extractStep(aDb));
 
     validateDataSource(aDb, "transactions");
     validateDataSource(aDb, "min");
@@ -71,7 +71,6 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
 
     db = aDb;
   }
-
 
   public void onBegin() {
 
@@ -102,9 +101,30 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
     }
   }
 
-  protected void validateDataSource(RrdDb aDb, String name) throws IOException {
-    if (aDb.getDatasource(name) == null) {
-      throw new IllegalArgumentException("DataSource " + name + " not found");
+  protected void validateDataSource(RrdDb aDb, String name) {
+    try {
+      if (aDb.getDatasource(name) == null) {
+        throw new IllegalArgumentException("DataSource " + name + " not found");
+      }
+    } catch (IOException e) {
+      throw new EtmException(e);
+    }
+  }
+
+
+  private static long extractStep(RrdDb aDb) {
+    try {
+      return aDb.getRrdDef().getStep();
+    } catch (IOException e) {
+      throw new EtmException(e);
+    }
+  }
+
+  private static long extractLastTimestamp(RrdDb aDb) {
+    try {
+      return aDb.getLastUpdateTime();
+    } catch (IOException e) {
+      throw new EtmException(e);
     }
   }
 

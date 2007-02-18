@@ -29,70 +29,57 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.rrd.rrd4j;
 
-package test.etm.core.monitor;
+import etm.contrib.rrd.core.AbstractRrdPlugin;
+import etm.contrib.rrd.core.RrdDestination;
+import etm.core.metadata.PluginMetaData;
 
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
-import junit.framework.TestCase;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.File;
+import java.util.List;
 
 /**
- *
- * Runs tests whether certain warnings are shown or not.
+ * <a href="https://rrd4j.dev.java.net/">RRD4j</a> based implementation of an RRD plugin.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
-public class CheckMonitorWarningsTest extends TestCase {
+public class Rrd4jPlugin extends AbstractRrdPlugin {
 
-  public void testEtmMonitorSupportWarning() {
-    EtmManager.reset();
+  private String configPath = System.getProperty("java.io.tmpdir");
+  private List destinationConfiguration;
 
-    PrintStream writer = System.out;
-
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
-
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
-
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
-
-    } finally {
-      System.setOut(writer);
-    }
+  public void setRrdFilePath(String path) {
+    configPath = path;
   }
 
-  public void testNullMonitorWarning() {
-    EtmManager.reset();
-
-    PrintStream writer = System.out;
-
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      PrintStream tmpOut = new PrintStream(out);
-      System.setOut(tmpOut);
-
-      EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      etmMonitor.start();
-      EtmPoint point = etmMonitor.createPoint("test");
-      point.collect();
-
-      tmpOut.flush();
-      String s = new String(out.toByteArray());
-      assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
-      etmMonitor.stop();
-    } finally {
-      System.setOut(writer);
-    }
+  public void setDestinations(List aDestinations) {
+    destinationConfiguration = aDestinations;
   }
+
+  protected RrdDestination[] getDestinations() {
+    if (destinationConfiguration == null) {
+      return new RrdDestination[0];
+    }
+
+    destinations = new RrdDestination[destinationConfiguration.size()];
+
+    for (int i = 0; i < destinationConfiguration.size(); i++) {
+      String s = (String) destinationConfiguration.get(i);
+      int index = s.indexOf('|');
+      String filename = s.substring(0, index);
+      String pattern = s.substring(index + 1);
+
+      destinations[i] = new Rrd4jDestination(pattern, new File(configPath, filename));
+    }
+
+    return destinations;
+  }
+
+
+  public PluginMetaData getPluginMetaData() {
+    return null;
+  }
+
 }

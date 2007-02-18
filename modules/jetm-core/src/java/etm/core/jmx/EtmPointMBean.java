@@ -127,7 +127,6 @@ public class EtmPointMBean implements DynamicMBean {
         new MBeanOperationInfo("Resets etm point.", aggregate.getClass().getMethod("reset", new Class[]{})),
       };
     } catch (Exception e) {
-      e.printStackTrace();
       // this should be save
       throw new EtmException(e.getMessage());
     }
