@@ -47,7 +47,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import test.etm.contrib.integration.spring.configuration.mockup.SpringRootAggregator;
 
 /**
- * @author $Id$
+ * @author void.fm
  * @version $Revision$
  */
 public class RuntimeConfigurationTest extends ConfigurationTestCase {

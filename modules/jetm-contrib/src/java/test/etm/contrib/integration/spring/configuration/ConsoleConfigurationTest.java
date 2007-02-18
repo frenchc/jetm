@@ -35,7 +35,7 @@ package test.etm.contrib.integration.spring.configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @author $Id$
+ * @author void.fm
  * @version $Revision$
  */
 public class ConsoleConfigurationTest extends ConfigurationTestCase {

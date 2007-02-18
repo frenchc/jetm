@@ -38,7 +38,7 @@ import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @author $Id$
+ * @author void.fm
  * @version $Revision$
  */
 public class MonitoringConfigurationTest extends ConfigurationTestCase {

@@ -35,7 +35,7 @@ import junit.framework.TestCase;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @author $Id$
+ * @author void.fm
  * @version $Revision$
  */
 public abstract class ConfigurationTestCase extends TestCase {

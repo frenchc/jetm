@@ -33,19 +33,27 @@
 package test.etm.contrib.rrd.rrd4j;
 
 import etm.contrib.rrd.rrd4j.Rrd4jPlugin;
+import etm.contrib.rrd.rrd4j.Rrd4jUtil;
+import etm.core.aggregation.NotifyingAggregator;
+import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import junit.framework.TestCase;
+import org.rrd4j.core.RrdDb;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: jens
- * Date: Feb 17, 2007
- * Time: 9:58:27 AM
- * To change this template use File | Settings | File Templates.
+ * Tests our rrd4j plugin.
+ *
+ * @author void.fm
+ * @version $Revision$
  */
 public class Rrd4jPluginTest extends TestCase {
 
@@ -74,21 +82,50 @@ public class Rrd4jPluginTest extends TestCase {
     }
   }
 
-//  public void testRrdDbCreate() {
-//    EtmMonitor monitor = new NestedMonitor(new NotifyingAggregator(new RootAggregator()));
-//
-//    Rrd4jPlugin plugin = new Rrd4jPlugin();
-//    List configurations = new ArrayList();
-//    configurations.add("test.rrd|*");
-//    plugin.setDestinations(configurations);
-//    monitor.addPlugin(plugin);
-//
-//
-//    try {
-//      monitor.start();
-//    } finally {
-//      monitor.stop();
-//    }
-//  }
+  public void testRrdDbWrite() throws Exception {
+
+    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/test.xml");
+    File path = File.createTempFile("test", ".rrd");
+
+    try {
+
+      EtmMonitor monitor = new NestedMonitor(new NotifyingAggregator(new RootAggregator()));
+      try {
+        Rrd4jUtil util = new Rrd4jUtil();
+        util.createDb(path, resource);
+
+
+        Rrd4jPlugin plugin = new Rrd4jPlugin();
+        List configurations = new ArrayList();
+        configurations.add(path.getName() + "|*");
+        plugin.setDestinations(configurations);
+        monitor.addPlugin(plugin);
+
+        monitor.start();
+
+        long endtime = System.currentTimeMillis() + 10000;
+        while (System.currentTimeMillis() < endtime) {
+          EtmPoint point = monitor.createPoint("testPoint");
+          try {
+            Thread.sleep(2);
+          } finally {
+            point.collect();
+          }
+
+        }
+      } finally {
+        monitor.stop();
+      }
+
+      RrdDb db = new RrdDb(path.getAbsolutePath(), true);
+      System.out.println(db.getDatasource(0).getLastValue());
+      System.out.println(db.getDatasource(1).getLastValue());
+      System.out.println(db.getDatasource(2).getLastValue());
+      System.out.println(db.getDatasource(3).getLastValue());
+      db.close();
+    } finally {
+      path.delete();
+    }
+  }
 
 }

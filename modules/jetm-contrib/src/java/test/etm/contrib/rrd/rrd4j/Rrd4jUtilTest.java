@@ -29,75 +29,44 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package test.etm.contrib.rrd.rrd4j;
 
-package etm.contrib.rrd.rrd4j;
-
-import etm.contrib.aggregation.filter.RegexEtmFilter;
-import etm.contrib.rrd.core.RrdDestination;
-import etm.contrib.rrd.core.RrdExecutionListener;
-import etm.core.aggregation.EtmFilter;
-import etm.core.monitor.EtmException;
-import etm.core.monitor.EtmPoint;
+import etm.contrib.rrd.rrd4j.Rrd4jUtil;
+import junit.framework.TestCase;
 import org.rrd4j.core.RrdDb;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 
 /**
+ * Tests the rrd4j util methods.
+ *
  * @author void.fm
  * @version $Revision$
- * @since 1.2.0
  */
-public class Rrd4jDestination implements RrdDestination {
+public class Rrd4jUtilTest extends TestCase {
 
-  private String pattern;
-  private File rrdFilePath;
 
-  private RrdDb rrdDb;
-  private EtmFilter filter;
-  private RrdExecutionListener listener;
+  public void testCreate() throws Exception {
+    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/test.xml");
 
-  public Rrd4jDestination(String aPattern, File aRrdFilePath) {
-    pattern = aPattern;
-    rrdFilePath = aRrdFilePath;
-  }
+    Rrd4jUtil util = new Rrd4jUtil();
+    File path = File.createTempFile("test", ".rrd");
 
-  public void start() {
-    if ("*".equals(pattern)) {
-      filter = new EtmFilter() {
-        public boolean matches(EtmPoint aEtmPoint) {
-          return true;
-        }
-      };
-    } else {
-      filter = new RegexEtmFilter(pattern);
-    }
     try {
-      rrdDb = new RrdDb(rrdFilePath.getAbsolutePath());
-    } catch (IOException e) {
-      throw new EtmException(e);
-    }
+      util.createDb(path, resource);
+      assertTrue(path.exists());
 
-    listener = new Rrd4jAggregationWriter(rrdDb);
-    listener.onBegin();
-  }
 
-  public void stop() {
-    listener.onFinish();
-    try {
-      if (rrdDb != null) {
-        rrdDb.close();
+      RrdDb db = new RrdDb(path.getAbsolutePath(), true);
+      assertEquals(4, db.getDsCount());
+      db.close();
+
+    } finally {
+      if (path.exists()) {
+        path.delete();
       }
-    } catch (IOException e) {
-      throw new EtmException(e);
     }
-  }
 
-  public boolean matches(EtmPoint point) {
-    return filter.matches(point);
-  }
-
-  public void write(EtmPoint point) {
-    listener.onNextMeasurement(point);
   }
 }
