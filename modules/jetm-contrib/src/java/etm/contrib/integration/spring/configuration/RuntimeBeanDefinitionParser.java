@@ -140,7 +140,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         if (properties.size() > 0) {
           for (int j = 0; j < properties.size(); j++) {
             Element aProperty = (Element) properties.get(j);
-            builder.addPropertyValue(aProperty.getAttribute("name"), DomUtils.getTextValue(aProperty));
+            addProperty(builder, aProperty);
           }
         }
         plugins.add(builder.getBeanDefinition());
@@ -216,7 +216,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         if (propertyElements.size() > 0) {
           for (int j = 0; j < propertyElements.size(); j++) {
             Element property = (Element) propertyElements.get(j);
-            nestedBuilder.addPropertyValue(property.getAttribute("name"), DomUtils.getTextValue(property));
+            addProperty(nestedBuilder, property);
           }
         }
 
@@ -272,9 +272,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         List properties = DomUtils.getChildElementsByTagName(genericBackend, "property");
         for (Iterator iterator = properties.iterator(); iterator.hasNext();) {
           Element element = (Element) iterator.next();
-          String key = element.getAttribute("name");
-          String value = DomUtils.getTextValue(element);
-          backendBuilder.addPropertyValue(key, value);
+          addProperty(backendBuilder, element);
         }
       } else {
         backendBuilder = BeanDefinitionBuilder.rootBeanDefinition(FileSystemPersistenceBackend.class);
@@ -350,6 +348,16 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
     runtimeBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
 
+  }
+
+  private void addProperty(BeanDefinitionBuilder builder, Element aElement) {
+    String name = aElement.getAttribute("name");
+    String ref = aElement.getAttribute("ref");
+    if (ref != null && ref.length() > 0) {
+      builder.addPropertyReference(name, ref);
+    } else {
+      builder.addPropertyValue(name, DomUtils.getTextValue(aElement));
+    }
   }
 
   private void addTimerDefinition(String aTimer, BeanDefinitionBuilder builder) {
