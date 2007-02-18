@@ -39,6 +39,8 @@ import etm.contrib.console.standalone.StandaloneConsoleResponse;
 import etm.contrib.console.util.ConsoleUtil;
 import etm.contrib.console.util.ResourceAccessor;
 import etm.core.monitor.EtmMonitor;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -72,7 +74,8 @@ import java.util.Stack;
 
 public class HttpConsoleServer {
 
-  //@todo Cleanup e.printstacktrace
+  private static final LogAdapter log = Log.getLog(HttpConsoleServer.class);
+
   private static final int DEFAULT_LISTEN_PORT = 40000;
   private static final int DEFAULT_WORKER_SIZE = 2;
 
@@ -208,9 +211,8 @@ public class HttpConsoleServer {
             new ConsoleWorker().process(clientSocket);
           }
         } catch (Exception e) {
-          // todo exception logging?!
           if (shouldRun) {
-            e.printStackTrace();
+            log.warn("Error processing HTTP request", e);
           } else {
             // don't do anything. we are shutting down probably
             // so there is no need to log the exception
@@ -284,7 +286,7 @@ public class HttpConsoleServer {
         } catch (InterruptedIOException e) {
           // ignored, just close socket
         } catch (Exception e) {
-          e.printStackTrace();
+          log.warn("Error processing HTTP request", e);
         } finally {
           returnWorker(this);
         }
@@ -378,8 +380,7 @@ public class HttpConsoleServer {
           }
         }
       } catch (Exception e) {
-        // todo ??
-        e.printStackTrace();
+        log.warn("Error processing HTTP request", e);
         action = error500;
       }
 

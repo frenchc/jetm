@@ -31,6 +31,9 @@
  */
 package etm.contrib.rrd.core;
 
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -51,6 +54,9 @@ import java.util.regex.Pattern;
  * @since 1.2.0
  */
 public class OfflineLogParser {
+
+  private static final LogAdapter log = Log.getLog(OfflineLogParser.class);
+
 
   private static final String DEFAULT_SCAN_PATTERN = "^(.*)measurementPoint=<([\\w\\s\\d]*)>, parent=<([\\w\\s]*)>, transactionTime=<(\\d*[,.]\\d*)>, recordingTime=<(\\d*)>";
   private String pattern = DEFAULT_SCAN_PATTERN;
@@ -108,7 +114,7 @@ public class OfflineLogParser {
 
           }
         } catch (ParseException e) {
-          e.printStackTrace();
+          log.warn("Error reading line " + line, e);
         }
       }
       for (int i = 0; i < listener.size(); i++) {

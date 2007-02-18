@@ -38,6 +38,8 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.event.CollectEvent;
 import etm.core.monitor.event.CollectionListener;
 import etm.core.plugin.EtmPlugin;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,9 @@ import java.util.List;
  * @since 1.2.0
  */
 public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener {
+
+  private static final LogAdapter log = Log.getLog(AbstractRrdPlugin.class);
+
 
   protected EtmMonitorContext ctx;
   protected RrdDestination[] destinations;
@@ -70,7 +75,7 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
         rrdDestination.start();
         dest.add(rrdDestination);
       } catch (Exception e) {
-        e.printStackTrace();
+        log.warn("Error activation RRD destination " + rrdDestination, e);
       }
     }
 
