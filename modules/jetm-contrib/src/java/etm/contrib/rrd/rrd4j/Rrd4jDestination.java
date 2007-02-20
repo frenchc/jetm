@@ -49,7 +49,6 @@ import java.io.IOException;
  * @since 1.2.0
  */
 public class Rrd4jDestination implements RrdDestination {
-
   private String pattern;
   private File rrdFilePath;
 
@@ -100,4 +99,9 @@ public class Rrd4jDestination implements RrdDestination {
   public void write(EtmPoint point) {
     listener.onNextMeasurement(point);
   }
+
+  public String toString() {
+    return "Rrd4jDestination [" + rrdFilePath.getAbsolutePath() + "|" + pattern + "]";
+  }
 }
+

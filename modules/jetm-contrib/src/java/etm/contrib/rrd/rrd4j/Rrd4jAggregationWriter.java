@@ -34,6 +34,8 @@ package etm.contrib.rrd.rrd4j;
 import etm.contrib.rrd.core.AbstractRrdExecutionListener;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmPoint;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 import org.rrd4j.core.RrdDb;
 import org.rrd4j.core.Sample;
 import org.rrd4j.core.Util;
@@ -50,14 +52,14 @@ import java.util.Date;
  */
 public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
 
-  private RrdDb db;
+  private static final LogAdapter log = Log.getLog(AbstractRrdExecutionListener.class);
 
+  private RrdDb db;
 
   /**
    * Creates a new writer that stores
    *
    * @param aDb A writeable RRD DB.
-   * @throws IOException              Thrown by RRD operation
    * @throws IllegalArgumentException If the rrd db definition does not contain all required
    *                                  datasources
    */
@@ -70,6 +72,9 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
     validateDataSource(aDb, "average");
 
     db = aDb;
+
+    log.debug("Using Rrd4j destination " + aDb.getPath() + " starting at " +
+               new Date(startInterval * 1000) + " with step " + increment + " seconds.");
   }
 
   public void onBegin() {
@@ -82,7 +87,7 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
   }
 
   protected long calculateTimestamp(EtmPoint measurement) {
-    return Util.getTimestamp(new Date(measurement.getStartTime()));
+    return Util.getTimestamp(new Date(measurement.getStartTimeMillis()));
   }
 
   protected void flushStatus() {

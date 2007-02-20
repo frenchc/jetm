@@ -156,6 +156,7 @@
   <xsd:complexType name="featuresType">
     <xsd:sequence>
       <xsd:choice minOccurs="0">
+
         <xsd:element name="threshold-buffer">
           <xsd:complexType>
             <xsd:attribute name="threshold" type="xsd:int">
@@ -181,6 +182,28 @@
           </xsd:complexType>
         </xsd:element>
       </xsd:choice>
+
+      <xsd:element name="notifications">
+        <xsd:complexType>
+          <xsd:attribute name="rootOnly" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                Whether all collected results or just an measurement root will
+                create an notifiation. Default is false.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="filter-pattern" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                Optional filter pattern that allows filtering of logged
+                measurement points. Uses Java 1.4 regex separated by ;.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+
       <xsd:element name="persistence" minOccurs="0">
         <xsd:complexType>
           <xsd:choice minOccurs="0">
@@ -234,7 +257,6 @@
 
       <xsd:element name="jmx" minOccurs="0">
         <xsd:complexType>
-
           <xsd:attribute name="monitorObjectName" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>

@@ -52,6 +52,7 @@ import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.ExecutionTimer;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
+import etm.core.util.Version;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -269,9 +270,13 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
     started = true;
     collecting = true;
+
+    log.info("JETM " + Version.getVersion() + " started.");
   }
 
   public void stop() {
+    log.info("Shutting down JETM.");
+
     if (!started) {
       collecting = false;
       return;
@@ -286,6 +291,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     shutdownPlugins();
 
     dispatcher.deregister(this);
+
   }
 
   public boolean isStarted() {

@@ -51,8 +51,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * BeanDefinitionParser that parses JETM monitoring configuration element. Adds an
- * EtmMethodCallInterceptor or  instance
+ * BeanDefinitionParser that parses JETM monitoring configuration element. Uses EtmMethodCallInterceptor
+ * for bean-pattern based monitoring. Currently signature based monitoring is not supported.
  *
  * @author $Id$
  * @version $Revision$
@@ -60,7 +60,7 @@ import java.util.Set;
  */
 public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
 
-  // todo cleanup an generify
+  // todo cleanup and generify
 
   protected AbstractBeanDefinition parseInternal(Element aElement, ParserContext aParserContext) {
     String monitorRef = aElement.getAttribute("runtime-ref");
@@ -100,7 +100,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
       String[] names = definitionRegistry.getBeanDefinitionNames();
       for (int i = 0; i < names.length; i++) {
         BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
-        if (definition.getBeanClassName().equals("etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser$NamendEtmMethodCallInterceptor")) {
+        if (definition.getBeanClassName().equals("etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser$NamedEtmMethodCallInterceptor")) {
           MutablePropertyValues propertyValues = definition.getPropertyValues();
           PropertyValue propertyValue = propertyValues.getPropertyValue("name");
           if (propertyValue.getValue().equals(group)) {
@@ -111,7 +111,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
       }
       // interceptor not found, we register one
       if (interceptorName == null) {
-        BeanDefinitionBuilder interceptorBuilder = BeanDefinitionBuilder.rootBeanDefinition(NamendEtmMethodCallInterceptor.class);
+        BeanDefinitionBuilder interceptorBuilder = BeanDefinitionBuilder.rootBeanDefinition(NamedEtmMethodCallInterceptor.class);
         interceptorBuilder.addPropertyValue("name", group);
         if (monitorRef != null && monitorRef.length() > 0) {
           interceptorBuilder.addConstructorArgReference(monitorRef);
@@ -192,11 +192,11 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
     return new ProxyHolder(beanName, newDefinition);
   }
 
-  public static class NamendEtmMethodCallInterceptor extends EtmMethodCallInterceptor {
+  public static class NamedEtmMethodCallInterceptor extends EtmMethodCallInterceptor {
 
     private String name;
 
-    public NamendEtmMethodCallInterceptor(EtmMonitor aEtmMonitor) {
+    public NamedEtmMethodCallInterceptor(EtmMonitor aEtmMonitor) {
       super(aEtmMonitor);
     }
 

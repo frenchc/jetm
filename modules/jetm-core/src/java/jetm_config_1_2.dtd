@@ -43,7 +43,7 @@
 <!ATTLIST jetm-config timer CDATA #IMPLIED>
 <!ATTLIST jetm-config autostart (true|false) "false">
 
-<!ELEMENT features ((threshold-buffer|interval-buffer)?, persistence?, jmx?, raw-data-log?)>
+<!ELEMENT features ((threshold-buffer|interval-buffer)?, notifications?, persistence?, jmx?, raw-data-log?)>
 <!ELEMENT aggregator-chain (chain-element*,chain-root?)>
 <!ELEMENT extension (plugin)*>
 
@@ -52,6 +52,14 @@
 
 <!ELEMENT interval-buffer (#PCDATA)>
 <!ATTLIST interval-buffer interval CDATA #IMPLIED>
+
+<!--
+ Enables collect notifications. These notifications are disabled by default for performance
+ reasons. See etm.core.aggregation.NotifyingAggregator for further details.
+-->
+<!ELEMENT notifications EMPTY>
+<!ATTLIST notifications rootOnly (true|false) "false">
+<!ATTLIST notifications filter-pattern CDATA #IMPLIED>
 
 <!ELEMENT persistence (file-backend|custom-backend)?>
 
@@ -73,7 +81,6 @@
 <!ATTLIST raw-data-log category CDATA #IMPLIED>
 <!ATTLIST raw-data-log formatter-class CDATA #IMPLIED>
 <!ATTLIST raw-data-log filter-pattern CDATA #IMPLIED>
-
 
 <!ELEMENT chain-element (property*)>
 <!ATTLIST chain-element class CDATA #REQUIRED>

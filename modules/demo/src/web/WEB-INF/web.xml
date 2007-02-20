@@ -6,6 +6,10 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
   <listener>
+    <listener-class>etm.demo.webapp.util.DemoRuntimeListener</listener-class>
+  </listener>
+  
+  <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 

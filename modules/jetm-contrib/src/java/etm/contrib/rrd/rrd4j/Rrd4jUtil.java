@@ -58,14 +58,14 @@ public class Rrd4jUtil {
 
 
   public void createDb(File path, URL templateUrl) {
+    log.debug("Creating rrd db at " + path.getAbsolutePath());
     File parentDir = path.getParentFile();
     if (!parentDir.exists()) {
       parentDir.mkdirs();
     }
 
     try {
-      URLConnection connection= templateUrl.openConnection();
-
+      URLConnection connection = templateUrl.openConnection();
       try {
 
         RrdDefTemplate template = new JetmRrdDefTemplate(path, connection);
@@ -73,7 +73,6 @@ public class Rrd4jUtil {
 
         RrdDb db = new RrdDb(rrdDef);
         db.close();
-
       } finally {
         try {
           connection.getInputStream().close();
@@ -84,8 +83,6 @@ public class Rrd4jUtil {
     } catch (Exception e) {
       throw new EtmException(e);
     }
-
-
   }
 
   public static void main(String[] args) {
@@ -94,7 +91,7 @@ public class Rrd4jUtil {
 
   /**
    * Since the original template requries a path value
-   * we override an interval method to return our path
+   * we override an interval method to return the path
    * to our rrd file.
    */
   class JetmRrdDefTemplate extends RrdDefTemplate {

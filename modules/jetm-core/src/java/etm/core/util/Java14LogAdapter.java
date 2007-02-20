@@ -29,78 +29,57 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.rrd.core;
+package etm.core.util;
 
-import etm.core.monitor.EtmPoint;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
+ * Adapter to java util logging.
  *
- * Base implementation for RrdExecutionListeners.
- *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  * @since 1.2.0
  */
-public abstract class AbstractRrdExecutionListener implements RrdExecutionListener {
+public class Java14LogAdapter extends Logger implements LogAdapter {
 
-
-  protected long startInterval;
-  protected long endInterval;
-  protected long increment;
-
-
-  protected int transactions;
-  protected double min;
-  protected double max;
-  protected double total;
-
-
-  protected AbstractRrdExecutionListener(long aStartInterval, long aIncrement) {
-    startInterval = aStartInterval;
-    increment = aIncrement;
-    endInterval = startInterval + increment;
-
-    initAggregation();
-
+  public Java14LogAdapter(Class aClazz) {
+    super(aClazz.getName(), null);
+    LogManager.getLogManager().addLogger(this);    
   }
 
-  public void onNextMeasurement(EtmPoint measurement) {
-    long l = calculateTimestamp(measurement);
+  public void debug(String message) {
+    fine(message);
+  }
 
-    if (l > endInterval) {
-      if (startInterval == 0) {
-        startInterval = l;
-        endInterval = startInterval + increment;
-      } else {
-        flushStatus();
-        // proceed to next interval
-        startInterval = endInterval;
-        endInterval = startInterval + increment;
+  public void warn(String message) {
+    warning(message);
+  }
+
+  public void warn(String message, Throwable t) {
+    log(Level.WARNING, message, t);
+  }
+
+  public void error(String message, Throwable t) {
+    log(Level.SEVERE, message, t);
+  }
+
+  public void fatal(String message, Throwable t) {
+    log(Level.SEVERE, message, t);
+  }
+
+  public static boolean isConfigured() {
+    Enumeration names = LogManager.getLogManager().getLoggerNames();
+    // we should have at least two names (since global is always registered)
+    if (names.hasMoreElements()) {
+      names.nextElement();
+      if (names.hasMoreElements()) {
+        return true;
       }
-      initAggregation();
     }
 
-    if (l >= startInterval) {
-      transactions++;
-      double transactionTime = measurement.getTransactionTime();
-      min = transactionTime < min ? transactionTime : min;
-      max = transactionTime > max ? transactionTime : max;
-      total += transactionTime;
-    }
-
+    return false;
   }
-
-
-  protected void initAggregation() {
-    transactions = 0;
-    min = Double.MAX_VALUE;
-    max = Double.MIN_VALUE;
-    total = 0;
-  }
-
-  protected abstract long calculateTimestamp(EtmPoint measurement); 
-
-  protected abstract void flushStatus();
-
-
 }

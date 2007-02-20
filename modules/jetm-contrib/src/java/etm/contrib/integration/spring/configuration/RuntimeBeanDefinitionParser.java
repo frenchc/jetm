@@ -37,6 +37,7 @@ import etm.contrib.aggregation.log.Jdk14LogAggregator;
 import etm.contrib.aggregation.log.Log4jAggregator;
 import etm.core.aggregation.BufferedThresholdAggregator;
 import etm.core.aggregation.BufferedTimedAggregator;
+import etm.core.aggregation.NotifyingAggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
@@ -104,18 +105,14 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     if (extension != null) {
       if (features != null) {
         addExtensions(builder, extension, DomUtils.getChildElementByTagName(features, "jmx"));
-
       } else {
         addExtensions(builder, extension, null);
       }
-
-
     }
 
     builder.setInitMethodName("start");
     builder.setDestroyMethodName("stop");
     return builder.getBeanDefinition();
-
   }
 
   private void addExtensions(BeanDefinitionBuilder aBuilder, Element aExtension, Element jmx) {
@@ -234,12 +231,29 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     Element thresholdBufferElement = DomUtils.getChildElementByTagName(aElement, "threshold-buffer");
     Element intervalBuffer = DomUtils.getChildElementByTagName(aElement, "interval-buffer");
 
+    Element notifications = DomUtils.getChildElementByTagName(aElement, "notifications");
     Element rawDataLog = DomUtils.getChildElementByTagName(aElement, "raw-data-log");
     Element persistence = DomUtils.getChildElementByTagName(aElement, "persistence");
 
+    BeanDefinitionBuilder notificationBuilder = null;
     BeanDefinitionBuilder bufferBuilder;
     BeanDefinitionBuilder rawDataBuilder = null;
     BeanDefinitionBuilder aggregationRootBuilder;
+
+    if (notifications != null) {
+      notificationBuilder = BeanDefinitionBuilder.rootBeanDefinition(NotifyingAggregator.class);
+      String rootOnly = notifications.getAttribute("rootOnly");
+      String filterPattern = notifications.getAttribute("filter-pattern");
+
+      if ("true".equals(rootOnly)) {
+        notificationBuilder.addPropertyValue("rootOnly", "true");
+      }
+
+      if (filterPattern != null && filterPattern.length() > 0) {
+        notificationBuilder.addPropertyValue("filterPattern", filterPattern);
+      }
+
+    }
 
     if (persistence != null) {
       aggregationRootBuilder = BeanDefinitionBuilder.rootBeanDefinition(PersistentRootAggregator.class);
@@ -335,7 +349,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
       bufferBuilder = BeanDefinitionBuilder.rootBeanDefinition(BufferedThresholdAggregator.class);
     }
 
-    // now build up chain
+    // now build up chain - reverse 
     BeanDefinitionBuilder chainBuilder = aggregationRootBuilder;
 
     if (rawDataBuilder != null) {
@@ -343,6 +357,11 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
       chainBuilder = rawDataBuilder;
     }
 
+    if (notificationBuilder != null) {
+      notificationBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+      chainBuilder = notificationBuilder;
+
+    }
     bufferBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
     chainBuilder = bufferBuilder;
 

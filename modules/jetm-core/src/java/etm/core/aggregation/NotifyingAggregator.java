@@ -54,14 +54,32 @@ public class NotifyingAggregator implements Aggregator {
   private Aggregator delegate;
   private EtmMonitorContext ctx;
 
+  private boolean rootOnly = false;
 
   public NotifyingAggregator(Aggregator aDelegate) {
     delegate = aDelegate;
   }
 
+  /**
+   *
+   * If rootOnly is enabled, only measurement roots will create
+   * an event.
+   *
+   * @param aRootOnly True to notify on root collections only. Default is false.
+   */
+  public void setRootOnly(boolean aRootOnly) {
+    rootOnly = aRootOnly;
+  }
+
+  public void setFilterPattern(String pattern) {
+    // todo - should we move the aggregator to contrib instead
+  }
+
   public void add(EtmPoint point) {
     delegate.add(point);
-    ctx.fireEvent(new CollectEvent(this, point));
+    if (!rootOnly || point.getParent() == null) {
+      ctx.fireEvent(new CollectEvent(this, point));
+    }
   }
 
   public void flush() {

@@ -29,78 +29,39 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.contrib.rrd.core;
+package etm.demo.webapp.util;
 
-import etm.core.monitor.EtmPoint;
+import etm.contrib.rrd.rrd4j.Rrd4jUtil;
+import etm.core.monitor.EtmException;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.net.URL;
 
 /**
  *
- * Base implementation for RrdExecutionListeners.
  *
  * @version $Revision$
  * @author void.fm
- * @since 1.2.0
+ *
  */
-public abstract class AbstractRrdExecutionListener implements RrdExecutionListener {
+public class DemoRuntimeListener implements ServletContextListener {
+  private static final String DB_TEMPLATE = "etm/contrib/rrd/rrd4j/template/mediumres-db-template.xml";
 
-
-  protected long startInterval;
-  protected long endInterval;
-  protected long increment;
-
-
-  protected int transactions;
-  protected double min;
-  protected double max;
-  protected double total;
-
-
-  protected AbstractRrdExecutionListener(long aStartInterval, long aIncrement) {
-    startInterval = aStartInterval;
-    increment = aIncrement;
-    endInterval = startInterval + increment;
-
-    initAggregation();
-
-  }
-
-  public void onNextMeasurement(EtmPoint measurement) {
-    long l = calculateTimestamp(measurement);
-
-    if (l > endInterval) {
-      if (startInterval == 0) {
-        startInterval = l;
-        endInterval = startInterval + increment;
-      } else {
-        flushStatus();
-        // proceed to next interval
-        startInterval = endInterval;
-        endInterval = startInterval + increment;
+  public void contextInitialized(ServletContextEvent event) {
+    // create required rrd database if needed
+    File file = new File(System.getProperty("java.io.tmpdir"), "jetm-demo.rrd");
+    if (!file.exists()) {
+      URL url = Thread.currentThread().getContextClassLoader().getResource(DB_TEMPLATE);
+      if (url == null) {
+        throw new EtmException("Unable to locate db template at " + DB_TEMPLATE);
       }
-      initAggregation();
+      Rrd4jUtil util = new Rrd4jUtil();
+      util.createDb(file, url);      
     }
-
-    if (l >= startInterval) {
-      transactions++;
-      double transactionTime = measurement.getTransactionTime();
-      min = transactionTime < min ? transactionTime : min;
-      max = transactionTime > max ? transactionTime : max;
-      total += transactionTime;
-    }
-
   }
 
-
-  protected void initAggregation() {
-    transactions = 0;
-    min = Double.MAX_VALUE;
-    max = Double.MIN_VALUE;
-    total = 0;
+  public void contextDestroyed(ServletContextEvent event) {
   }
-
-  protected abstract long calculateTimestamp(EtmPoint measurement); 
-
-  protected abstract void flushStatus();
-
-
 }

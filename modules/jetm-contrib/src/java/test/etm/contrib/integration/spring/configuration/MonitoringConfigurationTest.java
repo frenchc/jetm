@@ -84,7 +84,7 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
       String[] etmInterceptor = ctx.getBeanNamesForType(EtmMethodCallInterceptor.class);
       assertEquals(3, etmInterceptor.length);
 
-      String[] namedInterceptor = ctx.getBeanNamesForType(MonitoringBeanDefinitionParser.NamendEtmMethodCallInterceptor.class);
+      String[] namedInterceptor = ctx.getBeanNamesForType(MonitoringBeanDefinitionParser.NamedEtmMethodCallInterceptor.class);
       assertEquals(2, namedInterceptor.length);
 
       String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);

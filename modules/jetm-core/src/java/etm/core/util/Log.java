@@ -61,6 +61,7 @@ public class Log {
     public AdapterFactory() {
       Class adapterClazz = DefaultLogAdapter.class;
 
+      // try log4j first
       try {
         Class aClass = Class.forName("etm.core.util.Log4jAdapter");
         Method method = aClass.getMethod("isConfigured", new Class[]{});
@@ -71,6 +72,21 @@ public class Log {
       } catch (Throwable t) {
         // ignore this one
       }
+
+      // fallback to java util logging?
+      if (DefaultLogAdapter.class.equals(adapterClazz)) {
+        try {
+          Class aClass = Class.forName("etm.core.util.Java14LogAdapter");
+          Method method = aClass.getMethod("isConfigured", new Class[]{});
+          Boolean available = (Boolean) method.invoke(null, new Object[]{});
+          if (available.booleanValue()) {
+            adapterClazz = aClass;
+          }
+        } catch (Throwable t) {
+          // ignore this one
+        }
+      }
+
 
       try {
         constructor = adapterClazz.getConstructor(new Class[]{Class.class});

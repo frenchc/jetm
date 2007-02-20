@@ -43,7 +43,7 @@ import etm.demo.webapp.dao.User;
 public class MessagingServiceImpl implements MessagingService {
   public void sendMail(User user, String templateName) {
     try {
-      Thread.sleep((long) (Math.random()*100d));
+      Thread.sleep((long) (Math.random()*50d));
     } catch (InterruptedException e) {
       // ignored
     }

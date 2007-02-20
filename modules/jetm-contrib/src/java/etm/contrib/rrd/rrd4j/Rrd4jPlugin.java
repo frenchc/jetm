@@ -34,6 +34,8 @@ package etm.contrib.rrd.rrd4j;
 import etm.contrib.rrd.core.AbstractRrdPlugin;
 import etm.contrib.rrd.core.RrdDestination;
 import etm.core.metadata.PluginMetaData;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import java.io.File;
 import java.util.List;
@@ -46,6 +48,8 @@ import java.util.List;
  * @since 1.2.0
  */
 public class Rrd4jPlugin extends AbstractRrdPlugin {
+
+  private static final LogAdapter log = Log.getLog(Rrd4jPlugin.class);
 
   private String configPath = System.getProperty("java.io.tmpdir");
   private List destinationConfiguration;

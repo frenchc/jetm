@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
                            http://jetm.void.fm/schema/jetm_spring_config_1_2 http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd">
 
 
@@ -12,21 +14,41 @@
 
   <bean id="messagingService" class="etm.demo.webapp.service.MessagingServiceImpl" autowire="constructor"/>
 
+
   <!--
-    Enable JETM performance monitoring
+    JETM performance monitoring configuration
   -->
 
-  <jetm:runtime type="nested">
+  <jetm:runtime>
     <jetm:features>
+      <!-- Buffer performance results for 1000 miliseconds-->
       <jetm:interval-buffer interval="1000" />
+
+      <!-- Send notifications for every new measurement root, required by Rrd4j plugin -->
+      <jetm:notifications rootOnly="true" />
+
+      <!-- Enable persistent performance results -->
       <jetm:persistence>
         <jetm:file-backend filename="jetm-demo-state.ser" />
       </jetm:persistence>
     </jetm:features>
+
+    <!-- Enable RRD support -->
+    <jetm:extension>
+      <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jPlugin">
+        <jetm:property name="destinations" ref="rrdConfig"/>
+      </jetm:plugin>
+    </jetm:extension>
   </jetm:runtime>
 
+  <!-- Declarativly monitor all services and beans -->
   <jetm:monitoring>
     <jetm:bean-pattern>*Dao,*Service</jetm:bean-pattern>
   </jetm:monitoring>
+
+  <!-- Aggregate all collect events into one rrd DB -->
+  <util:list id="rrdConfig">
+    <value>jetm-demo.rrd|*</value>
+  </util:list>
 
 </beans>

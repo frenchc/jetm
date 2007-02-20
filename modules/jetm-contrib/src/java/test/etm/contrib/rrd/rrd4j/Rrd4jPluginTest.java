@@ -68,7 +68,6 @@ public class Rrd4jPluginTest extends TestCase {
     PrintStream tmpErr = new PrintStream(out);
     System.setErr(tmpErr);
 
-
     try {
       monitor.start();
 
@@ -83,17 +82,14 @@ public class Rrd4jPluginTest extends TestCase {
   }
 
   public void testRrdDbWrite() throws Exception {
-
     URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/test.xml");
     File path = File.createTempFile("test", ".rrd");
 
     try {
-
       EtmMonitor monitor = new NestedMonitor(new NotifyingAggregator(new RootAggregator()));
       try {
         Rrd4jUtil util = new Rrd4jUtil();
         util.createDb(path, resource);
-
 
         Rrd4jPlugin plugin = new Rrd4jPlugin();
         List configurations = new ArrayList();
@@ -118,10 +114,12 @@ public class Rrd4jPluginTest extends TestCase {
       }
 
       RrdDb db = new RrdDb(path.getAbsolutePath(), true);
-      System.out.println(db.getDatasource(0).getLastValue());
-      System.out.println(db.getDatasource(1).getLastValue());
-      System.out.println(db.getDatasource(2).getLastValue());
-      System.out.println(db.getDatasource(3).getLastValue());
+      assertTrue(db.getDatasource("transactions").getLastValue() > 0);
+      assertTrue(db.getDatasource("min").getLastValue() > 0);
+      assertTrue(db.getDatasource("max").getLastValue() > db.getDatasource("min").getLastValue());
+      assertTrue(db.getDatasource("average").getLastValue() > db.getDatasource("min").getLastValue());
+      assertTrue(db.getDatasource("max").getLastValue() > db.getDatasource("average").getLastValue());
+
       db.close();
     } finally {
       path.delete();

@@ -33,9 +33,12 @@ package etm.core.configuration;
 
 import etm.core.aggregation.BufferedThresholdAggregator;
 import etm.core.aggregation.BufferedTimedAggregator;
+import etm.core.aggregation.NotifyingAggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.jmx.EtmMonitorJmxPlugin;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -48,6 +51,8 @@ import org.w3c.dom.NodeList;
  * @since 1.2.0
  */
 class Xml12ConfigParser extends XmlConfigParser {
+  private static final LogAdapter log = Log.getLog(Xml12ConfigParser.class);
+
   public EtmMonitorConfig parse(Document aDocument) {
     EtmMonitorConfig monitorConfig = new EtmMonitorConfig();
 
@@ -91,9 +96,10 @@ class Xml12ConfigParser extends XmlConfigParser {
   protected void parseFeatures(NodeList features, EtmMonitorConfig aMonitorConfig) {
     Element featureConfig = ((Element) features.item(0));
 
-    //(threshold-buffer|interval-buffer)?, persistence?, jmx?, raw-data-log?
+    //(threshold-buffer|interval-buffer)?, notifications?, persistence?, jmx?, raw-data-log?
     NodeList thresholdBuffer = featureConfig.getElementsByTagName("threshold-buffer");
     NodeList intervalBuffer = featureConfig.getElementsByTagName("interval-buffer");
+    NodeList notifications = featureConfig.getElementsByTagName("notifications");
     NodeList persistence = featureConfig.getElementsByTagName("persistence");
     NodeList jmxConfig = featureConfig.getElementsByTagName("jmx");
     NodeList rawDataConfig = featureConfig.getElementsByTagName("raw-data-log");
@@ -152,6 +158,23 @@ class Xml12ConfigParser extends XmlConfigParser {
       aMonitorConfig.appendAggregator(aggregatorConfig);
     }
 
+    if (notifications.getLength() != 0) {
+      if (thresholdBuffer.getLength() == 0 && intervalBuffer.getLength() == 0) {
+        log.warn("Missing buffering aggregator while notifications enabled. Adding BufferedThresholdAggregator.");
+        EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+        aggregatorConfig.setAggregatorClass(BufferedThresholdAggregator.class);
+        aMonitorConfig.appendAggregator(aggregatorConfig);
+      }
+
+      Element element = ((Element) notifications.item(0));
+      EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
+      aggregatorConfig.setAggregatorClass(NotifyingAggregator.class);
+
+      addPropertyByAttribute(element, aggregatorConfig, "rootOnly", "rootOnly");
+      addPropertyByAttribute(element, aggregatorConfig, "filter-pattern", "filterPattern");
+
+      aMonitorConfig.appendAggregator(aggregatorConfig);
+    }
 
     if (rawDataConfig.getLength() != 0) {
       Element element = ((Element) rawDataConfig.item(0));
