@@ -183,7 +183,7 @@
         </xsd:element>
       </xsd:choice>
 
-      <xsd:element name="notifications">
+      <xsd:element name="notifications" minOccurs="0">
         <xsd:complexType>
           <xsd:attribute name="rootOnly" type="xsd:boolean">
             <xsd:annotation>
