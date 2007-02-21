@@ -82,7 +82,7 @@ public class Rrd4jPluginTest extends TestCase {
   }
 
   public void testRrdDbWrite() throws Exception {
-    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/test.xml");
+    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
     File path = File.createTempFile("test", ".rrd");
 
     try {

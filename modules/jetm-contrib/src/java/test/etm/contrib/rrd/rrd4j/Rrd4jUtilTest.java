@@ -48,7 +48,7 @@ public class Rrd4jUtilTest extends TestCase {
 
 
   public void testCreate() throws Exception {
-    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/test.xml");
+    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
 
     Rrd4jUtil util = new Rrd4jUtil();
     File path = File.createTempFile("test", ".rrd");

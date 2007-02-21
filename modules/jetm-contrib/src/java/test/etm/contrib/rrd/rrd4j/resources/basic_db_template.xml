@@ -1,0 +1,59 @@
+<rrd_def>
+  <start>0</start>
+  <step>5</step>
+  <!-- at least one datasource must be supplied -->
+  <datasource>
+    <name>transactions</name>
+    <type>ABSOLUTE</type>
+    <heartbeat>5</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+  <datasource>
+    <name>min</name>
+    <type>GAUGE</type>
+    <heartbeat>5</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+  <datasource>
+    <name>max</name>
+    <type>GAUGE</type>
+    <heartbeat>5</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+  <datasource>
+    <name>average</name>
+    <type>GAUGE</type>
+    <heartbeat>5</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0</xff>
+    <steps>1</steps>
+    <rows>1440</rows>
+  </archive>
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0</xff>
+    <steps>5</steps>
+    <rows>1728</rows>
+  </archive>
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0</xff>
+    <steps>10</steps>
+    <rows>1728</rows>
+  </archive>
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0</xff>
+    <steps>20</steps>
+    <rows>6048</rows>
+  </archive>
+ 
+</rrd_def>
