@@ -31,7 +31,9 @@
  */
 package etm.core.util;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -71,15 +73,20 @@ public class Java14LogAdapter extends Logger implements LogAdapter {
   }
 
   public static boolean isConfigured() {
+    List expectedNames = new ArrayList();
+
     Enumeration names = LogManager.getLogManager().getLoggerNames();
-    // we should have at least two names (since global is always registered)
-    if (names.hasMoreElements()) {
-      names.nextElement();
-      if (names.hasMoreElements()) {
+
+    while(names.hasMoreElements()) {
+      expectedNames.add(names.nextElement());
+      if (expectedNames.size() == 0) {
         return true;
       }
     }
 
-    return false;
+    expectedNames.remove("");
+    expectedNames.remove("global");
+
+    return expectedNames.size() > 0;
   }
 }

@@ -52,12 +52,12 @@ public class CheckMonitorWarningsTest extends TestCase {
   public void testEtmMonitorSupportWarning() {
     EtmManager.reset();
 
-    PrintStream writer = System.err;
+    PrintStream writer = System.out;
 
     try {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       PrintStream tmp = new PrintStream(out);
-      System.setErr(tmp);
+      System.setOut(tmp);
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
       EtmPoint point = etmMonitor.createPoint("test");
@@ -68,19 +68,19 @@ public class CheckMonitorWarningsTest extends TestCase {
       assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
 
     } finally {
-      System.setErr(writer);
+      System.setOut(writer);
     }
   }
 
   public void testNullMonitorWarning() {
     EtmManager.reset();
 
-    PrintStream writer = System.err;
+    PrintStream writer = System.out;
 
     try {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       PrintStream tmp = new PrintStream(out);
-      System.setErr(tmp);
+      System.setOut(tmp);
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
       etmMonitor.start();
@@ -92,7 +92,7 @@ public class CheckMonitorWarningsTest extends TestCase {
       assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
       etmMonitor.stop();
     } finally {
-      System.setErr(writer);
+      System.setOut(writer);
     }
   }
 }
