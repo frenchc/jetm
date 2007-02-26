@@ -89,16 +89,20 @@ public class Rrd4jUtilTest extends TestCase {
       util.createDb(dbResource, map);
 
       map = new HashMap();
-      map.put("filename", imagePath.getAbsolutePath());
+      map.put("imagefile", imagePath.getAbsolutePath());
       long l = Util.getTimestamp(new Date());
       map.put("intervalstart", new Long(l - 60 * 60));
       map.put("intervalend", new Long(l));
       map.put("rrdfile", dbPath.getAbsolutePath());
-      map.put("title", "test image");
+      map.put("imagetitle", "test image");
+      map.put("generatedstamp", new Date());
 
       util.createImage(imageResource, map);
 
     } finally {
+      if (imagePath.exists()) {
+        imagePath.delete();
+      }
       if (dbPath.exists()) {
         dbPath.delete();
       }
