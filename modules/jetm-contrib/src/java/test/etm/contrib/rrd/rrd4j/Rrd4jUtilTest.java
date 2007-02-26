@@ -34,9 +34,13 @@ package test.etm.contrib.rrd.rrd4j;
 import etm.contrib.rrd.rrd4j.Rrd4jUtil;
 import junit.framework.TestCase;
 import org.rrd4j.core.RrdDb;
+import org.rrd4j.core.Util;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests the rrd4j util methods.
@@ -47,14 +51,16 @@ import java.net.URL;
 public class Rrd4jUtilTest extends TestCase {
 
 
-  public void testCreate() throws Exception {
+  public void testCreateDb() throws Exception {
     URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
 
     Rrd4jUtil util = new Rrd4jUtil();
     File path = File.createTempFile("test", ".rrd");
 
     try {
-      util.createDb(path, resource);
+      Map map = new HashMap();
+      map.put("filename", path.getAbsolutePath());
+      util.createDb(resource, map);
       assertTrue(path.exists());
 
 
@@ -67,6 +73,36 @@ public class Rrd4jUtilTest extends TestCase {
         path.delete();
       }
     }
-
   }
+
+  public void testCreateImage() throws Exception {
+    URL dbResource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
+    URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/all-graph-template.xml");
+
+    Rrd4jUtil util = new Rrd4jUtil();
+    File dbPath = File.createTempFile("test", ".rrd");
+    File imagePath = File.createTempFile("test", ".png");
+
+    try {
+      Map map = new HashMap();
+      map.put("filename", dbPath.getAbsolutePath());
+      util.createDb(dbResource, map);
+
+      map = new HashMap();
+      map.put("filename", imagePath.getAbsolutePath());
+      long l = Util.getTimestamp(new Date());
+      map.put("intervalstart", new Long(l - 60 * 60));
+      map.put("intervalend", new Long(l));
+      map.put("rrdfile", dbPath.getAbsolutePath());
+      map.put("title", "test image");
+
+      util.createImage(imageResource, map);
+
+    } finally {
+      if (dbPath.exists()) {
+        dbPath.delete();
+      }
+    }
+  }
+
 }

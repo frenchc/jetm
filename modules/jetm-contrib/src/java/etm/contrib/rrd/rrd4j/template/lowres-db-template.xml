@@ -1,4 +1,5 @@
 <rrd_def>
+  <path>${filename}</path>  
   <start>0</start>
   <step>60</step>
 

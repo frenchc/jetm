@@ -1,32 +1,33 @@
 <rrd_def>
+  <path>${filename}</path>
   <start>0</start>
   <step>5</step>
 
   <datasource>
     <name>transactions</name>
     <type>ABSOLUTE</type>
-    <heartbeat>5</heartbeat>
+    <heartbeat>10</heartbeat>
     <min>0</min>
     <max>U</max>
   </datasource>
   <datasource>
     <name>min</name>
     <type>GAUGE</type>
-    <heartbeat>5</heartbeat>
+    <heartbeat>10</heartbeat>
     <min>0</min>
     <max>U</max>
   </datasource>
   <datasource>
     <name>max</name>
     <type>GAUGE</type>
-    <heartbeat>5</heartbeat>
+    <heartbeat>10</heartbeat>
     <min>0</min>
     <max>U</max>
   </datasource>
   <datasource>
     <name>average</name>
     <type>GAUGE</type>
-    <heartbeat>5</heartbeat>
+    <heartbeat>10</heartbeat>
     <min>0</min>
     <max>U</max>
   </datasource>

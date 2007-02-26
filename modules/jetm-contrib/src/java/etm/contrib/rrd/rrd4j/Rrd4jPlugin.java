@@ -83,7 +83,9 @@ public class Rrd4jPlugin extends AbstractRrdPlugin {
 
 
   public PluginMetaData getPluginMetaData() {
-    return null;
+    PluginMetaData metaData = new PluginMetaData(getClass(), "RRD4j plugin.");
+
+    return metaData;
   }
 
 }

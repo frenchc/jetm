@@ -38,16 +38,15 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
- *
- * @version $Revision$
  * @author void.fm
- *
+ * @version $Revision$
  */
 public class DemoRuntimeListener implements ServletContextListener {
-  private static final String DB_TEMPLATE = "etm/contrib/rrd/rrd4j/template/mediumres-db-template.xml";
+  private static final String DB_TEMPLATE = "etm/contrib/rrd/rrd4j/template/highres-db-template.xml";
 
   public void contextInitialized(ServletContextEvent event) {
     // create required rrd database if needed
@@ -57,8 +56,11 @@ public class DemoRuntimeListener implements ServletContextListener {
       if (url == null) {
         throw new EtmException("Unable to locate db template at " + DB_TEMPLATE);
       }
+      
+      Map map = new HashMap();
+      map.put("filename", file.getAbsolutePath());
       Rrd4jUtil util = new Rrd4jUtil();
-      util.createDb(file, url);      
+      util.createDb(url, map);
     }
   }
 

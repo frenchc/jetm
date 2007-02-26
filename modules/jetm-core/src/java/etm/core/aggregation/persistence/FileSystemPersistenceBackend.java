@@ -31,6 +31,7 @@
  */
 package etm.core.aggregation.persistence;
 
+import etm.core.monitor.EtmException;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
@@ -96,13 +97,15 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
       path.mkdirs();
     }
 
-    File tmpFile = new File(path, filename + ".tmp");
-
-    if (tmpFile.exists()) {
-      tmpFile.delete();
+    File tmpFile;
+    try {
+      tmpFile = File.createTempFile("jetm-state", ".tmp", path);
+    } catch (IOException e) {
+      throw new EtmException(e);
     }
 
     ObjectOutputStream out = null;
+
     try {
       out = new ObjectOutputStream(new FileOutputStream(tmpFile));
       out.writeObject(state);

@@ -44,6 +44,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ *
+ * Destination for Rrd4j files.
+ *
  * @author void.fm
  * @version $Revision$
  * @since 1.2.0

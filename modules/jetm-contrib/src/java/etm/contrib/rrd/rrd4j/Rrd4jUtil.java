@@ -38,13 +38,21 @@ import etm.core.util.LogAdapter;
 import org.rrd4j.core.RrdDb;
 import org.rrd4j.core.RrdDef;
 import org.rrd4j.core.RrdDefTemplate;
-import org.w3c.dom.Node;
+import org.rrd4j.core.XmlTemplate;
+import org.rrd4j.graph.RrdGraph;
+import org.rrd4j.graph.RrdGraphDef;
+import org.rrd4j.graph.RrdGraphDefTemplate;
+import org.rrd4j.graph.RrdGraphInfo;
 import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Util class for various RRD4j tasks.
@@ -57,8 +65,19 @@ public class Rrd4jUtil {
   private static final LogAdapter log = Log.getLog(Rrd4jUtil.class);
 
 
-  public void createDb(File path, URL templateUrl) {
-    log.debug("Creating rrd db at " + path.getAbsolutePath());
+  public void createImage(URL templateUrl, Map properties) {
+    String fileName = (String) properties.get("imagefile");
+
+    if (fileName == null) {
+      throw new NullPointerException("Variable 'filename' may not be null");
+    }
+    if (templateUrl == null) {
+      throw new NullPointerException("Template URL may not be null.");
+    }
+
+    File path = new File(fileName);
+    log.debug("Creating image at " + path.getAbsolutePath() + " using template " + templateUrl + ".");
+
     File parentDir = path.getParentFile();
     if (!parentDir.exists()) {
       parentDir.mkdirs();
@@ -66,16 +85,58 @@ public class Rrd4jUtil {
 
     try {
       URLConnection connection = templateUrl.openConnection();
+
+      InputStream in = connection.getInputStream();
+      try {
+        RrdGraphDefTemplate template = new RrdGraphDefTemplate(new InputSource(in));
+        setProperties(template, properties);
+
+        RrdGraphDef graphDef = template.getRrdGraphDef();
+        RrdGraphInfo info = new RrdGraph(graphDef).getRrdGraphInfo();
+      } finally {
+        try {
+          in.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    } catch (IOException e) {
+      throw new EtmException(e);
+    }
+  }
+
+  public void createDb(URL templateUrl, Map properties) {
+    String fileName = (String) properties.get("filename");
+
+    if (fileName == null) {
+      throw new NullPointerException("Variable 'filename' may not be null");
+    }
+    if (templateUrl == null) {
+      throw new NullPointerException("Template URL may not be null.");
+    }
+
+    File path = new File(fileName);
+    log.debug("Creating rrd db at " + path.getAbsolutePath() + " using template " + templateUrl + ".");
+
+    File parentDir = path.getParentFile();
+    if (!parentDir.exists()) {
+      parentDir.mkdirs();
+    }
+
+    try {
+      URLConnection connection = templateUrl.openConnection();
+      InputStream in = connection.getInputStream();
       try {
 
-        RrdDefTemplate template = new JetmRrdDefTemplate(path, connection);
+        RrdDefTemplate template = new RrdDefTemplate(new InputSource(in));
+        setProperties(template, properties);
         RrdDef rrdDef = template.getRrdDef();
 
         RrdDb db = new RrdDb(rrdDef);
         db.close();
       } finally {
         try {
-          connection.getInputStream().close();
+          in.close();
         } catch (IOException e) {
           // ignored
         }
@@ -85,43 +146,25 @@ public class Rrd4jUtil {
     }
   }
 
+  protected void setProperties(XmlTemplate aTemplate, Map properties) {
+    Iterator it = properties.keySet().iterator();
+    while (it.hasNext()) {
+      String key = (String) it.next();
+      Object value = properties.get(key);
+      if (value instanceof String) {
+        aTemplate.setVariable(key, (String) value);
+      } else if (value instanceof Calendar) {
+        aTemplate.setVariable(key, (Calendar) value);
+      } else if (value instanceof Long) {
+        aTemplate.setVariable(key, ((Long) value).longValue());
+      } else {
+        aTemplate.setVariable(key, String.valueOf(value));
+      }
+    }
+  }
+
   public static void main(String[] args) {
 
   }
-
-  /**
-   * Since the original template requries a path value
-   * we override an interval method to return the path
-   * to our rrd file.
-   */
-  class JetmRrdDefTemplate extends RrdDefTemplate {
-
-    private File path;
-    private URLConnection urlConnection;
-
-    public JetmRrdDefTemplate(File aPath, URLConnection aURLConnection) throws IOException {
-      super(new InputSource(aURLConnection.getInputStream()));
-      path = aPath;
-      urlConnection = aURLConnection;
-    }
-
-    protected String getChildValue(Node parentNode, String childName) {
-      if ("path".equals(childName)) {
-        try {
-          String value = super.getChildValue(parentNode, childName);
-          if (value != null && value.length() > 0) {
-            log.warn("Rrd4j template " + urlConnection.getURL() + " defines path value " + value +
-              ". It will be overriden by " + path.getAbsolutePath());
-          }
-        } catch (IllegalStateException e) {
-          // expected
-        }
-        return path.getAbsolutePath();
-      }
-
-      return super.getChildValue(parentNode, childName);
-    }
-  }
-
 
 }

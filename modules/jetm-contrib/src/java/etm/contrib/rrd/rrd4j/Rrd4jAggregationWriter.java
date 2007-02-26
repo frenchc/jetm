@@ -56,6 +56,11 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
 
   private RrdDb db;
 
+  private boolean transactionsEnabled;
+  private boolean minEnabled;
+  private boolean maxEnabled;
+  private boolean averageEnabled;
+
   /**
    * Creates a new writer that stores
    *
@@ -66,15 +71,21 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
   public Rrd4jAggregationWriter(RrdDb aDb) {
     super(extractLastTimestamp(aDb), extractStep(aDb));
 
-    validateDataSource(aDb, "transactions");
-    validateDataSource(aDb, "min");
-    validateDataSource(aDb, "max");
-    validateDataSource(aDb, "average");
+    transactionsEnabled = validateDataSource(aDb, "transactions");
+    minEnabled = validateDataSource(aDb, "min");
+    maxEnabled = validateDataSource(aDb, "max");
+    averageEnabled = validateDataSource(aDb, "average");
+
+    if (!(transactionsEnabled || minEnabled || maxEnabled || averageEnabled)) {
+      throw new EtmException("Invalid datasource. " +
+        "One of the datasources 'transactions', 'min', 'max' or 'average' should exist in " +
+      aDb.getPath() + ".");
+    }
 
     db = aDb;
 
     log.debug("Using Rrd4j destination " + aDb.getPath() + " starting at " +
-               new Date(startInterval * 1000) + " with step " + increment + " seconds.");
+      new Date(startInterval * 1000) + " with step " + increment + " seconds.");
   }
 
   public void onBegin() {
@@ -94,10 +105,18 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
     if (transactions > 0) {
       try {
         Sample sample = db.createSample(endInterval);
-        sample.setValue("transactions", transactions);
-        sample.setValue("min", min);
-        sample.setValue("max", max);
-        sample.setValue("average", total / (double) transactions);
+        if (transactionsEnabled) {
+          sample.setValue("transactions", transactions);
+        }
+        if (minEnabled) {
+          sample.setValue("min", min);
+        }
+        if (maxEnabled) {
+          sample.setValue("max", max);
+        }
+        if (averageEnabled) {
+          sample.setValue("average", total / (double) transactions);
+        }
 
         sample.update();
       } catch (IOException e) {
@@ -106,16 +125,13 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
     }
   }
 
-  protected void validateDataSource(RrdDb aDb, String name) {
+  protected boolean validateDataSource(RrdDb aDb, String name) {
     try {
-      if (aDb.getDatasource(name) == null) {
-        throw new IllegalArgumentException("DataSource " + name + " not found");
-      }
+      return aDb.getDatasource(name) != null;
     } catch (IOException e) {
       throw new EtmException(e);
     }
   }
-
 
   private static long extractStep(RrdDb aDb) {
     try {

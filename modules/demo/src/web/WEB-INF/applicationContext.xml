@@ -22,33 +22,89 @@
   <jetm:runtime>
     <jetm:features>
       <!-- Buffer performance results for 1000 miliseconds-->
-      <jetm:interval-buffer interval="1000" />
+      <jetm:interval-buffer interval="1000"/>
 
       <!-- Send notifications for every new measurement root, required by Rrd4j plugin -->
-      <jetm:notifications rootOnly="true" />
+      <jetm:notifications rootOnly="true"/>
 
       <!-- Enable persistent performance results -->
       <jetm:persistence>
-        <jetm:file-backend filename="jetm-demo-state.ser" />
+        <jetm:file-backend filename="jetm-demo-state.ser"
+                           path="${java.io.tmpdir}"/>
       </jetm:persistence>
     </jetm:features>
 
     <!-- Enable RRD support -->
     <jetm:extension>
       <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jPlugin">
-        <jetm:property name="destinations" ref="rrdConfig"/>
+        <jetm:property name="destinations" ref="rrdDestinationConfig"/>
+        <jetm:property name="rrdFilePath">${java.io.tmpdir}</jetm:property>
       </jetm:plugin>
+
+      <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
+        <jetm:property name="timefame">3600</jetm:property>
+        <jetm:property name="offset">10</jetm:property>
+        <jetm:property name="templateProperties" ref="imageConfigLastHour"/>
+      </jetm:plugin>
+      <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
+        <jetm:property name="timefame">43200</jetm:property>
+        <jetm:property name="offset">60</jetm:property>
+        <jetm:property name="templateProperties" ref="imageConfigLast12Hours" />
+      </jetm:plugin>
+      <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
+        <jetm:property name="timefame">86400</jetm:property>
+        <jetm:property name="offset">120</jetm:property>
+        <jetm:property name="templateProperties" ref="imageConfigLast24Hours" />
+      </jetm:plugin>
+      <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
+        <jetm:property name="timefame">2592000</jetm:property>
+        <jetm:property name="offset">360</jetm:property>
+        <jetm:property name="templateProperties" ref="imageConfigLastMonth" />
+      </jetm:plugin>
+
     </jetm:extension>
   </jetm:runtime>
 
-  <!-- Declarativly monitor all services and beans -->
+  <!-- Declaratively monitor all services and beans -->
   <jetm:monitoring>
     <jetm:bean-pattern>*Dao,*Service</jetm:bean-pattern>
   </jetm:monitoring>
 
+
+
   <!-- Aggregate all collect events into one rrd DB -->
-  <util:list id="rrdConfig">
+  <util:list id="rrdDestinationConfig">
     <value>jetm-demo.rrd|*</value>
   </util:list>
 
+  <util:map id="imageConfigLastHour">
+    <entry key="imagefile" value="${java.io.tmpdir}/performance_1h.png"/>
+    <entry key="rrdfile" value="${java.io.tmpdir}/jetm-demo.rrd"/>
+    <entry key="imagetitle" value="JETM demo performance statistics (last 60 minutes)"/>
+  </util:map>
+
+  <util:map id="imageConfigLast12Hours">
+    <entry key="imagefile" value="${java.io.tmpdir}/performance_12h.png"/>
+    <entry key="rrdfile" value="${java.io.tmpdir}/jetm-demo.rrd"/>
+    <entry key="imagetitle" value="JETM demo performance statistics (last 12 hours)"/>
+  </util:map>
+
+  <util:map id="imageConfigLast24Hours">
+    <entry key="imagefile" value="${java.io.tmpdir}/performance_24h.png"/>
+    <entry key="rrdfile" value="${java.io.tmpdir}/jetm-demo.rrd"/>
+    <entry key="imagetitle" value="JETM demo performance statistics (last 24 hours)"/>
+  </util:map>
+
+  <util:map id="imageConfigLastMonth">
+    <entry key="imagefile" value="${java.io.tmpdir}/performance_1m.png"/>
+    <entry key="rrdfile" value="${java.io.tmpdir}/jetm-demo.rrd"/>
+    <entry key="imagetitle" value="JETM demo performance statistics (last 30 days)"/>
+  </util:map>
+
+
+  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
 </beans>

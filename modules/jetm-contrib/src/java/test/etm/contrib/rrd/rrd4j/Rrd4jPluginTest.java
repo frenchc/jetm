@@ -47,7 +47,9 @@ import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Tests our rrd4j plugin.
@@ -89,7 +91,9 @@ public class Rrd4jPluginTest extends TestCase {
       EtmMonitor monitor = new NestedMonitor(new NotifyingAggregator(new RootAggregator()));
       try {
         Rrd4jUtil util = new Rrd4jUtil();
-        util.createDb(path, resource);
+        Map properties = new HashMap();
+        properties.put("filename", path.getAbsolutePath());
+        util.createDb(resource, properties);
 
         Rrd4jPlugin plugin = new Rrd4jPlugin();
         List configurations = new ArrayList();
