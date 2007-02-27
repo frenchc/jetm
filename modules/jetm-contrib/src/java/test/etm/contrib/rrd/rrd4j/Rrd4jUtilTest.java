@@ -77,7 +77,7 @@ public class Rrd4jUtilTest extends TestCase {
 
   public void testCreateImage() throws Exception {
     URL dbResource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
-    URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/average-and-tx-graph-template.xml");
+    URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
 
     Rrd4jUtil util = new Rrd4jUtil();
     File dbPath = File.createTempFile("test", ".rrd");

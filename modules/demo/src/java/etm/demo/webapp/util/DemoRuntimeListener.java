@@ -46,7 +46,7 @@ import java.util.Map;
  * @version $Revision$
  */
 public class DemoRuntimeListener implements ServletContextListener {
-  private static final String DB_TEMPLATE = "etm/contrib/rrd/rrd4j/template/highres-db-template.xml";
+  private static final String DB_TEMPLATE = "etm/contrib/rrd/rrd4j/template/db/highres-template.xml";
 
   public void contextInitialized(ServletContextEvent event) {
     // create required rrd database if needed
