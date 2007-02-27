@@ -77,7 +77,7 @@ public class Rrd4jUtilTest extends TestCase {
 
   public void testCreateImage() throws Exception {
     URL dbResource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
-    URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/all-graph-template.xml");
+    URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/average-and-tx-graph-template.xml");
 
     Rrd4jUtil util = new Rrd4jUtil();
     File dbPath = File.createTempFile("test", ".rrd");
@@ -95,14 +95,13 @@ public class Rrd4jUtilTest extends TestCase {
       map.put("intervalend", new Long(l));
       map.put("rrdfile", dbPath.getAbsolutePath());
       map.put("imagetitle", "test image");
-      map.put("generatedstamp", new Date());
 
       util.createImage(imageResource, map);
 
     } finally {
-      if (imagePath.exists()) {
-        imagePath.delete();
-      }
+//      if (imagePath.exists()) {
+//        imagePath.delete();
+//      }
       if (dbPath.exists()) {
         dbPath.delete();
       }

@@ -51,6 +51,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -74,6 +75,8 @@ public class Rrd4jUtil {
     if (templateUrl == null) {
       throw new NullPointerException("Template URL may not be null.");
     }
+
+    setImageDefaults(properties);
 
     File path = new File(fileName);
     log.debug("Creating image at " + path.getAbsolutePath() + " using template " + templateUrl + ".");
@@ -104,6 +107,7 @@ public class Rrd4jUtil {
       throw new EtmException(e);
     }
   }
+
 
   public void createDb(URL templateUrl, Map properties) {
     String fileName = (String) properties.get("filename");
@@ -161,6 +165,14 @@ public class Rrd4jUtil {
         aTemplate.setVariable(key, String.valueOf(value));
       }
     }
+  }
+
+  protected void setImageDefaults(Map properties) {
+    if (properties.get("logarithmic") == null) {
+      properties.put("logarithmic", "false");
+    }
+
+    properties.put("generatedstamp", "Generated " + new Date() + "\\r");
   }
 
   public static void main(String[] args) {

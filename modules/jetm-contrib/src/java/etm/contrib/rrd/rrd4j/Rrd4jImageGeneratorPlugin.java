@@ -50,10 +50,10 @@ import java.util.TimerTask;
  */
 public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
 
-  private long interval = DEFAULT_INTERVAL;
+  private long generationInterval = DEFAULT_INTERVAL;
   private String templateName;
   private Map templateProperties;
-  private int timefame = 60 * 60;
+  private int timeframe = 60 * 60;
   private int offset;
 
   private static final long DEFAULT_INTERVAL = 5000;
@@ -62,8 +62,8 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
 
   private EtmMonitorContext ctx;
 
-  public void setInterval(long aInterval) {
-    interval = aInterval;
+  public void setGenerationInterval(long aGenerationInterval) {
+    generationInterval = aGenerationInterval * 1000;
   }
 
   public void setTemplateName(String aTemplateName) {
@@ -74,8 +74,8 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
     templateProperties = aProperties;
   }
 
-  public void setTimefame(int aTimefame) {
-    timefame = aTimefame;
+  public void setTimeframe(int aTimeframe) {
+    timeframe = aTimeframe;
   }
 
   public void setOffset(int aOffset) {
@@ -88,7 +88,7 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
 
   public void start() {
     task = new ImageTask();
-    ctx.getScheduler().schedule(task, 0, interval);
+    ctx.getScheduler().schedule(task, 0, generationInterval);
   }
 
   public void stop() {
@@ -113,10 +113,9 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
     }
 
     public void run() {
-      templateProperties.put("generatedstamp", "Generated at " + new Date() + "\\r");
       long l = Util.getTimestamp(new Date());
       templateProperties.put("intervalend", new Long(l - offset));
-      templateProperties.put("intervalstart", new Long(l - offset - timefame));
+      templateProperties.put("intervalstart", new Long(l - offset - timeframe));
 
       util.createImage(template, templateProperties);
     }

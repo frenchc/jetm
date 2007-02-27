@@ -42,26 +42,30 @@
       </jetm:plugin>
 
       <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
-        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
-        <jetm:property name="timefame">3600</jetm:property>
+        <jetm:property name="generationInterval">60</jetm:property>
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/average-and-tx-graph-template.xml</jetm:property>
+        <jetm:property name="timeframe">3600</jetm:property>
         <jetm:property name="offset">10</jetm:property>
         <jetm:property name="templateProperties" ref="imageConfigLastHour"/>
       </jetm:plugin>
       <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
-        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
-        <jetm:property name="timefame">43200</jetm:property>
+        <jetm:property name="generationInterval">60</jetm:property>
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/average-and-tx-graph-template.xml</jetm:property>
+        <jetm:property name="timeframe">43200</jetm:property>
         <jetm:property name="offset">60</jetm:property>
         <jetm:property name="templateProperties" ref="imageConfigLast12Hours" />
       </jetm:plugin>
       <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
-        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
-        <jetm:property name="timefame">86400</jetm:property>
+        <jetm:property name="generationInterval">60</jetm:property>
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/average-and-tx-graph-template.xml</jetm:property>
+        <jetm:property name="timeframe">86400</jetm:property>
         <jetm:property name="offset">120</jetm:property>
         <jetm:property name="templateProperties" ref="imageConfigLast24Hours" />
       </jetm:plugin>
       <jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">
-        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/all-graph-template.xml</jetm:property>
-        <jetm:property name="timefame">2592000</jetm:property>
+        <jetm:property name="generationInterval">60</jetm:property>        
+        <jetm:property name="templateName">etm/contrib/rrd/rrd4j/template/average-and-tx-graph-template.xml</jetm:property>
+        <jetm:property name="timeframe">2592000</jetm:property>
         <jetm:property name="offset">360</jetm:property>
         <jetm:property name="templateProperties" ref="imageConfigLastMonth" />
       </jetm:plugin>
