@@ -31,9 +31,9 @@
  */
 package etm.demo.webapp.dao;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Date;
 
 /**
  * @author void.fm
@@ -87,6 +87,7 @@ public class UserDaoImpl implements UserDao {
       // ingored
     }
     users.put(user.getUserName(), user);
+   
     return user;
   }
 
