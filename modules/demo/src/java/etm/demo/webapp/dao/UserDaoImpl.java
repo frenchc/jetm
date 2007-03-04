@@ -72,14 +72,20 @@ public class UserDaoImpl implements UserDao {
   }
 
 
-
   public User create(User user) {
+    if (user.getUserName().startsWith("TESTUSER")) {
+      // do not store locally for load test
+      user.setUserId(-1);
+      user.setCreateDate(new Date());
+      user.setLastModifiedDate(user.getCreateDate());
+      return user;
+    }
     if (hasUserWithUsername(user.getUserName())) {
       throw new NonUniqueObjectException();
     }
     user.setUserId(getNextId());
     user.setCreateDate(new Date());
-    user.setLastModifiedDate(user.getLastModifiedDate());
+    user.setLastModifiedDate(user.getCreateDate());
 
     try {
       Thread.sleep((long) (Math.random() * 10d));
@@ -87,7 +93,7 @@ public class UserDaoImpl implements UserDao {
       // ingored
     }
     users.put(user.getUserName(), user);
-   
+
     return user;
   }
 
