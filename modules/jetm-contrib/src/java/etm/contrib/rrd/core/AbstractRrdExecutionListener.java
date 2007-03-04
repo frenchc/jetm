@@ -84,7 +84,8 @@ public abstract class AbstractRrdExecutionListener implements RrdExecutionListen
       min = transactionTime < min ? transactionTime : min;
       max = transactionTime > max ? transactionTime : max;
       total += transactionTime;
-    }
+    } // else ingore, must be historical data
+
 
   }
 

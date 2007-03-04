@@ -128,9 +128,6 @@ public class Rrd4jUtil {
    */
   public static void createGraph(URL templateUrl, File destination,
                                  long intervalStart, long intervalEnd, Map properties) {
-
-    log.debug("Creating image at " + destination.getAbsolutePath() + " using template " + templateUrl + ".");
-
     if (properties == null) {
       properties = new HashMap();
     }

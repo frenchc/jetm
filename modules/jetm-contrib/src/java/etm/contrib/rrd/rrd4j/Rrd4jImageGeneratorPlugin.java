@@ -105,18 +105,17 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
 
 
   class ImageTask extends TimerTask {
-    private Rrd4jUtil util = new Rrd4jUtil();
     private URL template;
 
     public ImageTask() {
-      template = Thread.currentThread().getContextClassLoader().getResource(templateName);
+      template = Rrd4jUtil.locateTemplate(templateName);
     }
 
     public void run() {
       long intervalend = Util.getTimestamp(new Date());
-      long intervalstart= intervalend - offset - timeframe;
+      long intervalstart = intervalend - offset - timeframe;
 
-      util.createGraph(template, intervalstart, intervalend, templateProperties);
+      Rrd4jUtil.createGraph(template, intervalstart, intervalend, templateProperties);
     }
   }
 }
