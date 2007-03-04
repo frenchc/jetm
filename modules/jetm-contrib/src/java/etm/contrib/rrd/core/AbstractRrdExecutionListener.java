@@ -43,7 +43,6 @@ import etm.core.monitor.EtmPoint;
  */
 public abstract class AbstractRrdExecutionListener implements RrdExecutionListener {
 
-
   protected long startInterval;
   protected long endInterval;
   protected long increment;
@@ -53,7 +52,6 @@ public abstract class AbstractRrdExecutionListener implements RrdExecutionListen
   protected double min;
   protected double max;
   protected double total;
-
 
   protected AbstractRrdExecutionListener(long aStartInterval, long aIncrement) {
     startInterval = aStartInterval;

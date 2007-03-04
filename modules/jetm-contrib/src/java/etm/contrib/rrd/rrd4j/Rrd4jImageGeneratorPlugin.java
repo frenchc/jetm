@@ -113,11 +113,10 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
     }
 
     public void run() {
-      long l = Util.getTimestamp(new Date());
-      templateProperties.put("intervalend", new Long(l - offset));
-      templateProperties.put("intervalstart", new Long(l - offset - timeframe));
+      long intervalend = Util.getTimestamp(new Date());
+      long intervalstart= intervalend - offset - timeframe;
 
-      util.createImage(template, templateProperties);
+      util.createGraph(template, intervalstart, intervalend, templateProperties);
     }
   }
 }

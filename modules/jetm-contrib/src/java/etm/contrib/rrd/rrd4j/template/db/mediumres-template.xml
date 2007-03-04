@@ -1,5 +1,5 @@
 <rrd_def>
-  <path>${filename}</path>  
+  <path>${rrdfile}</path>  
   <start>0</start>
   <step>20</step>
 

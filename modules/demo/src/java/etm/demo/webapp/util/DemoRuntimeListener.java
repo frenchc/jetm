@@ -32,35 +32,24 @@
 package etm.demo.webapp.util;
 
 import etm.contrib.rrd.rrd4j.Rrd4jUtil;
-import etm.core.monitor.EtmException;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author void.fm
  * @version $Revision$
  */
 public class DemoRuntimeListener implements ServletContextListener {
-  private static final String DB_TEMPLATE = "etm/contrib/rrd/rrd4j/template/db/highres-template.xml";
 
   public void contextInitialized(ServletContextEvent event) {
     // create required rrd database if needed
     File file = new File(System.getProperty("java.io.tmpdir"), "jetm-demo.rrd");
     if (!file.exists()) {
-      URL url = Thread.currentThread().getContextClassLoader().getResource(DB_TEMPLATE);
-      if (url == null) {
-        throw new EtmException("Unable to locate db template at " + DB_TEMPLATE);
-      }
-      
-      Map map = new HashMap();
-      map.put("filename", file.getAbsolutePath());
-      Rrd4jUtil util = new Rrd4jUtil();
-      util.createDb(url, map);
+      URL url =  Rrd4jUtil.locateTemplate("highres");
+      Rrd4jUtil.createRrdDb(url,file, null);
     }
   }
 

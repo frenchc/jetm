@@ -50,19 +50,15 @@ import java.util.Map;
  */
 public class Rrd4jUtilTest extends TestCase {
 
-
   public void testCreateDb() throws Exception {
     URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
 
-    Rrd4jUtil util = new Rrd4jUtil();
     File path = File.createTempFile("test", ".rrd");
 
     try {
-      Map map = new HashMap();
-      map.put("filename", path.getAbsolutePath());
-      util.createDb(resource, map);
+      path.delete();
+      Rrd4jUtil.createRrdDb(resource, path, null);
       assertTrue(path.exists());
-
 
       RrdDb db = new RrdDb(path.getAbsolutePath(), true);
       assertEquals(4, db.getDsCount());
@@ -79,29 +75,28 @@ public class Rrd4jUtilTest extends TestCase {
     URL dbResource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
     URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
 
-    Rrd4jUtil util = new Rrd4jUtil();
     File dbPath = File.createTempFile("test", ".rrd");
     File imagePath = File.createTempFile("test", ".png");
 
     try {
-      Map map = new HashMap();
-      map.put("filename", dbPath.getAbsolutePath());
-      util.createDb(dbResource, map);
+      dbPath.delete();
+      imagePath.delete();
+      
+      Rrd4jUtil.createRrdDb(dbResource, dbPath, null);
 
-      map = new HashMap();
-      map.put("imagefile", imagePath.getAbsolutePath());
-      long l = Util.getTimestamp(new Date());
-      map.put("intervalstart", new Long(l - 60 * 60));
-      map.put("intervalend", new Long(l));
-      map.put("rrdfile", dbPath.getAbsolutePath());
+      Map map = new HashMap();
       map.put("imagetitle", "test image");
 
-      util.createImage(imageResource, map);
+      long intervalend = Util.getTimestamp(new Date());
+      long intervalstart = intervalend - 60 * 60;
 
+      Rrd4jUtil.createGraph(imageResource, dbPath, imagePath, intervalstart, intervalend, map);
+
+      assertTrue(imagePath.exists());
     } finally {
-//      if (imagePath.exists()) {
-//        imagePath.delete();
-//      }
+      if (imagePath.exists()) {
+        imagePath.delete();
+      }
       if (dbPath.exists()) {
         dbPath.delete();
       }
