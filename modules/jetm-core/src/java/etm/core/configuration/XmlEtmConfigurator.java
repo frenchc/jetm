@@ -42,11 +42,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Xml based configurator. Requires a xml configuration which is valid
- * to jetm_config DTD.
+ * A configurator that reads its configuration from xml. Currently supports both
+ * jetm_config 1.0 and 1.2 configurations. See EtmManager howto that is part of
+ * the documentation and  <a href="http://jetm.void.fm/dtd/">http://jetm.void.fm/dtd</a>
+ * for currently supported dtds.
+ *
+ * <p/>
+ * Every xml configuration file has to include one of the following doctype definitions
+ * <pre>
+ * &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
+ *                           "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+ *
+ * &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+ *                            http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
+ * </pre>
  * <p/>
  * Be aware that you need to start and stop the EtmMonitor before
- * using it. See {@link etm.core.monitor.EtmMonitor} lifecycle.
+ * using it. Example:
+ * <pre>
+ *  XmlEtmConfigurator.configure(new File("etm-config.xml"));
+ *
+ *  EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+ *  etmMonitor.start();
+ *  ...
+ * </pre>
  *
  * @author void.fm
  * @version $Revision$

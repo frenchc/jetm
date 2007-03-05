@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * A Rrd4j DB Writer that creates ...
+ * A Rrd4j DB Writer writes 
  *
  * @author void.fm
  * @version $Revision$

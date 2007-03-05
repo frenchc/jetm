@@ -1,0 +1,149 @@
+body {
+  background: #FFFFFF;
+  color: #000000;
+  font-size: 9pt;
+  font-weight: 400;
+  font-family: Verdana, Helvetica, sans-serif;
+  text-align: left;
+  margin: 0 0 0 0;
+  padding: 0 0 0 15px;
+}
+
+table {
+  border: 2px solid #999;
+  margin: 10px 0 15px 0;
+  padding: 0 0 0 0;
+  border-collapse: collapse;
+}
+
+th {
+  border: 1px solid #999;
+  margin: 0 0 0 0;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+tr {
+  border: 1px solid #999;
+  margin: 0 0 0 0;
+  padding: 10px 5px 10px 5px;
+}
+
+td {
+  border: 1px solid #999;
+  margin: 0 0 0 0;
+  padding: 5px 15px 5px 10px;
+  white-space: nowrap;
+}
+
+a:link {
+  color: #314E6C;
+  voice-family: inherit;
+  cursor: pointer;
+}
+
+a:visited {
+  color: #314E6C;
+}
+
+a:hover {
+  voice-family: inherit;
+  cursor: pointer;
+}
+
+th a:link {
+  color: #000000;
+  voice-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+th a:visited {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+
+  color: #000000;
+  text-decoration: none;
+}
+
+th a:hover {
+  color: #333333;
+  voice-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.childname {
+  text-align: left;
+  border-top: 1px dotted #999;
+  position: relative;
+  margin: 2px 0 0 15px;
+}
+
+.parentname {
+  text-align: left;
+}
+
+.parentmeasurement {
+  text-align: right;
+}
+
+.childmeasurement {
+  border-top: 1px dotted #999;
+  text-align: right;
+  margin: 2px 0 0 0;
+}
+
+.parenttime {
+  text-align: right;
+}
+
+.childtime {
+  border-top: 1px dotted #999;
+  text-align: right;
+  margin: 2px 0 0 0;
+}
+
+.parenttotal {
+  text-align: right;
+}
+
+.childtotal {
+  border-top: 1px dotted #999;
+  text-align: right;
+  margin: 2px 0 0 0;
+}
+
+.footer {
+  margin: 0 0 0 0;
+  padding: 2px 15px 2px 0;
+  text-align: right;
+  font-size: 8pt;
+}
+
+.enabled {
+  color: green;
+}
+
+.disabled {
+  color: red;
+}
+
+.noborder {
+  margin: 0 0 0 0;
+  padding: 2px 5px 0 5px;
+  border: none;
+}
+
+.descending {
+  background-image: url( up-arrow.png );
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.ascending {
+  background-image: url( down-arrow.png );
+  background-position: right;
+  background-repeat: no-repeat;
+}

@@ -33,8 +33,8 @@
 package etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
-import etm.core.monitor.NestedMonitor;
 import etm.core.monitor.FlatMonitor;
+import etm.core.monitor.NestedMonitor;
 import etm.core.timer.ExecutionTimer;
 
 /**
@@ -44,7 +44,14 @@ import etm.core.timer.ExecutionTimer;
  * For custom configuration see {@link XmlEtmConfigurator}.
  * <p/>
  * Be aware that you need to start and stop the EtmMonitor before
- * using it. See {@link etm.core.monitor.EtmMonitor} lifecycle.
+ * using it. Example:
+ * <pre>
+ *  BasicEtmConfigurator.configure();
+ *
+ *  EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+ *  etmMonitor.start();
+ *  ...
+ * </pre>
  *
  * @author void.fm
  * @version $Revision$

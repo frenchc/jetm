@@ -35,7 +35,7 @@ package test.etm.contrib.console;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.console.standalone.StandaloneConsoleRequest;
 import etm.contrib.console.util.CollapsedResultRenderer;
-import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
+import etm.contrib.util.ExecutionAggregateComparator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;

@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  *
- * The ExecutionAggregate represents aggregated information of
+ * The Aggregate represents aggregated information of
  * an execution point. Please note that usally methods of this class
  * are not synchronized.
  *

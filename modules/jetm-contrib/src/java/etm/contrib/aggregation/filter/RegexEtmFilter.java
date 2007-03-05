@@ -58,7 +58,7 @@ public class RegexEtmFilter implements EtmFilter {
    * Create a RegexAggregationFilter instance based on a list
    * of regex pattern separated by semicolon.
    *
-   * @param listOfPattern Java 5 Regex separated by semicolon.
+   * @param listOfPattern Java 1.4 Regex separated by semicolon.
    */
   public RegexEtmFilter(String listOfPattern) {
     this(listOfPattern.split(";"));
@@ -69,7 +69,7 @@ public class RegexEtmFilter implements EtmFilter {
    *
    * Create a RegexAggregationFilter
    *
-   * @param regexPattern The Java 5 regex patterm/
+   * @param regexPattern The Java 1.4 regex patterm/
    */
   public RegexEtmFilter(String[] regexPattern) {
     this.pattern = new Pattern[regexPattern.length];

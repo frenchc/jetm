@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /start
+Disallow: /stop
+Disallow: /reset
+Disallow: /expand
+Disallow: /collapse

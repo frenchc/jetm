@@ -33,7 +33,7 @@ package etm.core.monitor.event;
 
 /**
  *
- * The event dispatch will be used to dispatch events to registered listeners.
+ * The event dispatcher will be used to dispatch events to registered listeners.
  *
  * @author void.fm
  * @version $Revision$

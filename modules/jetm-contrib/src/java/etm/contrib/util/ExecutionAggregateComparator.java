@@ -30,7 +30,7 @@
  *
  */
 
-package etm.contrib.renderer.comparator;
+package etm.contrib.util;
 
 import etm.core.aggregation.Aggregate;
 

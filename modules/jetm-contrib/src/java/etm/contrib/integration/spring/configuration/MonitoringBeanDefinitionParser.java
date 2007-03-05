@@ -192,6 +192,11 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
     return new ProxyHolder(beanName, newDefinition);
   }
 
+  /**
+   *
+   * A EtmMethodCallInterceptor that uses one name for all measurement points. 
+   *
+   */
   public static class NamedEtmMethodCallInterceptor extends EtmMethodCallInterceptor {
 
     private String name;
@@ -209,6 +214,11 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
     }
   }
 
+  /**
+   *
+   * A helper class holding currently known proxy names.
+   *
+   */
   public static class MonitoringInfo {
     private Set proxyNames;
 
@@ -222,6 +232,11 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
     }
   }
 
+  /**
+   *
+   * Bean definition wrapper.
+   *
+   */
   class ProxyHolder {
     private String name;
     private AbstractBeanDefinition definition;

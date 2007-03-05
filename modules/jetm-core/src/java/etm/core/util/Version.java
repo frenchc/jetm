@@ -39,9 +39,9 @@ import java.util.Properties;
 
 /**
  *
- * Contain JETM version information.
+ * Contains JETM version information.
  *
- * @version $Revision$
+ * @version $Revision:129 $
  * @author void.fm
  * @since 1.2.0
  */

@@ -34,7 +34,7 @@ package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleAction;
 import etm.contrib.console.ConsoleRequest;
-import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
+import etm.contrib.util.ExecutionAggregateComparator;
 
 /**
  * Base class for all actions.

@@ -34,7 +34,7 @@ package etm.contrib.console.util;
 
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
-import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
+import etm.contrib.util.ExecutionAggregateComparator;
 import etm.core.aggregation.Aggregate;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.util.Version;

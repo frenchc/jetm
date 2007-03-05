@@ -40,8 +40,7 @@ import java.lang.reflect.Method;
 /**
  * While writing your own wrapper to a log framework seems to be pretty stupid
  * JETM does not want to add a dependency to a log framework in its core package.
- * Therefore this class acts as simple wrapper for the limited use of message output
- * JETM requires.
+ * Therefore this class acts as simple wrapper for the limited use of message output.
  *
  * @author void.fm
  * @version $Revision$

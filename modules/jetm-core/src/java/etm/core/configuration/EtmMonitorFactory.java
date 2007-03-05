@@ -103,12 +103,12 @@ public class EtmMonitorFactory {
   }
 
 
-  public static ExecutionTimer newTimer() {
+  public static ExecutionTimer bestAvailableTimer() {
     for (int i = 0; i < jetmTimer.length; i++) {
       try {
         return (ExecutionTimer) instantiateClass(jetmTimer[i]);
       } catch (Exception e) {
-        log.warn("Unable to instantiate execution timer '" + jetmTimer[i] + "'. Trying next. ", e);
+        log.warn("Unable to instantiate execution timer '" + jetmTimer[i] + "'. Trying next. Cause:" + e.getMessage());
       } catch (Throwable e) {
         // for our implementation we get a NoSuchMethodError for JDK's < 5.0
         // therefore ignore, unless it's ThreadDeath
@@ -125,7 +125,7 @@ public class EtmMonitorFactory {
     if (monitorConfig.getTimerClass() != null) {
       return (ExecutionTimer) monitorConfig.getTimerClass().newInstance();
     } else {
-      return newTimer();
+      return bestAvailableTimer();
     }
   }
 

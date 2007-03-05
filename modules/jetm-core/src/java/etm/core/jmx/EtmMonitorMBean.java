@@ -53,8 +53,7 @@ import javax.management.ReflectionException;
 import java.io.StringWriter;
 
 /**
- * An MBean that provides access to an EtmMonitor instance. The management
- * interfaces supports start/stop of monitoring
+ * An MBean that provides access to an EtmMonitor instance.
  *
  * @author void.fm
  * @version $Revision$

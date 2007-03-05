@@ -36,8 +36,8 @@ import etm.core.monitor.EtmPoint;
 
 /**
  *
- * An EtmFilter is used to decided whether a given EtmPoint
- * is interesting or not.
+ * An EtmFilter can be used to decide whether a given EtmPoint
+ * satifies certain criteria or not.
  *
  * @version $Revision$
  * @author void.fm

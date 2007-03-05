@@ -50,14 +50,12 @@ import java.util.LinkedList;
 /**
  * <p/>
  * The SimpleTreeModelAggregator builds up a Swing {@link javax.swing.tree.TreeModel}
- * for all EtmPoints.
+ * for all EtmPoints. Do not use anymore.
  * </p>
  * <p/>
  * Please note that the current implementation isn't very efficient, it definitly adds
  * some overhead for every measurement.
  * </p>
- * </p>
- * This implementation is considered alpha quality and will be improved with release 1.1
  * </p>
  *
  * @author void.fm

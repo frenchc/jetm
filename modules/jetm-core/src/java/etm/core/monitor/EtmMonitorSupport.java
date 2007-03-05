@@ -131,7 +131,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     if (aTimer != null) {
       timer = aTimer;
     } else {
-      timer = EtmMonitorFactory.newTimer();
+      timer = EtmMonitorFactory.bestAvailableTimer();
     }
 
     if (aAggregator != null) {

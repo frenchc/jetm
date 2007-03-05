@@ -34,11 +34,10 @@ package etm.contrib.rrd.core;
 import etm.core.monitor.EtmPoint;
 
 /**
- *
  * Base implementation for RrdExecutionListeners.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  * @since 1.2.0
  */
 public abstract class AbstractRrdExecutionListener implements RrdExecutionListener {
@@ -46,7 +45,6 @@ public abstract class AbstractRrdExecutionListener implements RrdExecutionListen
   protected long startInterval;
   protected long endInterval;
   protected long increment;
-
 
   protected int transactions;
   protected double min;
@@ -59,17 +57,24 @@ public abstract class AbstractRrdExecutionListener implements RrdExecutionListen
     endInterval = startInterval + increment;
 
     initAggregation();
-
   }
 
   public void onNextMeasurement(EtmPoint measurement) {
     long l = calculateTimestamp(measurement);
 
+    //           A   B   C   D   E
+    // start =  15   0  15  15  15
+    // end =    20   5  20  20  20
+    // l =     100  23  23  19  14
+
+    // case A + B
     if (l > endInterval) {
-      if (startInterval == 0) {
+      // case A and B
+      if (startInterval == 0 || l > endInterval + increment) {
         startInterval = l;
         endInterval = startInterval + increment;
       } else {
+        // case C
         flushStatus();
         // proceed to next interval
         startInterval = endInterval;
@@ -78,28 +83,26 @@ public abstract class AbstractRrdExecutionListener implements RrdExecutionListen
       initAggregation();
     }
 
+    // case D
     if (l >= startInterval) {
       transactions++;
       double transactionTime = measurement.getTransactionTime();
       min = transactionTime < min ? transactionTime : min;
       max = transactionTime > max ? transactionTime : max;
       total += transactionTime;
-    } // else ingore, must be historical data
-
+    } // else case E, ingore, must be historical data
 
   }
-
 
   protected void initAggregation() {
     transactions = 0;
+    total = 0;
     min = Double.MAX_VALUE;
     max = Double.MIN_VALUE;
-    total = 0;
   }
 
-  protected abstract long calculateTimestamp(EtmPoint measurement); 
+  protected abstract long calculateTimestamp(EtmPoint measurement);
 
   protected abstract void flushStatus();
-
 
 }

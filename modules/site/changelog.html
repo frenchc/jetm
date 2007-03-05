@@ -11,10 +11,45 @@
 
 <div id="content">
   <div id="header">Java&trade; Execution Time Measurement Library</div>
-  <div id="subheader">The swiss army knife of the poor</div>
+  <div id="subheader">Runtime performance monitoring made easy</div>
   <div id="main">
 
     <h3>JETM Changelog</h3>
+
+    <h4>Release 1.2.0</h4>
+<pre> New features
+  - Improved Spring integration using Spring 2.x namespaces
+  - Sort by name, executions and times in HTTP console
+  - Switch collapsed/expanded mode in HTTP console during runtime
+  - Added support for persistent aggregation results
+  - Added HTTP console servlet for EtmManager and Spring Managed EtmMonitors
+  - Activated JMX support (deprecated old JMX MBeans), now export top
+    level performance results as JMX MBean
+  - Simplified XML based configuration (use jetm_config_1_2.dtd therefore)
+  - Added basic RRD4j support
+  - Added EtmPluginMetadata - thus enabling lookup for runtime configuration
+    such as HTTP Console listen port
+  - Added Filter for aggregator chains.
+  - Added event system - especially useful for plugins
+
+ Changes, Fixes and Improvements
+  - Five minute tutorial added
+  - Documentation improvements
+  - Deprecated Flat- and NestedAggregator in favour of one common RootAggregator
+  - Deprecated MeasurementPoint in favour of EtmMonitor#createPoint()
+  - Decreased EtmMonitor locking sections
+  - Added setter for plugins for better Spring integration
+  - Improved logging, now using log4j/java 1.4 logging if available
+    (reverts to standard out if not)
+  - Now writing warnings if monitor is not running
+  - Reverted to shared java.util.Timer for scheduling
+  - Minor fixes to logging aggregators
+  - Altered startup order of plugin and aggregator 
+  - Added init(EtmMonitorContext) to plugin and aggregator lifecycle
+  - Added system property support for jetm-config.xml
+
+  - Switched from CVS to SVN (history not migrated)
+</pre>
 
     <h4>Release 1.1.1</h4>
 <pre>Changes, Fixes and Improvements

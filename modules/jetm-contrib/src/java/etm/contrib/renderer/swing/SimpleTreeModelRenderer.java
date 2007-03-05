@@ -49,11 +49,12 @@ import java.util.TreeMap;
  * Swing TreeModel.
  * <p/>
  * </p>
- * This implementation is considered alpha quality and will be improved with release 1.1
+ * This implementation is considered alpha quality.
  *
  * @author void.fm
  * @version $Revision$
  * @see javax.swing.tree.TreeModel
+ * @deprecated Please don't use this renderer any more. With JETM 1.3.0 this renderer will be removed. 
  */
 
 public class SimpleTreeModelRenderer extends DefaultTreeModel implements MeasurementRenderer {

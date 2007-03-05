@@ -38,7 +38,7 @@ import etm.core.timer.ExecutionTimer;
 /**
  * <p/>
  * The NestedMonitor records nested EtmPoints as a tree using ThreadLocals
- * to maintain thread depend calling trees.
+ * to maintain the thread depend caller tree.
  * </p>
  * <p/>
  * Be aware that leaking EtmPoints will lead to unexpected results - so

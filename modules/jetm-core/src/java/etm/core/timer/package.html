@@ -2,14 +2,14 @@
 
   <body>
     <p>
-      Timer implementations used for performance measurement.
+      Execution timer abstraction.
     </p>
 
     <p>
-      Depending on the used Java Virtual Maschine and the underlying Operating System
-      timer implementations will return different resolutions and thus influence the
-      collected statistics directly. See {@link etm.core.timer.ExecutionTimer}
-      for further details.
+      The resolution of a timer strictly depends on the Java VM version and the underlying Operating System.
+      Therefore this package introduces several timer implementations that may be used to record execution times.
+      By default JETM will try to use the best available timer implementation, however it is possible to define
+      the used ExectionTimer implementation at EtmMonitor construction time.
     </p>
   </body>
 </html>

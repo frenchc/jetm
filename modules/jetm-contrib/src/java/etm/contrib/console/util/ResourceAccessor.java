@@ -51,11 +51,11 @@ public class ResourceAccessor {
   private byte[] uparrow;
 
   public ResourceAccessor() {
-    favicon = loadResource("etm/contrib/console/favicon.ico");
-    downarrow = loadResource("etm/contrib/console/down-arrow.png");
-    uparrow = loadResource("etm/contrib/console/up-arrow.png");
-    css = loadResource("etm/contrib/console/style.css");
-    robots = loadResource("etm/contrib/console/robots.txt");
+    favicon = loadResource("etm/contrib/console/resources/favicon.ico");
+    downarrow = loadResource("etm/contrib/console/resources/down-arrow.png");
+    uparrow = loadResource("etm/contrib/console/resources/up-arrow.png");
+    css = loadResource("etm/contrib/console/resources/style.css");
+    robots = loadResource("etm/contrib/console/resources/robots.txt");
   }
 
   private byte[] loadResource(String resourcePath) {

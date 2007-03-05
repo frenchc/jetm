@@ -21,7 +21,7 @@
 <body>
 <div id="content">
   <div id="header">JETM Online Demo</div>
-  <div id="subheader">The swiss army knife of the poor</div>
+  <div id="subheader">Runtime performance monitoring made easy</div>
   <div id="main">
     <h3>JETM Online Demo - Welcome</h3>
 

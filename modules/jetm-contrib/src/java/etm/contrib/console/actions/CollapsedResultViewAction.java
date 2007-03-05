@@ -3,7 +3,7 @@ package etm.contrib.console.actions;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
 import etm.contrib.console.util.CollapsedResultRenderer;
-import etm.contrib.renderer.comparator.ExecutionAggregateComparator;
+import etm.contrib.util.ExecutionAggregateComparator;
 
 import java.io.IOException;
 

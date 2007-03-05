@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * An aggregator that supports persistence provided by a {@link PersistenceBackend}. By default the persistence
  * backend is {@link etm.core.aggregation.persistence.FileSystemPersistenceBackend}, however you may supply a
- * custom backend during initialization.
+ * custom backends during initialization.
  *
  * @author void.fm
  * @version $Revision:96 $

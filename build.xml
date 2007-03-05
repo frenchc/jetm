@@ -8,7 +8,7 @@
   <!ENTITY site SYSTEM "file:etc/build/build-site.xml">
   ]>
 
-<project name="JETM build Script" default="build-all" basedir=".">
+<project name="JETM build Script" default="build" basedir=".">
   <property file="build.properties"/>
   <property environment="env"/>
 
@@ -34,7 +34,7 @@
     <antcall target="build-jetm-contrib"/>
   </target>
 
-  <target name="build-all" description="Builds all JETM modules">
+  <target name="build" description="Builds all JETM modules">
     <antcall target="build-jetm-core"/>
     <antcall target="build-jetm-contrib"/>
     <antcall target="build-samples"/>
@@ -42,14 +42,14 @@
 
   </target>
 
-  <target name="test-jetm" depends="build-all" description="Tests all JETM modules">
+  <target name="test-jetm" depends="build" description="Tests all JETM modules">
     <antcall target="test-jetm-core"/>
     <antcall target="test-jetm-contrib"/>
   </target>
 
 
   <target name="dist-all"
-          depends="clean-all, build-all, test-jetm, build-jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle, dist-sample-sources">
+          depends="clean, build, test-jetm, jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle, dist-sample-sources">
 
     <!-- create distribution -->
     <antcall target="copy-site-to-target">
@@ -144,7 +144,7 @@
     </tar>
   </target>
 
-  <target name="site-html-update" depends="clean-all">
+  <target name="site-html-update" depends="clean">
     <mkdir dir="${build.dist.dir}" />
     <antcall target="copy-site-to-target">
       <param name="site.dest.dir" value="${build.site.web.dir}"/>
@@ -163,7 +163,7 @@
     <antcall target="maven2-contrib-bundle"/>
   </target>
 
-  <target name="build-jetm-javadoc">
+  <target name="jetm-javadoc">
     <mkdir dir="${build.javadoc.dir}"/>
 
     <javadoc
@@ -191,16 +191,16 @@
       <doctitle><![CDATA[<h1>Java(TM) Execution Time Measurement Library</h1>]]></doctitle>
       <bottom><![CDATA[<i>Copyright &#169; 2004,2005, 2006, 2007 void.fm. All Rights Reserved.</i>]]></bottom>
       <group title="Java Execution Time Measurement (JETM) Core" packages="etm.core*"/>
-      <group title="JETM - HTTP Console" packages="etm.contrib.console*"/>
       <group title="JETM - AOP Support" packages="etm.contrib.aop*"/>
       <group title="JETM - Framework Integrations" packages="etm.contrib.integration*"/>
-      <group title="JETM - Additional Aggregators" packages="etm.contrib.aggregation*"/>
+      <group title="JETM - HTML Console" packages="etm.contrib.console*"/>
+      <group title="JETM - Contributed Aggregators" packages="etm.contrib.aggregation*"/>
       <group title="JETM - Result Rendering Support" packages="etm.contrib.renderer*"/>
       <group title="JETM - RRD Support" packages="etm.contrib.rrd*"/>
     </javadoc>
   </target>
 
-  <target name="clean-all" description="Cleanup JETM build system">
+  <target name="clean" description="Cleanup JETM build system">
     <antcall target="clean-jetm"/>
     <antcall target="clean-samples"/>
     <antcall target="clean-demo"/>

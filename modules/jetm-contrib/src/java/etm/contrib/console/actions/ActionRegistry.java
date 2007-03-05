@@ -42,6 +42,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The ActionRegistry can be used to locate actions for a given action name.
+ *
  * @author void.fm
  * @version $Revision$
  */
