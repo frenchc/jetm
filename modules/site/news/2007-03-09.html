@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <title>Java(TM) Execution Time Measurement Library</title>
+  <link rel="stylesheet" type="text/css" href="../default.css"/>
+</head>
+
+<body>
+
+<div id="content">
+  <div id="header">Java&trade; Execution Time Measurement Library</div>
+
+  <div id="subheader">Runtime performance monitoring made easy</div>
+
+  <div id="main">
+    <h3>JETM 1.2.0 released</h3>
+
+    <p>
+      JETM reached another major milestone with version 1.2.0. This release comes with the following enhancements: 
+    </p>
+    <ul>
+      <li><a href="../howto/spring_integration.html">Improved spring configuration</a> using the Spring 2.x namespace support</li>
+      <li><a href="../howto/aggregation_persistence.html">Persistent aggregation results</a> - shipping with file based persistence (it's extensible though)</li>
+      <li><a href="../howto/drop-in-console.html">Improved HTTP Console I</a>: now supporting sort and switch between collapsed/expanded mode during runtime</li>
+      <li><a href="../howto/web_integration.html">Improved HTTP Console II</a>: servlet based HTTP console for better web integration</li>
+      <li><a href="../howto/jmx_registration.html">JMX Integration</a> - Both EtmMonitor and top level performance results are exposed as JMX MBean</li>
+      <li><a href="../howto/rrd4j_integration.html">RRD4j support</a> - RRD DB based visualization (in some areas still experimental)</li>
+      <li>Lots of minor changes, such as improved error reporting, web demo improvements, extended plugin and aggregator lifecycle and more... See full changelog <a href="../changelog.html">here</a>.</li>
+    </ul>
+    <p>
+      <b>Attention:</b> Migrating to the new release should be a matter of switching to the new libraries unless you implemented a custom
+      <i>Aggregator</i> or <i>Plugin</i>. In this case you need to alter your implementation and adapt the new
+      interfaces containing an additional lifecycle method <i>init(EtmMonitorContext ctx)</i>. For plugins move logic in
+      <i>EtmPlugin#setMonitor()</i> to this method.
+    </p>
+    <p>
+
+    </p>
+
+  </div>
+
+  <div id="menu">
+    <a href="../index.html">Home</a>
+    |
+    <a href="../doc.html">Documentation</a>
+    |
+    <a href="../faq.html">FAQ</a>
+    |
+    <a href="../@api@/index.html">JavaDoc</a>
+    |
+    <a href="../files.html">Download</a>
+    |
+    <a href="../svn.html">SVN</a>
+    |
+    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+    |
+    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+  </div>
+</div>
+
+</body>
+<!-- Last modified  $Date$ -->
+</html>
