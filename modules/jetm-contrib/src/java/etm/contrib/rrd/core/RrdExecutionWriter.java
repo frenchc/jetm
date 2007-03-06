@@ -40,7 +40,7 @@ import etm.core.monitor.EtmPoint;
  * @author void.fm
  * @since 1.2.0
  */
-public interface RrdExecutionListener {
+public interface RrdExecutionWriter {
 
   public void onBegin();
 

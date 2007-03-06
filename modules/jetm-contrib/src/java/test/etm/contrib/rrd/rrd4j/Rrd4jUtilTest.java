@@ -57,7 +57,8 @@ public class Rrd4jUtilTest extends TestCase {
 
     try {
       path.delete();
-      Rrd4jUtil.createRrdDb(resource, path, null);
+      Rrd4jUtil rrd4jUtil = new Rrd4jUtil();
+      rrd4jUtil.createRrdDb(resource, path, null);
       assertTrue(path.exists());
 
       RrdDb db = new RrdDb(path.getAbsolutePath(), true);
@@ -81,8 +82,8 @@ public class Rrd4jUtilTest extends TestCase {
     try {
       dbPath.delete();
       imagePath.delete();
-      
-      Rrd4jUtil.createRrdDb(dbResource, dbPath, null);
+      Rrd4jUtil rrd4jUtil = new Rrd4jUtil();
+      rrd4jUtil.createRrdDb(dbResource, dbPath, null);
 
       Map map = new HashMap();
       map.put("imagetitle", "test image");
@@ -90,7 +91,7 @@ public class Rrd4jUtilTest extends TestCase {
       long intervalend = Util.getTimestamp(new Date());
       long intervalstart = intervalend - 60 * 60;
 
-      Rrd4jUtil.createGraph(imageResource, dbPath, imagePath, intervalstart, intervalend, map);
+      rrd4jUtil.createGraph(imageResource, dbPath, imagePath, intervalstart, intervalend, map);
 
       assertTrue(imagePath.exists());
     } finally {

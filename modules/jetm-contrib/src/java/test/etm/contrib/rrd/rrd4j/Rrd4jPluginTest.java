@@ -89,8 +89,9 @@ public class Rrd4jPluginTest extends TestCase {
       EtmMonitor monitor = new NestedMonitor(new NotifyingAggregator(new RootAggregator()));
       try {
         path.delete();
-                
-        Rrd4jUtil.createRrdDb(resource, path, null);
+
+        Rrd4jUtil rrd4jUtil = new Rrd4jUtil();
+        rrd4jUtil.createRrdDb(resource, path, null);
 
         Rrd4jPlugin plugin = new Rrd4jPlugin();
         List configurations = new ArrayList();

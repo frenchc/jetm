@@ -31,7 +31,7 @@
  */
 package etm.contrib.rrd.rrd4j;
 
-import etm.contrib.rrd.core.AbstractRrdExecutionListener;
+import etm.contrib.rrd.core.AbstractRrdExecutionWriter;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
@@ -50,9 +50,9 @@ import java.util.Date;
  * @version $Revision$
  * @since 1.2.0
  */
-public class Rrd4jAggregationWriter extends AbstractRrdExecutionListener {
+public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
 
-  private static final LogAdapter log = Log.getLog(AbstractRrdExecutionListener.class);
+  private static final LogAdapter log = Log.getLog(AbstractRrdExecutionWriter.class);
 
   private RrdDb db;
 

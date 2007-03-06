@@ -34,13 +34,13 @@ package etm.contrib.rrd.core;
 import etm.core.monitor.EtmPoint;
 
 /**
- * Base implementation for RrdExecutionListeners.
+ * Base implementation for RrdExecutionWriters.
  *
  * @author void.fm
  * @version $Revision$
  * @since 1.2.0
  */
-public abstract class AbstractRrdExecutionListener implements RrdExecutionListener {
+public abstract class AbstractRrdExecutionWriter implements RrdExecutionWriter {
 
   protected long startInterval;
   protected long endInterval;
@@ -51,7 +51,7 @@ public abstract class AbstractRrdExecutionListener implements RrdExecutionListen
   protected double max;
   protected double total;
 
-  protected AbstractRrdExecutionListener(long aStartInterval, long aIncrement) {
+  protected AbstractRrdExecutionWriter(long aStartInterval, long aIncrement) {
     startInterval = aStartInterval;
     increment = aIncrement;
     endInterval = startInterval + increment;

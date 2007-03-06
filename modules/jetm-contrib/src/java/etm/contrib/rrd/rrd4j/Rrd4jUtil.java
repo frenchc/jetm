@@ -38,7 +38,6 @@ import etm.core.util.LogAdapter;
 import org.rrd4j.core.RrdDb;
 import org.rrd4j.core.RrdDef;
 import org.rrd4j.core.RrdDefTemplate;
-import org.rrd4j.core.Util;
 import org.rrd4j.core.XmlTemplate;
 import org.rrd4j.graph.RrdGraph;
 import org.rrd4j.graph.RrdGraphDef;
@@ -57,7 +56,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Util class for various RRD4j tasks.
@@ -102,7 +100,7 @@ public class Rrd4jUtil {
    * @param intervalEnd   End of the rendering interval in seconds.
    * @param properties    Optional properties providing variable values for the . May be null.
    */
-  public static void createGraph(URL templateUrl, File rrdFile, File destination,
+  public void createGraph(URL templateUrl, File rrdFile, File destination,
                                  long intervalStart, long intervalEnd, Map properties) {
     if (properties == null) {
       properties = new HashMap();
@@ -126,7 +124,7 @@ public class Rrd4jUtil {
    * @param intervalEnd   End of the rendering interval in seconds.
    * @param properties    Optional properties providing variable values for the . May be null.
    */
-  public static void createGraph(URL templateUrl, File destination,
+  public void createGraph(URL templateUrl, File destination,
                                  long intervalStart, long intervalEnd, Map properties) {
     if (properties == null) {
       properties = new HashMap();
@@ -152,7 +150,7 @@ public class Rrd4jUtil {
    * @param intervalEnd   End of the rendering interval in seconds.
    * @param properties    Optional properties providing variable values for the . May be null.
    */
-  public static void createGraph(URL templateUrl, long intervalStart, long intervalEnd, Map properties) {
+  public void createGraph(URL templateUrl, long intervalStart, long intervalEnd, Map properties) {
     if (properties == null) {
       properties = new HashMap();
     }
@@ -169,7 +167,7 @@ public class Rrd4jUtil {
    * @param templateUrl The url to the template, may be a classpath to.
    * @param properties  The properties used to replace in the template.
    */
-  public static void createGraph(URL templateUrl, Map properties) {
+  public void createGraph(URL templateUrl, Map properties) {
     setImageDefaults(properties);
     try {
       URLConnection connection = templateUrl.openConnection();
@@ -209,7 +207,7 @@ public class Rrd4jUtil {
    * @param properties  Optional properties providing variable values for the . May be null.
    * @throws EtmException If the file already exists
    */
-  public static void createRrdDb(URL templateUrl, File rrdFile, Map properties) {
+  public void createRrdDb(URL templateUrl, File rrdFile, Map properties) {
     if (rrdFile.exists()) {
       throw new EtmException("Unable to create rrd file at " + rrdFile.getAbsolutePath() + ". File already available.");
     }
@@ -257,9 +255,9 @@ public class Rrd4jUtil {
    *
    * @param aTemplate A template name, might be predefined template, a classpath resource or file.
    * @return The URL to the resource
-   * @throws EtmException Thrown to indicate that the given template could not be found. 
+   * @throws EtmException Thrown to indicate that the given template could not be found.
    */
-  public static URL locateTemplate(String aTemplate) {
+  public URL locateTemplate(String aTemplate) {
     if (templates.containsKey(aTemplate)) {
 
       aTemplate = (String) templates.get(aTemplate);
@@ -284,41 +282,7 @@ public class Rrd4jUtil {
     throw new EtmException("Unable to locate template " + aTemplate + " in ClassPath or Filesystem.");
   }
 
-  public static void main(String[] args) {
-    if (args.length < 3) {
-      printUsage("Missing command line parameters.");
-      System.exit(-1);
-    }
-
-    Rrd4jUtilCommand command = new Rrd4jUtilCommand(args);
-
-    if ("create-graph".equalsIgnoreCase(command.getCommand())) {
-      // rrd4j-util create-graph -t template -d destination -z interval -p key1=value1,key2=value2,key3=value3
-      URL url = locateTemplate(command.getTemplate());
-      File destination = new File(command.getDestination());
-      long intervalEnd = Util.getTimestamp();
-      long intervalStart = calculate(intervalEnd, command.getInterval());
-
-      if (command.getSource() != null) {
-        File source = new File(command.getSource());
-        createGraph(url, source, destination, intervalStart, intervalEnd, command.getProperties());
-      } else {
-        createGraph(url, destination, intervalStart, intervalEnd, command.getProperties());
-
-      }
-    } else if ("create-db".equalsIgnoreCase(command.getCommand())) {
-      // rrd4j-util create-db -t template -d destination -p key1=value1,key2=value2,key3=value3
-      URL url = locateTemplate(command.getTemplate());
-      File destination = new File(command.getDestination());
-
-      createRrdDb(url, destination, command.getProperties());
-    } else {
-      printUsage("Unsupported command line parameters.");
-      System.exit(-1);
-    }
-  }
-
-  private static void setProperties(XmlTemplate aTemplate, Map properties) {
+  private void setProperties(XmlTemplate aTemplate, Map properties) {
     Iterator it = properties.keySet().iterator();
     while (it.hasNext()) {
       String key = (String) it.next();
@@ -335,7 +299,7 @@ public class Rrd4jUtil {
     }
   }
 
-  private static void setImageDefaults(Map properties) {
+  private void setImageDefaults(Map properties) {
     if (properties.get("logarithmic") == null) {
       properties.put("logarithmic", "false");
     }
@@ -347,100 +311,4 @@ public class Rrd4jUtil {
     properties.put("generatedstamp", "Generated " + new Date() + "\\r");
   }
 
-
-  private static void printUsage(String s) {
-    System.out.print(s);
-    System.out.println(" Usage: ");
-    System.out.println("rrd4j-util create-db -t template -d destination -p key1=value1 key2=value2 key3=value3");
-    System.out.println("rrd4j-util create-graph -t template -d destination -i interval -p key1=value1,key2=value2,key3=value3");
-  }
-
-  private static long calculate(long aIntervalEnd, String aTimeframe) {
-    // h, d , m, y
-    if (aTimeframe == null || aTimeframe.length() <= 2) {
-      return aIntervalEnd - 60 * 60;
-    }
-
-    int value = Integer.parseInt(aTimeframe.substring(0, aTimeframe.length() - 2));
-    switch (aTimeframe.charAt(aTimeframe.length() - 1)) {
-      case 'h':
-        return aIntervalEnd - (value * 60 * 60);
-      case 'd':
-        return aIntervalEnd - (value * 60 * 60 * 24);
-      case 'm':
-        return aIntervalEnd - (value * 60 * 60 * 24 * 30);
-      case 'y':
-        return aIntervalEnd - (value * 60 * 60 * 24 * 365);
-    }
-
-    return aIntervalEnd - 60 * 60;
-  }
-
-
-  static class Rrd4jUtilCommand {
-    private String command;
-    private String template;
-    private String destination;
-    private String interval;
-    private String source;
-    private Map properties;
-
-    public Rrd4jUtilCommand(String[] args) {
-      command = args[0];
-      for (int i = 1; i < args.length; i++) {
-        String current = args[i];
-        if (current.length() > 1 && current.startsWith("-") && args.length > i + 1) {
-          i++;
-          switch (current.charAt(1)) {
-            case 't':
-              template = args[i];
-              break;
-            case 'd':
-              destination = args[i];
-              break;
-            case 'i':
-              interval = args[i];
-              break;
-            case 's':
-              source = args[i];
-              break;
-            case 'p':
-              properties = new HashMap();
-              StringTokenizer tk = new StringTokenizer(args[i], ",");
-              while (tk.hasMoreTokens()) {
-                String s = tk.nextToken();
-                int index = s.indexOf("=");
-                properties.put(s.substring(0, index), s.substring(index + 1));
-              }
-              break;
-            default:
-          }
-        }
-      }
-    }
-
-    public String getSource() {
-      return source;
-    }
-
-    public String getCommand() {
-      return command;
-    }
-
-    public String getTemplate() {
-      return template;
-    }
-
-    public String getDestination() {
-      return destination;
-    }
-
-    public String getInterval() {
-      return interval;
-    }
-
-    public Map getProperties() {
-      return properties;
-    }
-  }
 }

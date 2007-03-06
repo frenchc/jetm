@@ -48,8 +48,9 @@ public class DemoRuntimeListener implements ServletContextListener {
     // create required rrd database if needed
     File file = new File(System.getProperty("java.io.tmpdir"), "jetm-demo.rrd");
     if (!file.exists()) {
-      URL url =  Rrd4jUtil.locateTemplate("highres");
-      Rrd4jUtil.createRrdDb(url,file, null);
+      Rrd4jUtil util = new Rrd4jUtil();
+      URL url =  util.locateTemplate("highres");
+      util.createRrdDb(url,file, null);
     }
   }
 

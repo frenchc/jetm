@@ -61,12 +61,12 @@ public class OfflineLogParser {
   private static final String DEFAULT_SCAN_PATTERN = "^(.*)measurementPoint=<([\\w\\s\\d]*)>, parent=<([\\w\\s]*)>, transactionTime=<(\\d*[,.]\\d*)>, recordingTime=<(\\d*)>";
   private String pattern = DEFAULT_SCAN_PATTERN;
 
-  private List listener;
+  private List writers;
   private NumberFormat numberFormat;
 
 
   public OfflineLogParser() {
-    listener = new ArrayList();
+    writers = new ArrayList();
 
     // todo?? pattern
     numberFormat = NumberFormat.getInstance();
@@ -80,53 +80,59 @@ public class OfflineLogParser {
     pattern = aPattern;
   }
 
-  public void register(RrdExecutionListener aListener) {
-    listener.add(aListener);
+  public void register(RrdExecutionWriter aWriter) {
+    writers.add(aWriter);
   }
 
   public void parse(File aFile) throws IOException {
+    int totalLines = 0;
+    int processedLines = 0;
     Pattern regex = Pattern.compile(pattern);
 
     BufferedReader in = new BufferedReader(new FileReader(aFile));
 
     try {
-      for (int i = 0; i < listener.size(); i++) {
-        RrdExecutionListener rrdListener = (RrdExecutionListener) listener.get(i);
-        rrdListener.onBegin();
+      for (int i = 0; i < writers.size(); i++) {
+        RrdExecutionWriter rrdWriter = (RrdExecutionWriter) writers.get(i);
+        rrdWriter.onBegin();
       }
-
 
       String line;
       while ((line = in.readLine()) != null) {
+        totalLines++;
         try {
           Matcher matcher = regex.matcher(line);
           if (matcher.matches()) {
+            processedLines++;
             OfflineExecution result = new OfflineExecution(
               matcher.group(2),
               matcher.group(3),
               Long.parseLong(matcher.group(5)),
               numberFormat.parse(matcher.group(4)).doubleValue()
             );
-            for (int i = 0; i < listener.size(); i++) {
-              RrdExecutionListener rrdListener = (RrdExecutionListener) listener.get(i);
-              rrdListener.onNextMeasurement(result);
+            for (int i = 0; i < writers.size(); i++) {
+              RrdExecutionWriter rrdWriter = (RrdExecutionWriter) writers.get(i);
+              rrdWriter.onNextMeasurement(result);
             }
 
+          } else {
+            processedLines++;
           }
         } catch (ParseException e) {
           log.warn("Error reading line " + line, e);
         }
       }
-      for (int i = 0; i < listener.size(); i++) {
-        RrdExecutionListener rrdListener = (RrdExecutionListener) listener.get(i);
-        rrdListener.onFinish();
+      for (int i = 0; i < writers.size(); i++) {
+        RrdExecutionWriter rrdWriter = (RrdExecutionWriter) writers.get(i);
+        rrdWriter.onFinish();
       }
 
     } finally {
       in.close();
     }
+    log.debug("Finished parsing " + aFile.getAbsolutePath() +
+      ". Processed " + processedLines + " out of " + totalLines + " lines.");
   }
-
 }
 
 

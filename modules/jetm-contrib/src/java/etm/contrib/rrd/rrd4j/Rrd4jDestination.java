@@ -34,7 +34,7 @@ package etm.contrib.rrd.rrd4j;
 
 import etm.contrib.aggregation.filter.RegexEtmFilter;
 import etm.contrib.rrd.core.RrdDestination;
-import etm.contrib.rrd.core.RrdExecutionListener;
+import etm.contrib.rrd.core.RrdExecutionWriter;
 import etm.core.aggregation.EtmFilter;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmPoint;
@@ -57,7 +57,7 @@ public class Rrd4jDestination implements RrdDestination {
 
   private RrdDb rrdDb;
   private EtmFilter filter;
-  private RrdExecutionListener listener;
+  private RrdExecutionWriter writer;
 
   public Rrd4jDestination(String aPattern, File aRrdFilePath) {
     pattern = aPattern;
@@ -80,12 +80,12 @@ public class Rrd4jDestination implements RrdDestination {
       throw new EtmException(e);
     }
 
-    listener = new Rrd4jAggregationWriter(rrdDb);
-    listener.onBegin();
+    writer = new Rrd4jAggregationWriter(rrdDb);
+    writer.onBegin();
   }
 
   public void stop() {
-    listener.onFinish();
+    writer.onFinish();
     try {
       if (rrdDb != null) {
         rrdDb.close();
@@ -100,7 +100,7 @@ public class Rrd4jDestination implements RrdDestination {
   }
 
   public void write(EtmPoint point) {
-    listener.onNextMeasurement(point);
+    writer.onNextMeasurement(point);
   }
 
   public String toString() {

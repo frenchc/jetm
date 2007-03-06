@@ -69,7 +69,7 @@ public class HttpRequestPerformanceFilter implements Filter {
     String request = httpServletRequest.getRequestURI();
     String method = httpServletRequest.getMethod();
 
-    EtmPoint point = etmMonitor.createPoint(method + " request " + request);
+    EtmPoint point = etmMonitor.createPoint("HTTP " + method + " request " + request);
     try {
       filterChain.doFilter(servletRequest, servletResponse);
     } finally {
