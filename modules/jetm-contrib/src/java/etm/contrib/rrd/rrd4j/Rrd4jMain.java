@@ -89,7 +89,7 @@ public class Rrd4jMain {
       RrdDb db = null;
 
       try {
-        db = new RrdDb(command.getDestination(), true);
+        db = new RrdDb(command.getDestination());
         parser.register(new Rrd4jAggregationWriter(db));
         parser.parse(new File(command.getSource()));
       } catch (Exception e) {

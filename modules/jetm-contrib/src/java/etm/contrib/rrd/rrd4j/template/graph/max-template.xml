@@ -17,52 +17,55 @@
 
   <datasources>
     <def>
-      <name>average-avg</name>
+      <name>max-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>max!</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
-      <name>average-min</name>
+      <name>max-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>max!</source>
       <cf>MIN</cf>
     </def>
     <def>
-      <name>average-max</name>
+      <name>max-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>max!</source>
       <cf>MAX</cf>
     </def>
     <def>
-      <name>average-last</name>
+      <name>max-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>max!</source>
       <cf>LAST</cf>
     </def>
+
+
   </datasources>
   <graph>
-    <area>
-      <datasource>average-avg</datasource>
-      <color>#FFD700</color>
-      <legend>Average time    (ms)</legend>
+
+   <area>
+      <datasource>max-avg</datasource>
+      <color>#FF6600</color>
+      <legend>Maximum time (ms)</legend>
     </area>
     <gprint>
-      <datasource>average-avg</datasource>
+      <datasource>max-avg</datasource>
       <cf>AVERAGE</cf>
       <format>Avg = %10.3f</format>
     </gprint>
     <gprint>
-      <datasource>average-max</datasource>
+      <datasource>max-max</datasource>
       <cf>MAX</cf>
       <format>Max = %10.3f</format>
     </gprint>
     <gprint>
-      <datasource>average-last</datasource>
+      <datasource>max-last</datasource>
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>
-    
+
     <comment>\r</comment>
     <comment>${generatedstamp}</comment>
     <comment>Performance results provided by JETM (http://jetm.void.fm)\r</comment>

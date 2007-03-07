@@ -19,49 +19,49 @@
     <def>
       <name>average-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>average</source>
+      <source>average!</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
       <name>average-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>average</source>
+      <source>average!</source>
       <cf>MIN</cf>
     </def>
     <def>
       <name>average-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>average</source>
+      <source>average!</source>
       <cf>MAX</cf>
     </def>
     <def>
       <name>average-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>average</source>
+      <source>average!</source>
       <cf>LAST</cf>
     </def>
     <def>
       <name>transactions-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>transactions</source>
+      <source>transactions!</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
       <name>transactions-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>transactions</source>
+      <source>transactions!</source>
       <cf>MIN</cf>
     </def>
     <def>
       <name>transactions-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>transactions</source>
+      <source>transactions!</source>
       <cf>MAX</cf>
     </def>
     <def>
       <name>transactions-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>transactions</source>
+      <source>transactions!</source>
       <cf>LAST</cf>
     </def>
   </datasources>

@@ -17,48 +17,49 @@
 
   <datasources>
     <def>
-      <name>average-avg</name>
+      <name>min-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>min!</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
-      <name>average-min</name>
+      <name>min-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>min!</source>
       <cf>MIN</cf>
     </def>
     <def>
-      <name>average-max</name>
+      <name>min-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>min!</source>
       <cf>MAX</cf>
     </def>
     <def>
-      <name>average-last</name>
+      <name>min-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>min!</source>
       <cf>LAST</cf>
     </def>
   </datasources>
   <graph>
+
     <area>
-      <datasource>average-avg</datasource>
-      <color>#FFD700</color>
-      <legend>Average time    (ms)</legend>
+      <datasource>min-avg</datasource>
+      <color>#FFFFCC</color>
+      <legend>Minimum time (ms)</legend>
     </area>
     <gprint>
-      <datasource>average-avg</datasource>
+      <datasource>min-avg</datasource>
       <cf>AVERAGE</cf>
       <format>Avg = %10.3f</format>
     </gprint>
     <gprint>
-      <datasource>average-max</datasource>
+      <datasource>min-max</datasource>
       <cf>MAX</cf>
       <format>Max = %10.3f</format>
     </gprint>
     <gprint>
-      <datasource>average-last</datasource>
+      <datasource>min-last</datasource>
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>

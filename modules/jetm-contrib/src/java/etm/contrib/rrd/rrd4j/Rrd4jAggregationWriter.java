@@ -71,10 +71,10 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
   public Rrd4jAggregationWriter(RrdDb aDb) {
     super(extractLastTimestamp(aDb), extractStep(aDb));
 
-    transactionsEnabled = validateDataSource(aDb, "transactions");
-    minEnabled = validateDataSource(aDb, "min");
-    maxEnabled = validateDataSource(aDb, "max");
-    averageEnabled = validateDataSource(aDb, "average");
+    transactionsEnabled = validateDataSource(aDb, "transactions!");
+    minEnabled = validateDataSource(aDb, "min!");
+    maxEnabled = validateDataSource(aDb, "max!");
+    averageEnabled = validateDataSource(aDb, "average!");
 
     if (!(transactionsEnabled || minEnabled || maxEnabled || averageEnabled)) {
       throw new EtmException("Invalid datasource. " +
@@ -106,16 +106,16 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
       try {
         Sample sample = db.createSample(endInterval);
         if (transactionsEnabled) {
-          sample.setValue("transactions", transactions);
+          sample.setValue("transactions!", transactions);
         }
         if (minEnabled) {
-          sample.setValue("min", min);
+          sample.setValue("min!", min);
         }
         if (maxEnabled) {
-          sample.setValue("max", max);
+          sample.setValue("max!", max);
         }
         if (averageEnabled) {
-          sample.setValue("average", total / (double) transactions);
+          sample.setValue("average!", total / (double) transactions);
         }
 
         sample.update();
