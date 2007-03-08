@@ -79,6 +79,8 @@ jetm.build.date=${build.time}
   </taskdef>
 
   <junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
+    <jvmarg value="-Djetm.log.level=warn"/>
+    
     <classpath>
       <pathelement location="${module.core.dest.classes}"/>
       <path refid="build.classpath"/>

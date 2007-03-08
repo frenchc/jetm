@@ -43,35 +43,78 @@ import java.io.StringWriter;
  */
 class DefaultLogAdapter implements LogAdapter {
 
+  private static final int DEBUG = 500;
+  private static final int INFO = 400;
+  private static final int WARN = 300;
+  private static final int ERROR = 200;
+  private static final int FATAL = 100;
+
+  private static int logLevel = INFO;
+
   private String clazzName;
+
+
+  static {
+    String s = System.getProperty("jetm.log.level");
+    if (s != null) {
+      if ("debug".equalsIgnoreCase(s)) {
+        logLevel = DEBUG;
+      } else if ("info".equalsIgnoreCase(s)) {
+        logLevel = INFO;
+      } else if ("warn".equalsIgnoreCase(s)) {
+        logLevel = WARN;
+      } else if ("error".equalsIgnoreCase(s)) {
+        logLevel = ERROR;
+      } else if ("fatal".equalsIgnoreCase(s)) {
+        logLevel = FATAL;
+      } else {
+        System.err.println("Unsupported log level " + logLevel);
+      }
+    }
+
+  }
 
   public DefaultLogAdapter(Class aClazz) {
     int i = aClazz.getName().lastIndexOf('.');
-    clazzName = "[" + aClazz.getName().substring(i+1) + "] ";
+    clazzName = "[" + aClazz.getName().substring(i + 1) + "] ";
   }
 
   public void debug(String message) {
-    System.out.println(clazzName + message);
+    if (logLevel >= DEBUG) {
+      System.out.println(clazzName + message);
+    }
   }
 
   public void info(String message) {
-    System.out.println(clazzName + message);
+    if (logLevel >= INFO) {
+
+      System.out.println(clazzName + message);
+    }
   }
 
   public void warn(String message, Throwable t) {
-    System.err.println(clazzName + message + getThrowable(t));
+    if (logLevel >= WARN) {
+
+      System.err.println(clazzName + message + getThrowable(t));
+    }
   }
 
   public void warn(String message) {
-    System.out.println(clazzName + message);
+    if (logLevel >= WARN) {
+      System.out.println(clazzName + message);
+    }
   }
 
   public void error(String message, Throwable t) {
-    System.err.println(clazzName + message + getThrowable(t));
+    if (logLevel >= ERROR) {
+      System.err.println(clazzName + message + getThrowable(t));
+    }
   }
 
   public void fatal(String message, Throwable t) {
-    System.err.println(clazzName + message + getThrowable(t));
+    if (logLevel >= FATAL) {
+      System.err.println(clazzName + message + getThrowable(t));
+    }
   }
 
   private String getThrowable(Throwable t) {
