@@ -31,7 +31,6 @@
  */
 package etm.core.aggregation.persistence;
 
-import etm.core.monitor.EtmException;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
@@ -56,6 +55,15 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
 
   private File path = new File(System.getProperty("java.io.tmpdir"));
   private String filename = "jetm-state.ser";
+
+  public void setPath(String aPath) {
+    path = new File(aPath);
+  }
+
+  public void setFilename(String aFilename) {
+    filename = aFilename;
+  }
+
 
   public PersistentEtmState load() {
     PersistentEtmState state = null;
@@ -83,40 +91,25 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
     return state;
   }
 
-
-  public void setPath(String aPath) {
-    path = new File(aPath);
-  }
-
-  public void setFilename(String aFilename) {
-    filename = aFilename;
-  }
-
   public void store(PersistentEtmState state) {
     if (!path.exists()) {
       path.mkdirs();
     }
 
-    File tmpFile;
-    try {
-      tmpFile = File.createTempFile("jetm-state", ".tmp", path);
-    } catch (IOException e) {
-      throw new EtmException(e);
+    File dest = new File(path, filename);
+    if (dest.exists()) {
+      backupFile(dest);
+      dest.delete();
     }
 
     ObjectOutputStream out = null;
 
     try {
-      out = new ObjectOutputStream(new FileOutputStream(tmpFile));
+      out = new ObjectOutputStream(new FileOutputStream(dest));
       out.writeObject(state);
-      File dest = new File(path, filename);
-      if (dest.exists()) {
-        dest.delete();
-      }
-      tmpFile.renameTo(dest);
     } catch (Exception e) {
       // ignored
-      log.warn("Error writing state to  file " + tmpFile.getAbsolutePath(), e);
+      log.warn("Error writing state to file " + dest.getAbsolutePath(), e);
     } finally {
       if (out != null) {
         try {
@@ -126,5 +119,37 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
         }
       }
     }
+  }
+
+  private void backupFile(File aDest) {
+    File backup = new File(aDest.getAbsolutePath() + ".saved");
+
+    ObjectInputStream in = null;
+    ObjectOutputStream out = null;
+
+    try {
+      in = new ObjectInputStream(new FileInputStream(aDest));
+      out = new ObjectOutputStream(new FileOutputStream(backup));
+      out.writeObject(in.readObject());
+    } catch (Exception e) {
+      log.warn("Error writing backup file " + aDest.getAbsolutePath(), e);
+    } finally {
+      try {
+        if (in != null) {
+          in.close();
+        }
+      } catch (IOException e) {
+        // ingored
+      }
+
+      try {
+        if (out != null) {
+          out.close();
+        }
+      } catch (IOException e) {
+        // ignored
+      }
+    }
+
   }
 }
