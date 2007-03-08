@@ -48,6 +48,7 @@
 
   <junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
     <jvmarg value="-Djava.awt.headless=true"/>
+    <jvmarg value="-Djetm.log.level=warn"/>
     <classpath>
       <pathelement location="${module.core.dest.classes}"/>
       <pathelement location="${module.contrib.dest.classes}"/>
