@@ -65,7 +65,7 @@ public class Rrd4jMain {
     Rrd4jUtilCommand command = new Rrd4jUtilCommand(args);
 
     if ("create-graph".equalsIgnoreCase(command.getCommand())) {
-      // rrd4j-util create-graph -t template -d destination -z interval [-o offset|-b startDate] -p key1=value1,key2=value2,key3=value3
+      // rrd4j-util create-graph -t template -d destination -z interval [-o offset|-b startDate -e endDate] -p key1=value1,key2=value2,key3=value3
       Rrd4jUtil util = new Rrd4jUtil();
       URL url = util.locateTemplate(command.getTemplate());
       File destination = new File(command.getDestination());
@@ -78,23 +78,20 @@ public class Rrd4jMain {
         intervalStart = intervalEnd - calculate(command.getInterval());
       } else if (command.getBeginDate() != null) {
 
-        Calendar calendar = Calendar.getInstance();
 
-        try {
-          calendar.setTime(new SimpleDateFormat(DATE_FORMAT).parse(command.getBeginDate()));
-        } catch (ParseException e) {
-          System.err.print("Error parsing date '" + command.getBeginDate() + "' using date format " + DATE_FORMAT + ": ");
-          e.printStackTrace();
-          System.exit(-1);
+        String beginDate = command.getBeginDate();
+        intervalStart = Util.getTimestamp(getCalendar(beginDate).getTime());
+
+        if (command.getEndDate() != null) {
+          String endDate = command.getEndDate();
+          intervalEnd = Util.getTimestamp(getCalendar(endDate).getTime());
+        } else {
+          if (command.getInterval() != null) {
+            intervalEnd = intervalStart + calculate(command.getInterval());
+          } else {
+            intervalEnd = Util.getTimestamp();
+          }
         }
-        // todo required??!
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        intervalStart = Util.getTimestamp(calendar.getTime());
-        intervalEnd = intervalStart + calculate(command.getInterval());
 
       } else {
         intervalEnd = Util.getTimestamp();
@@ -128,7 +125,7 @@ public class Rrd4jMain {
       StringTokenizer tk = new StringTokenizer(destinations, ";");
       while (tk.hasMoreTokens()) {
         String s = tk.nextToken();
-        int index = s.indexOf('|');
+        int index = s.indexOf('!');
         String filename = s.substring(0, index);
         String pattern = s.substring(index + 1);
         parser.register(new Rrd4jDestination(pattern, new File(filename)));
@@ -177,16 +174,35 @@ public class Rrd4jMain {
     return 60 * 60;
   }
 
+  private static Calendar getCalendar(String aDate) {
+    Calendar calendar = Calendar.getInstance();
+    try {
+      calendar.setTime(new SimpleDateFormat(DATE_FORMAT).parse(aDate));
+    } catch (ParseException e) {
+      System.err.print("Error parsing date '" + aDate + "' using date format " + DATE_FORMAT + ": ");
+      e.printStackTrace();
+      System.exit(-1);
+    }
+    // todo required??!
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
+    return calendar;
+  }
 
   static class Rrd4jUtilCommand {
     private String command;
     private String template;
     private String destination;
+
+    private String beginDate;
+    private String endDate;
     private String interval;
     private String offset;
+
     private String source;
     private String filter;
-    private String beginDate;
     private Map properties;
 
     public Rrd4jUtilCommand(String[] args) {
@@ -216,6 +232,9 @@ public class Rrd4jMain {
               break;
             case 'b':
               beginDate = args[i];
+              break;
+            case 'e':
+              endDate = args[i];
               break;
             case 'p':
               properties = new HashMap();
@@ -266,6 +285,10 @@ public class Rrd4jMain {
 
     public String getBeginDate() {
       return beginDate;
+    }
+
+    public String getEndDate() {
+      return endDate;
     }
   }
 
