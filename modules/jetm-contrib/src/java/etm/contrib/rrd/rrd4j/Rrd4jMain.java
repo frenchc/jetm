@@ -33,25 +33,28 @@
 package etm.contrib.rrd.rrd4j;
 
 import etm.contrib.rrd.core.OfflineLogParser;
-import org.rrd4j.core.RrdDb;
 import org.rrd4j.core.Util;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
- *
  * Command line tool for various RRD4j related tasks such as creating a RRD4j db, creating images
  * or importing raw data from a log file to the rrd4j db.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
 public class Rrd4jMain {
+  private static final String DATE_FORMAT = "yyyy.MM.dd";
+
 
   public static void main(String[] args) {
     if (args.length < 3) {
@@ -62,12 +65,42 @@ public class Rrd4jMain {
     Rrd4jUtilCommand command = new Rrd4jUtilCommand(args);
 
     if ("create-graph".equalsIgnoreCase(command.getCommand())) {
-      // rrd4j-util create-graph -t template -d destination -z interval -p key1=value1,key2=value2,key3=value3
+      // rrd4j-util create-graph -t template -d destination -z interval [-o offset|-b startDate] -p key1=value1,key2=value2,key3=value3
       Rrd4jUtil util = new Rrd4jUtil();
       URL url = util.locateTemplate(command.getTemplate());
       File destination = new File(command.getDestination());
-      long intervalEnd = Util.getTimestamp();
-      long intervalStart = calculate(intervalEnd, command.getInterval());
+
+      long intervalStart;
+      long intervalEnd;
+
+      if (command.getOffset() != null) {
+        intervalEnd = Util.getTimestamp() - calculate(command.getOffset());
+        intervalStart = intervalEnd - calculate(command.getInterval());
+      } else if (command.getBeginDate() != null) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        try {
+          calendar.setTime(new SimpleDateFormat(DATE_FORMAT).parse(command.getBeginDate()));
+        } catch (ParseException e) {
+          System.err.print("Error parsing date '" + command.getBeginDate() + "' using date format " + DATE_FORMAT + ": ");
+          e.printStackTrace();
+          System.exit(-1);
+        }
+        // todo required??!
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        intervalStart = Util.getTimestamp(calendar.getTime());
+        intervalEnd = intervalStart + calculate(command.getInterval());
+
+      } else {
+        intervalEnd = Util.getTimestamp();
+        intervalStart = intervalEnd - calculate(command.getInterval());
+      }
+
 
       if (command.getSource() != null) {
         File source = new File(command.getSource());
@@ -86,25 +119,29 @@ public class Rrd4jMain {
       util.createRrdDb(url, destination, command.getProperties());
     } else if ("import".equalsIgnoreCase(command.getCommand())) {
       OfflineLogParser parser = new OfflineLogParser();
-      RrdDb db = null;
+      if (command.getFilter() != null) {
+        parser.setPattern(command.getFilter());
+      }
+
+
+      String destinations = command.getDestination();
+      StringTokenizer tk = new StringTokenizer(destinations, ";");
+      while (tk.hasMoreTokens()) {
+        String s = tk.nextToken();
+        int index = s.indexOf('|');
+        String filename = s.substring(0, index);
+        String pattern = s.substring(index + 1);
+        parser.register(new Rrd4jDestination(pattern, new File(filename)));
+      }
 
       try {
-        db = new RrdDb(command.getDestination());
-        parser.register(new Rrd4jAggregationWriter(db));
         parser.parse(new File(command.getSource()));
-      } catch (Exception e) {
-        System.err.print("Error storing performance data in rrd db: ");
+      } catch (IOException e) {
+        System.err.print("Error importing from '" + command.getSource() + ": ");
         e.printStackTrace();
         System.exit(-1);
-      } finally {
-        try {
-          if (db != null) {
-            db.close();
-          }
-        } catch (IOException e) {
-          // ignore
-        }
       }
+
     } else {
       printUsage("Unsupported command line parameters.");
       System.exit(-1);
@@ -115,29 +152,29 @@ public class Rrd4jMain {
     System.out.print(s);
     System.out.println(" Usage: ");
     System.out.println("rrd4j-tool create-db -t template -d destination -p key1=value1,key2=value2,key3=value3");
-    System.out.println("rrd4j-tool create-graph -t template -d destination -i interval -p key1=value1,key2=value2,key3=value3");
-    System.out.println("rrd4j-tool import -s sourcefile -d destinationDb");
+    System.out.println("rrd4j-tool create-graph -t template -d destination -i interval -o offset -p key1=value1,key2=value2,key3=value3");
+    System.out.println("rrd4j-tool import -s sourcefile -d destinationDb -f pattern");
   }
 
-  private static long calculate(long aIntervalEnd, String aTimeframe) {
+  private static long calculate(String aTimeframe) {
     // h, d , m, y
     if (aTimeframe == null || aTimeframe.length() < 2) {
-      return aIntervalEnd - 60 * 60;
+      return 60 * 60;
     }
 
     int value = Integer.parseInt(aTimeframe.substring(0, aTimeframe.length() - 1));
     switch (aTimeframe.charAt(aTimeframe.length() - 1)) {
       case 'h':
-        return aIntervalEnd - (value * 60 * 60);
+        return (value * 60 * 60);
       case 'd':
-        return aIntervalEnd - (value * 60 * 60 * 24);
+        return (value * 60 * 60 * 24);
       case 'm':
-        return aIntervalEnd - (value * 60 * 60 * 24 * 30);
+        return (value * 60 * 60 * 24 * 30);
       case 'y':
-        return aIntervalEnd - (value * 60 * 60 * 24 * 365);
+        return (value * 60 * 60 * 24 * 365);
     }
 
-    return aIntervalEnd - 60 * 60;
+    return 60 * 60;
   }
 
 
@@ -146,7 +183,10 @@ public class Rrd4jMain {
     private String template;
     private String destination;
     private String interval;
+    private String offset;
     private String source;
+    private String filter;
+    private String beginDate;
     private Map properties;
 
     public Rrd4jUtilCommand(String[] args) {
@@ -165,8 +205,17 @@ public class Rrd4jMain {
             case 'i':
               interval = args[i];
               break;
+            case 'o':
+              offset = args[i];
+              break;
             case 's':
               source = args[i];
+              break;
+            case 'f':
+              filter = args[i];
+              break;
+            case 'b':
+              beginDate = args[i];
               break;
             case 'p':
               properties = new HashMap();
@@ -205,6 +254,18 @@ public class Rrd4jMain {
 
     public Map getProperties() {
       return properties;
+    }
+
+    public String getOffset() {
+      return offset;
+    }
+
+    public String getFilter() {
+      return filter;
+    }
+
+    public String getBeginDate() {
+      return beginDate;
     }
   }
 

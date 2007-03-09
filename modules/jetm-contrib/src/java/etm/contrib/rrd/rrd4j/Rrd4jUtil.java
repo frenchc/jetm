@@ -51,6 +51,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,7 +83,7 @@ public class Rrd4jUtil {
     templates.put("average-and-tx", "etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
     templates.put("min-max-average", "etm/contrib/rrd/rrd4j/template/graph/min-max-average-template.xml");
     templates.put("average", "etm/contrib/rrd/rrd4j/template/graph/average-template.xml");
-    templates.put("min", "etm/contrib/rrd/rrd4j/template/graph/min-template.xml");      
+    templates.put("min", "etm/contrib/rrd/rrd4j/template/graph/min-template.xml");
     templates.put("max", "etm/contrib/rrd/rrd4j/template/graph/max-template.xml");
     templates.put("tx", "etm/contrib/rrd/rrd4j/template/graph/tx-template.xml");
   }
@@ -103,7 +105,7 @@ public class Rrd4jUtil {
    * @param properties    Optional properties providing variable values for the . May be null.
    */
   public void createGraph(URL templateUrl, File rrdFile, File destination,
-                                 long intervalStart, long intervalEnd, Map properties) {
+                          long intervalStart, long intervalEnd, Map properties) {
     if (properties == null) {
       properties = new HashMap();
     }
@@ -127,7 +129,7 @@ public class Rrd4jUtil {
    * @param properties    Optional properties providing variable values for the . May be null.
    */
   public void createGraph(URL templateUrl, File destination,
-                                 long intervalStart, long intervalEnd, Map properties) {
+                          long intervalStart, long intervalEnd, Map properties) {
     if (properties == null) {
       properties = new HashMap();
     }
@@ -295,6 +297,8 @@ public class Rrd4jUtil {
         aTemplate.setVariable(key, (Calendar) value);
       } else if (value instanceof Long) {
         aTemplate.setVariable(key, ((Long) value).longValue());
+      } else if (value instanceof Date) {
+        aTemplate.setVariable(key, (Date) value);
       } else {
         aTemplate.setVariable(key, String.valueOf(value));
       }
@@ -306,11 +310,26 @@ public class Rrd4jUtil {
       properties.put("logarithmic", "false");
     }
 
+    DateFormat format = SimpleDateFormat.getInstance();
+
+    if (properties.get("intervalstart") != null && properties.get("intervalend") != null) {
+      Long start = (Long) properties.get("intervalstart");
+      Long end = (Long) properties.get("intervalend");
+
+
+      Date startDate = new Date(start.longValue() * 1000);
+      Date endDate = new Date(end.longValue() * 1000);
+      properties.put("generatedstamp",
+        "Monitoring period: " + format.format(startDate) + " - " + format.format(endDate) +
+          " [Generated " + format.format(new Date()) + "]\\r");
+    } else {
+      properties.put("generatedstamp", "Generated " + format.format(new Date()) + "\\r");
+    }
+
     if (properties.get("imagetitle") == null) {
       properties.put("imagetitle", "Current performance results");
     }
 
-    properties.put("generatedstamp", "Generated " + new Date() + "\\r");
   }
 
 }

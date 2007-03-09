@@ -61,13 +61,12 @@ public class OfflineLogParser {
   private static final String DEFAULT_SCAN_PATTERN = "^(.*)measurementPoint=<([\\w\\s\\d]*)>, parent=<([\\w\\s]*)>, transactionTime=<(\\d*[,.]\\d*)>, recordingTime=<(\\d*)>";
   private String pattern = DEFAULT_SCAN_PATTERN;
 
-  private List writers;
+  private List destinations;
   private NumberFormat numberFormat;
 
 
   public OfflineLogParser() {
-    writers = new ArrayList();
-
+    destinations = new ArrayList();
     // todo?? pattern
     numberFormat = NumberFormat.getInstance();
     numberFormat.setMinimumFractionDigits(3);
@@ -80,8 +79,8 @@ public class OfflineLogParser {
     pattern = aPattern;
   }
 
-  public void register(RrdExecutionWriter aWriter) {
-    writers.add(aWriter);
+  public void register(RrdDestination aDestination) {
+    destinations.add(aDestination);
   }
 
   public void parse(File aFile) throws IOException {
@@ -92,9 +91,9 @@ public class OfflineLogParser {
     BufferedReader in = new BufferedReader(new FileReader(aFile));
 
     try {
-      for (int i = 0; i < writers.size(); i++) {
-        RrdExecutionWriter rrdWriter = (RrdExecutionWriter) writers.get(i);
-        rrdWriter.onBegin();
+      for (int i = 0; i < destinations.size(); i++) {
+        RrdDestination destination = (RrdDestination) destinations.get(i);
+        destination.start();
       }
 
       String line;
@@ -110,21 +109,21 @@ public class OfflineLogParser {
               Long.parseLong(matcher.group(5)),
               numberFormat.parse(matcher.group(4)).doubleValue()
             );
-            for (int i = 0; i < writers.size(); i++) {
-              RrdExecutionWriter rrdWriter = (RrdExecutionWriter) writers.get(i);
-              rrdWriter.onNextMeasurement(result);
+            for (int i = 0; i < destinations.size(); i++) {
+              RrdDestination destination = (RrdDestination) destinations.get(i);
+              if(destination.matches(result)) {
+                destination.write(result);
+              }
             }
 
-          } else {
-            processedLines++;
           }
         } catch (ParseException e) {
           log.warn("Error reading line " + line, e);
         }
       }
-      for (int i = 0; i < writers.size(); i++) {
-        RrdExecutionWriter rrdWriter = (RrdExecutionWriter) writers.get(i);
-        rrdWriter.onFinish();
+      for (int i = 0; i < destinations.size(); i++) {
+        RrdDestination destination = (RrdDestination) destinations.get(i);
+        destination.stop();
       }
 
     } finally {
