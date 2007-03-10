@@ -91,6 +91,7 @@
       <cf>LAST</cf>
     </def>
 
+
   </datasources>
   <graph>
 
@@ -135,28 +136,6 @@
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>
-
-    <line>
-      <datasource>min-avg</datasource>
-      <color>#FFFFCC</color>
-      <legend>Minimum time (ms)</legend>
-    </line>
-    <gprint>
-      <datasource>min-avg</datasource>
-      <cf>AVERAGE</cf>
-      <format>Avg = %10.3f</format>
-    </gprint>
-    <gprint>
-      <datasource>min-max</datasource>
-      <cf>MAX</cf>
-      <format>Max = %10.3f</format>
-    </gprint>
-    <gprint>
-      <datasource>min-last</datasource>
-      <cf>LAST</cf>
-      <format>Current = %10.3f\r</format>
-    </gprint>
-
 
     <comment>\r</comment>
     <comment>${generatedstamp}</comment>
