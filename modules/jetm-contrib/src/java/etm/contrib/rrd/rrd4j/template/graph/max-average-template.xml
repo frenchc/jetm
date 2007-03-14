@@ -118,7 +118,9 @@
 
     <area>
       <datasource>average-avg</datasource>
-      <color>#FFD700</color>
+      <color>#00CC00</color>
+
+      <!--<color>#FFD700</color>-->
       <legend>Average time (ms)</legend>
     </area>
     <gprint>

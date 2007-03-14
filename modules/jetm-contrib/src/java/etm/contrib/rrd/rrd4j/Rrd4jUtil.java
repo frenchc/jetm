@@ -220,7 +220,7 @@ public class Rrd4jUtil {
     log.debug("Creating rrd db at " + rrdFile.getAbsolutePath() + " using template " + templateUrl + ".");
 
     File parentDir = rrdFile.getParentFile();
-    if (!parentDir.exists()) {
+    if (parentDir != null && !parentDir.exists()) {
       parentDir.mkdirs();
     }
 

@@ -74,11 +74,22 @@ public class Rrd4jMain {
       long intervalEnd;
 
       if (command.getOffset() != null) {
-        intervalEnd = Util.getTimestamp() - calculate(command.getOffset());
+        if (command.getOffset().endsWith("!")) {
+          Calendar calendar = Calendar.getInstance();
+          calendar.set(Calendar.HOUR_OF_DAY, 0);
+          calendar.set(Calendar.MINUTE, 0);
+          calendar.set(Calendar.SECOND, 0);
+          calendar.set(Calendar.MILLISECOND, 0);
+
+          String offset = command.getOffset();
+          offset = offset.substring(0, offset.length() - 1);
+          intervalEnd = Util.getTimestamp(calendar.getTime()) - calculate(offset);
+        } else {
+          intervalEnd = Util.getTimestamp() - calculate(command.getOffset());
+
+        }
         intervalStart = intervalEnd - calculate(command.getInterval());
       } else if (command.getBeginDate() != null) {
-
-
         String beginDate = command.getBeginDate();
         intervalStart = Util.getTimestamp(getCalendar(beginDate).getTime());
 
@@ -92,7 +103,6 @@ public class Rrd4jMain {
             intervalEnd = Util.getTimestamp();
           }
         }
-
       } else {
         intervalEnd = Util.getTimestamp();
         intervalStart = intervalEnd - calculate(command.getInterval());
