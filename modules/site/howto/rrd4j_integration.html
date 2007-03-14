@@ -20,7 +20,37 @@
     <h3>RRD4j integration</h3>
 
     <p>
+      JETM ships with a <a href="http://rrd4j.dev.java.net/">RRD4j</a> integration that may be used to render long
+      term performance statistics. Currently JETM supports two RRD4j integration strategies:
     </p>
+
+    <ul>
+      <li><a href="rrd4j_offline_integration.html">RRD4j offline integration</a></li>
+      <li><a href="rrd4j_online_integration.html">RRD4j online integration</a> (experimental)</li>
+    </ul>
+
+    <p>
+        
+    </p>
+    <h4>Rendering examples</h4>
+
+    <p>
+      The following two screenshots show Maximum and Average times and are generated
+      using the template <i>max-average</i>. Monitoring periods are last 24 hours and time since January 1st
+      2007. The underlying RRD4j database was created using the <i>highres</i> template. 
+    </p>
+    <center>
+      <img border="0" width="340" height="162" src="../img/max-average-24h.png" alt="RRD4j DEMO"/>
+      <img border="0" width="340" height="162" src="../img/max-average-year.png" alt="RRD4j DEMO"/><br/>
+    </center>
+
+    <p>
+      The following screenshot shows the number of transactions/second and is generated using the template <i>tx</i>.
+      Monitoring period was last 24 hours. The underlying RRD4j database was created using the <i>highres</i> template.      
+    </p>
+    <center>
+      <img border="0" width="340" height="162" src="../img/tx-24h.png" alt="RRD4j DEMO"/>
+    </center>
 
   </div>
   <div id="menu">
