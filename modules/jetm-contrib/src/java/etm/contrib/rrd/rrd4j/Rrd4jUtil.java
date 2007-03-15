@@ -80,8 +80,8 @@ public class Rrd4jUtil {
     templates.put("highres", "etm/contrib/rrd/rrd4j/template/db/highres-template.xml");
     templates.put("mediumres", "etm/contrib/rrd/rrd4j/template/db/mediumres-template.xml");
     templates.put("lowres", "etm/contrib/rrd/rrd4j/template/db/lowres-template.xml");
-    templates.put("average-and-tx", "etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
-    templates.put("min-max-average", "etm/contrib/rrd/rrd4j/template/graph/min-max-average-template.xml");
+    templates.put("average-tx", "etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
+    templates.put("min-average", "etm/contrib/rrd/rrd4j/template/graph/min-average-template.xml");
     templates.put("max-average", "etm/contrib/rrd/rrd4j/template/graph/max-average-template.xml");    
     templates.put("average", "etm/contrib/rrd/rrd4j/template/graph/average-template.xml");
     templates.put("min", "etm/contrib/rrd/rrd4j/template/graph/min-template.xml");

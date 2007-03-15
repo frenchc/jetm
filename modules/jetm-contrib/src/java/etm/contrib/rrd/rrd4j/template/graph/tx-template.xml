@@ -10,9 +10,9 @@
     <width>600</width>
     <height>200</height>
     <units_exponent>0</units_exponent>
-    <!--<units_length>0</units_length>-->
     <rigid>true</rigid>
     <logarithmic>${logarithmic}</logarithmic>
+    <min_value>0</min_value>    
   </options>
 
   <datasources>

@@ -12,10 +12,35 @@
     <units_exponent>0</units_exponent>
     <rigid>true</rigid>
     <logarithmic>${logarithmic}</logarithmic>
-    <min_value>0</min_value>    
+    <min_value>0</min_value>
   </options>
 
   <datasources>
+    <def>
+      <name>average-avg</name>
+      <rrd>${rrdfile}</rrd>
+      <source>average</source>
+      <cf>AVERAGE</cf>
+    </def>
+    <def>
+      <name>average-min</name>
+      <rrd>${rrdfile}</rrd>
+      <source>average</source>
+      <cf>MIN</cf>
+    </def>
+    <def>
+      <name>average-max</name>
+      <rrd>${rrdfile}</rrd>
+      <source>average</source>
+      <cf>MAX</cf>
+    </def>
+    <def>
+      <name>average-last</name>
+      <rrd>${rrdfile}</rrd>
+      <source>average</source>
+      <cf>LAST</cf>
+    </def>
+
     <def>
       <name>min-avg</name>
       <rrd>${rrdfile}</rrd>
@@ -40,8 +65,33 @@
       <source>min</source>
       <cf>LAST</cf>
     </def>
+
   </datasources>
   <graph>
+    <area>
+      <datasource>average-avg</datasource>
+      <color>#00CC00</color>
+      <legend>Average time (ms)</legend>
+    </area>
+    <gprint>
+      <datasource>average-avg</datasource>
+      <cf>AVERAGE</cf>
+      <format>Avg = %10.3f</format>
+    </gprint>
+    <gprint>
+      <datasource>average-max</datasource>
+      <cf>MAX</cf>
+      <format>Max = %10.3f</format>
+    </gprint>
+    <gprint>
+      <datasource>average-last</datasource>
+      <cf>LAST</cf>
+      <format>Current = %10.3f\r</format>
+    </gprint>
+    <line>
+      <datasource>average-avg</datasource>
+      <color>#00AA00</color>
+    </line>
 
     <area>
       <datasource>min-avg</datasource>
@@ -63,7 +113,7 @@
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>
-    <line>
+     <line>
       <datasource>min-avg</datasource>
       <color>#3D44FF</color>
     </line>

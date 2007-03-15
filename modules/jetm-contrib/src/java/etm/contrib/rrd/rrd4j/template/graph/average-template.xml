@@ -10,9 +10,9 @@
     <width>600</width>
     <height>200</height>
     <units_exponent>0</units_exponent>
-    <!--<units_length>0</units_length>-->
     <rigid>true</rigid>
     <logarithmic>${logarithmic}</logarithmic>
+    <min_value>0</min_value>
   </options>
 
   <datasources>
@@ -44,7 +44,7 @@
   <graph>
     <area>
       <datasource>average-avg</datasource>
-      <color>#FFD700</color>
+      <color>#00CC00</color>
       <legend>Average time    (ms)</legend>
     </area>
     <gprint>
@@ -62,6 +62,10 @@
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>
+    <line>
+      <datasource>average-avg</datasource>
+      <color>#00AA00</color>
+    </line>
     
     <comment>\r</comment>
     <comment>${generatedstamp}</comment>
