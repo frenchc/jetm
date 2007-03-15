@@ -13,81 +13,82 @@
     <!--<units_length>0</units_length>-->
     <rigid>true</rigid>
     <logarithmic>${logarithmic}</logarithmic>
+    <min_value>0</min_value>
   </options>
 
   <datasources>
     <def>
       <name>average-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
       <name>average-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>MIN</cf>
     </def>
     <def>
       <name>average-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>MAX</cf>
     </def>
     <def>
       <name>average-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>LAST</cf>
     </def>
 
     <def>
       <name>min-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>min!</source>
+      <source>min</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
       <name>min-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>min!</source>
+      <source>min</source>
       <cf>MIN</cf>
     </def>
     <def>
       <name>min-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>min!</source>
+      <source>min</source>
       <cf>MAX</cf>
     </def>
     <def>
       <name>min-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>min!</source>
+      <source>min</source>
       <cf>LAST</cf>
     </def>
 
     <def>
       <name>max-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>max!</source>
+      <source>max</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
       <name>max-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>max!</source>
+      <source>max</source>
       <cf>MIN</cf>
     </def>
     <def>
       <name>max-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>max!</source>
+      <source>max</source>
       <cf>MAX</cf>
     </def>
     <def>
       <name>max-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>max!</source>
+      <source>max</source>
       <cf>LAST</cf>
     </def>
 
@@ -95,11 +96,11 @@
   </datasources>
   <graph>
 
-    <line>
+    <area>
       <datasource>max-avg</datasource>
       <color>#FF6600</color>
       <legend>Maximum time (ms)</legend>
-    </line>
+    </area>
     <gprint>
       <datasource>max-avg</datasource>
       <cf>AVERAGE</cf>
@@ -115,12 +116,14 @@
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>
+    <line>
+      <datasource>max-avg</datasource>
+      <color>#FF4400</color>
+    </line>
 
     <area>
       <datasource>average-avg</datasource>
       <color>#00CC00</color>
-
-      <!--<color>#FFD700</color>-->
       <legend>Average time (ms)</legend>
     </area>
     <gprint>
@@ -138,6 +141,11 @@
       <cf>LAST</cf>
       <format>Current = %10.3f\r</format>
     </gprint>
+
+    <line>
+      <datasource>average-avg</datasource>
+      <color>#00AA00</color>
+    </line>
 
     <comment>\r</comment>
     <comment>${generatedstamp}</comment>

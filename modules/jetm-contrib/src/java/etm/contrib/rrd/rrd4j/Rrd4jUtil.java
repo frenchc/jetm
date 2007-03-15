@@ -185,7 +185,7 @@ public class Rrd4jUtil {
         RrdGraphDef graphDef = template.getRrdGraphDef();
         RrdGraphInfo info = new RrdGraph(graphDef).getRrdGraphInfo();
 
-        log.debug("Created image " + info.getFilename() +
+        log.info("Created image " + info.getFilename() +
           " [" +
           info.getWidth() + "x" + info.getHeight() + ", " +
           info.getBytes().length + " bytes" +
@@ -217,8 +217,6 @@ public class Rrd4jUtil {
       throw new EtmException("Unable to create rrd file at " + rrdFile.getAbsolutePath() + ". File already available.");
     }
 
-    log.debug("Creating rrd db at " + rrdFile.getAbsolutePath() + " using template " + templateUrl + ".");
-
     File parentDir = rrdFile.getParentFile();
     if (parentDir != null && !parentDir.exists()) {
       parentDir.mkdirs();
@@ -241,6 +239,9 @@ public class Rrd4jUtil {
 
         RrdDb db = new RrdDb(rrdDef);
         db.close();
+
+        log.info("Created rrd db at " + rrdFile.getAbsolutePath() + " using template " + templateUrl + ".");
+
       } finally {
         try {
           in.close();

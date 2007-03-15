@@ -86,6 +86,8 @@ public class OfflineLogParser {
   }
 
   public void parse(File aFile) throws IOException {
+    log.info("Parsing " + aFile.getAbsolutePath());
+    
     boolean checkDecimalDigit = true;
     int totalLines = 0;
     int processedLines = 0;

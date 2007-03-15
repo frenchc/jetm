@@ -19,25 +19,25 @@
     <def>
       <name>average-avg</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>AVERAGE</cf>
     </def>
     <def>
       <name>average-min</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>MIN</cf>
     </def>
     <def>
       <name>average-max</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>MAX</cf>
     </def>
     <def>
       <name>average-last</name>
       <rrd>${rrdfile}</rrd>
-      <source>average!</source>
+      <source>average</source>
       <cf>LAST</cf>
     </def>
   </datasources>
