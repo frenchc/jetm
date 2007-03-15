@@ -81,39 +81,39 @@ class DefaultLogAdapter implements LogAdapter {
 
   public void debug(String message) {
     if (logLevel >= DEBUG) {
-      System.out.println(clazzName + message);
+      System.out.println("[DEBUG] " + clazzName + message);
     }
   }
 
   public void info(String message) {
     if (logLevel >= INFO) {
 
-      System.out.println(clazzName + message);
+      System.out.println("[INFO ] " + clazzName + message);
     }
   }
 
   public void warn(String message, Throwable t) {
     if (logLevel >= WARN) {
 
-      System.err.println(clazzName + message + getThrowable(t));
+      System.err.println("[WARN ] " + clazzName + message + getThrowable(t));
     }
   }
 
   public void warn(String message) {
     if (logLevel >= WARN) {
-      System.out.println(clazzName + message);
+      System.out.println("[WARN ] " + clazzName + message);
     }
   }
 
   public void error(String message, Throwable t) {
     if (logLevel >= ERROR) {
-      System.err.println(clazzName + message + getThrowable(t));
+      System.err.println("[ERROR] " + clazzName + message + getThrowable(t));
     }
   }
 
   public void fatal(String message, Throwable t) {
     if (logLevel >= FATAL) {
-      System.err.println(clazzName + message + getThrowable(t));
+      System.err.println("[FATAL] " + clazzName + message + getThrowable(t));
     }
   }
 
