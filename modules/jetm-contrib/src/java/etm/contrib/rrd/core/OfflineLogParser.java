@@ -38,7 +38,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,16 +63,17 @@ public class OfflineLogParser {
   private String pattern = DEFAULT_SCAN_PATTERN;
 
   private List destinations;
-  private NumberFormat numberFormat;
+  private DecimalFormat numberFormat;
 
 
   public OfflineLogParser() {
     destinations = new ArrayList();
     // todo?? pattern
-    numberFormat = NumberFormat.getInstance();
+    numberFormat = new DecimalFormat();
     numberFormat.setMinimumFractionDigits(3);
     numberFormat.setMaximumFractionDigits(3);
     numberFormat.setGroupingUsed(false);
+
   }
 
 
@@ -84,6 +86,7 @@ public class OfflineLogParser {
   }
 
   public void parse(File aFile) throws IOException {
+    boolean checkDecimalDigit = true;
     int totalLines = 0;
     int processedLines = 0;
     Pattern regex = Pattern.compile(pattern);
@@ -99,9 +102,23 @@ public class OfflineLogParser {
       String line;
       while ((line = in.readLine()) != null) {
         totalLines++;
+
         try {
           Matcher matcher = regex.matcher(line);
           if (matcher.matches()) {
+            // validate whether we use the matching
+            if (checkDecimalDigit) {
+              DecimalFormatSymbols symbols = numberFormat.getDecimalFormatSymbols();
+              if (matcher.group(4).indexOf(symbols.getDecimalSeparator()) < 0) {
+                log.warn("Possibly precision loss detected. Expected decimal separator '" +
+                  symbols.getDecimalSeparator() +
+                  "', but found " +
+                  matcher.group(4) +
+                  ". Use -Duser.language and -Duser.region to adjust your locale to the logfile locale.");
+              }
+              checkDecimalDigit = false;
+            }
+
             processedLines++;
             OfflineExecution result = new OfflineExecution(
               matcher.group(2),
@@ -111,7 +128,7 @@ public class OfflineLogParser {
             );
             for (int i = 0; i < destinations.size(); i++) {
               RrdDestination destination = (RrdDestination) destinations.get(i);
-              if(destination.matches(result)) {
+              if (destination.matches(result)) {
                 destination.write(result);
               }
             }

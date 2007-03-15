@@ -50,8 +50,9 @@ class OfflineExecution implements EtmPoint {
 
   public OfflineExecution(String aName, String aParent, long aRecordingTime, double aTransactionTime) {
     name = aName;
-    transactionTime = aTransactionTime;
     startTime = aRecordingTime;
+    transactionTime = aTransactionTime;
+
     endTime = (long) (aTransactionTime * 1000);
   }
 

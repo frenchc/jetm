@@ -115,7 +115,8 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
           sample.setValue("max!", max);
         }
         if (averageEnabled) {
-          sample.setValue("average!", total / (double) transactions);
+          double value = total / (double) transactions;
+          sample.setValue("average!", value);
         }
 
         sample.update();
