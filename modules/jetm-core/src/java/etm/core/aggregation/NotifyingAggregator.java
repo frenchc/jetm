@@ -37,6 +37,8 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.event.CollectEvent;
 import etm.core.renderer.MeasurementRenderer;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 /**
  * An aggregator that creates {@link etm.core.monitor.event.CollectEvent}s for every new
@@ -50,6 +52,8 @@ import etm.core.renderer.MeasurementRenderer;
  * @since 1.2.0
  */
 public class NotifyingAggregator implements Aggregator {
+
+  private static final LogAdapter log = Log.getLog(NotifyingAggregator.class);
 
   private Aggregator delegate;
   private EtmMonitorContext ctx;
@@ -72,7 +76,7 @@ public class NotifyingAggregator implements Aggregator {
   }
 
   public void setFilterPattern(String pattern) {
-    // todo - should we move the aggregator to contrib instead
+    log.warn("Filtering not supported yet.");
   }
 
   public void add(EtmPoint point) {

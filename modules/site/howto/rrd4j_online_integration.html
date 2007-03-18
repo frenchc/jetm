@@ -27,32 +27,69 @@
 
     <p> Note that the current RRD4j online integration is <span style="color: red;">experimental</span> and should
       not be used in high traffic situations. While it should create exactly the same results as
-      <a href="rrd4j_offline_integration.html">RRD4j offline support</a> it is untested for high load.</p>
+      <a href="rrd4j_offline_integration.html">RRD4j offline support</a> it is pretty much untested.</p>
 
     <h4>Step I: Prerequisites</h4>
 
     <p>
-      In order to use JETM RRD4j support you need to add the RRD4j libs to your classpath. You can download the current
-      RRD4j distribution <a href="https://rrd4j.dev.java.net/">here</a>. Since RRD4j is a Java&trade; 5.0 port of JRobin
-      it depends on Java&trade; 5.0 as runtime. JETM 1.2.0 was tested with RRD4j 2.0.x.
+      In order to use JETM RRD4j support you need to add all RRD4j libraries to your application runtime classpath. You
+      can download the current RRD4j distribution <a href="https://rrd4j.dev.java.net/">here</a>. Be aware that RRD4j
+      requires Java&trade; 5.0 or higher.
     </p>
 
     <h4>Step II: Create target RRD databases</h4>
 
     <p>
-      Manually create or use command line tool
+      The RRD4j will record performance results in existing RRD database. Therefore it is up to you to create those
+      files before running an RRD4j enabled JETM runtime. The easiest way to create those files is using the command
+      line tool described in <a href="rrd4j_offline_integration.html">RRD4j offline integration</a>.
     </p>
+
+    <p>
+      The following example creates two RRD DB files, one for Soap Actions and another one for HTTP requests using a
+      high resolution database:
+    </p>
+
+    <div class="code"><pre>
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/soap_actions.rrd</i>
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http_requests.rrd</i>
+</pre>
+    </div>
 
     <h4>Step III: Enable RRD recording</h4>
 
     <p>
-      Enable events
-      Enable Rrd4jPlugin
+      To enable RRD4j online recording you need to add the Rrd4jPlugin and enable notifications for newly recorded
+      performance results. The following JETM config exerpt uses
+      <a href="etm_manager_configuration.html">static EtmManger</a> configuration, nevertheless the same features can be
+      actived in a <a href="spring_integration.html">Springframework based</a> environment or manually via EtmMonitor
+      API.
     </p>
+<div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
+
+&lt;jetm-config&gt;
+  &lt;features&gt;
+    ...
+    &lt;notifications /&gt;
+  &lt;/features&gt;
+  
+  &lt;extension&gt;
+    &lt;plugin class="etm.contrib.rrd.rrd4j.Rrd4jPlugin"&gt;
+      &lt;property name="destinations"&gt;soap_actions.rrd!^SoapAction.+&lt;/property&gt;
+      &lt;property name="destinations"&gt;http_requests.rrd!^HTTP.+&lt;/property&gt;
+      &lt;property name="rrdFilePath" ref="/tmp"/&gt;
+    &lt;/plugin&gt;
+  &lt;/extension&gt;
+&lt;/jetm-config&gt;</pre>
+</div>
+
     <h4>Step IV: Enable image rendering</h4>
 
     <p>
-      Use plugin or use command line tool
+      Use plugin Rrd4jImageGeneratorPlugin or command line tool described at
+      <a href="rrd4j_offline_integration.html">RRD4j offline integration</a>.
     </p>
   </div>
   <div id="menu">

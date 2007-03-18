@@ -71,7 +71,7 @@ public class Rrd4jPlugin extends AbstractRrdPlugin {
 
     for (int i = 0; i < destinationConfiguration.size(); i++) {
       String s = (String) destinationConfiguration.get(i);
-      int index = s.indexOf('|');
+      int index = s.indexOf('!');
       String filename = s.substring(0, index);
       String pattern = s.substring(index + 1);
 

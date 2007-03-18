@@ -104,7 +104,7 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http
 
 <div class="code"><pre>
 java etm.contrib.rrd.rrd4j.Rrd4jMain import -s /tmp/performance.log
-     -d /tmp/soap_actions.rrd!SoapAction.+;/tmp/http_requests.rrd!^HTTP.+
+     -d /tmp/soap_actions.rrd!^SoapAction.+;/tmp/http_requests.rrd!^HTTP.+
 </pre>
 </div>
 <p>
