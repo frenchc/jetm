@@ -95,7 +95,7 @@ public class Rrd4jPluginTest extends TestCase {
 
         Rrd4jPlugin plugin = new Rrd4jPlugin();
         List configurations = new ArrayList();
-        configurations.add(path.getName() + "|*");
+        configurations.add(path.getName() + "!*");
         plugin.setDestinations(configurations);
         monitor.addPlugin(plugin);
 
@@ -117,10 +117,10 @@ public class Rrd4jPluginTest extends TestCase {
 
       RrdDb db = new RrdDb(path.getAbsolutePath(), true);
       assertTrue(db.getDatasource("transactions!").getLastValue() > 0);
-      assertTrue(db.getDatasource("min!").getLastValue() > 0);
-      assertTrue(db.getDatasource("max!").getLastValue() > db.getDatasource("min!").getLastValue());
-      assertTrue(db.getDatasource("average!").getLastValue() > db.getDatasource("min!").getLastValue());
-      assertTrue(db.getDatasource("max!").getLastValue() > db.getDatasource("average!").getLastValue());
+      assertTrue(db.getDatasource("min").getLastValue() > 0);
+      assertTrue(db.getDatasource("max").getLastValue() > db.getDatasource("min").getLastValue());
+      assertTrue(db.getDatasource("average").getLastValue() > db.getDatasource("min").getLastValue());
+      assertTrue(db.getDatasource("max").getLastValue() > db.getDatasource("average").getLastValue());
 
       db.close();
     } finally {

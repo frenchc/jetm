@@ -90,7 +90,9 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
 
     if (saved != null) {
       for (int i = 0; i < saved.length; i++) {
-        saved[i].stop();
+        if (saved[i] != null) {
+          saved[i].stop();
+        }
       }
     }
   }

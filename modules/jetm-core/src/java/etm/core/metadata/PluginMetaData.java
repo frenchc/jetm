@@ -76,4 +76,9 @@ public class PluginMetaData {
   public Map getProperties() {
     return properties;
   }
+
+  public String toString() {
+     return "implementationClass=" + implementationClass +
+      ", description='" + description + "'";
+  }
 }

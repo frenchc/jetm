@@ -11,21 +11,21 @@
     <max>U</max>
   </datasource>
   <datasource>
-    <name>min!</name>
+    <name>min</name>
     <type>GAUGE</type>
     <heartbeat>5</heartbeat>
     <min>0</min>
     <max>U</max>
   </datasource>
   <datasource>
-    <name>max!</name>
+    <name>max</name>
     <type>GAUGE</type>
     <heartbeat>5</heartbeat>
     <min>0</min>
     <max>U</max>
   </datasource>
   <datasource>
-    <name>average!</name>
+    <name>average</name>
     <type>GAUGE</type>
     <heartbeat>5</heartbeat>
     <min>0</min>
