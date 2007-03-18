@@ -11,76 +11,314 @@
 <body>
 
 <div id="content">
-  <div id="header">Java&trade; Execution Time Measurement Library</div>
+<div id="header">Java&trade; Execution Time Measurement Library</div>
 
-  <div id="subheader">Runtime performance monitoring made easy</div>
+<div id="subheader">Runtime performance monitoring made easy</div>
 
-  <div id="main">
+<div id="main">
 
-    <h3>RRD4j offline integration</h3>
+<h3>RRD4j offline integration</h3>
 
-    <p>
+<p>
+  This page briefly describes RRD4j offline support. In offline mode we will record raw performance statistics at
+  runtime and import the collected data to a RRD database later on. The import will be done through a command
+  line tool and can happen at any time (if the order is preserved).
+</p>
 
-    </p>
-
-    <h4>Step I: Prerequisites</h4>
-
-    <p>
-      In order to use JETM RRD4j support you need to add the RRD4j libs to your classpath. You can download the current
-      RRD4j distribution <a href="https://rrd4j.dev.java.net/">here</a>. Since RRD4j is a Java&trade; 5.0 port of JRobin
-      it depends on Java&trade; 5.0 as runtime. JETM 1.2.0 was tested with RRD4j 2.0.x.
-    </p>
-
-    <h4>Step II: Enable performance result logging</h4>
-
-    <p>
-      Write raw data to logfile for further processing
-    </p>
+<p>
+  The same command line tool can be used to create RRD graphs similar to the ones presented
+  <a href="rrd4j_integration.html">here</a>.
+</p>
 
 
-    <h4>Step III: Import raw data to RRD DB</h4>
+<h4>Step I: Prerequisites</h4>
 
-    <p>
-      Use command line to create db and import data
+<p>
+  In offline mode there are no additional requirements for the JETM runtime.
+</p>
 
-      java -cp $CLASSPATH etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t ${TEMPLATE} -d ${DB_FILE_NAME}
+<p>
+  The command line tool however depends on RRD4j that can be downloaded
+  <a href="https://rrd4j.dev.java.net/">here</a>. Simply put jetm.jar, jetm-optional.jar and all RRD4j libraries to
+  your classpath and execute <i>etm.contrib.rrd.rrd4j.Rrd4jMain</i>. RRD4j requires Java&trade; 5.0 or higher.
+</p>
 
-      java -cp $CLASSPATH $OPTIONS etm.contrib.rrd.rrd4j.Rrd4jMain import -s "${SOURCE_FILE}" -d "${IMPORT_DEFINITION}"
-    </p>
+<h4>Step II: Enable performance result logging</h4>
 
-    <h4>Step IV: Create image</h4>
+<p>
+  RRD4j offline mode depends on raw performance data that can be created by a JETM runtime on-the-fly. Therefore
+  raw-data logging has to be enabled (which is disabled by default). The easiest way to do this is to enable the feature
+  <i>raw-data-log</i> in a <a href="etm_manager_configuration.html">static EtmManger</a> or
+  <a href="spring_integration.html">Springframework based</a> configuration or add a Logging Aggregator to the
+  aggregation chain.
+</p>
 
-    <p>
-      Use command line to create db and import data
+<p>
+  The following example enables raw-data logging for an EtmManager based configuration and logs raw performance data to
+  log4j using the default category <i>etm-raw-data</i> at level <i>INFO</i>. The optional filter
+  <i>SoapAction.+;HTTP.+</i> ensures that only certain measurement points will be logged.
+</p>
 
-      $JAVA -cp $CLASSPATH ${OPTIONS} etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s ${RRD_FILE} \
-  -d ${IMAGE_PATH}/performance-year.png -b 2007.01.01 -p imagetitle="xxx"
-    </p>
-    <p>
-      -b
-      -e
-      -i
-      -o
-    </p>
+<div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 
-  </div>
-  <div id="menu">
-    <a href="../index.html">Home</a>
-    |
-    <a href="../doc.html">Documentation</a>
-    |
-    <a href="../faq.html">FAQ</a>
-    |
-    <a href="../@api@/index.html">JavaDoc</a>
-    |
-    <a href="../files.html">Download</a>
-    |
-    <a href="../svn.html">SVN</a>
-    |
-    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
-    |
-    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
-  </div>
+&lt;jetm-config&gt;
+  &lt;features&gt;
+    ...
+    <b>&lt;raw-data-log type="log4j" filter-pattern="^SoapAction.+;^HTTP.+" /&gt;</b>
+  &lt;/features&gt;
+&lt;/jetm-config&gt;</pre>
+</div>
+<p>
+  It is recommended to configure the log framework such that all raw performance data are logged to dedicated log files
+  on a daily basis. While JETM is capable to differentiate between new and historical performance data in a given log
+  file it has to scan every line to locate new measurements.
+</p>
+
+
+<h4>Step III: Import raw data to RRD DB</h4>
+
+<p>
+  The command line tool <i>etm.contrib.rrd.rrd4j.Rrd4jMain</i> is able to import raw performance data to an already
+  existing RRD DB. Therefore it is up to you to create those files before running an import.
+</p>
+
+<p>
+  The following example creates two RRD DB files, one for Soap Actions and another one for HTTP requests using a
+  high resolution database:
+</p>
+
+<div class="code"><pre>
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/soap_actions.rrd</i>
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http_requests.rrd</i>
+</pre>
+</div>
+
+<p>
+  Once you have created your RRD DB files you are able to import raw performace data. The following example imports
+  a selected set of performance results from a single log file to dedicated RRD DB files. Please note that you can
+  specifcy multiple RRD DB destinations at the same time or import the same file multiple times using one dedicated
+  destination.
+</p>
+
+<div class="code"><pre>
+java etm.contrib.rrd.rrd4j.Rrd4jMain import -s /tmp/performance.log
+     -d /tmp/soap_actions.rrd!SoapAction.+;/tmp/http_requests.rrd!^HTTP.+
+</pre>
+</div>
+<p>
+  You may import the same file multiple times - the import tool will detect whether the given file contains newer
+  performance data or not. Be aware that is impossible to import older data once you have imported more recent
+  performance results.
+</p>
+
+<h4>Step IV: Create performance graphs</h4>
+
+<p>
+  Once data have been imported these results can be rendered. The following examples render maximum and average times
+  found in our RRD DB files for given intervals (last hour and last 24 hours):
+</p>
+<div class="code"><pre>
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s /tmp/soap_actions.rrd
+  -d /tmp/performance-soap-actions-last-hour.png
+  -p imagetitle="Soap Requests last hour"
+
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s /tmp/soap_actions.rrd
+  -d /tmp/performance-soap-actions-last-24-hours.png -i 24h
+  -p imagetitle="Soap Requests last 24 hours"
+
+
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s /tmp/http_requests.rrd
+  -d /tmp/performance-http-requests-last-hour.png
+  -p imagetitle="HTTP Requests last hour"
+
+java etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s /tmp/http_requests.rrd
+  -d /tmp/performance-http-requests-last-24-hours.png -i 24h
+  -p imagetitle="HTTP Requests last 24 hours"
+</pre>
+</div>
+<p>
+  Attention: The import tool will import performance data at recording time. Therefore you may not be able to see
+  rendered performance results using the commands above (since your data may be too old for the selected intervals). 
+  The command line tool supports several ways to specify a certain monitoring interval. See table below for further options.
+</p>
+
+<h4>Full list of Rrd4jMain options</h4>
+
+<p>
+  The following table contains all available options for <i>etm.contrib.rrd.rrd4j.Rrd4jMain</i>. All mandatory options
+  rely on the usage of one of the pre-defined RrdDef and RrdGraphDef templates.
+
+</p>
+
+<table class="list">
+<tr>
+  <th>Mode</th>
+  <th>Option</th>
+  <th>Meaning</th>
+  <th>Mandatory</th>
+</tr>
+<tr>
+  <td rowspan="4" valign="top" nowrap="nowrap">create-db</td>
+  <td>t</td>
+  <td>The DB template to use, available in classpath or file system. Should follow
+    RrdDefTemplate format. Pre-defined templates are <i>highres</i>, <i>mediumres</i> and <i>lowres</i>.
+  </td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>d</td>
+  <td>Database destination, use absolute path if possible.</td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>p</td>
+  <td>Template properties to be supplied to the template. Use key=value separated by semicolon for multiple values.
+    E.g. -p foo=bar;yadda=123
+  </td>
+  <td>No</td>
+</tr>
+<tr>
+  <td colspan="3">Examples:<br/>
+    <br/>
+    Create a high resoslution rrd database called test.rrd:<br/>
+    <i>Rrd4jMain create-db -t highres -d /tmp/test.rrd</i></td>
+</tr>
+
+<tr>
+  <td rowspan="4" valign="top" nowrap="nowrap">import</td>
+  <td>s</td>
+  <td>The source file. Use absolute file path if possible.</td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>d</td>
+  <td>The parsing definitions. A single parsing definition is made of the path to the rrd db file and a Java 1.4
+    regular expression used to select measurement results separated by !. Multiple definitions can be separated using
+    a semilocon. If you want to import all results use * instead of regular expression.
+  </td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>p</td>
+  <td>Template properties to be supplied to the template. Use key=value separated by semicolon for multiple values.
+    E.g. -p foo=bar;yadda=123
+  </td>
+  <td>No</td>
+</tr>
+<tr>
+  <td colspan="3">Examples:<br/>
+    <br/>
+    Import all results to test.rrd from performance.log:<br/>
+    <i>Rrd4jMain import -s /tmp/performance.log -d /tmp/test.rrd!*</i>
+    <br/> <br/>
+    Imports all SoapActions to foo.rrd and HTTP requests to bar.rrd:<br/>
+    <i>Rrd4jMain import -s /tmp/performance.log -d /tmp/foo.rrd!^SoapAction.+;/tmp/bar.rrd!^HTTP.+</i>
+  </td>
+</tr>
+
+<tr>
+  <td rowspan="9" valign="top" nowrap="nowrap">create-graph</td>
+  <td>s</td>
+  <td>The RRD DB to read from.</td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>d</td>
+  <td>The name of the image. Creates PNG images by default.</td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>t</td>
+  <td>The graph template to use, available in classpath or file system. Should follow
+    RrdGraphDefTemplate format. Pre-defined templates are <i>min</i>, <i>max</i>, <i>average</i>,
+    <i>min-average</i>, <i>max-average</i>, <i>tx</i> and <i>average-tx</i>.
+  </td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td>i</td>
+  <td>The render interval in hours, days, months or years [h,d,m,y]. By default the interval is calculated
+    from now to the past unless -o or -b is specified.
+    Examples: <i>12m</i>, <i>5d</i>.
+  </td>
+  <td nowrap="nowrap">No<br/>(Last hour)</td>
+</tr>
+<tr>
+  <td>o</td>
+  <td>The interval offset in hours, days, months or years [h,d,m,y]. Moves the interval end
+    by the given offset to the past. Use ! to move the interval end to 12:00am. Ingored if -b is specified.
+    Examples: <i>1d</i>, <i>5d!</i>, <i>0d!</i>.
+  </td>
+  <td nowrap="nowrap">No</td>
+</tr>
+<tr>
+  <td>b</td>
+  <td>The begin date of the interval in YYYY.MM.DD. The interval always starts at 12.00am and can be combined with
+    -e or -i.
+    Example: 2007.02.28
+  </td>
+  <td>No</td>
+</tr>
+<tr>
+  <td>e</td>
+  <td>The end date of the interval in YYYY.MM.DD. The interval always ends at 12.00am and requires -b. Ignored
+    otherwhise.
+    Example: 2007.03.01
+  </td>
+  <td>No</td>
+</tr>
+<tr>
+  <td>p</td>
+  <td>Template properties to be supplied to the template. Use key=value separated by semicolon for multiple values.
+    E.g. -p foo=bar;yadda=123
+  </td>
+  <td>No</td>
+</tr>
+<tr>
+  <td colspan="3">Examples:<br/>
+    <br/>
+    Renders average and maximum times for the last hour<br/>
+    <i>Rrd4jMain create-graph -s /tmp/test.rrd -d /tmp/test.png -t max-average</i>
+    <br/> <br/>
+    Renders maximum times for the last 7 days<br/>
+    <i>Rrd4jMain create-graph -s /tmp/test.rrd -d /tmp/test.png -t max -i 7d</i>
+    <br/> <br/>
+    Renders total transactions for the last 7 days moving the interval end to yesterday 12.00am<br/>
+    <i>Rrd4jMain create-graph -s /tmp/test.rrd -d /tmp/test.png -t tx -i 7d -o 0d!</i>
+    <br/> <br/>
+    Renders minimum times for 30 days past 2007.01.01<br/>
+    <i>Rrd4jMain create-graph -s /tmp/test.rrd -d /tmp/test.png -t min -b 2007.01.01 -i 30d</i>
+    <br/> <br/>
+    Renders average times for the interval 2007.01.01-2008.01.01<br/>
+    <i>Rrd4jMain create-graph -s /tmp/test.rrd -d /tmp/test.png -t average -b 2007.01.01 -e 2008.01.01</i>
+    <br/> <br/>
+    Renders average and maximum times for the last hour and sets image title<br/>
+    <i>Rrd4jMain create-graph -s /tmp/test.rrd -d /tmp/test.png -t max-average -p "imagetitle=MyHost performance last
+      hour"</i>
+  </td>
+</tr>
+</table>
+
+</div>
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
 </div>
 
 </body>
