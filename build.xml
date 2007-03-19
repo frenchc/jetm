@@ -163,7 +163,7 @@
     <antcall target="maven2-contrib-bundle"/>
   </target>
 
-  <target name="jetm-javadoc">
+  <target name="jetm-javadoc" description="Creates JETM javadoc">
     <mkdir dir="${build.javadoc.dir}"/>
 
     <javadoc

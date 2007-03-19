@@ -11,61 +11,63 @@
 <body>
 
 <div id="content">
-  <div id="header">Java&trade; Execution Time Measurement Library</div>
+<div id="header">Java&trade; Execution Time Measurement Library</div>
 
-  <div id="subheader">Runtime performance monitoring made easy</div>
+<div id="subheader">Runtime performance monitoring made easy</div>
 
-  <div id="main">
+<div id="main">
 
-    <h3>RRD4j online integration</h3>
+  <h3>RRD4j online integration</h3>
 
-    <p>
-      As opposite to <a href="rrd4j_offline_integration.html">RRD4j offline rendering</a> it is possible to record and
-      render RRD performance results near to real-time. Therefore JETM provides an RRD4j extension that stores
-      executions times in given RRD4j databases at recording time and render graphs on demand.
-    </p>
+  <p>
+    As opposite to <a href="rrd4j_offline_integration.html">RRD4j offline rendering</a> it is possible to record and
+    render RRD performance results near to real-time. Therefore JETM provides an RRD4j extension that stores
+    executions times in given RRD4j databases at recording time and render graphs on demand.
+  </p>
 
-    <p> Note that the current RRD4j online integration is <span style="color: red;">experimental</span> and should
-      not be used in high traffic situations. While it should create exactly the same results as
-      <a href="rrd4j_offline_integration.html">RRD4j offline support</a> it is pretty much untested.</p>
+  <p> Note that the current RRD4j online integration is <span style="color: red;">experimental</span> and should
+    not be used in high traffic situations. While it should create exactly the same results seen at
+    <a href="rrd4j_offline_integration.html">RRD4j offline support</a> it is pretty much untested yet.</p>
 
-    <h4>Step I: Prerequisites</h4>
+  <h4>Step I: Prerequisites</h4>
 
-    <p>
-      In order to use JETM RRD4j support you need to add all RRD4j libraries to your application runtime classpath. You
-      can download the current RRD4j distribution <a href="https://rrd4j.dev.java.net/">here</a>. Be aware that RRD4j
-      requires Java&trade; 5.0 or higher.
-    </p>
+  <p>
+    In order to use JETM RRD4j support you need to add all RRD4j libraries to your application runtime classpath. You
+    can download the current RRD4j distribution <a href="https://rrd4j.dev.java.net/">here</a>. Be aware that RRD4j
+    requires Java&trade; 5.0 or higher.
+  </p>
 
-    <h4>Step II: Create target RRD databases</h4>
+  <h4>Step II: Create target RRD databases</h4>
 
-    <p>
-      The RRD4j will record performance results in existing RRD database. Therefore it is up to you to create those
-      files before running an RRD4j enabled JETM runtime. The easiest way to create those files is using the command
-      line tool described in <a href="rrd4j_offline_integration.html">RRD4j offline integration</a>.
-    </p>
+  <p>
+    The RRD4j online intergration will record performance results into existing RRD databases. Therefore it is up to
+    you to create those files before running an RRD4j enabled JETM runtime. The easiest way to create those files is
+    using the command line tool described in
+    <a href="rrd4j_offline_integration.html##rrd4j_db_create">RRD4j offline integration</a>.
+  </p>
 
-    <p>
-      The following example creates two RRD DB files, one for Soap Actions and another one for HTTP requests using a
-      high resolution database:
-    </p>
+  <p>
+    The following example creates two RRD DB files, one for Soap Actions and another one for HTTP requests using a
+    high resolution database:
+  </p>
 
-    <div class="code"><pre>
+  <div class="code"><pre>
 java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/soap_actions.rrd</i>
 java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http_requests.rrd</i>
 </pre>
-    </div>
+  </div>
 
-    <h4>Step III: Enable RRD recording</h4>
+  <h4>Step III: Enable RRD recording</h4>
 
-    <p>
-      To enable RRD4j online recording you need to add the Rrd4jPlugin and enable notifications for newly recorded
-      performance results. The following JETM config exerpt uses
-      <a href="etm_manager_configuration.html">static EtmManger</a> configuration, nevertheless the same features can be
-      actived in a <a href="spring_integration.html">Springframework based</a> environment or manually via EtmMonitor
-      API.
-    </p>
-<div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  <p>
+    To enable RRD4j online recording you need to add the Rrd4jPlugin and enable notifications for newly recorded
+    performance results. The following JETM config exerpt uses
+    <a href="etm_manager_configuration.html">static EtmManger</a> configuration, nevertheless the same features can be
+    actived in a <a href="spring_integration.html">Springframework based</a> environment or manually via EtmMonitor
+    API.
+  </p>
+
+  <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
                              "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 
@@ -83,32 +85,69 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http
     &lt;/plugin&gt;
   &lt;/extension&gt;
 &lt;/jetm-config&gt;</pre>
+  </div>
+  <p>
+    The configuration above defines two target RRD databases located in <i>/tmp</i>. The first database called
+    <i>soap_actions.rrd</i> will be used for all measurement points that match the regular expression
+    <i>^SoapAction.+</i>, while the second database <i>http_requests.rrd</i> is the destination for all performance
+    results matching <i>^HTTP.+</i>.
+  </p>
+  <h4>Step IV: Create performance graphs</h4>
+
+  <p>
+    Now there are two options to render grapical performance statistics: One option is the command line tool described
+    in <a href="rrd4j_offline_integration.html##create_graphs">RRD4j offline integration</a>. And the other option is a
+    dedicated plugin that will create images online.
+  </p>
+  <p>
+    The plugin <i>Rrd4jImageGeneratorPlugin</i> pretty much works like command line tool.
+  </p>
+
+  <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
+
+&lt;jetm-config&gt;
+  ...
+
+  &lt;extension&gt;
+    &lt;plugin class="etm.contrib.rrd.rrd4j.Rrd4jPlugin"&gt;
+     ...
+    &lt;/plugin&gt;
+
+    &lt;plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin"&gt;
+      &lt;property name="generationInterval"&gt;60&lt;/property&gt;
+      &lt;property name="templateName"&gt;max-average&lt;/property&gt;
+      &lt;property name="renderInterval"&gt;3600&lt;/property&gt;
+      &lt;property name="offset"&gt;121&lt;/property&gt;
+      &lt;property name="templateProperties.imagefile"&gt;/tmp/performance_1h.png&lt;/property&gt;
+      &lt;property name="templateProperties.rrdfile"&gt;/tmp/soap_actions.rrd&lt;/property&gt;
+      &lt;property name="templateProperties.imagetitle"&gt;SOAP actions last hour&lt;/property&gt;
+    &lt;/plugin&gt;   
+  &lt;/extension&gt;
+&lt;/jetm-config&gt;</pre>
+  </div>
+
+
+
 </div>
-
-    <h4>Step IV: Enable image rendering</h4>
-
-    <p>
-      Use plugin Rrd4jImageGeneratorPlugin or command line tool described at
-      <a href="rrd4j_offline_integration.html">RRD4j offline integration</a>.
-    </p>
-  </div>
-  <div id="menu">
-    <a href="../index.html">Home</a>
-    |
-    <a href="../doc.html">Documentation</a>
-    |
-    <a href="../faq.html">FAQ</a>
-    |
-    <a href="../@api@/index.html">JavaDoc</a>
-    |
-    <a href="../files.html">Download</a>
-    |
-    <a href="../svn.html">SVN</a>
-    |
-    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
-    |
-    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
-  </div>
+<div id="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html">Documentation</a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html">Download</a>
+  |
+  <a href="../svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
 </div>
 
 </body>

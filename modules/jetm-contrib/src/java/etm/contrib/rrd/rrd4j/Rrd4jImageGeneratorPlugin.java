@@ -53,7 +53,7 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
   private long generationInterval = DEFAULT_INTERVAL;
   private String templateName;
   private Map templateProperties;
-  private int timeframe = 60 * 60;
+  private int renderInterval = 60 * 60;
   private int offset;
 
   private static final long DEFAULT_INTERVAL = 5000;
@@ -74,8 +74,8 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
     templateProperties = aProperties;
   }
 
-  public void setTimeframe(int aTimeframe) {
-    timeframe = aTimeframe;
+  public void setRenderInterval(int aTimeframe) {
+    renderInterval = aTimeframe;
   }
 
   public void setOffset(int aOffset) {
@@ -115,7 +115,7 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
 
     public void run() {
       long intervalend = Util.getTimestamp(new Date());
-      long intervalstart = intervalend - offset - timeframe;
+      long intervalstart = intervalend - offset - renderInterval;
 
       util.createGraph(template, intervalstart, intervalend, templateProperties);
     }
