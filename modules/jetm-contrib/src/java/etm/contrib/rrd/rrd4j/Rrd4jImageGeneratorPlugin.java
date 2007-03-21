@@ -74,8 +74,8 @@ public class Rrd4jImageGeneratorPlugin implements EtmPlugin {
     templateProperties = aProperties;
   }
 
-  public void setRenderInterval(int aTimeframe) {
-    renderInterval = aTimeframe;
+  public void setRenderInterval(int aRenderInterval) {
+    renderInterval = aRenderInterval;
   }
 
   public void setOffset(int aOffset) {

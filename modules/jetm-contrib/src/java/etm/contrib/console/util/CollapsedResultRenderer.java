@@ -71,7 +71,7 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
 
     try {
       writeHtmlHead(false);
-
+      response.write("<!-- Begin results -->");
       response.write("<table>\n");
       writeTableHeader();
 

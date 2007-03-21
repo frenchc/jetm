@@ -101,8 +101,12 @@ public abstract class ConsoleTests extends TestCase {
 
     String expected = new String(out.toByteArray(), "UTF-8");
 
-    String s = serverResponse.substring(serverResponse.indexOf("close") + 5).trim();
-    assertEquals(expected, s);
+    String response = serverResponse.substring(serverResponse.indexOf("close") + 5).trim();
+    // we compare rendered results only
+
+
+    assertEquals(expected.substring(expected.indexOf("Begin results")), 
+      response.substring(response.indexOf("Begin results")));
   }
 
   public void testMonitorReset() throws Exception {

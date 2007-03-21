@@ -51,6 +51,7 @@ import java.util.StringTokenizer;
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0 
  */
 public class Rrd4jMain {
   private static final String DATE_FORMAT = "yyyy.MM.dd";

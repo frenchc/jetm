@@ -38,7 +38,9 @@ import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <a href="https://rrd4j.dev.java.net/">RRD4j</a> based implementation of an RRD plugin.
@@ -53,6 +55,10 @@ public class Rrd4jPlugin extends AbstractRrdPlugin {
 
   private String configPath = System.getProperty("java.io.tmpdir");
   private List destinationConfiguration;
+
+  public Rrd4jPlugin() {
+    log.warn("You are about to use an experimental JETM feature. Please report issues with it. Thanks.");
+  }
 
   public void setRrdFilePath(String path) {
     configPath = path;
@@ -83,9 +89,12 @@ public class Rrd4jPlugin extends AbstractRrdPlugin {
 
 
   public PluginMetaData getPluginMetaData() {
-    PluginMetaData metaData = new PluginMetaData(getClass(), "RRD4j plugin.");
-
-    return metaData;
+    Map config = new HashMap();
+    config.put("configPath", configPath);
+    if (destinationConfiguration != null) {
+      config.put("destinationConfiguration", destinationConfiguration.toString());
+    }
+    return new PluginMetaData(getClass(), "RRD4j plugin.", config);
   }
 
 }
