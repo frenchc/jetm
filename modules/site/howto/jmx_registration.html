@@ -28,33 +28,33 @@
 <h4>JMX support using JETM plugin</h4>
 
 <p>
-  Whenever you are using static <a href="etm_manager_configuration.html">EtmManager Configuration</a>
+  Whenever you are using static <a href="etm_manager_configuration.html">EtmManager configuration</a>
   you can use the <a href="../@api@/etm/core/jmx/EtmMonitorJmxPlugin.html">EtmMonitorJmxPlugin</a> for JMX
   registration.
 </p>
 
 <p>
-  The following example uses xml based EtmMonitor configuration and alters the
+  The following example enables JMX support for an EtmMonitor configuration and alters the
   MBean name to <i>etm:service=PerformanceMonitoringService</i>. If you don't provide this property
-  the default name <i>etm:service=PerformanceMonitor</i> will be used.
+  the default name <i>etm:service=PerformanceMonitor</i> will be used. Internally this feature registers the
+  <i>EtmMonitorJmxPlugin</i> mentioned above.
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 &lt;jetm-config&gt;
-  ...
-  &lt;extension&gt;
-    &lt;plugin&gt;
-      &lt;plugin-class&gt;<b>etm.core.jmx.EtmMonitorJmxPlugin</b>&lt;/plugin-class&gt;
-      &lt;properties&gt;
-        &lt;property name="etmMonitorObjectName"&gt;etm:service=PerformanceMonitoringService&lt;/property&gt;
-      &lt;/properties&gt;
-    &lt;/plugin&gt;
-  &lt;/extension&gt;
-&lt;/jetm-config&gt;
-</pre>
+  &lt;features&gt;
+    ...
+  
+    <b>&lt;jmx monitorObjectName="etm:service=PerformanceMonitor"/&gt;</b>
+  &lt;/features&gt;
+
+&lt;/jetm-config&gt;</pre>
 </div>
+<p>
+  The plugin will also register all top level performance results as JMX beans.
+</p>
 
 <h4>JMX support using manual registration</h4>
 
