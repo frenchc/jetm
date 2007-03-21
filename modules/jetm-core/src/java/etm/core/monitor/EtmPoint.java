@@ -39,7 +39,7 @@ package etm.core.monitor;
  * </p>
  * <pre>
  *  EtmMonitor monitor = ...;
- *  EtmPoint point = monitor.createPoint"name");
+ *  EtmPoint point = monitor.createPoint("name");
  *  try {
  * <p/>
  *   // execute business code
