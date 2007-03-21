@@ -47,9 +47,35 @@
     <antcall target="test-jetm-contrib"/>
   </target>
 
+  <target name="dist-jetm-source">
+    <mkdir dir="${build.dist.dir}" />
+    
+    <tar destfile="${build.dist.dir}/${release.name}-src-${release.version}.tar.gz" compression="gzip">
+      <tarfileset prefix="${release.name}-src-${release.version}" dir="${basedir}">
+          <include name="doc/**" />
+          <include name="etc/**" />
+          <include name="lib/**" />
+          <include name="modules/**" />
+          <include name="build.properties" />
+          <include name="build.xml" />
+        </tarfileset>
+    </tar>
+
+    <zip destfile="${build.dist.dir}/${release.name}-src-${release.version}.zip">
+      <zipfileset prefix="${release.name}-src-${release.version}" dir="${basedir}">
+        <include name="doc/**" />
+        <include name="etc/**" />
+        <include name="lib/**" />
+        <include name="modules/**" />
+        <include name="build.properties" />
+        <include name="build.xml" />
+      </zipfileset>
+    </zip>
+
+  </target>
 
   <target name="dist-all"
-          depends="clean, build, test-jetm, jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle, dist-sample-sources">
+          depends="clean, dist-jetm-source, build, test-jetm, jetm-javadoc, maven2-core-bundle, maven2-contrib-bundle, dist-sample-sources">
 
     <!-- create distribution -->
     <antcall target="copy-site-to-target">
@@ -60,7 +86,26 @@
       <param name="site.filter.schema" value="../support/schema"/>
     </antcall>
 
+    <!-- tar.gz distribution -->
     <tar destfile="${build.dist.dir}/${release.name}-${release.version}.tar.gz" compression="gzip">
+      <tarfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
+        <include name="**/*.jar"/>
+      </tarfileset>
+      <tarfileset prefix="${release.name}-${release.version}/doc" dir="${doc.dir}"/>
+      <tarfileset prefix="${release.name}-${release.version}/doc/api" dir="${build.javadoc.dir}"/>
+
+      <tarfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dist.dir}"/>
+
+      <tarfileset prefix="${release.name}-${release.version}/doc/support/dtd" dir="${module.core.src.java}">
+        <include name="**/*.dtd"/>
+      </tarfileset>
+      <tarfileset prefix="${release.name}-${release.version}/doc/support/schema"
+                  dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+        <include name="**/*.xsd"/>
+      </tarfileset>
+    </tar>
+
+    <tar destfile="${build.dist.dir}/${release.name}-with-samples-${release.version}.tar.gz" compression="gzip">
       <tarfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
         <include name="**/*.jar"/>
       </tarfileset>
@@ -74,12 +119,33 @@
       <tarfileset prefix="${release.name}-${release.version}/doc/support/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </tarfileset>
-      <tarfileset prefix="${release.name}-${release.version}/doc/support/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+      <tarfileset prefix="${release.name}-${release.version}/doc/support/schema"
+                  dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
         <include name="**/*.xsd"/>
       </tarfileset>
     </tar>
 
+    <!-- Zipped Distribution -->
     <zip destfile="${build.dist.dir}/${release.name}-${release.version}.zip">
+      <zipfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
+        <include name="**/*.jar"/>
+      </zipfileset>
+      <zipfileset prefix="${release.name}-${release.version}/doc" dir="${doc.dir}"/>
+      <zipfileset prefix="${release.name}-${release.version}/doc/api" dir="${build.javadoc.dir}"/>
+
+      <zipfileset prefix="${release.name}-${release.version}/doc/site" dir="${build.site.dist.dir}"/>
+
+      <zipfileset prefix="${release.name}-${release.version}/doc/support/dtd" dir="${module.core.src.java}">
+        <include name="**/*.dtd"/>
+      </zipfileset>
+      <zipfileset prefix="${release.name}-${release.version}/doc/support/schema"
+                  dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+        <include name="**/*.xsd"/>
+      </zipfileset>
+
+    </zip>
+
+    <zip destfile="${build.dist.dir}/${release.name}-with-samples-${release.version}.zip">
       <zipfileset prefix="${release.name}-${release.version}/lib" dir="${build.lib.dir}">
         <include name="**/*.jar"/>
       </zipfileset>
@@ -93,7 +159,8 @@
       <zipfileset prefix="${release.name}-${release.version}/doc/support/dtd" dir="${module.core.src.java}">
         <include name="**/*.dtd"/>
       </zipfileset>
-      <zipfileset prefix="${release.name}-${release.version}/doc/support/schema" dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
+      <zipfileset prefix="${release.name}-${release.version}/doc/support/schema"
+                  dir="${module.contrib.src.java}/etm/contrib/integration/spring/configuration">
         <include name="**/*.xsd"/>
       </zipfileset>
 
@@ -145,7 +212,7 @@
   </target>
 
   <target name="site-html-update" depends="clean">
-    <mkdir dir="${build.dist.dir}" />
+    <mkdir dir="${build.dist.dir}"/>
     <antcall target="copy-site-to-target">
       <param name="site.dest.dir" value="${build.site.web.dir}"/>
       <param name="site.filter.api" value="api"/>
@@ -199,6 +266,7 @@
       <group title="JETM - RRD Support" packages="etm.contrib.rrd*"/>
     </javadoc>
   </target>
+
 
   <target name="clean" description="Cleanup JETM build system">
     <antcall target="clean-jetm"/>
