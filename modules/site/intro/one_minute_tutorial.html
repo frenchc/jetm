@@ -56,7 +56,7 @@
 
   <span class="java-keyword">public void</span> someMethod() {
 
-    <b>EtmPoint point = etmMonitor.beginMonitoring("BusinessService:someMethod");</b>
+    <b>EtmPoint point = etmMonitor.createPoint("BusinessService:someMethod");</b>
 
     <span class="java-keyword">try</span> {
 
@@ -73,7 +73,7 @@
 
   <span class="java-keyword">public void</span> nestedMethod() {
 
-    <b>EtmPoint point = etmMonitor.beginMonitoring("BusinessService:nestedMethod");</b>
+    <b>EtmPoint point = etmMonitor.createPoint("BusinessService:nestedMethod");</b>
 
     <span class="java-keyword">try</span> {
 
@@ -89,9 +89,9 @@
 </pre>
 </div>
 
-<p>The method <a href="../@api@/etm/core/monitor/EtmMonitor.html#beginMonitoring(String)">beginMonitoring()</a> is used
+<p>The method <a href="../@api@/etm/core/monitor/EtmMonitor.html#createPoint(java.lang.String)">createPoint()</a> is used
   to retrieve a monitoring object and takes one arguments: a symbolic name for the code fragment to be monitored.
-  The created EtmPoint is responseable to maintain and collect execution statistics. There are serveral ways to access
+  The created EtmPoint is responsable to maintain and collect execution statistics. There are serveral ways to access
   an EtmMonitor instance. The example above uses an EtmManager which pretty much works like log4j Logger or
   commons-logging LogFactory.
 </p>

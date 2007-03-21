@@ -30,37 +30,30 @@
 <h4>Persistent Aggregators in jetm-config.xml (used by <a href="etm_manager_configuration.html">EtmManager</a>)</h4>
 
 <p>
-  Enabling persitence in a jetm-config.xml is pretty simple: Add
-  <a href="../@api@/etm/core/aggregation/persistence/PersistentRootAggregator.html">PersistentRootAggregator</a>
-  as chain root and you are done. See examples below.
+  Enabling persitence in a jetm-config.xml is pretty simple - see examples below.
 </p>
 
 <p>
-  <i>Persistent nested aggregation:</i>
+  <i>Enable feature persistence (JETM 1.2 configuration):</i>
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                                 "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 &lt;jetm-config&gt;
-  &lt;aggregator-chain&gt;
-    &lt;chain-root&gt;
-      &lt;aggregator-class&gt;
-        <b>etm.core.aggregation.persistence.PersistentRootAggregator</b>
-      &lt;/aggregator-class&gt;
-    &lt;/chain-root&gt;
-  &lt;/aggregator-chain&gt;
+  &lt;features&gt;
+    <b>&lt;persistence/&gt;</b>
+  &lt;/features&gt;
 &lt;/jetm-config&gt;</pre>
 </div>
 <p>
-  <i>Persistent flat aggregation:</i>
+  <i>Switch to PersistentRootAggregator (JETM 1.0 configuration):</i>
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                                 "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
 &lt;jetm-config&gt;
-  &lt;monitor-type&gt;<b>flat</b>&lt;/monitor-type&gt;
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
       &lt;aggregator-class&gt;
@@ -129,12 +122,28 @@
 </p>
 
 <p>
-  <i>Alter persistent filename in jetm-config.xml, file will be saved in java.io.tmpdir:</i>
+  <i>Alter persistent filename in jetm-config.xml, file will be saved in java.io.tmpdir (JETM 1.2 config):</i>
+</p>
+
+<div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
+&lt;jetm-config&gt;
+  &lt;features&gt;
+    &lt;persistence&gt;
+      <b>&lt;file-backend filename="application-state.ser"/&gt;</b>
+    &lt;/persistence&gt;
+  &lt;/features&gt;
+&lt;/jetm-config&gt;</pre>
+</div>
+
+<p>
+  <i>Alter persistent filename in jetm-config.xml, file will be saved in java.io.tmpdir (JETM 1.0 config):</i>
 </p>
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                                 "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
 &lt;jetm-config&gt;
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;
@@ -185,7 +194,7 @@
 
 <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                                 "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
 &lt;jetm-config&gt;
   &lt;aggregator-chain&gt;
     &lt;chain-root&gt;

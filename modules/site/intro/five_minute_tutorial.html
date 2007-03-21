@@ -35,7 +35,7 @@
   <i>Attention:</i> If you never heard about the Springframework before this tutorial might take longer than five
   minutes. In this case we recommend reading the
   <a href="http://static.springframework.org/spring/docs/2.0.x/reference/beans.html" target="_blank">introductional
-    material</a> regarding BeanFactories at springframework.org.
+    material</a> at springframework.org.
 </p>
 <h4>Step 1: Prerequisites</h4>
 
@@ -142,54 +142,33 @@ Enter item id to order (or 0 exit):
 <p>
   Not that pretty - but works for now;)
 </p>
-<h4>Step 4: Add performance monitoring</h4>
+<h4>Step 4: Enable performance monitoring</h4>
 
 <p>
-  If you examine all tutorial classes again you will notice that there isn't a single <i>etm.*</i> import. This is
-  because we will use declarative performance monitoring. To do so we have to alter the current spring configuration
-  file <i>five-minute-tutorial.xml</i>.
+  If you examine the tutorial classes you will notice that there isn't a single <i>etm.*</i> import. This is
+  because we will monitor execution performance purely by configuration.
+</p>
+
+<p>Eventually you have noticed in <i>five-minute-tutorial.xml</i> the tag <i>&lt;jetm:runtime&gt;</i>. This Spring 2.0
+  bean definition attachs a single JETM runtime to the Spring lifecycle. Nevertheless
+  performance monitoring has to be enabled manually on a per-bean basis.
 </p>
 
 <p>
-  First we need to add an instance of <a href="../@api@/etm/core/monitor/NestedMonitor.html">NestedMonitor</a>. Second
-  we make use of a powerful springframework feature that can create proxies of existing bean definitions and apply
-  interceptors to them. Our interceptor called
-  <a href="../@api@/etm/contrib/aop/aopalliance/EtmMethodCallInterceptor.html">EtmMethodCallInterceptor</a>
-  will intercept every public method call and records it's execution time using the JETM performance monitoring
-  infrastructure. Since we want to add the interceptor to certain beans only we supply the matching patterns
-  <i>groceryStore</i> and <i>*Dao</i> as parameters to <i>BeanNameAutoProxyCreator</i>.
+  The tag <i>&lt;jetm:monitoring&gt;</i> will be used for this purpose: As you can see in
+  <i>five-minute-tutorial.xml</i> past section <i>&lt;!-- Step 4: ... --&gt;</i> you can register beans using wildcards
+  (<i>*Dao</i>) and complete names (<i>groceryStore</i>). Uncomment the section and restart the application.
 </p>
 
-<p>
-  Now look for the section <i>&lt;!-- Step 4: ... --&gt;</i> in the provided <i>five-minute-tutorial.xml</i> and
-  uncomment the following three bean definitions:
-</p>
-
-<div class="code"><pre>&lt;!-- Step 4: Add performance monitoring --&gt;
-  
-&lt;bean id="etmMonitor" class="<b>etm.core.monitor.NestedMonitor</b>"
-      init-method="start" destroy-method="stop"/&gt;
-
-&lt;bean id="etmMethodCallInterceptor" class="<b>etm.contrib.aop.aopalliance.EtmMethodCallInterceptor</b>"
-      autowire="constructor"/&gt;
-
-&lt;bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"&gt;
-      &lt;property name="interceptorNames"&gt;
-        &lt;list&gt;
-          &lt;value&gt;etmMethodCallInterceptor&lt;/value&gt;
-        &lt;/list&gt;
-      &lt;/property&gt;
-      &lt;property name="beanNames"&gt;
-        &lt;list&gt;
-          &lt;value&gt;<b>groceryStore</b>&lt;/value&gt;
-          &lt;value&gt;<b>*Dao</b>&lt;/value&gt;
-        &lt;/list&gt;
-      &lt;/property&gt;
-&lt;/bean&gt;</pre>
+<div class="code"><pre>&lt;!-- Step 4: Enable performance monitoring --&gt;
+&lt;jetm:monitoring&gt;
+  &lt;jetm:bean-pattern&gt;<b>*Dao</b>&lt;/jetm:bean-pattern&gt;
+  &lt;jetm:bean-pattern&gt;<b>groceryStore</b>&lt;/jetm:bean-pattern&gt;
+&lt;/jetm:monitoring&gt;</pre>
 </div>
 <p>
-  After starting the application again it is running just like before - and there aren't any performance details. That's
-  because we enabled performance monitoring without adding means to access the collected details.
+  Interestingly the application is running just like before - and there aren't any performance details. That's
+  because we enabled performance monitoring but did not add means to access the collected details.
 </p>
 
 <h4>Step 5: Access aggregated results</h4>
@@ -203,11 +182,7 @@ Enter item id to order (or 0 exit):
 </p>
 
 <div class="code"><pre>&lt;!-- Step 5: Access aggregated results --&gt;
-
-&lt;bean id="etmHttpConsole" class="<b>etm.contrib.console.HttpConsoleServer</b>"
-      init-method="start" destroy-method="stop" autowire="constructor"&gt;
-      &lt;property name="expanded" value="true" /&gt;
-&lt;/bean&gt;  
+<b>&lt;jetm:console expanded="true"/&gt;</b>
 </pre>
 </div>
 <p>
@@ -216,7 +191,7 @@ Enter item id to order (or 0 exit):
 </p>
 
 <p>
-  The property <i>expanded</i> in the bean definition decides whether all performance results should be rendered
+  The attribute <i>expanded</i> in the bean definition decides whether all performance results should be rendered
   (including the nested ones) or just the top level results only. To see the difference set this property to
   <i>false</i> (or remove it) and restart the tutorial application.
 </p>
@@ -224,33 +199,27 @@ Enter item id to order (or 0 exit):
 <h4>Step 6: Alter aggregation chain</h4>
 
 <p>
-  Since we are using the default configuration of NestedMonitor all performance data will be buffered until a certain
-  threshold is reached. The default threshold is 1000 measurements. As soon as measurement 1001 arrives or whenever
-  aggregated performance statistics are requested the default
-  <a href="../@api@/etm/core/aggregation/BufferedThresholdAggregator.html">BufferedThresholdAggregator</a>
-  will flush it's buffer down the aggregator chain. However there is one negative side effect: The thread that collected
+  By default all collected performance data will be buffered and aggregated as soon as a certain threshold was reached.
+  The default threshold is 1000 measurements. However there is one negative side effect: The thread that collected
   the last result will be used to calculate the aggregated performance statistics.
 </p>
 
 <p>
-  The negative effect can be minimized by using a
-  <a href="../@api@/etm/core/aggregation/BufferedTimedAggregator.html">BufferedTimedAggregator</a> that will
-  buffer collected results for a certain period of time and calculate the statistics in a separate thread.
-</p>
-<p>
-  In order to alter the default aggregation chain we just define a new instance of Aggregator that will be picked up by
-  our NestedMonitor automatically. As you can see past <i> &lt;!-- Step 6: ... &gt;</i> the bean definition
-  of aggregaterChain defines a BufferedTimedAggregator that delegates all results to RootAggregator.
+  This negative effect can be minimized by using interval based buffering that buffers collected results for a
+  certain period of time and aggregates them asynchronously. In the example below we enable interval based buffering
+  as JETM runtime feature. Simply uncomment the interval definition past <i> &lt;!-- Step 6: ... &gt;</i> and restart
+  the demo.
 </p>
 
 <div class="code"><pre>&lt;!-- Step 6: Alter aggregation chain --&gt;
-  
-&lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
-      &lt;constructor-arg&gt;
-        &lt;bean class="<b>etm.core.aggregation.RootAggregator</b>"/&gt;
-      &lt;/constructor-arg&gt;
-      &lt;property name="aggregationInterval" value="1000" /&gt;
-&lt;/bean&gt;</pre>
+&lt;jetm:runtime&gt;
+  &lt;jetm:features&gt;
+
+    <b>&lt;jetm:interval-buffer interval="1000"/&gt;</b>
+
+    ...
+  &lt;/jetm:features&gt;
+&lt;/jetm:runtime&gt;</pre>
 </div>
 
 
@@ -258,33 +227,26 @@ Enter item id to order (or 0 exit):
 
 <p>
   While being able to access aggregated performance statistics it still may be useful to have access
-  to raw performance data for post processing. This can be achived through altering the aggregation chain again: Simply
-  add a Logging Aggregator such as
-  <a href="../@api@/etm/contrib/aggregation/log/CommonsLoggingAggregator.html">CommonsLoggingAggregator</a> as seen
-  below.
-</p>
-<p>Be aware that the automatic aggregator chain detection requires one aggregator definition in
-  <i>five-minute-tutorial.xml</i>. So always ensure that you uncomment either the aggregator definition
-  past <i> &lt;!-- Step 6: ... &gt;</i> <b>or</b> <i> &lt;!-- Step 7: ... &gt;</i>. 
+  to raw performance data for post processing. This can be achieved by enabling the JETM runtime feature <i>raw data</i>
+  logging.
 </p>
 
 <div class="code"><pre>&lt;!-- Step 7: Log raw performance results --&gt;
+&lt;jetm:runtime&gt;
+  &lt;jetm:features&gt;
+     ...
 
-&lt;bean id="aggregatorChain" class="<b>etm.core.aggregation.BufferedTimedAggregator</b>"&gt;
-      &lt;constructor-arg&gt;
-        &lt;bean class="<b>etm.contrib.aggregation.log.CommonsLoggingAggregator</b>"&gt;
-          &lt;constructor-arg&gt;
-            &lt;bean class="<b>etm.core.aggregation.RootAggregator</b>"/&gt;
-          &lt;/constructor-arg&gt;
-        &lt;/bean&gt;
-      &lt;/constructor-arg&gt;
-&lt;/bean&gt;</pre>
+    <b>&lt;jetm:raw-data-log type="commons"/&gt;</b>
+
+  &lt;/jetm:features&gt;
+&lt;/jetm:runtime&gt;</pre>
 </div>
 <p>
   After restarting the tutorial application raw performance data will be logged to a file called <i>performance.log</i>
-  in the directory <i>tutorial/five-minute</i>. Please note that it is recommended to add Logging
-  Aggregators past Buffering Aggregators in order to minimize performance side effects.
+  in the directory <i>tutorial/five-minute</i>. The example above uses Jakarte commons-logging to log the raw performance
+  data.
 </p>
+
 <p>
   That's it!
 </p>

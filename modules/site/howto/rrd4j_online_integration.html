@@ -29,7 +29,7 @@
     not be used in high traffic situations. While it should create exactly the same results seen at
     <a href="rrd4j_offline_integration.html">RRD4j offline support</a> it is pretty much untested yet.</p>
 
-  <h4>Step I: Prerequisites</h4>
+  <h4>Step 1: Prerequisites</h4>
 
   <p>
     In order to use JETM RRD4j support you need to add all RRD4j libraries to your application runtime classpath. You
@@ -37,7 +37,7 @@
     requires Java&trade; 5.0 or higher.
   </p>
 
-  <h4>Step II: Create target RRD databases</h4>
+  <h4>Step 2: Create target RRD databases</h4>
 
   <p>
     The RRD4j online intergration will record performance results into existing RRD databases. Therefore it is up to
@@ -57,7 +57,7 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http
 </pre>
   </div>
 
-  <h4>Step III: Enable RRD recording</h4>
+  <h4>Step 3: Enable RRD recording</h4>
 
   <p>
     To enable RRD4j online recording you need to add the Rrd4jPlugin and enable notifications for newly recorded
@@ -92,7 +92,7 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http
     <i>^SoapAction.+</i>, while the second database <i>http_requests.rrd</i> is the destination for all performance
     results matching <i>^HTTP.+</i>.
   </p>
-  <h4>Step IV: Create performance graphs</h4>
+  <h4>Step 4: Create performance graphs</h4>
 
   <p>
     Now there are two options to render grapical performance statistics: One option is the command line tool described

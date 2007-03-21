@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
-  >
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+                           http://jetm.void.fm/schema/jetm_spring_config_1_2 http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd">
 
   <bean id="orderClient"
         class="etm.tutorial.fiveminute.client.OrderClient"
@@ -10,70 +13,39 @@
 
   <bean id="groceryStore"
         class="etm.tutorial.fiveminute.store.GroceryStoreImpl"
-        autowire="constructor">
-
-  </bean>
+        autowire="constructor"/>
 
   <bean id="stockDao" class="etm.tutorial.fiveminute.store.dao.StockDaoImpl"
         autowire="constructor"/>
 
   <!-- Step 4: Add performance monitoring -->
   <!--
-    <bean id="etmMonitor"
-          class="etm.core.monitor.NestedMonitor"
-          init-method="start" destroy-method="stop"
-          autowire="constructor"/>
-
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-      <property name="interceptorNames">
-        <list>
-          <value>etmMethodCallInterceptor</value>
-        </list>
-      </property>
-      <property name="beanNames">
-        <list>
-          <value>groceryStore</value>
-          <value>*Dao</value>
-        </list>
-      </property>
-    </bean>
-
-    <bean id="etmMethodCallInterceptor"
-          class="etm.contrib.aop.aopalliance.EtmMethodCallInterceptor"
-          autowire="constructor"/>
-   -->
+    <jetm:monitoring>
+      <jetm:bean-pattern>*Dao</jetm:bean-pattern>
+      <jetm:bean-pattern>groceryStore</jetm:bean-pattern>
+    </jetm:monitoring>
+  -->
 
   <!-- Step 5: Enable HTTP console -->
   <!--
-    <bean id="etmHttpConsole"
-          class="etm.contrib.console.HttpConsoleServer"
-          init-method="start" destroy-method="stop" autowire="constructor">
-          <property name="expanded" value="true" />
-    </bean>
+    <jetm:console expanded="true"/>
   -->
 
-  <!-- Step 6: Alter aggregation chain -->
-  <!--
-    <bean id="aggregatorChain" class="etm.core.aggregation.BufferedTimedAggregator">
-          <constructor-arg>
-            <bean class="etm.core.aggregation.RootAggregator"/>
-          </constructor-arg>
-      <property name="aggregationInterval" value="1000" />
-    </bean>
-   -->
+  <jetm:runtime>
+    <jetm:features>
 
-  <!-- Step 7:  Log raw performance results -->
-  <!--
-    <bean id="aggregatorChain" class="etm.core.aggregation.BufferedTimedAggregator">
-      <constructor-arg>
-        <bean class="etm.contrib.aggregation.log.CommonsLoggingAggregator">
-          <constructor-arg>
-            <bean class="etm.core.aggregation.RootAggregator"/>
-          </constructor-arg>
-        </bean>
-      </constructor-arg>
-      <property name="aggregationInterval" value="1000" />
-    </bean>
-  -->
+      <!-- Step 6: Alter aggregation chain -->
+      <!--
+        <jetm:interval-buffer interval="1000"/>
+      -->
+
+      <!-- Step 7:  Log raw performance results -->
+      <!--
+        <jetm:raw-data-log type="commons"/>
+      -->
+
+    </jetm:features>
+  </jetm:runtime>
+
 </beans>
   

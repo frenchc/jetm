@@ -31,7 +31,7 @@
 </p>
 
 
-<h4>Step I: Prerequisites</h4>
+<h4>Step 1: Prerequisites</h4>
 
 <p>
   In offline mode there are no additional JETM runtime requirements apart from minor configuration changes.
@@ -44,7 +44,7 @@
   or higher.
 </p>
 
-<h4>Step II: Enable raw data logging</h4>
+<h4>Step 2: Enable raw data logging</h4>
 
 <p>
   The RRD4j offline mode uses raw performance data that can be created by a JETM runtime on-the-fly. Therefore
@@ -80,7 +80,7 @@
 
 
 <a name="#rrd4j_db_create"></a>
-<h4>Step III: Create target RRD databases</h4>
+<h4>Step 3: Create target RRD databases</h4>
 
 <p>
   The command line tool <i>etm.contrib.rrd.rrd4j.Rrd4jMain</i> supports the import of raw performance data to an already
@@ -97,7 +97,7 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http
 </div>
 
 <a name="#raw_import"></a>
-<h4>Step IV: Import raw data to RRD DB</h4>
+<h4>Step 4: Import raw data to RRD DB</h4>
 
 <p>
   Once you have created your RRD DB files you are ready to import raw performace data. The following example imports
@@ -118,7 +118,7 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain import -s /tmp/performance.log
 </p>
 
 <a name="#create_graphs"></a>
-<h4>Step V: Create performance graphs</h4>
+<h4>Step 5: Create performance graphs</h4>
 
 <p>
   After the import the stored data can be rendered. The following examples render maximum and average times
