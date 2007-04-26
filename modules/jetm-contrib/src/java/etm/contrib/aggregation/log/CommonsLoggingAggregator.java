@@ -70,6 +70,12 @@ public class CommonsLoggingAggregator extends AbstractLogAggregator {
     }
   }
 
+  protected void logResetDetail(String information) {
+    if (log.isInfoEnabled()) {
+      log.info(information);
+    }
+  }
+
   public AggregatorMetaData getMetaData() {
     return new AggregatorMetaData(CommonsLoggingAggregator.class, DESCRIPTION + name, false, delegate.getMetaData());
   }
