@@ -117,7 +117,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
         response.write("class=\"ascending\"><a href=\"?sort=name&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Measurement Point</a>");
       }
     } else {
-      response.write("><a href=\"?sort=name&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Measurement Point</a>");
+      response.write("><a href=\"?sort=name&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Measurement Point</a>");
 
     }
     response.write("</th>\n");
@@ -167,7 +167,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
         response.write("class=\"ascending\"><a href=\"?sort=max&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Max</a>");
       }
     } else {
-      response.write("><a href=\"?sort=max&amp;order=asc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Max</a>");
+      response.write("><a href=\"?sort=max&amp;order=desc&amp;point=" + URLEncoder.encode(etmPointName, "UTF-8") + "\">Max</a>");
     }
     response.write("</th>\n");
 

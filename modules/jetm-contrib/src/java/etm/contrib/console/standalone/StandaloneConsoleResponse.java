@@ -85,12 +85,10 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
 
   public void write(String content) throws IOException {
     bufferWriter.write(content);
-    bufferWriter.flush();
   }
 
   public void write(char[] content) throws IOException {
     bufferWriter.write(content);
-    bufferWriter.flush();
   }
 
   public void write(byte[] content) throws IOException {
@@ -141,6 +139,7 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
   }
 
   private void writeContent() throws IOException {
+    bufferWriter.flush();
     destination.write("HTTP/1.0 200 OK\n".getBytes());
     destination.write(SERVER_HEADER);
     destination.write(("Date: " + getRfc1123Date() + "\n").getBytes());

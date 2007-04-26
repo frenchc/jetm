@@ -1,3 +1,12 @@
+Release 1.2.1
+ New features
+
+ Changes, Fixes and Improvements
+  - HTTP Console: Fixed average division by zero
+  - HTTP Console: Fixed broken reset link in MeasurementPoint detailed view
+  - HTTP Console: Aligned sort order for overview and detail view
+  - HTTP Console: Switched to better resource loading
+
 Release 1.2.0
  New features
   - Improved Spring integration using Spring 2.x namespaces

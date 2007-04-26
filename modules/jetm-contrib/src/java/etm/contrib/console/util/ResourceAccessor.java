@@ -34,6 +34,7 @@ package etm.contrib.console.util;
 
 import etm.contrib.console.ConsoleException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -59,22 +60,17 @@ public class ResourceAccessor {
   }
 
   private byte[] loadResource(String resourcePath) {
-    byte[] buffer = new byte[8192];
-    int offset = 0;
     InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+
     if (in != null) {
       try {
-        int r;
-        while ((r = in.read(buffer, offset, buffer.length - offset)) > -1) {
-          offset += r;
-          if (buffer.length - r < 100) {
-            byte[] temp = new byte[buffer.length + 8192];
-            System.arraycopy(buffer, 0, temp, 0, offset);
-            buffer = temp;
-          }
+        byte[] buffer = new byte[8192];
+        int n;
+        while (-1 != (n = in.read(buffer))) {
+          output.write(buffer, 0, n);
         }
-
-      } catch (IOException e) {
+      } catch (Exception e) {
         throw new ConsoleException(e);
       } finally {
         try {
@@ -83,11 +79,8 @@ public class ResourceAccessor {
           // ignored
         }
       }
-
     }
-    byte[] content = new byte[offset];
-    System.arraycopy(buffer, 0, content, 0, offset);
-    return content;
+    return output.toByteArray();
   }
 
   public byte[] getFavicon() {

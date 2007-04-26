@@ -138,7 +138,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write(point);
     response.write("?','");
     response.write(ConsoleUtil.appendParameters("reset?point=" + pointEncoded, request.getRequestParameters()));
-    response.write("');\" \">Reset point</a></td>");
+    response.write("');\">Reset point</a></td>");
 
 
     response.write("<td class=\"noborder\"><a href=\"");
