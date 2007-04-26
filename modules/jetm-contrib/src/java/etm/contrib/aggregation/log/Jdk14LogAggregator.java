@@ -65,6 +65,12 @@ public class Jdk14LogAggregator extends AbstractLogAggregator {
     }
   }
 
+  protected void logResetDetail(String information) {
+    if (log.isLoggable(Level.INFO)) {
+      log.info(information);
+    }
+  }
+
   public AggregatorMetaData getMetaData() {
     return new AggregatorMetaData(Jdk14LogAggregator.class, Jdk14LogAggregator.DESCRIPTION + log.getName(), false, delegate.getMetaData());
   }
