@@ -62,4 +62,8 @@ public class Log4jDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
       System.getProperty("line.separator") +
       writer.toString());
   }
+
+  protected void logResetDetail(String information) {
+    log.info(information);
+  }
 }

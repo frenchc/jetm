@@ -77,7 +77,10 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
   }
 
   public double getAverage() {
-    return total / (double) measurements;
+    if (measurements != 0) {
+      return total / (double) measurements;
+    }
+    return 0d;
   }
 
   public double getMin() {

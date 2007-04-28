@@ -30,54 +30,23 @@
  *
  */
 
-package etm.contrib.aggregation.log;
+package etm.core.util.collection;
 
-import etm.core.aggregation.Aggregator;
-import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.EtmPoint;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The CommonsLoggingAggregator uses jakarta commons logging
- * to log raw measurement results. Raw results will be logged at level
- * <code>INFO</code>.
- * <p/>
- * See {@link etm.contrib.aggregation.log.AbstractLogAggregator} for performance impact and
- * further details/configurations.
+ *
+ * CollectionFactory that provides access to Java 5.0 collections.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.1
+ *
  */
+class Java50CollectionFactory extends CollectionFactory {
 
-public class CommonsLoggingAggregator extends AbstractLogAggregator {
-
-  private static final String DESCRIPTION = "An aggregator that logs raw results using jakarta commons-logging logger. Log name: ";
-
-  protected Log log;
-
-  // just remeber the used name since we can't access the log name
-  // throug LogFactory.
-  private String name;
-
-  public CommonsLoggingAggregator(Aggregator aAggregator) {
-    super(aAggregator);
+  public Map newConcurrentHashMapInstance() {
+    return new ConcurrentHashMap();
   }
-
-  protected void logMeasurement(EtmPoint aPoint) {
-    if (log.isInfoEnabled()) {
-      log.info(formatter.format(aPoint));
-    }
-  }
-
-  public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(CommonsLoggingAggregator.class, DESCRIPTION + name, false, delegate.getMetaData());
-  }
-
-  public void start() {
-    log = LogFactory.getLog(logName);
-    name = logName;
-    super.start();
-  }
-
 }

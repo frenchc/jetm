@@ -32,20 +32,12 @@
 package etm.contrib.aggregation.log;
 
 import etm.contrib.aggregation.filter.RegexEtmFilter;
-import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.EtmFilter;
-import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
-import etm.core.renderer.SimpleTextRenderer;
-
-import java.io.StringWriter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Sometimes it is important to have access to raw measurement results. This
@@ -81,7 +73,6 @@ public abstract class AbstractLogAggregator implements Aggregator {
 
   protected EtmFilter filter;
   protected EtmMonitorContext ctx;
-  protected String lineSeparator = System.getProperty("line.separator");
 
   protected AbstractLogAggregator(Aggregator aAggregator) {
     delegate = aAggregator;
@@ -142,44 +133,10 @@ public abstract class AbstractLogAggregator implements Aggregator {
   }
 
   public void reset() {
-    StringWriter writer = new StringWriter();
-    EtmMonitorMetaData etmMonitorMetaData = ctx.getEtmMonitor().getMetaData();
-    writer.append("Dumping performance results for period ");
-    writer.append(etmMonitorMetaData.getLastResetTime().toString());
-    writer.append("-");
-    writer.append(new Date().toString());
-    writer.append(lineSeparator);
-
-    ctx.getEtmMonitor().render(new SimpleTextRenderer(writer));
-    logResetDetail(writer.toString());
-
     delegate.reset();
   }
 
   public void reset(final String symbolicName) {
-    final StringWriter writer = new StringWriter();
-
-    ctx.getEtmMonitor().render(new SimpleTextRenderer(writer) {
-      public void render(Map points) {
-        Map map = new HashMap();
-        Aggregate aggregate = (Aggregate) points.get(symbolicName);
-        if (aggregate != null) {
-          EtmMonitorMetaData etmMonitorMetaData = ctx.getEtmMonitor().getMetaData();
-          writer.append("Dumping performance results '");
-          writer.append(symbolicName);
-          writer.append("' for period ");
-          writer.append(etmMonitorMetaData.getLastResetTime().toString());
-          writer.append("-");
-          writer.append(new Date().toString());
-          writer.append(lineSeparator);
-
-          map.put(aggregate.getName(), aggregate);
-        }
-        super.render(map);
-      }
-    });
-    logResetDetail(writer.toString());
-
     delegate.reset(symbolicName);
   }
 
@@ -210,13 +167,5 @@ public abstract class AbstractLogAggregator implements Aggregator {
    * @param aPoint The point to be logged.
    */
   protected abstract void logMeasurement(EtmPoint aPoint);
-
-  /**
-   * Logs aggregated statistics before reset.
-   *
-   * @param information The information that will be resetted.
-   */
-
-  protected abstract void logResetDetail(String information);
 
 }

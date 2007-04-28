@@ -36,11 +36,13 @@ import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.PreMonitorResetEvent;
+import etm.core.monitor.event.PreRootResetEvent;
 import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
 import etm.core.renderer.MeasurementRenderer;
+import etm.core.util.collection.CollectionFactory;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -53,12 +55,13 @@ import java.util.Map;
  */
 public class RootAggregator implements Aggregator {
 
-  protected Map aggregates = new HashMap();
+  protected Map aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
 
   protected EtmMonitorContext ctx;
 
 
   public void reset() {
+    ctx.fireEvent(new PreMonitorResetEvent(aggregates, this));
     aggregates.clear();
     ctx.fireEvent(new MonitorResetEvent(this));
   }
@@ -66,14 +69,13 @@ public class RootAggregator implements Aggregator {
   public void reset(String symbolicName) {
     ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(symbolicName);
     if (aggregate != null) {
+      ctx.fireEvent(new PreRootResetEvent(aggregate, this));
       aggregate.reset();
       ctx.fireEvent(new RootResetEvent(symbolicName, this));
     }
   }
 
   public void render(MeasurementRenderer renderer) {
-    //todo fix concurrency issue
-    // right now we block forever if rendering takes forever
     renderer.render(aggregates);
   }
 

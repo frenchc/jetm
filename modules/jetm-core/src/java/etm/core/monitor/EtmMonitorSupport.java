@@ -45,8 +45,6 @@ import etm.core.monitor.event.DefaultEventDispatcher;
 import etm.core.monitor.event.EtmMonitorEvent;
 import etm.core.monitor.event.EtmMonitorListener;
 import etm.core.monitor.event.EventDispatcher;
-import etm.core.monitor.event.MonitorResetEvent;
-import etm.core.monitor.event.RootResetEvent;
 import etm.core.plugin.EtmPlugin;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.ExecutionTimer;
@@ -177,14 +175,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   public final void visitPostCollect(MeasurementPoint measurementPoint) {
-    if (!collecting) {
-      return;
-    }
-
-    if (!started) {
-      if (!noStartedErrorMessageFlag) {
-        showMonitorNotStartedMessage();
-      }
+    if (!collecting || !started) {
       return;
     }
 
@@ -216,10 +207,9 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   public void render(MeasurementRenderer renderer) {
-    synchronized (lock) {
       aggregator.flush();
+      // we do not lock here since we assume non blocking read
       aggregator.render(renderer);
-    }
   }
 
   public void reset() {
@@ -227,14 +217,13 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       aggregator.reset();
       lastReset = new Date();
     }
-    dispatcher.fire(new MonitorResetEvent(this));
+
   }
 
   public void reset(String measurementPoint) {
     synchronized (lock) {
       aggregator.reset(measurementPoint);
     }
-    dispatcher.fire(new RootResetEvent(measurementPoint, this));
   }
 
   public final EtmMonitorMetaData getMetaData() {

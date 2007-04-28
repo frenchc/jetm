@@ -29,55 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.core.monitor.event;
 
-package etm.contrib.aggregation.log;
-
-import etm.core.aggregation.Aggregator;
-import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.EtmPoint;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import etm.core.aggregation.Aggregate;
 
 /**
- * The CommonsLoggingAggregator uses jakarta commons logging
- * to log raw measurement results. Raw results will be logged at level
- * <code>INFO</code>.
- * <p/>
- * See {@link etm.contrib.aggregation.log.AbstractLogAggregator} for performance impact and
- * further details/configurations.
+ *
+ * An event that informs that a aggregation root will be resetted. It does not indicate whether the
+ * given root existed - it just informs that a possible existing root is about to be resetted.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.0
  */
+public class PreRootResetEvent extends EtmMonitorEvent {
 
-public class CommonsLoggingAggregator extends AbstractLogAggregator {
+  private Aggregate aggregate;
 
-  private static final String DESCRIPTION = "An aggregator that logs raw results using jakarta commons-logging logger. Log name: ";
-
-  protected Log log;
-
-  // just remeber the used name since we can't access the log name
-  // throug LogFactory.
-  private String name;
-
-  public CommonsLoggingAggregator(Aggregator aAggregator) {
-    super(aAggregator);
+  public PreRootResetEvent(Aggregate aAggregate, Object aSource) {
+    super(aSource);
+    aggregate = aAggregate;
   }
 
-  protected void logMeasurement(EtmPoint aPoint) {
-    if (log.isInfoEnabled()) {
-      log.info(formatter.format(aPoint));
-    }
+  public Aggregate getAggregate() {
+    return aggregate;
   }
-
-  public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(CommonsLoggingAggregator.class, DESCRIPTION + name, false, delegate.getMetaData());
-  }
-
-  public void start() {
-    log = LogFactory.getLog(logName);
-    name = logName;
-    super.start();
-  }
-
 }

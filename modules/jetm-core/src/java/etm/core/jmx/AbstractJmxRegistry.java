@@ -38,6 +38,8 @@ import etm.core.monitor.event.AggregationListener;
 import etm.core.monitor.event.AggregationStateListener;
 import etm.core.monitor.event.AggregationStateLoadedEvent;
 import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.PreMonitorResetEvent;
+import etm.core.monitor.event.PreRootResetEvent;
 import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
 import etm.core.util.Log;
@@ -204,6 +206,14 @@ public class AbstractJmxRegistry implements AggregationStateListener, Aggregatio
   }
 
   public void onRootReset(RootResetEvent event) {
+    // ignore
+  }
+
+  public void preRootReset(PreRootResetEvent event) {
+    // ignore
+  }
+
+  public void preStateReset(PreMonitorResetEvent event) {
     // ignore
   }
 

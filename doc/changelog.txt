@@ -1,8 +1,9 @@
 Release 1.2.1
  New features
-  - Dump current state to log file during reset - if raw data logging is enabled
+  - Dump current state to log file during reset - if dump plugin is active
 
  Changes, Fixes and Improvements
+  - Removed blocking during EtmMonitor.render()
   - HTTP Console: Fixed average division by zero
   - HTTP Console: Fixed broken reset link in MeasurementPoint detailed view
   - HTTP Console: Aligned sort order for overview and detail view
