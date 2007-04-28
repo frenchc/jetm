@@ -32,27 +32,38 @@
 
 package etm.contrib.renderer.plugin;
 
+import etm.core.aggregation.Aggregate;
+import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitorContext;
+import etm.core.monitor.event.AggregationListener;
+import etm.core.monitor.event.MonitorResetEvent;
+import etm.core.monitor.event.PreMonitorResetEvent;
+import etm.core.monitor.event.PreRootResetEvent;
+import etm.core.monitor.event.RootCreateEvent;
+import etm.core.monitor.event.RootResetEvent;
 import etm.core.plugin.EtmPlugin;
+import etm.core.renderer.SimpleTextRenderer;
 
+import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * Base class for Plugins that dump the current aggregated
  * results during shutdown.
  *
  * @author void.fm
  * @version $Revision$
- *
  */
-public abstract class DumpOnShutDownPlugin implements EtmPlugin {
+public abstract class DumpOnShutDownPlugin implements EtmPlugin, AggregationListener {
   private static final String DEFAULT_LOG_NAME = "etm-dump";
 
   protected String logName = DEFAULT_LOG_NAME;
   protected EtmMonitorContext ctx;
+  protected String lineSeparator = System.getProperty("line.separator");
+
 
   private String description;
 
@@ -84,4 +95,58 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin {
 
     return new PluginMetaData(getClass(), description, properties);
   }
+
+
+  public void onRootCreate(RootCreateEvent event) {
+  }
+
+  public void preRootReset(final PreRootResetEvent event) {
+    StringWriter writer = new StringWriter();
+    EtmMonitorMetaData etmMonitorMetaData = ctx.getEtmMonitor().getMetaData();
+
+    Aggregate aggregate = event.getAggregate();
+
+    writer.append("Dumping performance results '");
+    writer.append(aggregate.getName());
+    writer.append("' for period ");
+    writer.append(etmMonitorMetaData.getLastResetTime().toString());
+    writer.append(" - ");
+    writer.append(new Date().toString());
+    writer.append(lineSeparator);
+
+    SimpleTextRenderer textRenderer = new SimpleTextRenderer(writer);
+    Map map = new HashMap();
+    map.put(aggregate.getName(), aggregate);
+    textRenderer.render(map);
+    logResetDetail(writer.toString());
+  }
+
+  public void onRootReset(RootResetEvent event) {
+  }
+
+  public void preStateReset(PreMonitorResetEvent event) {
+    StringWriter writer = new StringWriter();
+    EtmMonitorMetaData etmMonitorMetaData = ctx.getEtmMonitor().getMetaData();
+    writer.append("Dumping performance results for period ");
+    writer.append(etmMonitorMetaData.getLastResetTime().toString());
+    writer.append(" - ");
+    writer.append(new Date().toString());
+    writer.append(lineSeparator);
+
+    SimpleTextRenderer textRenderer = new SimpleTextRenderer(writer);
+    textRenderer.render(event.getAggregates());
+    logResetDetail(writer.toString());
+  }
+
+  public void onStateReset(MonitorResetEvent event) {
+
+  }
+
+  /**
+   * Logs aggregated statistics before reset.
+   *
+   * @param information The information that will be resetted.
+   */
+
+  protected abstract void logResetDetail(String information);
 }

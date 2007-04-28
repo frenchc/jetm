@@ -117,10 +117,6 @@ public class AbstractLogAggregatorTest extends TestCase {
       points.add(aPoint);
     }
 
-    protected void logResetDetail(String information) {
-
-    }
-
     public AggregatorMetaData getMetaData() {
       throw new UnsupportedOperationException();
     }

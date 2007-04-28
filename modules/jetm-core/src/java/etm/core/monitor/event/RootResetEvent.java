@@ -32,9 +32,8 @@
 package etm.core.monitor.event;
 
 /**
- *
  * An event that informs that a aggregation root was resetted. It does not indicate whether the
- * given root existed - it just informs that a possible existing root was about to b resetted.
+ * given root existed - it just informs that a possible existing root was resetted.
  *
  * @author void.fm
  * @version $Revision$

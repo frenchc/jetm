@@ -32,7 +32,6 @@
 package etm.core.monitor.event;
 
 /**
- *
  * A listener that informs about aggration detail changes.
  *
  * @author void.fm
@@ -43,7 +42,11 @@ public interface AggregationListener extends EtmMonitorListener {
 
   public void onRootCreate(RootCreateEvent event);
 
+  public void preRootReset(PreRootResetEvent event);
+
   public void onRootReset(RootResetEvent event);
+
+  public void preStateReset(PreMonitorResetEvent event);
 
   public void onStateReset(MonitorResetEvent event);
 

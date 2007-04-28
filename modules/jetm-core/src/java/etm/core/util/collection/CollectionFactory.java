@@ -30,54 +30,44 @@
  *
  */
 
-package etm.contrib.aggregation.log;
+package etm.core.util.collection;
 
-import etm.core.aggregation.Aggregator;
-import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.EtmPoint;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import etm.core.util.collection.EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap;
+
+import java.util.Map;
 
 /**
- * The CommonsLoggingAggregator uses jakarta commons logging
- * to log raw measurement results. Raw results will be logged at level
- * <code>INFO</code>.
- * <p/>
- * See {@link etm.contrib.aggregation.log.AbstractLogAggregator} for performance impact and
- * further details/configurations.
+ * Helper class for runtime related collection access.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.1
  */
+public abstract class CollectionFactory {
 
-public class CommonsLoggingAggregator extends AbstractLogAggregator {
+  private static CollectionFactory collectionFactory;
 
-  private static final String DESCRIPTION = "An aggregator that logs raw results using jakarta commons-logging logger. Log name: ";
+  public abstract Map newConcurrentHashMapInstance();
 
-  protected Log log;
+  public static CollectionFactory getInstance() {
+    if (collectionFactory == null) {
+      try {
+        Class clazz = Class.forName("etm.core.util.collection.Java50CollectionFactory");
+        collectionFactory = (CollectionFactory) clazz.newInstance();
+      } catch (Throwable e) {
+        e.printStackTrace();
+        collectionFactory = new DefaultCollectionFactory();
+      }
+    }
 
-  // just remeber the used name since we can't access the log name
-  // throug LogFactory.
-  private String name;
-
-  public CommonsLoggingAggregator(Aggregator aAggregator) {
-    super(aAggregator);
+    return collectionFactory;
   }
 
-  protected void logMeasurement(EtmPoint aPoint) {
-    if (log.isInfoEnabled()) {
-      log.info(formatter.format(aPoint));
+  static class DefaultCollectionFactory extends CollectionFactory {
+    public Map newConcurrentHashMapInstance() {
+      // this one should work for VMs >= JDK 1.2
+      return new ConcurrentReaderHashMap();
     }
   }
-
-  public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(CommonsLoggingAggregator.class, DESCRIPTION + name, false, delegate.getMetaData());
-  }
-
-  public void start() {
-    log = LogFactory.getLog(logName);
-    name = logName;
-    super.start();
-  }
-
 }

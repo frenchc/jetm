@@ -65,12 +65,6 @@ public class Log4jAggregator extends AbstractLogAggregator {
     }
   }
 
-  protected void logResetDetail(String information) {
-    if (log.isInfoEnabled()) {
-      log.info(information);
-    }
-  }
-
   public AggregatorMetaData getMetaData() {
     return new AggregatorMetaData(Log4jAggregator.class, DESCRIPTION + log.getName(), false, delegate.getMetaData());
   }

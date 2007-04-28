@@ -32,46 +32,48 @@
         <jetm:file-backend filename="jetm-demo-state.ser"
                            path="${java.io.tmpdir}"/>
       </jetm:persistence>
-      <jetm:raw-data-log type="commons" filter-pattern="HTTP.+"/>
+      <jetm:raw-data-log type="commons" filter-pattern="HTTP+"/>
     </jetm:features>
 
-    <!-- Enable RRD support -->
-    <!--<jetm:extension>-->
-    <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jPlugin">-->
-    <!--<jetm:property name="destinations" ref="rrdDestinationConfig"/>-->
-    <!--<jetm:property name="rrdFilePath">${java.io.tmpdir}</jetm:property>-->
-    <!--</jetm:plugin>-->
+    <jetm:extension>
+      <jetm:plugin class="etm.contrib.renderer.plugin.CommonsLoggingDumpOnShutdownPlugin"/>
+      <!-- Enable RRD support -->
 
-    <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
-    <!--<jetm:property name="templateName">max-average</jetm:property>-->
-    <!--<jetm:property name="renderInterval">3600</jetm:property>-->
-    <!--<jetm:property name="generationInterval">60</jetm:property>-->
-    <!--<jetm:property name="offset">121</jetm:property>-->
-    <!--<jetm:property name="templateProperties" ref="imageConfigLastHour"/>-->
-    <!--</jetm:plugin>-->
-    <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
-    <!--<jetm:property name="templateName">max-average</jetm:property>-->
-    <!--<jetm:property name="renderInterval">43200</jetm:property>-->
-    <!--<jetm:property name="generationInterval">60</jetm:property>-->
-    <!--<jetm:property name="offset">121</jetm:property>-->
-    <!--<jetm:property name="templateProperties" ref="imageConfigLast12Hours" />-->
-    <!--</jetm:plugin>-->
-    <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
-    <!--<jetm:property name="templateName">max-average</jetm:property>-->
-    <!--<jetm:property name="renderInterval">86400</jetm:property>-->
-    <!--<jetm:property name="generationInterval">60</jetm:property>-->
-    <!--<jetm:property name="offset">121</jetm:property>-->
-    <!--<jetm:property name="templateProperties" ref="imageConfigLast24Hours" />-->
-    <!--</jetm:plugin>-->
-    <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
-    <!--<jetm:property name="templateName">max-average</jetm:property>-->
-    <!--<jetm:property name="renderInterval">2592000</jetm:property>-->
-    <!--<jetm:property name="generationInterval">60</jetm:property>-->
-    <!--<jetm:property name="offset">121</jetm:property>-->
-    <!--<jetm:property name="templateProperties" ref="imageConfigLastMonth" />-->
-    <!--</jetm:plugin>-->
+      <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jPlugin">-->
+      <!--<jetm:property name="destinations" ref="rrdDestinationConfig"/>-->
+      <!--<jetm:property name="rrdFilePath">${java.io.tmpdir}</jetm:property>-->
+      <!--</jetm:plugin>-->
 
-    <!--</jetm:extension>-->
+      <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
+      <!--<jetm:property name="templateName">max-average</jetm:property>-->
+      <!--<jetm:property name="renderInterval">3600</jetm:property>-->
+      <!--<jetm:property name="generationInterval">60</jetm:property>-->
+      <!--<jetm:property name="offset">121</jetm:property>-->
+      <!--<jetm:property name="templateProperties" ref="imageConfigLastHour"/>-->
+      <!--</jetm:plugin>-->
+      <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
+      <!--<jetm:property name="templateName">max-average</jetm:property>-->
+      <!--<jetm:property name="renderInterval">43200</jetm:property>-->
+      <!--<jetm:property name="generationInterval">60</jetm:property>-->
+      <!--<jetm:property name="offset">121</jetm:property>-->
+      <!--<jetm:property name="templateProperties" ref="imageConfigLast12Hours"/>-->
+      <!--</jetm:plugin>-->
+      <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
+      <!--<jetm:property name="templateName">max-average</jetm:property>-->
+      <!--<jetm:property name="renderInterval">86400</jetm:property>-->
+      <!--<jetm:property name="generationInterval">60</jetm:property>-->
+      <!--<jetm:property name="offset">121</jetm:property>-->
+      <!--<jetm:property name="templateProperties" ref="imageConfigLast24Hours"/>-->
+      <!--</jetm:plugin>-->
+      <!--<jetm:plugin class="etm.contrib.rrd.rrd4j.Rrd4jImageGeneratorPlugin">-->
+      <!--<jetm:property name="templateName">max-average</jetm:property>-->
+      <!--<jetm:property name="renderInterval">2592000</jetm:property>-->
+      <!--<jetm:property name="generationInterval">60</jetm:property>-->
+      <!--<jetm:property name="offset">121</jetm:property>-->
+      <!--<jetm:property name="templateProperties" ref="imageConfigLastMonth"/>-->
+      <!--</jetm:plugin>-->
+
+    </jetm:extension>
 
   </jetm:runtime>
 

@@ -46,9 +46,7 @@ import java.io.StringWriter;
  * @version $Revision$
  */
 public class CommonsLoggingDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
-
   protected Log log;
-
 
   public CommonsLoggingDumpOnShutdownPlugin() {
     super("Dumps current performance results using commons logging.");
@@ -64,5 +62,9 @@ public class CommonsLoggingDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
     log.info("Dumping performance results..." +
       System.getProperty("line.separator") +
       writer.toString());
+  }
+
+  protected void logResetDetail(String information) {
+    log.info(information);
   }
 }

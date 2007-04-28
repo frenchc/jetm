@@ -39,7 +39,7 @@ package etm.core.monitor;
  * </p>
  * <pre>
  *  EtmMonitor monitor = ...;
- *  EtmPoint point = monitor.createPoint"name");
+ *  EtmPoint point = monitor.createPoint("name");
  *  try {
  * <p/>
  *   // execute business code
@@ -57,7 +57,7 @@ public interface EtmPoint {
 
   public void collect();
 
-  public  void alterName(String newName);
+  public void alterName(String newName);
 
   public String getName();
 
