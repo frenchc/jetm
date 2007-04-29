@@ -56,7 +56,6 @@ public abstract class CollectionFactory {
         Class clazz = Class.forName("etm.core.util.collection.Java50CollectionFactory");
         collectionFactory = (CollectionFactory) clazz.newInstance();
       } catch (Throwable e) {
-        e.printStackTrace();
         collectionFactory = new DefaultCollectionFactory();
       }
     }
