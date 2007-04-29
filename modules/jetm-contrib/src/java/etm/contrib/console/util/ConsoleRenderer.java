@@ -126,8 +126,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
       "    <td class=\"noborder\">" + point + "</td>\n" +
       "  </tr>\n");
     response.write(
-      "  </tr>\n" +
-        "  <tr class=\"noborder\">\n" +
+      "  <tr class=\"noborder\">\n" +
         "    <td class=\"noborder\">&nbsp;</td>\n" +
         "    <td class=\"noborder\">&nbsp;</td>\n" +
         "  </tr>\n");
@@ -150,7 +149,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters(), true));
     response.write("\">Back to overview</a></td>\n");
 
-    response.write("</table>\n");
+    response.write("<tr>\n</table>\n");
   }
 
   protected void writeHtmlHead(boolean expanded) throws IOException {
