@@ -41,7 +41,7 @@ import java.util.Map;
  * Helper class for runtime related collection access.
  *
  * @author void.fm
- * @version $Revision$
+ * @version $Revision:195 $
  * @since 1.2.1
  */
 public abstract class CollectionFactory {
@@ -56,7 +56,6 @@ public abstract class CollectionFactory {
         Class clazz = Class.forName("etm.core.util.collection.Java50CollectionFactory");
         collectionFactory = (CollectionFactory) clazz.newInstance();
       } catch (Throwable e) {
-        e.printStackTrace();
         collectionFactory = new DefaultCollectionFactory();
       }
     }
