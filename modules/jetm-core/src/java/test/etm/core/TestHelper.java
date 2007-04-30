@@ -30,33 +30,35 @@
  *
  */
 
+package test.etm.core;
 
-package test.etm.core.monitor;
+import etm.core.aggregation.Aggregate;
 
-import etm.core.monitor.FlatMonitor;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Non threaded flat monitor test. Just uses all common test cases for
- * monitors.
+ *
+ * Helper class to extract performance details from aggregated results.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class SimpleFlatMonitorTest extends CommonMonitorTests {
+public class TestHelper {
 
+  public int countExecutions(Map points)  {
+    int counter = 0;
+    Collection col = points.values();
+    for (Iterator iterator = col.iterator(); iterator.hasNext();) {
+      Aggregate aggregate = (Aggregate) iterator.next();
+      counter += aggregate.getMeasurements();
+      if (aggregate.hasChilds()) {
+        counter += countExecutions(aggregate.getChilds());
+      }
+    }
 
-  protected void tearDown() throws Exception {
-    monitor.stop();
-    monitor.reset();
-    monitor = null;
-    super.tearDown();
+    return counter;
+
   }
-
-
-  protected void setUp() throws Exception {
-    super.setUp();
-    monitor = new FlatMonitor();
-    monitor.start();
-  }
-
 }

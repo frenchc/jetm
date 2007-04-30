@@ -39,8 +39,6 @@ import etm.core.renderer.MeasurementRenderer;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TimerTask;
 
 /**
@@ -58,16 +56,14 @@ public class BufferedTimedAggregator implements Aggregator {
   private static final String DESCRIPTION_POSTFIX = " ms.";
 
   private static final long DEFAULT_AGGREGATION_INTERVAL = 5000L;
-  private static final int DEFAULT_BUFFER_SIZE = 1000;
+  private static final int DEFAULT_BUFFER_SIZE = 12500;
   private static final int MIN_AGGREGATION_INTERVAL = 10;
 
-  // the lock for threaded executions
-  protected final Object lock = new Object();
+  protected final UnboundedCopyOnResetBuffer buffer = new UnboundedCopyOnResetBuffer(BufferedTimedAggregator.DEFAULT_BUFFER_SIZE);
 
   protected final Aggregator delegate;
 
   private boolean started = false;
-  private List buffer;
 
   private long sleepInterval;
   private EtmMonitorContext ctx;
@@ -82,7 +78,6 @@ public class BufferedTimedAggregator implements Aggregator {
   public BufferedTimedAggregator(Aggregator aAggregator) {
     delegate = aAggregator;
     setAggregationInterval(BufferedTimedAggregator.DEFAULT_AGGREGATION_INTERVAL);
-    buffer = new ArrayList(BufferedTimedAggregator.DEFAULT_BUFFER_SIZE);
   }
 
   public void add(EtmPoint point) {
@@ -92,23 +87,24 @@ public class BufferedTimedAggregator implements Aggregator {
       return;
     }
 
-    synchronized (lock) {
+    synchronized (buffer) {
       buffer.add(point);
     }
   }
 
 
   public void flush() {
-    List collectedList;
+    EtmPoint[] points;
+    int length;
 
-    synchronized (lock) {
-      collectedList = buffer;
-      buffer = new ArrayList(collectedList.size() * 3 / 2);
+    synchronized (buffer) {
+      length = buffer.length();
+      points = buffer.reset();
     }
 
     synchronized (delegate) {
-      for (int i = 0; i < collectedList.size(); i++) {
-        delegate.add((EtmPoint) collectedList.get(i));
+      for (int i = 0; i < length; i++) {
+        delegate.add(points[i]);
       }
     }
   }
@@ -127,12 +123,18 @@ public class BufferedTimedAggregator implements Aggregator {
   }
 
   public void render(MeasurementRenderer renderer) {
-    synchronized (delegate) {
-      delegate.render(renderer);
-    }
+    flush();
+    delegate.render(renderer);
   }
 
+  // lifecycle methods
 
+
+  /**
+   * Initializes current monitor .
+   *
+   * @param aCtx The runtime context.
+   */
   public void init(EtmMonitorContext aCtx) {
     ctx = aCtx;
     delegate.init(aCtx);
@@ -211,6 +213,40 @@ public class BufferedTimedAggregator implements Aggregator {
     }
 
     sleepInterval = aAggregationInterval;
+  }
+
+
+  class UnboundedCopyOnResetBuffer {
+    private EtmPoint[] buffer;
+    private int currentPos = 0;
+    private static final double NEWSIZE_MULTIPLIER = 1.5;
+
+    public UnboundedCopyOnResetBuffer(int size) {
+      buffer = new EtmPoint[size];
+    }
+
+    public void add(EtmPoint point) {
+      buffer[currentPos] = point;
+      currentPos++;
+      if (currentPos == buffer.length) {
+        EtmPoint[] newBuffer = new EtmPoint[(int) (currentPos * NEWSIZE_MULTIPLIER)];
+        System.arraycopy(buffer, 0, newBuffer, 0, currentPos);
+        buffer = newBuffer;
+      }
+    }
+
+    public int length() {
+      return currentPos;
+    }
+
+    public EtmPoint[] reset() {
+      EtmPoint[] old = buffer;
+      buffer = new EtmPoint[old.length];
+
+      currentPos = 0;
+      return old;
+    }
+
   }
 
 }

@@ -37,9 +37,6 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * <p/>
  * The BufferedThresholdAggregator wraps an Aggregator
@@ -48,7 +45,7 @@ import java.util.List;
  * threshold is reached all buffered measurements will be flushed to
  * the underlying aggregator.
  * </p>
- * <p>
+ * <p/>
  * Please note that this aggregator blocks further collection while processing the buffered EtmPoints.
  * As an alternative you may use an buffering aggregator {@link etm.core.aggregation.BufferedThresholdAggregator}
  * </p>
@@ -58,12 +55,15 @@ import java.util.List;
  */
 public class BufferedThresholdAggregator implements Aggregator {
   private static final String DESCRIPTION = "A buffering aggregator with a threshold of ";
-  private static final int DEFAULT_SIZE = 1000;
-  private static final int MIN_THRESHOLD = 100;
+  private static final int DEFAULT_SIZE = 12500;
+  private static final int MIN_THRESHOLD = 1000;
 
   protected final Aggregator delegate;
-  protected List list;
   protected int threshold = DEFAULT_SIZE;
+
+  protected final Object localBufferLock = new Object();
+
+  protected BoundedCopyOnResetBuffer buffer;
 
   /**
    * Creates a new BufferedThresholdAggregator for the given
@@ -74,7 +74,6 @@ public class BufferedThresholdAggregator implements Aggregator {
 
   public BufferedThresholdAggregator(Aggregator aAggregator) {
     delegate = aAggregator;
-    list = new ArrayList(threshold);
   }
 
   /**
@@ -93,24 +92,31 @@ public class BufferedThresholdAggregator implements Aggregator {
   }
 
   public void add(EtmPoint point) {
-    list.add(point);
-    if (list.size() > threshold) {
-      flush();
+    synchronized (localBufferLock) {
+      if (buffer.add(point)) {
+        flush();
+      }
     }
   }
 
   public void flush() {
-    List collectedList = list;
-    list = new ArrayList(threshold);
+    EtmPoint[] points;
+    int length;
 
-    for (int i = 0; i < collectedList.size(); i++) {
-      delegate.add((EtmPoint) collectedList.get(i));
+    synchronized (localBufferLock) {
+      length = buffer.length();
+      points = buffer.reset();
+    }
+
+    synchronized (delegate) {
+      for (int i = 0; i < length; i++) {
+        delegate.add(points[i]);
+      }
     }
   }
 
   public void reset() {
     delegate.reset();
-    list.clear();
   }
 
 
@@ -119,6 +125,7 @@ public class BufferedThresholdAggregator implements Aggregator {
   }
 
   public void render(MeasurementRenderer renderer) {
+    flush();
     delegate.render(renderer);
   }
 
@@ -133,10 +140,40 @@ public class BufferedThresholdAggregator implements Aggregator {
   }
 
   public void start() {
+    buffer = new BoundedCopyOnResetBuffer(threshold);
     delegate.start();
   }
 
   public void stop() {
     delegate.stop();
+  }
+
+
+  class BoundedCopyOnResetBuffer {
+    private EtmPoint[] buffer;
+    private int currentPos = 0;
+
+    public BoundedCopyOnResetBuffer(int size) {
+      buffer = new EtmPoint[size];
+    }
+
+    public boolean add(EtmPoint point) {
+      buffer[currentPos] = point;
+      currentPos++;
+
+      return currentPos == buffer.length;
+    }
+
+    public EtmPoint[] reset() {
+      EtmPoint[] old = buffer;
+      buffer = new EtmPoint[old.length];
+
+      currentPos = 0;
+      return old;
+    }
+
+    public int length() {
+      return currentPos;
+    }
   }
 }

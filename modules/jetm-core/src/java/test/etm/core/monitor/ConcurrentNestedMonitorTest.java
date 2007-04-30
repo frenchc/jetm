@@ -35,14 +35,13 @@ package test.etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
-import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
-import test.etm.core.TestAggregator;
+import test.etm.core.TestHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,14 +57,16 @@ public class ConcurrentNestedMonitorTest extends TestCase {
 
 
   protected EtmMonitor monitor;
-  protected TestAggregator aggregator;
 
-  private Object lock = new Object();
+  private final Object lock = new Object();
+  private final List allPoints = new ArrayList();
+
   private int running;
-  private List allPoints = new ArrayList();
 
   /**
    * tests two points with multiple threads.
+   *
+   * @throws Exception Unexpected exception.
    */
   public void testThreadedTwoPoint() throws Exception {
     assertNotNull(monitor);
@@ -118,12 +119,14 @@ public class ConcurrentNestedMonitorTest extends TestCase {
     }
 
 
-    assertEquals(4 * testSize * iterations, aggregator.getCounter());
+
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == 2);
+
+        assertEquals(4 * testSize * iterations, new TestHelper().countExecutions(points));
 
         // check group 1
         ExecutionAggregate aggregate = (ExecutionAggregate) points.get(testPointGroup1);
@@ -132,9 +135,9 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         assertEquals(testPointGroup1, aggregate.getName());
         assertEquals(testSize * iterations, aggregate.getMeasurements());
 
-        assertEquals(group1.getTotal(), aggregate.getTotal(), 0.0);
-        assertEquals(group1.getMin(), aggregate.getMin(), 0.0);
-        assertEquals(group1.getMax(), aggregate.getMax(), 0.0);
+        assertEquals(group1.getTotal(), aggregate.getTotal(), 0.000001);
+        assertEquals(group1.getMin(), aggregate.getMin(), 0.000001);
+        assertEquals(group1.getMax(), aggregate.getMax(), 0.000001);
 
         assertTrue(aggregate.hasChilds());
 
@@ -145,9 +148,9 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         assertEquals(nested1.getName(), aggregateChild1.getName());
         assertEquals(testSize * iterations, aggregateChild1.getMeasurements());
 
-        assertEquals(nested1.getTotal(), aggregateChild1.getTotal(), 0.0);
-        assertEquals(nested1.getMin(), aggregateChild1.getMin(), 0.0);
-        assertEquals(nested1.getMax(), aggregateChild1.getMax(), 0.0);
+        assertEquals(nested1.getTotal(), aggregateChild1.getTotal(), 0.000001);
+        assertEquals(nested1.getMin(), aggregateChild1.getMin(), 0.000001);
+        assertEquals(nested1.getMax(), aggregateChild1.getMax(), 0.000001);
 
         // check group 2
         ExecutionAggregate aggregate2 = (ExecutionAggregate) points.get(testPointGroup2);
@@ -156,9 +159,9 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         assertEquals(testPointGroup2, aggregate2.getName());
         assertEquals(testSize * iterations, aggregate2.getMeasurements());
 
-        assertEquals(group2.getTotal(), aggregate2.getTotal(), 0.0);
-        assertEquals(group2.getMin(), aggregate2.getMin(), 0.0);
-        assertEquals(group2.getMax(), aggregate2.getMax(), 0.0);
+        assertEquals(group2.getTotal(), aggregate2.getTotal(), 0.000001);
+        assertEquals(group2.getMin(), aggregate2.getMin(), 0.000001);
+        assertEquals(group2.getMax(), aggregate2.getMax(), 0.000001);
 
         assertTrue(aggregate2.hasChilds());
 
@@ -169,9 +172,9 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         assertEquals(nested2.getName(), aggregateChild2.getName());
         assertEquals(testSize * iterations, aggregateChild2.getMeasurements());
 
-        assertEquals(nested2.getTotal(), aggregateChild2.getTotal(), 0.0);
-        assertEquals(nested2.getMin(), aggregateChild2.getMin(), 0.0);
-        assertEquals(nested2.getMax(), aggregateChild2.getMax(), 0.0);
+        assertEquals(nested2.getTotal(), aggregateChild2.getTotal(), 0.000001);
+        assertEquals(nested2.getMin(), aggregateChild2.getMin(), 0.000001);
+        assertEquals(nested2.getMax(), aggregateChild2.getMax(), 0.000001);
       }
     });
 
@@ -186,8 +189,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
 
 
   protected void setUp() throws Exception {
-    aggregator = new TestAggregator(new RootAggregator());
-    monitor = new NestedMonitor(new DefaultTimer(), aggregator);
+    monitor = new NestedMonitor(new DefaultTimer());
     monitor.start();
   }
 
@@ -224,7 +226,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
           runs--;
         }
       } catch (InterruptedException e) {
-
+        // ignored
       }
 
       synchronized (allPoints) {

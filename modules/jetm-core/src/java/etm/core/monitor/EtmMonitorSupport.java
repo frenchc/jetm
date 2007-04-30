@@ -98,8 +98,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
   private static final LogAdapter log = Log.getLog(EtmMonitor.class);
 
-  protected final Object lock = new Object();
-
   protected final String description;
   protected final ExecutionTimer timer;
   protected final Aggregator aggregator;
@@ -188,9 +186,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
       doVisitPostCollect(measurementPoint);
 
-      synchronized (lock) {
-        aggregator.add(measurementPoint);
-      }
+      aggregator.add(measurementPoint);
       // catch all exceptions here
       // in order to avoid negative side effects for
       // our business logic
@@ -201,29 +197,21 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
 
   public final void aggregate() {
-    synchronized (lock) {
-      aggregator.flush();
-    }
+    aggregator.flush();
   }
 
   public void render(MeasurementRenderer renderer) {
-      aggregator.flush();
-      // we do not lock here since we assume non blocking read
-      aggregator.render(renderer);
+    // we do not lock here since we assume non blocking read
+    aggregator.render(renderer);
   }
 
-  public void reset() {
-    synchronized (lock) {
-      aggregator.reset();
-      lastReset = new Date();
-    }
-
+  public synchronized void reset() {
+    aggregator.reset();
+    lastReset = new Date();
   }
 
-  public void reset(String measurementPoint) {
-    synchronized (lock) {
-      aggregator.reset(measurementPoint);
-    }
+  public synchronized void reset(String measurementPoint) {
+    aggregator.reset(measurementPoint);
   }
 
   public final EtmMonitorMetaData getMetaData() {
@@ -287,12 +275,12 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     return started;
   }
 
-  public void enableCollection() {
+  public synchronized void enableCollection() {
     collecting = true;
     dispatcher.fire(new CollectionEnabledEvent(this));
   }
 
-  public void disableCollection() {
+  public synchronized void disableCollection() {
     collecting = false;
     dispatcher.fire(new CollectionDisabledEvent(this));
   }

@@ -29,70 +29,36 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.core;
 
-import etm.core.aggregation.Aggregator;
-import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.EtmPoint;
-import etm.core.renderer.MeasurementRenderer;
+package test.etm.core.aggregation;
+
+import etm.core.aggregation.BufferedTimedAggregator;
+import etm.core.aggregation.RootAggregator;
+import etm.core.monitor.FlatMonitor;
 
 /**
- * Dummy helper aggregator.
+ * Test to check possible concurrency issues during aggregation in flat monitors.
+ * Uses BufferedTimedAggregator for buffering.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class TestAggregator implements Aggregator {
-  private Aggregator aggregator;
-  private int counter = 0;
+public class ConcurrentFlatTimedAggregationTest extends CommonConcurrentFlatAggregationTests {
 
 
-  public TestAggregator(Aggregator aAggregator) {
-    aggregator = aAggregator;
-  }
-
-  public void add(EtmPoint point) {
-    aggregator.add(point);
-    counter++;
-  }
-
-  public void flush() {
-    aggregator.flush();
-  }
-
-  public void reset() {
-    aggregator.reset();
+  protected void tearDown() throws Exception {
+    monitor.stop();
+    monitor.reset();
+    monitor = null;
+    super.tearDown();
   }
 
 
-  public void reset(String symbolicName) {
-    aggregator.reset(symbolicName);
+  protected void setUp() throws Exception {
+    super.setUp();
+    monitor = new FlatMonitor(new BufferedTimedAggregator(new RootAggregator()));
+    monitor.start();
   }
 
-  public void render(MeasurementRenderer renderer) {
-    aggregator.render(renderer);
-  }
 
-  public int getCounter() {
-    return counter;
-  }
-
-  public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(TestAggregator.class, "Test aggregator implementation.", false,
-      aggregator.getMetaData());
-  }
-
-  public void init(EtmMonitorContext ctx) {
-    aggregator.init(ctx);
-  }
-
-  public void start() {
-    aggregator.start();
-  }
-
-  public void stop() {
-    aggregator.stop();
-  }
- 
 }
