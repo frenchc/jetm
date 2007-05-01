@@ -31,12 +31,12 @@
  */
 package etm.demo.webapp.util;
 
-import etm.contrib.rrd.rrd4j.Rrd4jUtil;
+//import etm.contrib.rrd.rrd4j.Rrd4jUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.File;
-import java.net.URL;
+//import java.io.File;
+//import java.net.URL;
 
 /**
  * @author void.fm
@@ -46,12 +46,13 @@ public class DemoRuntimeListener implements ServletContextListener {
 
   public void contextInitialized(ServletContextEvent event) {
     // create required rrd database if needed
-    File file = new File(System.getProperty("java.io.tmpdir"), "jetm-demo.rrd");
-    if (!file.exists()) {
-      Rrd4jUtil util = new Rrd4jUtil();
-      URL url =  util.locateTemplate("highres");
-      util.createRrdDb(url,file, null);
-    }
+    // uncomment if you want to use RRD support.
+//    File file = new File(System.getProperty("java.io.tmpdir"), "jetm-demo.rrd");
+//    if (!file.exists()) {
+//      Rrd4jUtil util = new Rrd4jUtil();
+//      URL url =  util.locateTemplate("highres");
+//      util.createRrdDb(url,file, null);
+//    }
   }
 
   public void contextDestroyed(ServletContextEvent event) {

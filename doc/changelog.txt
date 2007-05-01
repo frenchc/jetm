@@ -9,7 +9,9 @@ Release 1.2.1
   - HTTP Console: Fixed broken reset link in MeasurementPoint detailed view
   - HTTP Console: Aligned sort order for overview and detail view
   - HTTP Console: Switched to better resource loading
-  - JETM Web Demo: Fixed wrong filter pattern for logging.
+  - JETM Web Demo: Fixed wrong filter pattern for logging
+  - JETM Web Demo: Removed Java 5.0 dependency
+  - Build and Test: Java 1.4 support
 
 Release 1.2.0
  New features
