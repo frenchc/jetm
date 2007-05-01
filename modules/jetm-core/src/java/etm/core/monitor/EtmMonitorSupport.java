@@ -205,12 +205,12 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     aggregator.render(renderer);
   }
 
-  public synchronized void reset() {
+  public void reset() {
     aggregator.reset();
     lastReset = new Date();
   }
 
-  public synchronized void reset(String measurementPoint) {
+  public void reset(String measurementPoint) {
     aggregator.reset(measurementPoint);
   }
 
@@ -275,12 +275,12 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     return started;
   }
 
-  public synchronized void enableCollection() {
+  public void enableCollection() {
     collecting = true;
     dispatcher.fire(new CollectionEnabledEvent(this));
   }
 
-  public synchronized void disableCollection() {
+  public void disableCollection() {
     collecting = false;
     dispatcher.fire(new CollectionDisabledEvent(this));
   }

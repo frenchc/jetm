@@ -39,8 +39,8 @@ import etm.core.monitor.event.MonitorResetEvent;
 import etm.core.monitor.event.RootCreateEvent;
 import etm.core.monitor.event.RootResetEvent;
 import etm.core.renderer.MeasurementRenderer;
+import etm.core.util.collection.CollectionFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -54,7 +54,7 @@ import java.util.Map;
 
 public class FlatAggregator implements Aggregator {
 
-  protected Map aggregates = new HashMap();
+  protected Map aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
   protected EtmMonitorContext ctx;
 
   public FlatAggregator() {

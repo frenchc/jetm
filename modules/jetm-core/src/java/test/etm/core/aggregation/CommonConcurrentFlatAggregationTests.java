@@ -52,7 +52,7 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public class CommonConcurrentFlatAggregationTests extends TestCase {
+public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
   protected EtmMonitor monitor;
   private final Object lock = new Object();
   private final List allPoints = new ArrayList();

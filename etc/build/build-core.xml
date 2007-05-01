@@ -10,7 +10,7 @@ jetm.build.date=${build.time}
   </echo>
   <javac
     srcdir="${module.core.src.java}"
-    excludes="**/SunHighResTimer.java,**/Java15NanoTimer.java"
+    excludes="**/SunHighResTimer.java,**/Java15NanoTimer.java,**/Java15CollectionFactory.java"
     destdir="${module.core.dest.classes}"
     classpathref="build.classpath"
     debug="true"
@@ -50,7 +50,7 @@ jetm.build.date=${build.time}
 <target name="compile-jdk15-sources" if="vm.jdk15">
   <javac
     srcdir="${module.core.src.java}"
-    includes="**/Java15NanoTimer.java"
+    includes="**/Java15NanoTimer.java,**/Java15CollectionFactory.java"
     destdir="${module.core.dest.classes}"
     classpathref="build.classpath"
     debug="true"

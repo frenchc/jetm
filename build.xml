@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE project [
-  <!ENTITY core SYSTEM "file:etc/build/build-core.xml">
-  <!ENTITY contrib SYSTEM "file:etc/build/build-contrib.xml">
-  <!ENTITY samples SYSTEM "file:etc/build/build-samples.xml">
-  <!ENTITY demo SYSTEM "file:etc/build/build-demo.xml">
-  <!ENTITY site SYSTEM "file:etc/build/build-site.xml">
+  <!ENTITY core SYSTEM "etc/build/build-core.xml">
+  <!ENTITY contrib SYSTEM "etc/build/build-contrib.xml">
+  <!ENTITY samples SYSTEM "etc/build/build-samples.xml">
+  <!ENTITY demo SYSTEM "etc/build/build-demo.xml">
+  <!ENTITY site SYSTEM "etc/build/build-site.xml">
   ]>
 
 <project name="JETM build Script" default="build" basedir=".">

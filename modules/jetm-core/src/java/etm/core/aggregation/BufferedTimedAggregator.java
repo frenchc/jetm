@@ -56,18 +56,19 @@ public class BufferedTimedAggregator implements Aggregator {
   private static final String DESCRIPTION_POSTFIX = " ms.";
 
   private static final long DEFAULT_AGGREGATION_INTERVAL = 5000L;
-  private static final int DEFAULT_BUFFER_SIZE = 12500;
+  private static final int DEFAULT_BUFFER_SIZE = 25000;
   private static final int MIN_AGGREGATION_INTERVAL = 10;
 
-  protected final UnboundedCopyOnResetBuffer buffer = new UnboundedCopyOnResetBuffer(BufferedTimedAggregator.DEFAULT_BUFFER_SIZE);
-
   protected final Aggregator delegate;
-
-  private boolean started = false;
+  protected UnboundedBuffer buffer;
 
   private long sleepInterval;
+  private int initialBufferSize = DEFAULT_BUFFER_SIZE;
+
   private EtmMonitorContext ctx;
 
+
+  private boolean started = false;
 
   /**
    * Creates a BufferedTimedAggregator with default
@@ -87,26 +88,12 @@ public class BufferedTimedAggregator implements Aggregator {
       return;
     }
 
-    synchronized (buffer) {
-      buffer.add(point);
-    }
+    buffer.add(point);
   }
 
 
   public void flush() {
-    EtmPoint[] points;
-    int length;
-
-    synchronized (buffer) {
-      length = buffer.length();
-      points = buffer.reset();
-    }
-
-    synchronized (delegate) {
-      for (int i = 0; i < length; i++) {
-        delegate.add(points[i]);
-      }
-    }
+    buffer.flush();
   }
 
   public void reset() {
@@ -114,7 +101,6 @@ public class BufferedTimedAggregator implements Aggregator {
       delegate.reset();
     }
   }
-
 
   public void reset(String symbolicName) {
     synchronized (delegate) {
@@ -146,6 +132,8 @@ public class BufferedTimedAggregator implements Aggregator {
   public void start() {
     delegate.start();
 
+    buffer = new UnboundedBuffer(initialBufferSize);
+
     // this one is dangerous
     // if we run into VM level problems we might add a potential
     // out of memory too
@@ -153,7 +141,7 @@ public class BufferedTimedAggregator implements Aggregator {
     ctx.getScheduler().scheduleAtFixedRate(new TimerTask() {
       public void run() {
         try {
-          flush();
+          buffer.flush();
         } catch (Throwable t) {
           if (t instanceof ThreadDeath) {
             started = false;
@@ -215,38 +203,59 @@ public class BufferedTimedAggregator implements Aggregator {
     sleepInterval = aAggregationInterval;
   }
 
+  /**
+   * Sets the initial buffer size that will be used at startup. You may set the buffer size
+   * to a different initial value, however the buffer size will be increased on demand.
+   *
+   * @param aInitialBufferSize  A new inital buffer size.
+   * @throws IllegalArgumentException Thrown for buffer sizes < 1000
+   * @since 1.2.1
+   */
+  public void setInitialBufferSize(int aInitialBufferSize) {
+    if (aInitialBufferSize < 1000) {
+      throw new IllegalArgumentException("The initial buffer size may not be smaller than 1000.");
+    }
+    initialBufferSize = aInitialBufferSize;
+  }
 
-  class UnboundedCopyOnResetBuffer {
+  class UnboundedBuffer {
     private EtmPoint[] buffer;
     private int currentPos = 0;
     private static final double NEWSIZE_MULTIPLIER = 1.5;
 
-    public UnboundedCopyOnResetBuffer(int size) {
+    public UnboundedBuffer(int size) {
       buffer = new EtmPoint[size];
     }
 
     public void add(EtmPoint point) {
-      buffer[currentPos] = point;
-      currentPos++;
-      if (currentPos == buffer.length) {
-        EtmPoint[] newBuffer = new EtmPoint[(int) (currentPos * NEWSIZE_MULTIPLIER)];
-        System.arraycopy(buffer, 0, newBuffer, 0, currentPos);
-        buffer = newBuffer;
+      synchronized (this) {
+        buffer[currentPos] = point;
+        currentPos++;
+        if (currentPos == buffer.length) {
+          EtmPoint[] newBuffer = new EtmPoint[(int) (currentPos * NEWSIZE_MULTIPLIER)];
+          System.arraycopy(buffer, 0, newBuffer, 0, currentPos);
+          buffer = newBuffer;
+        }
       }
     }
 
-    public int length() {
-      return currentPos;
+    public void flush() {
+      int length;
+      EtmPoint[] current;
+
+      synchronized (this) {
+        length = currentPos;
+        current = buffer;
+        buffer = new EtmPoint[current.length];
+        currentPos = 0;
+      }
+
+      synchronized (delegate) {
+        for (int i = 0; i < length; i++) {
+          delegate.add(current[i]);
+        }
+      }
     }
-
-    public EtmPoint[] reset() {
-      EtmPoint[] old = buffer;
-      buffer = new EtmPoint[old.length];
-
-      currentPos = 0;
-      return old;
-    }
-
   }
 
 }

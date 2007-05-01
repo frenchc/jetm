@@ -46,7 +46,6 @@ import etm.core.timer.DefaultTimer;
  */
 public class ConcurrentFlatThresholdAggregationTest extends CommonConcurrentFlatAggregationTests {
 
-
   protected void tearDown() throws Exception {
     monitor.stop();
     monitor.reset();

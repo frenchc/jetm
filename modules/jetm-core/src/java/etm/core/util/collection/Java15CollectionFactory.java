@@ -44,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.2.1
  *
  */
-class Java50CollectionFactory extends CollectionFactory {
+class Java15CollectionFactory extends CollectionFactory {
 
   public Map newConcurrentHashMapInstance() {
     return new ConcurrentHashMap();
