@@ -11,6 +11,7 @@ Release 1.2.1
   - HTTP Console: Switched to better resource loading
   - JETM Web Demo: Fixed wrong filter pattern for logging
   - JETM Web Demo: Removed Java 5.0 dependency
+  - JETM Samples: Removed util namespace from 5 minute tutorial(#1706118)
   - Build and Test: Java 1.4 support
 
 Release 1.2.0
