@@ -66,8 +66,6 @@
   </classpath>
 </taskdef>
 
-<echo message="endorsed ${basedir}/lib/endorsed${path.separator}${java.endorsed.dirs}"/>
-
 <junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
   <jvmarg value="-Djava.awt.headless=true"/>
   <jvmarg value="-Djetm.log.level=warn"/>
