@@ -60,9 +60,6 @@ import java.util.Timer;
 
 /**
  * Abstract base class for the execution time measurement monitors.
- * Derived class should synchronize on the internal lock object while
- * accessing shared resources, especially the attribute <code>aggregator</code>.
- * <p/>
  * An EtmMonitor mandates the following life cycle for measurement
  * points.
  * </p>
