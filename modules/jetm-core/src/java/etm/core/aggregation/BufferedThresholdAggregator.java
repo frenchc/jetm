@@ -144,14 +144,24 @@ public class BufferedThresholdAggregator implements Aggregator {
     }
 
     public void add(EtmPoint point) {
+      int length;
+      EtmPoint[] current;
+
       synchronized (this) {
         buffer[currentPos] = point;
         currentPos++;
 
-        if (currentPos == buffer.length) {
-          flush();
+        if (currentPos < buffer.length) {
+          return;
         }
+
+        length = currentPos;
+        current = buffer;
+        buffer = new EtmPoint[current.length];
+        currentPos = 0;
       }
+
+      doFlush(current, length);
     }
 
     public void flush() {
@@ -165,9 +175,13 @@ public class BufferedThresholdAggregator implements Aggregator {
         currentPos = 0;
       }
 
+      doFlush(current, length);
+    }
+
+    private void doFlush(EtmPoint[] aCurrent, int aLength) {
       synchronized (delegate) {
-        for (int i = 0; i < length; i++) {
-          delegate.add(current[i]);
+        for (int i = 0; i < aLength; i++) {
+          delegate.add(aCurrent[i]);
         }
       }
     }
