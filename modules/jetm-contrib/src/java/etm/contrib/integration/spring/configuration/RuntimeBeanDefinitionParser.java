@@ -43,8 +43,6 @@ import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.jmx.EtmMonitorJmxPlugin;
 import etm.core.timer.DefaultTimer;
-import etm.core.timer.Java15NanoTimer;
-import etm.core.timer.SunHighResTimer;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -381,9 +379,20 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
   private void addTimerDefinition(String aTimer, BeanDefinitionBuilder builder) {
     if ("jdk15".equals(aTimer)) {
-      builder.addConstructorArg(new Java15NanoTimer());
+      try {
+        Class clazz = Class.forName("etm.core.timer.Java15NanoTimer");
+        builder.addConstructorArg(clazz.newInstance());
+      } catch (Exception e) {
+        throw new FatalBeanException("Java15NanoTimer is not available for this platform. Please try 'sun' or " +
+          "'default' instead.", e);
+      }
     } else if ("sun".equals(aTimer)) {
-      builder.addConstructorArg(new SunHighResTimer());
+       try {
+        Class clazz = Class.forName("etm.core.timer.SunHighResTimer. Please try 'jdk15' or 'default' instead.");
+        builder.addConstructorArg(clazz.newInstance());
+      } catch (Exception e) {
+        throw new FatalBeanException("SunHighResTimer is not available for this platform.", e);
+      }
     } else if ("default".equals(aTimer)) {
       builder.addConstructorArg(new DefaultTimer());
     } else {

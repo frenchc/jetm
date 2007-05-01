@@ -106,13 +106,13 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin, AggregationList
 
     Aggregate aggregate = event.getAggregate();
 
-    writer.append("Dumping performance results '");
-    writer.append(aggregate.getName());
-    writer.append("' for period ");
-    writer.append(etmMonitorMetaData.getLastResetTime().toString());
-    writer.append(" - ");
-    writer.append(new Date().toString());
-    writer.append(lineSeparator);
+    writer.write("Dumping performance results '");
+    writer.write(aggregate.getName());
+    writer.write("' for period ");
+    writer.write(etmMonitorMetaData.getLastResetTime().toString());
+    writer.write(" - ");
+    writer.write(new Date().toString());
+    writer.write(lineSeparator);
 
     SimpleTextRenderer textRenderer = new SimpleTextRenderer(writer);
     Map map = new HashMap();
@@ -127,11 +127,11 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin, AggregationList
   public void preStateReset(PreMonitorResetEvent event) {
     StringWriter writer = new StringWriter();
     EtmMonitorMetaData etmMonitorMetaData = ctx.getEtmMonitor().getMetaData();
-    writer.append("Dumping performance results for period ");
-    writer.append(etmMonitorMetaData.getLastResetTime().toString());
-    writer.append(" - ");
-    writer.append(new Date().toString());
-    writer.append(lineSeparator);
+    writer.write("Dumping performance results for period ");
+    writer.write(etmMonitorMetaData.getLastResetTime().toString());
+    writer.write(" - ");
+    writer.write(new Date().toString());
+    writer.write(lineSeparator);
 
     SimpleTextRenderer textRenderer = new SimpleTextRenderer(writer);
     textRenderer.render(event.getAggregates());

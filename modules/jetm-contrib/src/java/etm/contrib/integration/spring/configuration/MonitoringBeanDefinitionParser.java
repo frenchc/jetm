@@ -151,7 +151,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
     ProxyHolder proxyDefinition = locateBeanNameProxy(aParserContext, interceptorName);
     MutablePropertyValues propertyValues = proxyDefinition.getDefinition().getPropertyValues();
 
-    String pattern = aCurrentBeanPattern.getTextContent().trim();
+    String pattern = DomUtils.getTextValue(aCurrentBeanPattern).trim();
 
     PropertyValue currentBeanNames = propertyValues.getPropertyValue("beanNames");
     if (currentBeanNames == null) {
