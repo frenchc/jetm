@@ -30,21 +30,34 @@
  *
  */
 
-package etm.core.util.collection;
+package test.etm.core;
 
+import etm.core.aggregation.Aggregate;
+
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * CollectionFactory that provides access to Java 5.0 collections.
+ * Helper class to extract performance details from aggregated results.
  *
  * @author void.fm
  * @version $Revision$
- * @since 1.2.1
  */
-class Java50CollectionFactory extends CollectionFactory {
+public class TestHelper {
 
-  public Map newConcurrentHashMapInstance() {
-    return new ConcurrentHashMap();
+  public int countExecutions(Map points) {
+    int counter = 0;
+    Collection col = points.values();
+    for (Iterator iterator = col.iterator(); iterator.hasNext();) {
+      Aggregate aggregate = (Aggregate) iterator.next();
+      counter += aggregate.getMeasurements();
+      if (aggregate.hasChilds()) {
+        counter += countExecutions(aggregate.getChilds());
+      }
+    }
+
+    return counter;
+
   }
 }

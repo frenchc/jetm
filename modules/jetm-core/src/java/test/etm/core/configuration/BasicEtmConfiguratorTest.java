@@ -91,18 +91,21 @@ public class BasicEtmConfiguratorTest extends TestCase {
 
     etmMonitor.start();
 
-    EtmPoint point = etmMonitor.createPoint("testPoint");
-    point.collect();
+    try {
+      EtmPoint point = etmMonitor.createPoint("testPoint");
+      point.collect();
 
-    etmMonitor.render(new MeasurementRenderer() {
-      public void render(Map points) {
-        assertNotNull(points);
-        assertEquals(1, points.size());
-      }
-    });
+      etmMonitor.render(new MeasurementRenderer() {
+        public void render(Map points) {
+          assertNotNull(points);
+          assertEquals(1, points.size());
+        }
+      });
+    } finally {
+      etmMonitor.stop();
+    }
 
 
-    etmMonitor.stop();
   }
 
   public void testNestedConfiguration() {
@@ -114,18 +117,21 @@ public class BasicEtmConfiguratorTest extends TestCase {
 
     etmMonitor.start();
 
-    EtmPoint point = etmMonitor.createPoint("testPoint");
-    point.collect();
+    try {
+      EtmPoint point = etmMonitor.createPoint("testPoint");
+      point.collect();
 
-    etmMonitor.render(new MeasurementRenderer() {
-      public void render(Map points) {
-        assertNotNull(points);
-        assertEquals(1, points.size());
-      }
-    });
+      etmMonitor.render(new MeasurementRenderer() {
+        public void render(Map points) {
+          assertNotNull(points);
+          assertEquals(1, points.size());
+        }
+      });
+    } finally {
+      etmMonitor.stop();
+    }
 
 
-    etmMonitor.stop();
   }
 
 

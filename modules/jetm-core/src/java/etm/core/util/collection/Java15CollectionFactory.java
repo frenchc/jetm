@@ -30,33 +30,21 @@
  *
  */
 
+package etm.core.util.collection;
 
-package test.etm.core.monitor;
-
-import etm.core.monitor.FlatMonitor;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Non threaded flat monitor test. Just uses all common test cases for
- * monitors.
+ * CollectionFactory that provides access to Java 5.0 collections.
  *
  * @author void.fm
  * @version $Revision$
+ * @since 1.2.1
  */
-public class SimpleFlatMonitorTest extends CommonMonitorTests {
+class Java15CollectionFactory extends CollectionFactory {
 
-
-  protected void tearDown() throws Exception {
-    monitor.stop();
-    monitor.reset();
-    monitor = null;
-    super.tearDown();
+  public Map newConcurrentHashMapInstance() {
+    return new ConcurrentHashMap();
   }
-
-
-  protected void setUp() throws Exception {
-    super.setUp();
-    monitor = new FlatMonitor();
-    monitor.start();
-  }
-
 }

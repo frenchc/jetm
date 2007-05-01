@@ -41,7 +41,7 @@ import java.util.Map;
  * Helper class for runtime related collection access.
  *
  * @author void.fm
- * @version $Revision:195 $
+ * @version $Revision$
  * @since 1.2.1
  */
 public abstract class CollectionFactory {

@@ -30,61 +30,51 @@
  *
  */
 
-
-package test.etm.core.monitor;
+package test.etm.core.aggregation;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
-import etm.core.monitor.FlatMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 import test.etm.core.TestHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Concurrency tests for flat monitor.
+ * Tests for flat concurrency testing.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ConcurrentFlatMonitorTest extends TestCase {
-
-
+public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
   protected EtmMonitor monitor;
-
   private final Object lock = new Object();
   private final List allPoints = new ArrayList();
   private int running;
 
   /**
-   * tests two points with multiple threads.
+   * Tests one etm point with multiple threads.
    *
-   * @throws Exception Any unexpected exception.
+   * @throws Exception Unexcpeted Exception
    */
-  public void testThreadedTwoPoint() throws Exception {
-
-    final int testSize = 50;
-    final int iterations = 100;
+  public void testManyThreadsOnePoint() throws Exception {
+    int testSize = 100;
+    int iterations = 500;
     final String testPointGroup1 = "group1";
-    final String testPointGroup2 = "group2";
+
 
     Runner[] runnerGroup1 = new Runner[testSize];
-    Runner[] runnerGroup2 = new Runner[testSize];
-
-
     for (int i = 0; i < testSize; i++) {
       runnerGroup1[i] = new Runner(testPointGroup1, iterations);
-      runnerGroup2[i] = new Runner(testPointGroup2, iterations);
     }
-
     for (int i = 0; i < testSize; i++) {
       runnerGroup1[i].start();
-      runnerGroup2[i].start();
     }
 
     do {
@@ -95,64 +85,126 @@ public class ConcurrentFlatMonitorTest extends TestCase {
 
 
     final ExecutionAggregate group1 = new ExecutionAggregate(testPointGroup1);
-    final ExecutionAggregate group2 = new ExecutionAggregate(testPointGroup2);
 
     for (int i = 0; i < allPoints.size(); i++) {
       EtmPoint point = (EtmPoint) allPoints.get(i);
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else {
-        group2.addTransaction(point);
+        fail("Unknown group " + point.getName());
       }
     }
 
+    monitor.render(new MeasurementRenderer() {
+      public void render(Map points) {
+
+      }
+    });
+
+
+    final int expectedExecutions = testSize * iterations;
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
-        assertNotNull(points);
-        assertTrue(points.size() == 2);
-        int expectedExecutions = 2 * testSize * iterations;
+
         assertEquals(expectedExecutions, new TestHelper().countExecutions(points));
+
+        assertNotNull(points);
+        assertTrue(points.size() == 1);
 
         Aggregate aggregate = (Aggregate) points.get(testPointGroup1);
 
         assertNotNull(aggregate);
         assertEquals(testPointGroup1, aggregate.getName());
-        assertEquals(testSize * iterations, aggregate.getMeasurements());
+        assertEquals(group1.getMeasurements(), aggregate.getMeasurements());
 
-        assertEquals(group1.getTotal(), aggregate.getTotal(), 0.000001);
-        assertEquals(group1.getMin(), aggregate.getMin(), 0.000001);
-        assertEquals(group1.getMax(), aggregate.getMax(), 0.000001);
-
-        Aggregate aggregate2 = (Aggregate) points.get(testPointGroup2);
-
-        assertNotNull(aggregate2);
-        assertEquals(testPointGroup2, aggregate2.getName());
-        assertEquals(testSize * iterations, aggregate2.getMeasurements());
-
-        assertEquals(group2.getTotal(), aggregate2.getTotal(), 0.000001);
-        assertEquals(group2.getMin(), aggregate2.getMin(), 0.000001);
-        assertEquals(group2.getMax(), aggregate2.getMax(), 0.000001);
+        assertEquals(group1.getTotal(), aggregate.getTotal(), 0.0001);
+        assertEquals(group1.getMin(), aggregate.getMin(), 0.0001);
+        assertEquals(group1.getMax(), aggregate.getMax(), 0.0001);
       }
     });
-
   }
 
+  /**
+   * Tests many points with many threads.
+   *
+   * @throws Exception Unexpected exception.
+   */
 
-  protected void tearDown() throws Exception {
-    monitor.start();
-    monitor.reset();
-    monitor = null;
+  public void testManyThreadsManyPoints() throws Exception {
+    final int pointSize = 20;
+    int threadSize = 50;
+    int iterations = 500;
+    String testPrefix = "group";
+
+
+    Runner[][] runners = new Runner[pointSize][threadSize];
+
+    for (int j = 0; j < pointSize; j++) {
+      for (int i = 0; i < threadSize; i++) {
+        runners[j][i] = new Runner(testPrefix + j, iterations);
+      }
+    }
+    for (int j = 0; j < pointSize; j++) {
+      for (int i = 0; i < threadSize; i++) {
+        runners[j][i].start();
+      }
+    }
+
+    do {
+      synchronized (lock) {
+        lock.wait();
+      }
+    } while (running > 0);
+
+
+    final Map aggregates = new HashMap();
+
+    for (int i = 0; i < allPoints.size(); i++) {
+      EtmPoint point = (EtmPoint) allPoints.get(i);
+
+      ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(point.getName());
+      if (aggregate == null) {
+        aggregate = new ExecutionAggregate(point.getName());
+        aggregates.put(point.getName(), aggregate);
+      }
+      aggregate.addTransaction(point);
+
+    }
+
+
+    assertEquals(aggregates.size(), pointSize);
+
+    final int expextecdExecutions = pointSize * threadSize * iterations;
+
+    monitor.render(new MeasurementRenderer() {
+      public void render(Map points) {
+        assertNotNull(points);
+        assertTrue(points.size() == pointSize);
+
+        assertEquals(expextecdExecutions, new TestHelper().countExecutions(points));
+
+        for (Iterator iterator = points.keySet().iterator(); iterator.hasNext();) {
+          String s = (String) iterator.next();
+          Aggregate renderAggregate = (Aggregate) points.get(s);
+          Aggregate actualAggregate = (Aggregate) aggregates.get(s);
+
+          assertNotNull(actualAggregate);
+
+          assertEquals(actualAggregate.getName(), renderAggregate.getName());
+          assertEquals(actualAggregate.getMeasurements(), renderAggregate.getMeasurements());
+
+          assertEquals(actualAggregate.getTotal(), renderAggregate.getTotal(), 0.00001);
+          assertEquals(actualAggregate.getMin(), renderAggregate.getMin(), 0.00001);
+          assertEquals(actualAggregate.getMax(), renderAggregate.getMax(), 0.00001);
+        }
+
+      }
+    });
   }
-
-
-  protected void setUp() throws Exception {
-    monitor = new FlatMonitor();
-    monitor.start();
-  }
-
 
   class Runner extends Thread {
+
     List list = new ArrayList();
 
     private String testPointName;
@@ -168,19 +220,18 @@ public class ConcurrentFlatMonitorTest extends TestCase {
       synchronized (allPoints) {
         running++;
       }
-
       try {
 
         while (runs > 0) {
           final EtmPoint point = monitor.createPoint(testPointName);
-          Thread.sleep(1);
+          Thread.sleep(10);
           point.collect();
 
           list.add(point);
           runs--;
         }
       } catch (InterruptedException e) {
-        // ignored 
+        // ignored
       }
 
       synchronized (allPoints) {
@@ -194,5 +245,4 @@ public class ConcurrentFlatMonitorTest extends TestCase {
     }
 
   }
-
 }

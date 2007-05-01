@@ -1,0 +1,4 @@
+JETM includes sources from Doug Lea concurrency utils in order to avoid a library
+dependency.
+
+http://g.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html

@@ -84,8 +84,8 @@ public class NullMonitor extends EtmMonitorSupport {
 
   private void showWarning() {
     log.warn("Warning - NullMonitor active. Performance results are discarded." +
-      "This usually happens if you used EtmManager.getEtmMonitor() to retrieve" +
-      "the current EtmMonitor instance and did not configure the Performance" +
+      "This usually happens if you used EtmManager.getEtmMonitor() to retrieve " +
+      "the current EtmMonitor instance and did not configure the Performance " +
       "sub system before. For further details see EtmManager documentation at " +
       "http://jetm.void.fm/howto/etm_manager_configuration.html");
 

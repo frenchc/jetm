@@ -4,6 +4,7 @@ Release 1.2.1
 
  Changes, Fixes and Improvements
   - Removed blocking during EtmMonitor.render()
+  - Improved locking during collection and aggregation
   - HTTP Console: Fixed average division by zero
   - HTTP Console: Fixed broken reset link in MeasurementPoint detailed view
   - HTTP Console: Aligned sort order for overview and detail view

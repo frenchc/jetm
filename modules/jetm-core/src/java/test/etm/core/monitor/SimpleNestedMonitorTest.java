@@ -35,12 +35,10 @@ package test.etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
-import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
-import etm.core.timer.DefaultTimer;
-import test.etm.core.TestAggregator;
+import test.etm.core.TestHelper;
 
 import java.util.Map;
 
@@ -53,6 +51,8 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
   /**
    * Test different nested levels
+   *
+   * @throws Exception Unexpected exception
    */
   public void testNestedLevels() throws Exception {
 
@@ -95,12 +95,12 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
     pointNew.collect();
 
 
-    assertEquals(8, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertEquals(1, points.size());
+
+        assertEquals(8, new TestHelper().countExecutions(points));
 
         // analyze point one
         ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
@@ -172,6 +172,8 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
   /**
    * Tests adding one nesting etm point.
+   *
+   * @throws Exception Any unexpected exception.
    */
 
   public void testSingleNestedPoints() throws Exception {
@@ -185,12 +187,12 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
     point.collect();
 
 
-    assertEquals(2, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == 1);
+
+        assertEquals(2, new TestHelper().countExecutions(points));
 
         // analyze point one
         ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
@@ -227,6 +229,8 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
   /**
    * Tests adding multiple nesting etm point.
+   *
+   * @throws Exception Any unexpected exception.
    */
 
   public void testMultipleNestedPoints() throws Exception {
@@ -243,13 +247,12 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
     point.collect();
 
-
-    assertEquals(3, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == 1);
+
+        assertEquals(3, new TestHelper().countExecutions(points));
 
         // analyze point one
         ExecutionAggregate aggregate = (ExecutionAggregate) points.get("test");
@@ -296,6 +299,8 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
   /**
    * Test Deep Nesting
+   *
+   * @throws Exception Any unexpected exception.
    */
 
   public void testDeepNesting() throws Exception {
@@ -304,12 +309,13 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
     doNested(etmPoints, etmPoints.length);
 
-    assertEquals(10, aggregator.getCounter());
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == 1);
+
+        assertEquals(10, new TestHelper().countExecutions(points));
 
         analyzeNested(points, etmPoints, etmPoints.length);
       }
@@ -365,8 +371,7 @@ public class SimpleNestedMonitorTest extends CommonMonitorTests {
 
   protected void setUp() throws Exception {
     super.setUp();
-    aggregator = new TestAggregator(new RootAggregator());
-    monitor = new NestedMonitor(new DefaultTimer(), aggregator);
+    monitor = new NestedMonitor();
     monitor.start();
   }
 

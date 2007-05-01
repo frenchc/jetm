@@ -37,9 +37,6 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * <p/>
  * The BufferedThresholdAggregator wraps an Aggregator
@@ -48,9 +45,10 @@ import java.util.List;
  * threshold is reached all buffered measurements will be flushed to
  * the underlying aggregator.
  * </p>
- * <p>
- * Please note that this aggregator blocks further collection while processing the buffered EtmPoints.
- * As an alternative you may use an buffering aggregator {@link etm.core.aggregation.BufferedThresholdAggregator}
+ * <p/>
+ * Please note that this aggregator may have a direct impact on executing threads since
+ * the thread that reaches the threshold is used to aggregate the results. If you want to minimize this
+ * effect use an interval based buffering aggregator {@link BufferedTimedAggregator}.
  * </p>
  *
  * @author void.fm
@@ -58,12 +56,13 @@ import java.util.List;
  */
 public class BufferedThresholdAggregator implements Aggregator {
   private static final String DESCRIPTION = "A buffering aggregator with a threshold of ";
-  private static final int DEFAULT_SIZE = 1000;
-  private static final int MIN_THRESHOLD = 100;
+  private static final int DEFAULT_SIZE = 10000;
+  private static final int MIN_THRESHOLD = 1000;
 
   protected final Aggregator delegate;
-  protected List list;
   protected int threshold = DEFAULT_SIZE;
+
+  protected BoundedBuffer buffer;
 
   /**
    * Creates a new BufferedThresholdAggregator for the given
@@ -74,51 +73,46 @@ public class BufferedThresholdAggregator implements Aggregator {
 
   public BufferedThresholdAggregator(Aggregator aAggregator) {
     delegate = aAggregator;
-    list = new ArrayList(threshold);
   }
 
   /**
    * Sets the threshold to the given value.
    *
    * @param aThreshold The threshold.
-   * @throws IllegalArgumentException Thrown for threshold sizes &lt; 100.
+   * @throws IllegalArgumentException Thrown for threshold sizes &lt; 1000.
    */
 
   public void setThreshold(int aThreshold) {
     if (aThreshold < MIN_THRESHOLD) {
-      throw new IllegalArgumentException("Thresholds may not be lower than 100.");
+      throw new IllegalArgumentException("Thresholds may not be lower than " + threshold + ".");
     }
 
     threshold = aThreshold;
   }
 
   public void add(EtmPoint point) {
-    list.add(point);
-    if (list.size() > threshold) {
-      flush();
-    }
+    buffer.add(point);
   }
 
   public void flush() {
-    List collectedList = list;
-    list = new ArrayList(threshold);
-
-    for (int i = 0; i < collectedList.size(); i++) {
-      delegate.add((EtmPoint) collectedList.get(i));
-    }
+    buffer.flush();
   }
 
   public void reset() {
-    delegate.reset();
-    list.clear();
+    synchronized (delegate) {
+      delegate.reset();
+    }
   }
 
 
   public void reset(String symbolicName) {
-    delegate.reset(symbolicName);
+    synchronized (delegate) {
+      delegate.reset(symbolicName);
+    }
   }
 
   public void render(MeasurementRenderer renderer) {
+    flush();
     delegate.render(renderer);
   }
 
@@ -128,15 +122,55 @@ public class BufferedThresholdAggregator implements Aggregator {
 
 
   public void init(EtmMonitorContext ctx) {
-    // don't do anything local, just delegate
     delegate.init(ctx);
   }
 
   public void start() {
     delegate.start();
+    buffer = new BoundedBuffer(threshold);
   }
 
   public void stop() {
+    flush();
     delegate.stop();
+  }
+
+  class BoundedBuffer {
+    private EtmPoint[] buffer;
+    private int currentPos = 0;
+
+    public BoundedBuffer(int size) {
+      buffer = new EtmPoint[size];
+    }
+
+    public void add(EtmPoint point) {
+      synchronized (this) {
+        buffer[currentPos] = point;
+        currentPos++;
+
+        if (currentPos == buffer.length) {
+          flush();
+        }
+      }
+    }
+
+    public void flush() {
+      int length;
+      EtmPoint[] current;
+
+      synchronized (this) {
+        length = currentPos;
+        current = buffer;
+        buffer = new EtmPoint[current.length];
+        currentPos = 0;
+      }
+
+      synchronized (delegate) {
+        for (int i = 0; i < length; i++) {
+          delegate.add(current[i]);
+        }
+      }
+    }
+
   }
 }

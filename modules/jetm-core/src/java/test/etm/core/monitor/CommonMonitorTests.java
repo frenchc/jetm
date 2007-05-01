@@ -37,7 +37,7 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
-import test.etm.core.TestAggregator;
+import test.etm.core.TestHelper;
 
 import java.util.Map;
 
@@ -50,10 +50,11 @@ import java.util.Map;
 public abstract class CommonMonitorTests extends TestCase {
 
   protected EtmMonitor monitor;
-  protected TestAggregator aggregator;
 
   /**
    * Tests adding one etm point.
+   *
+   * @throws Exception Any unexpected exception.
    */
 
   public void testAddPoint() throws Exception {
@@ -62,12 +63,12 @@ public abstract class CommonMonitorTests extends TestCase {
     point.collect();
 
 
-    assertEquals(1, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
+
         assertNotNull(points);
         assertEquals(1, points.size());
+        assertEquals(1, new TestHelper().countExecutions(points));
 
         Aggregate aggregate = (Aggregate) points.get("test");
 
@@ -75,15 +76,17 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals("test", aggregate.getName());
         assertEquals(1, aggregate.getMeasurements());
 
-        assertEquals(point.getTransactionTime(), aggregate.getTotal(), 0.0);
-        assertEquals(point.getTransactionTime(), aggregate.getMin(), 0.0);
-        assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.0);
+        assertEquals(point.getTransactionTime(), aggregate.getTotal(), 0.000001);
+        assertEquals(point.getTransactionTime(), aggregate.getMin(), 0.000001);
+        assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.000001);
       }
     });
   }
 
   /**
    * Tests adding two etm points.
+   *
+   * @throws Exception Any unexpected exception.
    */
 
   public void testAddTwoPoints() throws Exception {
@@ -95,12 +98,12 @@ public abstract class CommonMonitorTests extends TestCase {
     Thread.sleep(5);
     point2.collect();
 
-    assertEquals(2, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
+
         assertNotNull(points);
         assertEquals(2, points.size());
+        assertEquals(2, new TestHelper().countExecutions((points)));
 
         // analyze point one
         Aggregate aggregate = (Aggregate) points.get("test");
@@ -109,9 +112,9 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals("test", aggregate.getName());
         assertEquals(1, aggregate.getMeasurements());
 
-        assertEquals(point.getTransactionTime(), aggregate.getTotal(), 0.0);
-        assertEquals(point.getTransactionTime(), aggregate.getMin(), 0.0);
-        assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.0);
+        assertEquals(point.getTransactionTime(), aggregate.getTotal(), 0.000001);
+        assertEquals(point.getTransactionTime(), aggregate.getMin(), 0.000001);
+        assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.000001);
 
         // analyze point two
         Aggregate aggregate2 = (Aggregate) points.get("test2");
@@ -120,9 +123,9 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals("test2", aggregate2.getName());
         assertEquals(1, aggregate2.getMeasurements());
 
-        assertEquals(point2.getTransactionTime(), aggregate2.getTotal(), 0.0);
-        assertEquals(point2.getTransactionTime(), aggregate2.getMin(), 0.0);
-        assertEquals(point2.getTransactionTime(), aggregate2.getMax(), 0.0);
+        assertEquals(point2.getTransactionTime(), aggregate2.getTotal(), 0.000001);
+        assertEquals(point2.getTransactionTime(), aggregate2.getMin(), 0.000001);
+        assertEquals(point2.getTransactionTime(), aggregate2.getMax(), 0.000001);
 
 
       }
@@ -132,6 +135,8 @@ public abstract class CommonMonitorTests extends TestCase {
 
   /**
    * Tests aggregation of one etm point.
+   *
+   * @throws Exception Any kind of exception.
    */
 
   public void testOnePointAggregation() throws Exception {
@@ -143,12 +148,14 @@ public abstract class CommonMonitorTests extends TestCase {
     Thread.sleep(2);
     point2.collect();
 
-    assertEquals(2, aggregator.getCounter());
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
+
+
         assertNotNull(points);
         assertTrue(points.size() == 1);
+        assertEquals(2, new TestHelper().countExecutions(points));
 
         Aggregate aggregate = (Aggregate) points.get("test");
 
@@ -156,9 +163,9 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals("test", aggregate.getName());
         assertEquals(2, aggregate.getMeasurements());
 
-        assertEquals(point.getTransactionTime() + point2.getTransactionTime(), aggregate.getTotal(), 0.0);
-        assertEquals(point2.getTransactionTime(), aggregate.getMin(), 0.0);
-        assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.0);
+        assertEquals(point.getTransactionTime() + point2.getTransactionTime(), aggregate.getTotal(), 0.000001);
+        assertEquals(point2.getTransactionTime(), aggregate.getMin(), 0.000001);
+        assertEquals(point.getTransactionTime(), aggregate.getMax(), 0.000001);
 
       }
 
@@ -167,6 +174,8 @@ public abstract class CommonMonitorTests extends TestCase {
 
   /**
    * Tests aggregation of two etm points.
+   *
+   * @throws Exception Unexpected exception.
    */
 
   public void testTwoPointAggregation() throws Exception {
@@ -187,12 +196,11 @@ public abstract class CommonMonitorTests extends TestCase {
     pointTwo2.collect();
 
 
-    assertEquals(4, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == 2);
+        assertEquals(4, new TestHelper().countExecutions(points));
 
         Aggregate aggregate = (Aggregate) points.get("test");
 
@@ -201,9 +209,9 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals(2, aggregate.getMeasurements());
 
 
-        assertEquals(pointOne.getTransactionTime() + pointOne2.getTransactionTime(), aggregate.getTotal(), 0.0);
-        assertEquals(pointOne2.getTransactionTime(), aggregate.getMin(), 0.0);
-        assertEquals(pointOne.getTransactionTime(), aggregate.getMax(), 0.0);
+        assertEquals(pointOne.getTransactionTime() + pointOne2.getTransactionTime(), aggregate.getTotal(), 0.000001);
+        assertEquals(pointOne2.getTransactionTime(), aggregate.getMin(), 0.000001);
+        assertEquals(pointOne.getTransactionTime(), aggregate.getMax(), 0.000001);
 
 
         Aggregate aggregate2 = (Aggregate) points.get("test2");
@@ -212,9 +220,9 @@ public abstract class CommonMonitorTests extends TestCase {
         assertEquals("test2", aggregate2.getName());
         assertEquals(2, aggregate2.getMeasurements());
 
-        assertEquals(pointTwo.getTransactionTime() + pointTwo2.getTransactionTime(), aggregate2.getTotal(), 0.0);
-        assertEquals(pointTwo2.getTransactionTime(), aggregate2.getMin(), 0.0);
-        assertEquals(pointTwo.getTransactionTime(), aggregate2.getMax(), 0.0);
+        assertEquals(pointTwo.getTransactionTime() + pointTwo2.getTransactionTime(), aggregate2.getTotal(), 0.000001);
+        assertEquals(pointTwo2.getTransactionTime(), aggregate2.getMin(), 0.000001);
+        assertEquals(pointTwo.getTransactionTime(), aggregate2.getMax(), 0.000001);
       }
     });
   }
@@ -227,8 +235,6 @@ public abstract class CommonMonitorTests extends TestCase {
 
     EtmPoint pointOne = monitor.createPoint("test");
 
-    assertEquals(0, aggregator.getCounter());
-
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
@@ -239,12 +245,14 @@ public abstract class CommonMonitorTests extends TestCase {
 
     pointOne.collect();
 
-    assertEquals(1, aggregator.getCounter());
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == 1);
+
+        assertEquals(1, new TestHelper().countExecutions(points));
+
       }
     });
   }
