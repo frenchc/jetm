@@ -13,7 +13,7 @@
     debug="true"
     target="1.3"
     source="1.3"
-    excludes="**/rrd4j/**" />
+    excludes="**/rrd4j/**"/>
 
   <antcall target="compile-jdk15-contrib-sources"/>
 
@@ -44,84 +44,82 @@
   </jar>
 </target>
 
- <target name="compile-jdk15-contrib-sources" if="vm.jdk15">  
-  <javac
-    srcdir="${module.contrib.src.java}"
-    includes="**/rrd4j/**"
-    destdir="${module.contrib.dest.classes}"
-    classpathref="contrib.classpath"
-    debug="true"
-    target="1.3"
-    source="1.3"
-    />
+<target name="compile-jdk15-contrib-sources" if="vm.jdk15">
+<javac
+  srcdir="${module.contrib.src.java}"
+  includes="**/rrd4j/**"
+  destdir="${module.contrib.dest.classes}"
+  classpathref="contrib.classpath"
+  debug="true"
+  target="1.3"
+  source="1.3"
+  />
 </target>
 
 <target name="test-jetm-contrib" depends="build-jetm-contrib">
-  <available property="vm.jdk15" classname="java.lang.Enum"/>
-  <available property="vm.jdk14" classname="java.nio.ByteBuffer"/>
+<available property="vm.jdk15" classname="java.lang.Enum"/>
+<available property="vm.jdk14" classname="java.nio.ByteBuffer"/>
 
-  <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
-    <classpath>
-      <path refid="build.classpath"/>
-    </classpath>
-  </taskdef>
+<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+  <classpath>
+    <path refid="build.classpath"/>
+  </classpath>
+</taskdef>
 
-  <echo message="endorsed ${basedir}/lib/endorsed${path.separator}${java.endorsed.dirs}" />
+<junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
+  <jvmarg value="-Djava.awt.headless=true"/>
+  <jvmarg value="-Djetm.log.level=warn"/>
+  <classpath>
+    <pathelement location="${module.core.dest.classes}"/>
+    <pathelement location="${module.contrib.dest.classes}"/>
+    <path refid="build.classpath"/>
+  </classpath>
 
-  <junit printsummary="yes" fork="yes" haltonfailure="true" showoutput="true">
-    <jvmarg value="-Djava.awt.headless=true"/>
-    <jvmarg value="-Djetm.log.level=warn"/>
-    <classpath>
-      <pathelement location="${module.core.dest.classes}"/>
-      <pathelement location="${module.contrib.dest.classes}"/>
-      <path refid="build.classpath"/>
-    </classpath>
+  <formatter type="plain"/>
+  <batchtest todir="${module.contrib.dest.test}">
+    <fileset dir="${module.contrib.src.java}">
+      <include name="**/test/**/*Test.java"/>
+      <exclude name="**/integration/spring/**"/>
+      <exclude name="**/rrd4j/**"/>
+    </fileset>
+  </batchtest>
 
-    <formatter type="plain"/>
-    <batchtest todir="${module.contrib.dest.test}">
-      <fileset dir="${module.contrib.src.java}">
-        <include name="**/test/**/*Test.java"/>
-        <exclude name="**/integration/spring/**" />
-        <exclude name="**/rrd4j/**" />
-      </fileset>
-    </batchtest>
+  <batchtest todir="${module.contrib.dest.test}" if="vm.jdk15">
+    <fileset dir="${module.contrib.src.java}">
+      <include name="**/integration/spring/**/*Test.java"/>
+      <include name="**/rrd4j/**/*Test.java"/>
+    </fileset>
+  </batchtest>
 
-    <batchtest todir="${module.contrib.dest.test}" if="vm.jdk15">
-      <fileset dir="${module.contrib.src.java}">
-        <include name="**/integration/spring/**/*Test.java" />
-        <include name="**/rrd4j/**/*Test.java" />
-      </fileset>
-    </batchtest>
-
-  </junit>
+</junit>
 </target>
 
 <target name="maven2-contrib-bundle" depends="build-jetm-contrib">
-  <mkdir dir="${module.contrib.dest.maven2}"/>
-  <copy todir="${module.contrib.dest.maven2}">
-    <fileset dir="${module.contrib.dir}/etc/maven2"/>
-    <filterset>
-      <filter token="version" value="${release.version}"/>
-    </filterset>
-  </copy>
-  <copy file="${doc.dir}/license.txt" tofile="${module.contrib.dest.maven2}/LICENSE.txt"/>
+<mkdir dir="${module.contrib.dest.maven2}"/>
+<copy todir="${module.contrib.dest.maven2}">
+  <fileset dir="${module.contrib.dir}/etc/maven2"/>
+  <filterset>
+    <filter token="version" value="${release.version}"/>
+  </filterset>
+</copy>
+<copy file="${doc.dir}/license.txt" tofile="${module.contrib.dest.maven2}/LICENSE.txt"/>
 
-  <copy file="${build.lib.dir}/${release.name}-optional-${release.version}.jar"
-        todir="${module.contrib.dest.maven2}"/>
+<copy file="${build.lib.dir}/${release.name}-optional-${release.version}.jar"
+      todir="${module.contrib.dest.maven2}"/>
 
-  <jar destfile="${module.contrib.dest.maven2}/${release.name}-optional-${release.version}-sources.jar">
-    <fileset dir="${module.contrib.src.java}" excludes="**/test/**"/>
-  </jar>
+<jar destfile="${module.contrib.dest.maven2}/${release.name}-optional-${release.version}-sources.jar">
+  <fileset dir="${module.contrib.src.java}" excludes="**/test/**"/>
+</jar>
 
-  <jar destfile="${build.dist.dir}/${release.name}-optional-${release.version}-bundle.jar">
-    <fileset dir="${module.contrib.dest.maven2}"/>
-  </jar>
+<jar destfile="${build.dist.dir}/${release.name}-optional-${release.version}-bundle.jar">
+  <fileset dir="${module.contrib.dest.maven2}"/>
+</jar>
 </target>
 
 
 <target name="init-contrib">
-  <mkdir dir="${build.lib.dir}"/>
-  <mkdir dir="${build.dist.dir}"/>
-  <mkdir dir="${module.contrib.dest.classes}"/>
-  <mkdir dir="${module.contrib.dest.test}"/>
+<mkdir dir="${build.lib.dir}"/>
+<mkdir dir="${build.dist.dir}"/>
+<mkdir dir="${module.contrib.dest.classes}"/>
+<mkdir dir="${module.contrib.dest.test}"/>
 </target>

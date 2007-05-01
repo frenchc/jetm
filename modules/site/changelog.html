@@ -10,13 +10,29 @@
 <body>
 
 <div id="content">
-  <div id="header">Java&trade; Execution Time Measurement Library</div>
-  <div id="subheader">Runtime performance monitoring made easy</div>
-  <div id="main">
+<div id="header">Java&trade; Execution Time Measurement Library</div>
+<div id="subheader">Runtime performance monitoring made easy</div>
+<div id="main">
 
-    <h3>JETM Changelog</h3>
+<h3>JETM Changelog</h3>
+<h4>Release 1.2.1</h4>
+<pre> New features
+  - Dump current state to log file during reset - if dump plugin is active
 
-    <h4>Release 1.2.0</h4>
+ Changes, Fixes and Improvements
+  - Removed blocking during EtmMonitor.render()
+  - Improved locking during collection and aggregation
+  - HTTP Console: Fixed average division by zero
+  - HTTP Console: Fixed broken reset link in MeasurementPoint detailed view
+  - HTTP Console: Aligned sort order for overview and detail view
+  - HTTP Console: Switched to better resource loading
+  - JETM Web Demo: Fixed wrong filter pattern for logging
+  - JETM Web Demo: Removed Java 5.0 dependency
+  - JETM Samples: Removed util namespace from 5 minute tutorial(#1706118)
+  - Build and Test: Java 1.4 support
+</pre>
+
+<h4>Release 1.2.0</h4>
 <pre> New features
   - Improved Spring integration using Spring 2.x namespaces
   - Sort by name, executions and times in HTTP console
@@ -51,12 +67,12 @@
   - Switched from CVS to SVN (history not migrated)
 </pre>
 
-    <h4>Release 1.1.1</h4>
+<h4>Release 1.1.1</h4>
 <pre>Changes, Fixes and Improvements
   - Switched to thread context classloader to load resources.
 </pre>
 
-    <h4>Release 1.1.0</h4>
+<h4>Release 1.1.0</h4>
 <pre> New features
  - AspectWerkz Support
  - Generic Web App Integration Support
@@ -73,7 +89,7 @@
  - Logging aggregators now support filtering
 </pre>
 
-    <h4>Release 1.0.0</h4>
+<h4>Release 1.0.0</h4>
 <pre> New features
  - Spring based demo (currently available online only)
 
@@ -82,7 +98,7 @@
  - Fixed logging aggregator bugs
 </pre>
 
-    <h4>Release 0.8.0</h4>
+<h4>Release 0.8.0</h4>
 <pre> New features
   - Enabled Plugin Support for XML Configuration
   - Added HTTPConsoleServer Plugin
@@ -94,7 +110,7 @@
   - Autostart for EtmManager configurations
 </pre>
 
-    <h4>Release 0.7.0</h4>
+<h4>Release 0.7.0</h4>
 <pre> New features
   - Added spring support
   - Added AOP Alliance support
@@ -114,27 +130,27 @@
   - Temporary disabled JBoss support
 </pre>
 
-    <p>For changelog prior to 0.7.0 see CVS</p>
+<p>For changelog prior to 0.7.0 see CVS</p>
 
-  </div>
+</div>
 
-  <div id="menu">
-    <a href="index.html">Home</a>
-    |
-    <a href="doc.html">Documentation</a>
-    |
-    <a href="faq.html">FAQ</a>
-    |
-    <a href="@api@/index.html">JavaDoc</a>
-    |
-    <a href="files.html">Download</a>
-    |
-    <a href="svn.html">SVN</a>
-    |
-    <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
-    |
-    <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
-  </div>
+<div id="menu">
+  <a href="index.html">Home</a>
+  |
+  <a href="doc.html">Documentation</a>
+  |
+  <a href="faq.html">FAQ</a>
+  |
+  <a href="@api@/index.html">JavaDoc</a>
+  |
+  <a href="files.html">Download</a>
+  |
+  <a href="svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
 
 </div>
 </body>

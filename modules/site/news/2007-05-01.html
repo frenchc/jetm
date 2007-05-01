@@ -16,20 +16,34 @@
   <div id="subheader">Runtime performance monitoring made easy</div>
 
   <div id="main">
-    <h3>JETM News Archive</h3>
+    <h3>Bugfix release: JETM 1.2.1</h3>
 
     <p>
-      Older JETM news...
+      This is the first (and hopefully last) JETM 1.2.x bugfix release that improves internal concurrency handling and
+      fixes several HTTP console issues. It is recommended to upgrade since it significantly decreases runtime overhead
+      and monitoring side effects. Download JETM 1.2.1 <a href="../files.html">here</a>.
     </p>
 
+    <p>Full changelog:</p>
+    <pre>
+<b>New features</b>
+  - Dump current state to log file during reset - if dump plugin is active
+
+<b>Changes, Fixes and Improvements</b>
+  - Removed blocking during EtmMonitor.render()
+  - Improved locking during collection and aggregation
+  - HTTP Console: Fixed average division by zero
+  - HTTP Console: Fixed broken reset link in MeasurementPoint detailed view
+  - HTTP Console: Aligned sort order for overview and detail view
+  - HTTP Console: Switched to better resource loading
+  - JETM Web Demo: Fixed wrong filter pattern for logging
+  - JETM Web Demo: Removed Java 5.0 dependency
+  - JETM Samples: Removed util namespace from 5 minute tutorial(#1706118)
+  - Build and Test: Java 1.4 support
+ </pre>
+
     <p>
-      <a href="2006-12-11.html">2006/12/11</a> JETM 1.1.1 released, Maven 2 availability<br/>
-      <a href="2006-10-19.html">2006/10/19</a> JETM Snapshots, JMX support added<br/>
-      <a href="2006-09-25.html">2006/09/25</a> JETM 1.1.0 released<br/>
-      <a href="2006-06-30.html">2006/06/30</a> First stable release 1.0.0 available<br/>
-      <a href="2006-06-28.html">2006/06/28</a> JETM demo online<br/>
-      <a href="2006-06-24.html">2006/06/24</a> JETM 0.8.0 released, advanced documentation added<br/>
-      <a href="2006-06-17.html">2006/06/17</a> JETM 0.7.0 released
+
     </p>
 
   </div>
