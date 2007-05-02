@@ -1,3 +1,10 @@
+Current trunk
+ New features
+  - Added JETM lifecycle aspect 
+
+ Changes, Fixes and Improvements
+  - Remove JETM imports from waeving example.
+
 Release 1.2.1
  New features
   - Dump current state to log file during reset - if dump plugin is active
