@@ -1,9 +1,9 @@
 Current trunk
  New features
-  - Added JETM lifecycle aspect 
+  - Added JETM lifecycle aspect (thanks to Stefan Hildebrandt for the pointer)
 
  Changes, Fixes and Improvements
-  - Remove JETM imports from waeving example.
+  - Removed programmatic startup/shutdown from weaving example.
 
 Release 1.2.1
  New features
