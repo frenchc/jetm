@@ -32,11 +32,6 @@
 
 package etm.samples.aop.aspectwerkz;
 
-import etm.core.configuration.BasicEtmConfigurator;
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.renderer.SimpleTextRenderer;
-
 /**
  * AspectWerkz Example
  *
@@ -45,23 +40,8 @@ import etm.core.renderer.SimpleTextRenderer;
  */
 public class AspectWerkzExample {
 
-  private static EtmMonitor monitor;
-
-  private static void setup() {
-    // enable nested monitoring
-    BasicEtmConfigurator.configure(true);
-    monitor = EtmManager.getEtmMonitor();
-    monitor.start();
-  }
-
-  private static void tearDown() {
-    monitor.stop();
-  }
-
 
   public static void main(String[] args) {
-    setup();
-
     FooBarService fooBarService = new FooBarService();
     YaddaService yaddaService = new YaddaService();
 
@@ -70,11 +50,6 @@ public class AspectWerkzExample {
     fooBarService.someMethod();
     fooBarService.someMethod();
     yaddaService.nestedMethod();
-
-    //visualize results
-    monitor.render(new SimpleTextRenderer());
-
-    tearDown();
 
   }
 }

@@ -4,17 +4,34 @@
 <aspectwerkz>
   <system id="weaving-example">
 
+    <!--
+       Define monitored methods
+    -->
+
     <aspect class="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect"
             deployment-model="perJVM">
 
-      <pointcut name="etmExample" expression="
+      <pointcut name="performanceAspect" expression="
           execution(public * etm.samples.aop.aspectwerkz.*Service.*(..))
           OR
           execution(public * etm.samples.aop.aspectwerkz.Dao+.*(..))
       "/>
 
-      <advice name="monitor" type="around" bind-to="etmExample"/>
+      <advice name="monitor" type="around" bind-to="performanceAspect"/>
+    </aspect>
 
+    <!--
+       Bind EtmLifeCycle to AspectWerkzExample main method.
+    -->
+    <aspect class="etm.contrib.aop.common.EtmLifecycleAspect"
+            deployment-model="perJVM">
+
+      <pointcut name="exampleMain" expression="
+            execution(static void etm.samples.aop.aspectwerkz.AspectWerkzExample.main(..))
+        "/>
+
+      <advice name="enableXmlConfig" type="before" bind-to="exampleMain"/>
+      <advice name="disable" type="after" bind-to="exampleMain"/>
     </aspect>
 
   </system>

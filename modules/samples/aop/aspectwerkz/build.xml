@@ -80,6 +80,7 @@
       />
     <copy todir="build/classes">
       <fileset dir="src/java" includes="**/META-INF/**"/>
+      <fileset dir="src/java" includes="**/jetm-config.xml"/>
     </copy>
 
   </target>
