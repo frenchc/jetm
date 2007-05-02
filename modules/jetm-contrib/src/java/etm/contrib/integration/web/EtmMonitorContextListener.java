@@ -104,7 +104,7 @@ public class EtmMonitorContextListener implements ServletContextListener {
       String key = filePath.substring(2, filePath.length() - 1);
       filePath = System.getProperty(key);
       if (filePath == null) {
-        throw new EtmConfigurationException("Error reading jetm config filepath from System properties unsing name " + key);
+        throw new EtmConfigurationException("Error reading jetm config filepath from System properties using name " + key);
       }
     }
 
