@@ -33,6 +33,7 @@
 package etm.contrib.aop.common;
 
 import etm.core.configuration.BasicEtmConfigurator;
+import etm.core.configuration.EtmConfigurationException;
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
 import etm.core.monitor.EtmException;
@@ -46,6 +47,8 @@ import java.net.URL;
  * A class that may be used to enable / disable JETM performance monitoring.
  * Bind this class to a life cycle method within your application that safely
  * will be started/stopped. See aspectwerkz for example usage.
+ * <p/>
+ * Replaces ant style properties with System property values.
  *
  * @author void.fm
  * @version $Revision$
@@ -57,7 +60,8 @@ public class EtmLifecycleAspect {
   private static final String DEFAULT_CONFIG_FILE = "jetm-config.xml";
 
   /**
-   * Enables performance monitoring
+   * Enables performance monitoring using {@link etm.core.configuration.BasicEtmConfigurator}.
+   *
    */
   public void enableBasicConfig() {
     if (!EtmManager.getEtmMonitor().isStarted()) {
@@ -68,11 +72,22 @@ public class EtmLifecycleAspect {
     }
   }
 
+  /**
+   *
+   * Enables performance monitoring using [@link etm.core.configuration.XmlEtmConfigurator}.
+   * Requires a file called <code>jetm-config.xml</code> in classpath.
+   *
+   */
   public void enableXmlConfig() {
     enableXmlConfigByClasspathResource(DEFAULT_CONFIG_FILE);
   }
 
-
+  /**
+   *
+   * Enables performance monitoring using [@link etm.core.configuration.XmlEtmConfigurator}.
+   *
+   * @param url The url to the xml file in the classpath. May be a file URL too.
+   */
   public void enableXmlConfigByUrl(String url) {
     try {
       enable(new URL(url));
@@ -80,6 +95,13 @@ public class EtmLifecycleAspect {
       throw new EtmException(e);
     }
   }
+
+  /**
+   *
+   * Enables performance monitoring using [@link etm.core.configuration.XmlEtmConfigurator}.
+   *
+   * @param classpathResource The name of the xml file in the classpath.
+   */
 
   public void enableXmlConfigByClasspathResource(String classpathResource) {
     URL resource = Thread.currentThread().getContextClassLoader().getResource(classpathResource);
@@ -90,6 +112,16 @@ public class EtmLifecycleAspect {
     }
   }
 
+  /**
+   *
+   * Disables performance monitoring.
+   *
+   */
+
+  public void disable() {
+    EtmManager.getEtmMonitor().stop();
+  }
+
   protected void enable(URL url) {
     if (!EtmManager.getEtmMonitor().isStarted()) {
       XmlEtmConfigurator.configure(url);
@@ -98,8 +130,16 @@ public class EtmLifecycleAspect {
       log.warn("Etm subsystem already initialized. Ignoring init.");
     }
   }
+  
+  protected String replaceBySystemProperty(String value) {
+    if (value != null && value.startsWith("${") && value.endsWith("}")) {
+      String key = value.substring(2, value.length() - 1);
+      value = System.getProperty(key);
+      if (value == null) {
+        throw new EtmConfigurationException("Error reading value from system properties using name " + key);
+      }
+    }
 
-  public void disable() {
-    EtmManager.getEtmMonitor().stop();
+    return value;
   }
 }
