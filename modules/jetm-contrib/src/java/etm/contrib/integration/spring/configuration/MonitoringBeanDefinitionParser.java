@@ -127,7 +127,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
       String[] names = definitionRegistry.getBeanDefinitionNames();
       for (int i = 0; i < names.length; i++) {
         BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
-        if (definition.getBeanClassName().equals("etm.contrib.aop.aopalliance.EtmMethodCallInterceptor")) {
+        if ("etm.contrib.aop.aopalliance.EtmMethodCallInterceptor".equals(definition.getBeanClassName())) {
           interceptorName = names[i];
           break;
         }
@@ -170,7 +170,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
 
     for (int i = 0; i < names.length; i++) {
       BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
-      if (definition.getBeanClassName().equals("org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator")) {
+      if ("org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator".equals(definition.getBeanClassName())) {
         MutablePropertyValues propertyValues = definition.getPropertyValues();
         PropertyValue propertyValue = propertyValues.getPropertyValue("interceptorNames");
         if (propertyValue.getValue().equals(aInterceptorName)) {
