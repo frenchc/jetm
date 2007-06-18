@@ -149,7 +149,7 @@ class Xml12ConfigParser extends XmlConfigParser {
       aMonitorConfig.appendAggregator(aggregatorConfig);
 
     } else if (intervalBuffer.getLength() != 0) {
-      Element element = ((Element) thresholdBuffer.item(0));
+      Element element = ((Element) intervalBuffer.item(0));
       EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
       aggregatorConfig.setAggregatorClass(BufferedTimedAggregator.class);
 
