@@ -2,6 +2,7 @@ package test.etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.BufferedThresholdAggregator;
+import etm.core.aggregation.BufferedTimedAggregator;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
@@ -91,6 +92,17 @@ public class Xml12EtmConfiguratorTest extends TestCase {
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
       assertEquals(configurations[i][1], ((TestMonitor) etmMonitor).getExecutionTimer().getClass());
     }
+  }
+
+  public void testIntervalBuffer() throws Exception {
+    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/interval-buffer.xml");
+    EtmManager.reset();
+    XmlEtmConfigurator.configure(url);
+
+    EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+    AggregatorMetaData metaData = etmMonitor.getMetaData().getAggregatorMetaData();
+
+    assertEquals(BufferedTimedAggregator.class, metaData.getImplementationClass());
   }
 
   public void testAggregatorConfig() throws Exception {
