@@ -210,6 +210,11 @@ java -javaagent:/path/to/lib/aspectwerkz-jdk5-x.x.jar -cp <i>CLASSPATH</i>
   build.properties points to a valid AspectWerkz distribution.)
 </p>
 
+<p>
+  <b>Attention:</b> Due to some unknown reason it is required to deploy a valid aop.xml with your application. So always
+  ensure to have the used aop.xml in the application classpath located at <i>META-INF/aop.xml</i>.
+</p>
+
 <p><i>*Note: Not all libraries will be required at runtime. Please check AspectWerkz manual for weaving and
   runtime dependencies.</i></p>
 </div>
