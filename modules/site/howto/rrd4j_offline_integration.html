@@ -10,6 +10,24 @@
 
 <body>
 
+<div class="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html"><b>Documentation</b></a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html"><b>Download</b></a>
+  |
+  <a href="../svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
+
 <div id="content">
 <div id="header">Java&trade; Execution Time Measurement Library</div>
 
@@ -75,7 +93,7 @@
   It is recommended to configure the log framework such that all raw performance data are logged to dedicated log files
   on a daily basis. While JETM is capable to differentiate between historical and new performance data it has to scan
   every line in a log file to locate new measurements. If you use one log file only you will notice significant
-  import performance degration over time. 
+  import performance degration over time.
 </p>
 
 
@@ -113,8 +131,9 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain import -s /tmp/performance.log
 </div>
 <p>
   You may run an import from the same file multiple times - the import tool will detect whether the given file contains
-  newer performance data or not. However is impossible to import historical data once you have imported more recent ones.
-  Therefore you need to ensure to preserve the logging order while importing from multiple files. 
+  newer performance data or not. However is impossible to import historical data once you have imported more recent
+  ones.
+  Therefore you need to ensure to preserve the logging order while importing from multiple files.
 </p>
 
 <a name="#create_graphs"></a>
@@ -124,8 +143,9 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain import -s /tmp/performance.log
   After the import the stored data can be rendered. The following examples render maximum and average times
   found in our RRD DB files for given intervals (last hour and last 24 hours) and use the pre-defined
   render templates max-average. Apart from the max-average image template JETM ships with templates for min, max,
-  average, min-average, tx and average-tx renderings, whereas tx means transactions.  
+  average, min-average, tx and average-tx renderings, whereas tx means transactions.
 </p>
+
 <div class="code"><pre>
 java etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s /tmp/soap_actions.rrd
   -d /tmp/performance-soap-actions-last-hour.png
@@ -147,10 +167,11 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-graph -t max-average -s /tmp/http_re
 </div>
 <p>
   Attention: The import tool will import performance data at recording time. Therefore you may not be able to see
-  rendered performance results using the commands above (since your data may be too old for the selected intervals). 
+  rendered performance results using the commands above (since your data may be too old for the selected intervals).
   The command line tool supports several ways to specify a certain monitoring interval. See table below for further
   options.
 </p>
+
 <p>
   During the image rendering process RRD4j makes uses of AWT. In server applications it is usually a good idea to switch
   to awt headless mode by specifying <i>-Djava.awt.headless=true</i>.
