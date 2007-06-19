@@ -49,7 +49,7 @@ import java.io.InputStream;
  * @version $Revision$
  * @since 1.2.0
  */
-abstract class XmlConfigParser {
+public abstract class XmlConfigParser {
 
   public static final String PUBLIC_DTD_1_0 = "-// void.fm //DTD JETM Config 1.0//EN";
   public static final String JETM_CONFIG_1_0_DTD_NAME = "jetm_config_1_0.dtd";

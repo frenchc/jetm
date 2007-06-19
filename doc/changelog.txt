@@ -1,6 +1,8 @@
 Release 1.2.2
  New features
  - TabularData in JMX Beans (recommended by Nat Luengnaruemitchai)
+ - (Undocumented) JBoss AOP Support (target release will be JETM 1.3.0)
+ - Experimental JETM Connector for .ear deployment (target release will be JETM 1.3.0)
 
  Changes, Fixes and Improvements
  - Fixed possible NullPointers in MonitoringBeanDefinitionParser (reported by Nat Luengnaruemitchai)

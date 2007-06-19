@@ -1,0 +1,22 @@
+<connector xmlns="http://java.sun.com/xml/ns/j2ee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+		 http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd"
+           version="1.5">
+  <display-name>JETM lifecycle adapter</display-name>
+  <vendor-name>void.fm</vendor-name>
+  <eis-type>JETM lifecycle adapter</eis-type>
+  <resourceadapter-version>1.0</resourceadapter-version>
+  <license>
+    <description>This adapter is shipped under BSD-style license. See http://jetm.void.fm/license.html</description>
+    <license-required>false</license-required>
+  </license>
+
+  <resourceadapter>
+
+    <resourceadapter-class>etm.contrib.integration.jca.EtmManagerConnector</resourceadapter-class>
+    <!--<config-property>-->
+    <!--<config-property-name></config-property-name>-->
+    <!--</config-property>-->
+  </resourceadapter>
+</connector>
