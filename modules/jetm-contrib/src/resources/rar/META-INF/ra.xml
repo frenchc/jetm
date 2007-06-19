@@ -15,16 +15,22 @@
   <resourceadapter>
 
     <resourceadapter-class>etm.contrib.integration.jca.EtmManagerConnector</resourceadapter-class>
+
+    <!--
+      Alters the name for the jetm config file.
     <config-property>
       <config-property-name>configFile</config-property-name>
       <config-property-type>java.lang.String</config-property-type>
       <config-property-value>jetm-config.xml</config-property-value>
-    </config-property>
+    </config-property>  -->
 
+    <!--
+     Enables JNDI binding, currently not supported
     <config-property>
       <config-property-name>jndiName</config-property-name>
       <config-property-type>java.lang.String</config-property-type>
       <config-property-value>etm/EtmMonitor</config-property-value>
     </config-property>
+    -->
   </resourceadapter>
 </connector>
