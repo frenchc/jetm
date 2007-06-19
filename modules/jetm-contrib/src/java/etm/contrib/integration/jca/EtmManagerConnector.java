@@ -32,17 +32,11 @@
 package etm.contrib.integration.jca;
 
 import etm.core.configuration.EtmManager;
-import etm.core.configuration.EtmMonitorConfig;
-import etm.core.configuration.EtmMonitorFactory;
-import etm.core.configuration.XmlConfigParser;
 import etm.core.configuration.XmlEtmConfigurator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
-import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingException;
 import javax.resource.ResourceException;
 import javax.resource.spi.ActivationSpec;
 import javax.resource.spi.BootstrapContext;
@@ -50,8 +44,6 @@ import javax.resource.spi.ResourceAdapter;
 import javax.resource.spi.ResourceAdapterInternalException;
 import javax.resource.spi.endpoint.MessageEndpointFactory;
 import javax.transaction.xa.XAResource;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -89,36 +81,37 @@ public class EtmManagerConnector implements ResourceAdapter {
       monitor = EtmManager.getEtmMonitor();
     } else {
       // jndi usage
-      InputStream in = null;
-      InitialContext ctx = null;
-      try {
-        in = resource.openStream();
-        EtmMonitorConfig monitorConfig = XmlConfigParser.extractConfig(in);
-        monitor = EtmMonitorFactory.createEtmMonitor(monitorConfig);
-
-        ctx = new InitialContext();
-        // todo this may not work due to missing sub contexts
-        ctx.bind(jndiName, monitor);
-
-      } catch (Exception e) {
-        throw new ResourceAdapterInternalException(e);
-      } finally {
-        if (in != null) {
-          try {
-            in.close();
-          } catch (IOException e) {
-            // ignored
-          }
-        }
-
-        if (ctx != null) {
-          try {
-            ctx.close();
-          } catch (NamingException e) {
-            // ignored
-          }
-        }
-      }
+      throw new UnsupportedOperationException("JNDI Bind currently not supported.");
+//      InputStream in = null;
+//      InitialContext ctx = null;
+//      try {
+//        in = resource.openStream();
+//        EtmMonitorConfig monitorConfig = XmlConfigParser.extractConfig(in);
+//        monitor = EtmMonitorFactory.createEtmMonitor(monitorConfig);
+//
+//        ctx = new InitialContext();
+//        // todo this may not work due to missing sub contexts
+//        ctx.bind(jndiName, monitor);
+//
+//      } catch (Exception e) {
+//        throw new ResourceAdapterInternalException(e);
+//      } finally {
+//        if (in != null) {
+//          try {
+//            in.close();
+//          } catch (IOException e) {
+//            // ignored
+//          }
+//        }
+//
+//        if (ctx != null) {
+//          try {
+//            ctx.close();
+//          } catch (NamingException e) {
+//            // ignored
+//          }
+//        }
+//      }
     }
     monitor.start();
   }
@@ -127,25 +120,25 @@ public class EtmManagerConnector implements ResourceAdapter {
     if (monitor != null) {
       monitor.stop();
     }
-    if (jndiName != null) {
-      InitialContext ctx = null;
-      try {
-        ctx = new InitialContext();
-        ctx.unbind(jndiName);
-      } catch (NameNotFoundException e) {
-        // ignore
-      } catch (Exception e) {
-        log.warn("Unable to deregister JETM monitor " + jndiName + " from JNDI tree", e);
-      } finally {
-        if (ctx != null) {
-          try {
-            ctx.close();
-          } catch (NamingException e) {
-            // ignored
-          }
-        }
-      }
-    }
+//    if (jndiName != null) {
+//      InitialContext ctx = null;
+//      try {
+//        ctx = new InitialContext();
+//        ctx.unbind(jndiName);
+//      } catch (NameNotFoundException e) {
+//        // ignore
+//      } catch (Exception e) {
+//        log.warn("Unable to deregister JETM monitor " + jndiName + " from JNDI tree", e);
+//      } finally {
+//        if (ctx != null) {
+//          try {
+//            ctx.close();
+//          } catch (NamingException e) {
+//            // ignored
+//          }
+//        }
+//      }
+//    }
   }
 
   public void endpointActivation(MessageEndpointFactory aMessageEndpointFactory, ActivationSpec aActivationSpec) throws ResourceException {

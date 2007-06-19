@@ -15,8 +15,16 @@
   <resourceadapter>
 
     <resourceadapter-class>etm.contrib.integration.jca.EtmManagerConnector</resourceadapter-class>
-    <!--<config-property>-->
-    <!--<config-property-name></config-property-name>-->
-    <!--</config-property>-->
+    <config-property>
+      <config-property-name>configFile</config-property-name>
+      <config-property-type>java.lang.String</config-property-type>
+      <config-property-value>jetm-config.xml</config-property-value>
+    </config-property>
+
+    <config-property>
+      <config-property-name>jndiName</config-property-name>
+      <config-property-type>java.lang.String</config-property-type>
+      <config-property-value>etm/EtmMonitor</config-property-value>
+    </config-property>
   </resourceadapter>
 </connector>
