@@ -203,7 +203,7 @@
 </p>
 
 <div class="code"><pre>  <span class="java-quote">// initialize measurement subsystem</span>
-  <b>XmlEtmConfigurator.configure(new File("etm-config.xml"));</b>
+  <b>XmlEtmConfigurator.configure(new File("jetm-config.xml"));</b>
 
   <span class="java-quote">// startup measurement subsystem</span>
   EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
@@ -264,7 +264,7 @@
 &lt;jetm-config timer="<b>etm.core.timer.DefaultTimer</b>"/&gt;</pre>
 </div>
 
-<h5>JETM configuration chaing</h5>
+<h5>Further JETM configuration options</h5>
 
 <p>
   As stated above the default aggregation chain uses a threshold based buffer. If you want to alter this behavior you

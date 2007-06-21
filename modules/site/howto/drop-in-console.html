@@ -39,105 +39,105 @@
 <div id="subheader">Runtime performance monitoring made easy</div>
 
 <div id="main">
-  <h3>JETM Drop-in HTTP Console</h3>
+<h3>JETM Drop-in HTTP Console</h3>
 
-  <a onclick="showPopup(); return false;">
-    <img style="float: right; margin-left: 15px; margin-bottom: 15px;" border="0" src="../img/jetm_console_thumb.png"
-         alt="JETM Console"/>
-  </a>
+<a onclick="showPopup(); return false;">
+  <img style="float: right; margin-left: 15px; margin-bottom: 15px;" border="0" src="../img/jetm_console_thumb.png"
+       alt="JETM Console"/>
+</a>
 
-  <p>
-    JETM ships with a drop-in HTTP console that provides means to access aggregated performance statistics. It supports
-    both nested and flat measurements. Click image to the right to see an example screenshot.
-  </p>
+<p>
+  JETM ships with a drop-in HTTP console that provides means to access aggregated performance statistics. It supports
+  both nested and flat measurements. Click image to the right to see an example screenshot.
+</p>
 
-  <p>
-    Currently there are three ways to activate the HTTP console: It can either be automatically enabled
-    using the <a href="../@api@/etm/contrib/console/HttpConsoleServerPlugin.html">HttpConsoleServerPlugin</a> or
-    <a href="../@api@/etm/contrib/integration/web//HttpConsoleServlet.html">HttpConsoleServlet</a> or
-    manually instantiated using <a href="../@api@/etm/contrib/console/HttpConsoleServer.html">HttpConsoleServer</a>.
-  </p>
+<p>
+  Currently there are three ways to activate the HTTP console: It can either be automatically enabled
+  using the <a href="../@api@/etm/contrib/console/HttpConsoleServerPlugin.html">HttpConsoleServerPlugin</a> or
+  <a href="../@api@/etm/contrib/integration/web//HttpConsoleServlet.html">HttpConsoleServlet</a> or
+  manually instantiated using <a href="../@api@/etm/contrib/console/HttpConsoleServer.html">HttpConsoleServer</a>.
+</p>
 
-  <h4>HTTP Console Servlet</h4>
+<h4>HTTP Console Servlet</h4>
 
-  <p>See <a href="web_integration.html">web application</a> and
-    <a href="spring_web_integration.html">Spring web application</a> integration for further details.</p>
+<p>See <a href="web_integration.html">web application</a> and
+  <a href="spring_web_integration.html">Spring web application</a> integration for further details.</p>
 
-  <h4>HTTP Console Plugin</h4>
+<h4>HTTP Console Plugin</h4>
 
-  <p>
-    Applications that use <a href="etm_manager_configuration.html">static JETM configuration</a> can rely on the
-    plugin mechanism to startup and shutdown a HTTP console. The plugin <i>HttpConsoleServerPlugin</i> may be used
-    for this. See following xml configuration example:
-  </p>
+<p>
+  Applications that use <a href="etm_manager_configuration.html">static JETM configuration</a> can rely on the
+  plugin mechanism to startup and shutdown a HTTP console. The plugin <i>HttpConsoleServerPlugin</i> may be used
+  for this. See following xml configuration example:
+</p>
 
-  <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.0//EN"
-                             "http://jetm.void.fm/dtd/jetm_config_1_0.dtd"&gt;
+<div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN"
+                             "http://jetm.void.fm/dtd/jetm_config_1_2.dtd"&gt;
 &lt;jetm-config&gt;
 
   ...
 
   &lt;extension&gt;
     &lt;plugin&gt;
-      &lt;plugin-class&gt;<b>etm.contrib.console.HttpConsoleServerPlugin</b>&lt;/plugin-class&gt;
+      &lt;plugin class="<b>etm.contrib.console.HttpConsoleServerPlugin</b>"/&gt;
     &lt;/plugin&gt;
   &lt;/extension&gt;
 &lt;/jetm-config&gt;
 </pre>
-  </div>
+</div>
 
-  <p>
-    Once enabled it can be accessed through HTTP port 40000 (e.g. http://localhost:40000).
-  </p>
+<p>
+  Once enabled it can be accessed through HTTP port 40000 (e.g. http://localhost:40000).
+</p>
 
-  <h4>Standalone HTTP Console Server</h4>
+<h4>Standalone HTTP Console Server</h4>
 
-  <p>
-    Starting the HTTP Console Server is as simple as providing an instance of EtmMonitor to <i>HttpConsoleServer</i>.
-    Optionally the listen port (<i>setListenPort</i>) and the number of worker threads (<i>setWorkerSize</i>) can be
-    configured.
-  </p>
+<p>
+  Starting the HTTP Console Server is as simple as providing an instance of EtmMonitor to <i>HttpConsoleServer</i>.
+  Optionally the listen port (<i>setListenPort</i>) and the number of worker threads (<i>setWorkerSize</i>) can be
+  configured.
+</p>
 
-  <div class="code"><pre>EtmMonitor etmMonitor = ...;
+<div class="code"><pre>EtmMonitor etmMonitor = ...;
 
 <b>HttpConsoleServer server = new HttpConsoleServer(etmMonitor);</b>
 <span class="java-quote">// override default listen port</span>
 server.setListenPort(45000);
 server.start();</pre>
-  </div>
+</div>
 
-  <p>
-    Please note that <i>HttpConsoleServer</i> can easily be used within a spring managed application.
-    See <a href="spring_integration.html">Spring Framework integration howto</a> for further details.
-  </p>
+<p>
+  Please note that <i>HttpConsoleServer</i> can easily be used within a spring managed application.
+  See <a href="spring_integration.html">Spring Framework integration howto</a> for further details.
+</p>
 
-  <h4>HTTP console properties</h4>
+<h4>HTTP console properties</h4>
 
-  <p>Both the plugin and the standalone HTTPConsole support the following properties:</p>
-  <table class="list">
-    <tr>
-      <th>Property</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-    <tr>
-      <td valign="top">listenPort</td>
-      <td valign="top">Sets the listen port for the console</td>
-      <td valign="top">40000</td>
-    </tr>
-    <tr>
-      <td valign="top">expanded</td>
-      <td valign="top">Enables or disables expanded view</td>
-      <td valign="top">false</td>
-    </tr>
-    <tr>
-      <td valign="top">workerSize</td>
-      <td valign="top">The number of threads used for request processing. Must be 2 or more.</td>
-      <td valign="top">2</td>
-    </tr>
+<p>Both the plugin and the standalone HTTPConsole support the following properties:</p>
+<table class="list">
+  <tr>
+    <th>Property</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td valign="top">listenPort</td>
+    <td valign="top">Sets the listen port for the console</td>
+    <td valign="top">40000</td>
+  </tr>
+  <tr>
+    <td valign="top">expanded</td>
+    <td valign="top">Enables or disables expanded view</td>
+    <td valign="top">false</td>
+  </tr>
+  <tr>
+    <td valign="top">workerSize</td>
+    <td valign="top">The number of threads used for request processing. Must be 2 or more.</td>
+    <td valign="top">2</td>
+  </tr>
 
-  </table>
+</table>
 
 </div>
 </div>
