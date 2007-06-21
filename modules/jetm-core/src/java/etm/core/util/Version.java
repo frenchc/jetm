@@ -32,17 +32,18 @@
 
 package etm.core.util;
 
+import etm.core.monitor.EtmMonitor;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
 /**
- *
  * Contains JETM version information.
  *
- * @version $Revision:129 $
  * @author void.fm
+ * @version $Revision:129 $
  * @since 1.2.0
  */
 public class Version {
@@ -51,7 +52,7 @@ public class Version {
 
   static {
     Properties props = new Properties();
-    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("jetm.version");
+    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream("jetm.version");
     if (in != null) {
       try {
         try {
@@ -69,6 +70,7 @@ public class Version {
     }
     properties = props;
   }
+
   public static String getVersion() {
     return (String) properties.get("jetm.version");
   }

@@ -33,6 +33,7 @@
 package etm.contrib.rrd.rrd4j;
 
 import etm.core.monitor.EtmException;
+import etm.core.monitor.EtmMonitor;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 import org.rrd4j.core.RrdDb;
@@ -82,7 +83,7 @@ public class Rrd4jUtil {
     templates.put("lowres", "etm/contrib/rrd/rrd4j/template/db/lowres-template.xml");
     templates.put("average-tx", "etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
     templates.put("min-average", "etm/contrib/rrd/rrd4j/template/graph/min-average-template.xml");
-    templates.put("max-average", "etm/contrib/rrd/rrd4j/template/graph/max-average-template.xml");    
+    templates.put("max-average", "etm/contrib/rrd/rrd4j/template/graph/max-average-template.xml");
     templates.put("average", "etm/contrib/rrd/rrd4j/template/graph/average-template.xml");
     templates.put("min", "etm/contrib/rrd/rrd4j/template/graph/min-template.xml");
     templates.put("max", "etm/contrib/rrd/rrd4j/template/graph/max-template.xml");
@@ -270,7 +271,7 @@ public class Rrd4jUtil {
       log.debug("Using template " + aTemplate + " from classpath.");
     }
 
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    ClassLoader loader = EtmMonitor.class.getClassLoader();
     URL resource = loader.getResource(aTemplate);
     if (resource != null) {
       return resource;

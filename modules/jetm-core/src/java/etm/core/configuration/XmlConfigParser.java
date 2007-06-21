@@ -31,6 +31,7 @@
  */
 package etm.core.configuration;
 
+import etm.core.monitor.EtmMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -84,9 +85,9 @@ public abstract class XmlConfigParser {
     documentBuilder.setEntityResolver(new EntityResolver() {
       public InputSource resolveEntity(String string, String string1) throws SAXException {
         if (PUBLIC_DTD_1_0.equals(string)) {
-          return new InputSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(JETM_CONFIG_1_0_DTD_NAME));
+          return new InputSource(EtmMonitor.class.getClassLoader().getResourceAsStream(JETM_CONFIG_1_0_DTD_NAME));
         } else if (PUBLIC_DTD_1_2.equals(string)) {
-          return new InputSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(JETM_CONFIG_1_2_DTD_NAME));
+          return new InputSource(EtmMonitor.class.getClassLoader().getResourceAsStream(JETM_CONFIG_1_2_DTD_NAME));
         }
         throw new SAXException("Unsupported entity " + string);
       }

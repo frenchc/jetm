@@ -35,6 +35,7 @@ package etm.contrib.integration.web;
 import etm.core.configuration.EtmConfigurationException;
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
+import etm.core.monitor.EtmMonitor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -125,7 +126,7 @@ public class EtmMonitorContextListener implements ServletContextListener {
         throw new EtmConfigurationException("Unable to locate JETM configuration file at " + file.getAbsolutePath());
       }
     } else {
-      InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+      InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream(fileName);
       if (in != null) {
         try {
           XmlEtmConfigurator.configure(in);

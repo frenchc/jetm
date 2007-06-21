@@ -37,6 +37,9 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
+import javax.naming.NamingException;
+import javax.naming.Reference;
+import javax.resource.Referenceable;
 import javax.resource.ResourceException;
 import javax.resource.spi.ActivationSpec;
 import javax.resource.spi.BootstrapContext;
@@ -44,6 +47,7 @@ import javax.resource.spi.ResourceAdapter;
 import javax.resource.spi.ResourceAdapterInternalException;
 import javax.resource.spi.endpoint.MessageEndpointFactory;
 import javax.transaction.xa.XAResource;
+import java.io.Serializable;
 import java.net.URL;
 
 /**
@@ -54,10 +58,8 @@ import java.net.URL;
  * @version $Revision$
  * @since 1.2.2
  */
-public class EtmManagerConnector implements ResourceAdapter {
+public class EtmManagerConnector implements ResourceAdapter, Referenceable, Serializable {
   private static final LogAdapter log = Log.getLog(EtmManagerConnector.class);
-
-  private EtmMonitor monitor;
 
   private String jndiName;
   private static final String DEFAULT_CONFIG_FILE_NAME = "jetm-config.xml";
@@ -72,13 +74,18 @@ public class EtmManagerConnector implements ResourceAdapter {
   }
 
   public void start(BootstrapContext aBootstrapContext) throws ResourceAdapterInternalException {
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    ClassLoader loader = EtmMonitor.class.getClassLoader();
     URL resource = loader.getResource(configFileName);
+
+    if (resource == null) {
+      throw new ResourceAdapterInternalException("Unable to locate JETM config file " + configFileName + " in classpath.");
+    }
+
+    log.debug("Using JETM configuration file " + resource);
 
     if (jndiName == null) {
       // static usage
       XmlEtmConfigurator.configure(resource);
-      monitor = EtmManager.getEtmMonitor();
     } else {
       // jndi usage
       throw new UnsupportedOperationException("JNDI Bind currently not supported.");
@@ -113,13 +120,11 @@ public class EtmManagerConnector implements ResourceAdapter {
 //        }
 //      }
     }
-    monitor.start();
+    EtmManager.getEtmMonitor().start();
   }
 
   public void stop() {
-    if (monitor != null) {
-      monitor.stop();
-    }
+    EtmManager.getEtmMonitor().stop();
 //    if (jndiName != null) {
 //      InitialContext ctx = null;
 //      try {
@@ -149,5 +154,13 @@ public class EtmManagerConnector implements ResourceAdapter {
 
   public XAResource[] getXAResources(ActivationSpec[] aActivationSpecs) throws ResourceException {
     return null;
+  }
+
+  public Reference getReference() throws NamingException {
+    return new Reference(EtmManagerConnector.class.getName());
+  }
+
+  public void setReference(Reference aReference) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

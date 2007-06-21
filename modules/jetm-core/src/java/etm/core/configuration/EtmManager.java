@@ -95,7 +95,8 @@ public class EtmManager {
   }
 
   private static void init() {
-    etmMonitor = (EtmMonitor) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
+
+    etmMonitor = (EtmMonitor) Proxy.newProxyInstance(EtmMonitor.class.getClassLoader(),
       new Class[]{EtmMonitor.class},
       handler
     );
