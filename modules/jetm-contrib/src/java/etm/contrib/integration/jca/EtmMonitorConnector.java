@@ -32,13 +32,19 @@
 package etm.contrib.integration.jca;
 
 import etm.core.configuration.EtmManager;
+import etm.core.configuration.EtmMonitorConfig;
+import etm.core.configuration.EtmMonitorFactory;
+import etm.core.configuration.XmlConfigParser;
 import etm.core.configuration.XmlEtmConfigurator;
 import etm.core.monitor.EtmMonitor;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.naming.Reference;
+import javax.naming.StringRefAddr;
 import javax.resource.Referenceable;
 import javax.resource.ResourceException;
 import javax.resource.spi.ActivationSpec;
@@ -47,6 +53,8 @@ import javax.resource.spi.ResourceAdapter;
 import javax.resource.spi.ResourceAdapterInternalException;
 import javax.resource.spi.endpoint.MessageEndpointFactory;
 import javax.transaction.xa.XAResource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 
@@ -58,12 +66,15 @@ import java.net.URL;
  * @version $Revision$
  * @since 1.2.2
  */
-public class EtmManagerConnector implements ResourceAdapter, Referenceable, Serializable {
-  private static final LogAdapter log = Log.getLog(EtmManagerConnector.class);
-
-  private String jndiName;
+public class EtmMonitorConnector implements ResourceAdapter, Referenceable, Serializable {
+  private static final LogAdapter log = Log.getLog(EtmMonitorConnector.class);
   private static final String DEFAULT_CONFIG_FILE_NAME = "jetm-config.xml";
+
   private String configFileName = DEFAULT_CONFIG_FILE_NAME;
+  // null value jndi name indicates that JNDI registration is not required
+  private String jndiName;
+
+  private Reference reference;
 
   public void setConfigFile(String fileName) {
     configFileName = fileName;
@@ -86,64 +97,75 @@ public class EtmManagerConnector implements ResourceAdapter, Referenceable, Seri
     if (jndiName == null) {
       // static usage
       XmlEtmConfigurator.configure(resource);
+      EtmManager.getEtmMonitor().start();
+
     } else {
       // jndi usage
-      throw new UnsupportedOperationException("JNDI Bind currently not supported.");
-//      InputStream in = null;
-//      InitialContext ctx = null;
-//      try {
-//        in = resource.openStream();
-//        EtmMonitorConfig monitorConfig = XmlConfigParser.extractConfig(in);
-//        monitor = EtmMonitorFactory.createEtmMonitor(monitorConfig);
-//
-//        ctx = new InitialContext();
-//        // todo this may not work due to missing sub contexts
-//        ctx.bind(jndiName, monitor);
-//
-//      } catch (Exception e) {
-//        throw new ResourceAdapterInternalException(e);
-//      } finally {
-//        if (in != null) {
-//          try {
-//            in.close();
-//          } catch (IOException e) {
-//            // ignored
-//          }
-//        }
-//
-//        if (ctx != null) {
-//          try {
-//            ctx.close();
-//          } catch (NamingException e) {
-//            // ignored
-//          }
-//        }
-//      }
+      InputStream in = null;
+      InitialContext ctx = null;
+      try {
+        in = resource.openStream();
+        EtmMonitorConfig monitorConfig = XmlConfigParser.extractConfig(in);
+        EtmMonitor monitor = EtmMonitorFactory.createEtmMonitor(monitorConfig);
+
+        ctx = new InitialContext();
+        // todo this may not work due to missing sub contexts
+        EtmMonitorReference etmMonitorReference = new EtmMonitorReference();
+        etmMonitorReference.setReference(resource.toString());
+        ctx.bind(jndiName, etmMonitorReference);
+
+        EtmMonitorRepository.register(resource.toString(), monitor);
+        monitor.start();
+      } catch (Exception e) {
+        throw new ResourceAdapterInternalException(e);
+      } finally {
+        if (in != null) {
+          try {
+            in.close();
+          } catch (IOException e) {
+            // ignored
+          }
+        }
+
+        if (ctx != null) {
+          try {
+            ctx.close();
+          } catch (NamingException e) {
+            // ignored
+          }
+        }
+      }
     }
-    EtmManager.getEtmMonitor().start();
+
+    reference = new Reference(EtmMonitorConnector.class.getName(), new StringRefAddr("configfile", resource.toString()));
   }
 
   public void stop() {
-    EtmManager.getEtmMonitor().stop();
-//    if (jndiName != null) {
-//      InitialContext ctx = null;
-//      try {
-//        ctx = new InitialContext();
-//        ctx.unbind(jndiName);
-//      } catch (NameNotFoundException e) {
-//        // ignore
-//      } catch (Exception e) {
-//        log.warn("Unable to deregister JETM monitor " + jndiName + " from JNDI tree", e);
-//      } finally {
-//        if (ctx != null) {
-//          try {
-//            ctx.close();
-//          } catch (NamingException e) {
-//            // ignored
-//          }
-//        }
-//      }
-//    }
+    if (jndiName == null) {
+
+      EtmManager.getEtmMonitor().stop();
+    } else {
+      EtmMonitor monitor = EtmMonitorRepository.getMonitor((String) reference.get("configfile").getContent());
+      monitor.stop();
+
+      InitialContext ctx = null;
+      try {
+        ctx = new InitialContext();
+        ctx.unbind(jndiName);
+      } catch (NameNotFoundException e) {
+        // ignore
+      } catch (Exception e) {
+        log.warn("Unable to deregister JETM monitor " + jndiName + " from JNDI tree", e);
+      } finally {
+        if (ctx != null) {
+          try {
+            ctx.close();
+          } catch (NamingException e) {
+            // ignored
+          }
+        }
+      }
+    }
   }
 
   public void endpointActivation(MessageEndpointFactory aMessageEndpointFactory, ActivationSpec aActivationSpec) throws ResourceException {
@@ -157,10 +179,10 @@ public class EtmManagerConnector implements ResourceAdapter, Referenceable, Seri
   }
 
   public Reference getReference() throws NamingException {
-    return new Reference(EtmManagerConnector.class.getName());
+    return reference;
   }
 
   public void setReference(Reference aReference) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException("Not supported.");
   }
 }

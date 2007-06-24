@@ -14,7 +14,7 @@
 
   <resourceadapter>
 
-    <resourceadapter-class>etm.contrib.integration.jca.EtmManagerConnector</resourceadapter-class>
+    <resourceadapter-class>etm.contrib.integration.jca.EtmMonitorConnector</resourceadapter-class>
 
     <!--
       Alters the name for the jetm config file.
