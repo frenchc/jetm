@@ -10,7 +10,7 @@ Release 1.2.2
  - Fixed NullPointer in 1.2 XML configuration parsing for interval based monitoring
  - RFC 2616 compliant HTTP status response linefeeds (reported by Nat Luengnaruemitchai)
  - Clarified aop.xml requirement for AspectWerkz offline weaving
- - Fixed further documentation errors
+ - Fixed further documentation/javadoc errors
 
 Release 1.2.1
  New features
