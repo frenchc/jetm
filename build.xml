@@ -6,6 +6,7 @@
   <!ENTITY samples SYSTEM "etc/build/build-samples.xml">
   <!ENTITY demo SYSTEM "etc/build/build-demo.xml">
   <!ENTITY site SYSTEM "etc/build/build-site.xml">
+  <!ENTITY doc SYSTEM "etc/build/build-doc.xml">
   ]>
 
 <project name="JETM build Script" default="build" basedir=".">
@@ -27,6 +28,7 @@
   &samples;
   &demo;
   &site;
+  &doc;
 
 
   <target name="build-jetm" description="Builds all JETM core modules">

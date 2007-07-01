@@ -1,0 +1,99 @@
+<path id="doc.classpath">
+  <fileset dir="${basedir}/modules/documentation/lib">
+    <include name="*.jar"/>
+  </fileset>
+</path>
+
+<path id="xinclude.classpath">
+  <fileset dir="${basedir}/modules/documentation/lib/xinclude">
+    <include name="*.jar"/>
+  </fileset>
+</path>
+
+
+<target name="create-doc" depends="init-doc, prepare-doc">
+  <antcall target="doc-html-single"/>
+  <antcall target="doc-html-chunked"/>
+  <antcall target="doc-pdf"/>
+</target>
+
+<target name="doc-html-single">
+  <mkdir dir="${module.doc.dest}/html_single"/>
+
+  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}">
+    <classpath refid="doc.classpath"/>
+    <arg value="-o"/>
+    <arg value="${module.doc.dest}/html_single/index.html"/>
+    <arg value="${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${module.doc.dest.tmp}/${module.doc.docbook.version}/html.xsl"/>
+  </java>
+  <copy file="modules/documentation/src/shared/default.css" todir="${module.doc.dest}/html_single"/>
+</target>
+
+<target name="doc-html-chunked">
+  <mkdir dir="${module.doc.dest}/html"/>
+
+  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${module.doc.dest}/html">
+    <classpath refid="doc.classpath"/>
+    <arg value="${basedir}/${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/html-chunked.xsl"/>
+  </java>
+  <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/html"/>
+</target>
+
+<target name="doc-pdf">
+  <mkdir dir="${module.doc.dest}/pdf"/>
+
+  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}">
+    <classpath refid="doc.classpath"/>
+    <arg value="-o"/>
+    <arg value="${module.doc.dest.tmp}/merged/index.fo"/>
+    <arg value="${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/pdf.xsl"/>
+  </java>
+
+  <java classname="org.apache.fop.cli.Main" fork="true" dir="${basedir}">
+    <jvmarg value="-Djava.awt.headless=true"/>
+    <jvmarg value="-Dorg.apache.commons.logging.simplelog.defaultlog=INFO"/>
+
+    <classpath refid="doc.classpath"/>
+    <arg value="${module.doc.dest.tmp}/merged/index.fo"/>
+    <arg value="${basedir}/${module.doc.dest}/pdf/jetm-documentation.pdf"/>
+  </java>
+</target>
+
+
+<target name="init-doc">
+  <mkdir dir="${module.doc.dest}"/>
+
+  <available property="docbook.expanded" file="${module.doc.dest.tmp}/${module.doc.docbook.version}" />
+  <antcall target="expand-docbook" />
+
+  <copy todir="${module.doc.dest.tmp}/${module.doc.docbook.version}">
+    <fileset dir="${module.doc.dir}/src/style" />
+  </copy>
+</target>
+
+<target name="clean-doc">
+  <delete dir="${module.doc.dest}"/>
+</target>
+
+<target name="prepare-doc">
+  <!-- process xinclude directives -->
+  <mkdir dir="${module.doc.dest.tmp}/merged"/>
+
+  <java classname="net.sf.saxon.Transform" fork="true" dir="${basedir}">
+    <classpath refid="xinclude.classpath"/>
+    <arg value="-o"/>
+    <arg value="${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${basedir}/${module.doc.dir}/src/docbook/index.docbook"/>
+    <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/xipr.xsl"/>
+  </java>
+</target>
+
+
+<target name="expand-docbook" unless="docbook.expanded">
+  <unzip src="${module.doc.dir}/contrib/${module.doc.docbook.version}.zip"
+         dest="${module.doc.dest.tmp}" />
+</target>
+
