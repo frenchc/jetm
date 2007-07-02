@@ -23,7 +23,7 @@
           <fo:table-row>
 
             <fo:table-cell text-align="center">
-              <fo:block font-family="Helvetica" font-size="25pt" padding-top="50mm">
+              <fo:block font-family="Helvetica" font-size="25pt" padding-top="70mm">
                 <xsl:value-of select="d:info/d:title"/>
               </fo:block>
               <fo:block font-family="Helvetica" font-size="16pt" padding-bottom="10mm">
@@ -33,32 +33,17 @@
             </fo:table-cell>
           </fo:table-row>
 
-          <fo:table-row>
-            <fo:table-cell text-align="center">
-              <fo:block font-family="Helvetica" font-size="12pt" padding-bottom="10mm">
-                <xsl:value-of select="date:date()"/>
-              </fo:block>
-            </fo:table-cell>
-          </fo:table-row>
+          <!--<fo:table-row>-->
+            <!--<fo:table-cell text-align="center">-->
+              <!--<fo:block font-family="Helvetica" font-size="12pt" padding-bottom="10mm">-->
+                <!--<xsl:value-of select="date:date()"/>-->
+              <!--</fo:block>-->
+            <!--</fo:table-cell>-->
+          <!--</fo:table-row>-->
 
           <fo:table-row>
             <fo:table-cell text-align="center">
-              <fo:block font-family="Helvetica" font-size="12pt" padding-bottom="5mm">
-                <xsl:for-each select="d:info/d:authorgroup/d:author">
-                  <xsl:if test="position() > 1">
-                    <xsl:text>,</xsl:text>
-                  </xsl:if>
-                  <xsl:value-of select="d:personname/d:firstname"/>
-                  <xsl:text> </xsl:text>
-                  <xsl:value-of select="d:personname/d:surname"/>
-                </xsl:for-each>
-              </fo:block>
-            </fo:table-cell>
-          </fo:table-row>
-
-          <fo:table-row>
-            <fo:table-cell text-align="center">
-              <fo:block font-family="Helvetica" font-size="12pt" padding-top="5mm" padding-bottom="100mm">
+              <fo:block font-family="Helvetica" font-size="12pt" padding-top="5mm" padding-bottom="130mm">
                   <xsl:text> </xsl:text>
               </fo:block>
             </fo:table-cell>
@@ -66,12 +51,13 @@
 
           <fo:table-row>
             <fo:table-cell text-align="center">
-              <fo:block font-family="Helvetica" font-size="12pt" padding="5mm">
+              <fo:block font-family="Helvetica" font-size="12pt" margin="0mm" padding-bottom="0mm">
                 <xsl:text>Copyright &#169; </xsl:text>
                 <xsl:value-of select="d:info/d:copyright/d:year" />
-                
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="d:info/d:copyright/d:holder" />
               </fo:block>
-              <fo:block font-family="Helvetica" font-size="10pt" padding="1mm">
+              <fo:block font-family="Helvetica" font-size="10pt" margin="0mm" padding="1mm">
                 <xsl:value-of select="d:info/d:legalnotice"/>
               </fo:block>
             </fo:table-cell>
@@ -82,6 +68,24 @@
     </fo:block>
   </xsl:template>
 
+
+  <xsl:param name="headers.on.blank.pages">0</xsl:param>
+  <xsl:param name="footers.on.blank.pages">0</xsl:param>
+
+  <!-- Space between paper border and content (chaotic stuff, don't touch) -->
+  <xsl:param name="page.margin.top">5mm</xsl:param>
+  <xsl:param name="region.before.extent">10mm</xsl:param>
+  <xsl:param name="body.margin.top">10mm</xsl:param>
+
+  <xsl:param name="body.margin.bottom">15mm</xsl:param>
+  <xsl:param name="region.after.extent">10mm</xsl:param>
+  <xsl:param name="page.margin.bottom">0mm</xsl:param>
+
+  <xsl:param name="page.margin.outer">18mm</xsl:param>
+  <xsl:param name="page.margin.inner">18mm</xsl:param>
+
+  <!-- No intendation of Titles -->
+  <xsl:param name="title.margin.left">0pc</xsl:param>
 
   <!-- Prevent blank pages -->
   <xsl:template name="book.titlepage.separator">
