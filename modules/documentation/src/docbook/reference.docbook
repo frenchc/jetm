@@ -52,6 +52,7 @@
       terms of budget or application side effects) or too low level...
     </para>
   </preface>
+
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="intro/concepts.docbook"/>
 
   <!--&concepts;-->

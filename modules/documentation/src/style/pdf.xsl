@@ -11,6 +11,8 @@
   <xsl:param name="paper.type" select="'A4'"/>
   <xsl:param name="use.extensions">1</xsl:param>
 
+  <!--<xsl:param name="fop.extensions">1</xsl:param>-->
+  
   <xsl:param name="draft.mode">no</xsl:param>
 
   <!-- Custom title page -->
@@ -43,7 +45,7 @@
 
           <fo:table-row>
             <fo:table-cell text-align="center">
-              <fo:block font-family="Helvetica" font-size="12pt" padding-top="5mm" padding-bottom="130mm">
+              <fo:block font-family="Helvetica" padding-top="5mm" padding-bottom="140mm">
                   <xsl:text> </xsl:text>
               </fo:block>
             </fo:table-cell>
@@ -69,6 +71,51 @@
   </xsl:template>
 
 
+  <xsl:template name="footer.content">
+      <xsl:param name="pageclass" select="''" />
+      <xsl:param name="sequence" select="''" />
+      <xsl:param name="position" select="''" />
+      <xsl:param name="gentext-key" select="''" />
+      <xsl:variable name="Version">
+        <xsl:if test="//d:releaseinfo">
+          <xsl:text>JETM (</xsl:text><xsl:value-of select="//d:releaseinfo" /><xsl:text>)</xsl:text>
+        </xsl:if>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="$sequence='blank'">
+          <xsl:if test="$position = 'center'">
+            <xsl:value-of select="$Version" />
+          </xsl:if>
+        </xsl:when>
+        <!-- for double sided printing, print page numbers on alternating sides (of the page) -->
+        <xsl:when test="$double.sided != 0">
+          <xsl:choose>
+            <xsl:when test="$sequence = 'even' and $position='left'">
+              <fo:page-number />
+            </xsl:when>
+            <xsl:when test="$sequence = 'odd' and $position='right'">
+              <fo:page-number />
+            </xsl:when>
+            <xsl:when test="$position='center'">
+              <xsl:value-of select="$Version" />
+            </xsl:when>
+          </xsl:choose>
+        </xsl:when>
+        <!-- for single sided printing, print all page numbers on the right (of the page) -->
+        <xsl:when test="$double.sided = 0">
+          <xsl:choose>
+            <xsl:when test="$position='center'">
+              <xsl:value-of select="$Version" />
+            </xsl:when>
+            <xsl:when test="$position='right'">
+              <fo:page-number />
+            </xsl:when>
+          </xsl:choose>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:template>
+
+
   <xsl:param name="headers.on.blank.pages">0</xsl:param>
   <xsl:param name="footers.on.blank.pages">0</xsl:param>
 
@@ -88,8 +135,12 @@
   <xsl:param name="title.margin.left">0pc</xsl:param>
 
   <!-- Prevent blank pages -->
-  <xsl:template name="book.titlepage.separator">
-  </xsl:template>
+    <xsl:template name="book.titlepage.before.verso">
+    </xsl:template>
+    <xsl:template name="book.titlepage.verso">
+    </xsl:template>
+    <xsl:template name="book.titlepage.separator">
+    </xsl:template>
 
 
 </xsl:stylesheet>
