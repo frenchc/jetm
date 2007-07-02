@@ -31,7 +31,7 @@
   </info>
 
   <preface>
-    <title>Performance monitoring in the wild</title>
+    <title>Preface</title>
     <para role="testing">In order to identify the root cause of bad application performance a fairly limited set of data
       is needed.
       Usually it is enough to identify
@@ -55,10 +55,4 @@
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="intro/concepts.docbook"/>
 
-  <!--&concepts;-->
-
-
-  <!--&springintegration;-->
-  <!--&webintegration;-->
-  <!--&rrd4jintegration;-->
 </book>
