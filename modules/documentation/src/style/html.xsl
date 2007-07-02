@@ -4,6 +4,7 @@
   <xsl:import href="html/docbook.xsl"/>
 
   <xsl:param name="html.stylesheet">default.css</xsl:param>
+  <xsl:param name="css.decoration">1</xsl:param>
 
   <xsl:param name="use.extensions">1</xsl:param>
   <xsl:param name="graphicsize.extension">1</xsl:param>
@@ -16,6 +17,12 @@
   <xsl:param name="section.autolabel" select="1"/>
   <xsl:param name="section.label.includes.component.label" select="1"/>
 
-  <xsl:param name="draft.mode">yes</xsl:param>
+  <xsl:param name="para.propagates.style">1</xsl:param>
 
+  <xsl:param name="draft.mode">no</xsl:param>
+
+  <!-- disable body attributes -->
+  <xsl:template name="body.attributes">
+  </xsl:template>
+  
 </xsl:stylesheet>

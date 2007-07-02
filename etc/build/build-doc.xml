@@ -12,37 +12,37 @@
 
 
 <target name="create-doc" depends="init-doc, prepare-doc">
-  <antcall target="doc-html-single"/>
-  <antcall target="doc-html-chunked"/>
+  <!--<antcall target="doc-html-single"/>-->
+  <!--<antcall target="doc-html-chunked"/>-->
   <antcall target="doc-pdf"/>
 </target>
 
 <target name="doc-html-single">
-  <mkdir dir="${module.doc.dest}/html_single"/>
+  <mkdir dir="${module.doc.dest}/reference/html_single"/>
 
   <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}">
     <classpath refid="doc.classpath"/>
     <arg value="-o"/>
-    <arg value="${module.doc.dest}/html_single/index.html"/>
-    <arg value="${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${module.doc.dest}/reference/html_single/index.html"/>
+    <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
     <arg value="${module.doc.dest.tmp}/${module.doc.docbook.version}/html.xsl"/>
   </java>
-  <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/html_single"/>
+  <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/reference/html_single"/>
 </target>
 
 <target name="doc-html-chunked">
-  <mkdir dir="${module.doc.dest}/html"/>
+  <mkdir dir="${module.doc.dest}/reference/html"/>
 
-  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${module.doc.dest}/html">
+  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${module.doc.dest}/reference/html">
     <classpath refid="doc.classpath"/>
-    <arg value="${basedir}/${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${basedir}/${module.doc.dest.tmp}/merged/reference.merged"/>
     <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/html-chunked.xsl"/>
   </java>
-  <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/html"/>
+  <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/reference/html"/>
 </target>
 
 <target name="doc-pdf">
-  <mkdir dir="${module.doc.dest}/pdf"/>
+  <mkdir dir="${module.doc.dest}/reference/pdf"/>
 
   <copy todir="${module.doc.dest.tmp}/merged">
     <fileset dir="${module.doc.dir}/src/shared">
@@ -53,18 +53,17 @@
   <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}">
     <classpath refid="doc.classpath"/>
     <arg value="-o"/>
-    <arg value="${module.doc.dest.tmp}/merged/index.fo"/>
-    <arg value="${module.doc.dest.tmp}/merged/index.merged"/>
+    <arg value="${module.doc.dest.tmp}/merged/reference.fo"/>
+    <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
     <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/pdf.xsl"/>
   </java>
 
   <java classname="org.apache.fop.cli.Main" fork="true" dir="${basedir}">
     <jvmarg value="-Djava.awt.headless=true"/>
-    <jvmarg value="-Dorg.apache.commons.logging.simplelog.defaultlog=INFO"/>
 
     <classpath refid="doc.classpath"/>
-    <arg value="${module.doc.dest.tmp}/merged/index.fo"/>
-    <arg value="${basedir}/${module.doc.dest}/pdf/jetm-documentation.pdf"/>
+    <arg value="${module.doc.dest.tmp}/merged/reference.fo"/>
+    <arg value="${basedir}/${module.doc.dest}/reference/pdf/jetm-reference.pdf"/>
   </java>
 </target>
 
@@ -91,9 +90,10 @@
   <java classname="net.sf.saxon.Transform" fork="true" dir="${basedir}">
     <classpath refid="xinclude.classpath"/>
     <arg value="-o"/>
-    <arg value="${module.doc.dest.tmp}/merged/index.merged"/>
-    <arg value="${basedir}/${module.doc.dir}/src/docbook/index.docbook"/>
+    <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
+    <arg value="${basedir}/${module.doc.dir}/src/docbook/reference.docbook"/>
     <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/xipr.xsl"/>
+    <arg value="jetm.release=${release.version}" />
   </java>
 </target>
 

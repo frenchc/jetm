@@ -22,3 +22,12 @@ a:hover {
   voice-family: inherit;
   cursor: pointer;
 }
+
+.navfooter table {
+  font-size: 8pt;
+  font-weight: 400;
+  font-family: Verdana, Helvetica, sans-serif;
+}
+.preface ul {
+ color: red; 
+}
