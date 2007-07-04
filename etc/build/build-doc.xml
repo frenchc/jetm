@@ -4,39 +4,20 @@
   </fileset>
 </path>
 
-<path id="xinclude.classpath">
-  <fileset dir="${basedir}/modules/documentation/lib/xinclude">
-    <include name="*.jar"/>
-  </fileset>
-</path>
-
-
-<target name="create-doc" depends="init-doc, prepare-doc">
-  <!--<antcall target="doc-html-single"/>-->
-  <!--<antcall target="doc-html-chunked"/>-->
+<target name="create-doc" depends="init-doc, prepare-doc" description="Creates JETM documentation">
+  <!--<antcall target="doc-html"/>-->
   <antcall target="doc-pdf"/>
 </target>
 
-<target name="doc-html-single">
-  <mkdir dir="${module.doc.dest}/reference/html_single"/>
-
-  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}">
-    <classpath refid="doc.classpath"/>
-    <arg value="-o"/>
-    <arg value="${module.doc.dest}/reference/html_single/index.html"/>
-    <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
-    <arg value="${module.doc.dest.tmp}/${module.doc.docbook.version}/html.xsl"/>
-  </java>
-  <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/reference/html_single"/>
-</target>
-
-<target name="doc-html-chunked">
+<target name="doc-html">
   <mkdir dir="${module.doc.dest}/reference/html"/>
 
-  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${module.doc.dest}/reference/html">
+  <java classname="net.sf.saxon.Transform" fork="true" dir="${basedir}">
     <classpath refid="doc.classpath"/>
-    <arg value="${basedir}/${module.doc.dest.tmp}/merged/reference.merged"/>
-    <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/html-chunked.xsl"/>
+    <arg value="-o"/>
+    <arg value="${module.doc.dest}/reference/html/index.html"/>
+    <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
+    <arg value="${module.doc.dest.tmp}/${module.doc.docbook.version}/html.xsl"/>
   </java>
   <copy file="${module.doc.dir}/src/shared/default.css" todir="${module.doc.dest}/reference/html"/>
 </target>
@@ -50,7 +31,7 @@
     </fileset>
   </copy>
 
-  <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}">
+  <java classname="net.sf.saxon.Transform" fork="true" dir="${basedir}">
     <classpath refid="doc.classpath"/>
     <arg value="-o"/>
     <arg value="${module.doc.dest.tmp}/merged/reference.fo"/>
@@ -87,13 +68,15 @@
   <!-- process xinclude directives -->
   <mkdir dir="${module.doc.dest.tmp}/merged"/>
 
+  <echo file="${module.doc.dest.tmp}/version.txt" message="${release.version}"/>
+
   <java classname="net.sf.saxon.Transform" fork="true" dir="${basedir}">
-    <classpath refid="xinclude.classpath"/>
+    <classpath refid="doc.classpath"/>
     <arg value="-o"/>
     <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
     <arg value="${basedir}/${module.doc.dir}/src/docbook/reference.docbook"/>
     <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/xipr.xsl"/>
-    <arg value="jetm.release=${release.version}" />
+    <arg value="jetm.version=${release.version}" />
   </java>
 </target>
 

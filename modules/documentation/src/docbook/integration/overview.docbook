@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
+  <title>JETM Integration Checklist</title>
+
+  <para>
+    Even though JETM supports both Springframework 1.x and 2.x the integration itself slightly differs. This is because
+    of the newly introduced configuration namespace support in Springframework 2.x. If you are free to choose your
+    Springframework version we recommend using Springframework 2.x, otherwhise you need use the old 1.x style JETM
+    configuration.
+ </para>
+  <para>
+    Featurewhise there is no difference between Springframework 2.x and 1.x, however in 2.x the configuration is
+    simplified.
+ </para>
+
+  <para>
+    Even though JETM supports both Springframework 1.x and 2.x the integration itself slightly differs. This is because
+    of the newly introduced configuration namespace support in Springframework 2.x. If you are free to choose your
+    Springframework version we recommend using Springframework 2.x, otherwhise you need use the old 1.x style JETM
+    configuration.
+ </para>
+  <para>
+    Featurewhise there is no difference between Springframework 2.x and 1.x, however in 2.x the configuration is
+    simplified.
+ </para>
+  <para>
+    Even though JETM supports both Springframework 1.x and 2.x the integration itself slightly differs. This is because
+    of the newly introduced configuration namespace support in Springframework 2.x. If you are free to choose your
+    Springframework version we recommend using Springframework 2.x, otherwhise you need use the old 1.x style JETM
+    configuration.
+ </para>
+  <para>
+    Featurewhise there is no difference between Springframework 2.x and 1.x, however in 2.x the configuration is
+    simplified.
+ </para>
+  <para>
+    Even though JETM supports both Springframework 1.x and 2.x the integration itself slightly differs. This is because
+    of the newly introduced configuration namespace support in Springframework 2.x. If you are free to choose your
+    Springframework version we recommend using Springframework 2.x, otherwhise you need use the old 1.x style JETM
+    configuration.
+ </para>
+  <para>
+    Featurewhise there is no difference between Springframework 2.x and 1.x, however in 2.x the configuration is
+    simplified.
+ </para>
+  <sect1>
+    <title>Add performance measurement</title>
+    <para>blabla</para>
+    <sect2>
+      <title>Programmatic integration</title>
+      <para>how to integrate manually</para>
+    </sect2>
+    <sect2>
+      <title>Declarative integration</title>
+      <para>how to integrate declarativly
+        <itemizedlist>
+          <listitem>
+            <para>AspectWerkz</para>
+          </listitem>
+          <listitem>
+            <para>Spring AOP</para>
+          </listitem>
+          <listitem>
+            <para>JBoss AOP</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </sect2>
+    <sect2>
+      <title>Framework integration</title>
+      <sect3>
+        <title>Generic Web (Servlet) Integration</title>
+        <para>Record web based requests</para>
+      </sect3>
+      <sect3>
+        <title>JBoss Seam Integration</title>
+        <para>Adding performance measurement to seam</para>
+      </sect3>
+      <sect3>
+        <title>Struts 1.x Integration</title>
+        <para>Adding performance measurement to Struts 1.x</para>
+      </sect3>
+
+      <sect3>
+        <title>Struts 2.x Integration</title>
+        <para>Adding performance measurement to Struts 2.x</para>
+      </sect3>
+
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>JETM lifecycle</title>
+    <para>blublub</para>
+    <sect2>
+      <title>Java EE integration</title>
+      <para>A blabla</para>
+    </sect2>
+
+    <sect2>
+      <title>Java SE integration</title>
+      <para>A blablu</para>
+    </sect2>
+
+  </sect1>
+
+</chapter>

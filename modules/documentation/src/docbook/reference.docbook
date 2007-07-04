@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <book xmlns="http://docbook.org/ns/docbook"
        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
        version="5.0" xml:lang="en">
   <info>
     <title>JETM Reference Guide</title>
@@ -10,7 +11,13 @@
       <holder>void.fm</holder>
     </copyright>
     <pubdate role="now"/>
-    <releaseinfo>1.3.0</releaseinfo>
+    <releaseinfo>
+      <!-- TODO: Is there a better way to include a dynamic attribute?? -->
+      <xi:include parse="text"
+                  href="../../../../build/tmp/doc/tmp/version.txt">
+        <xi:fallback ><xsl:text>??.??.??</xsl:text></xi:fallback>
+      </xi:include>
+    </releaseinfo>
     <legalnotice>
       <para>
         Copies of this document may be made for your own use and for
@@ -32,10 +39,10 @@
 
   <preface>
     <title>Preface</title>
-    <para role="testing">In order to identify the root cause of bad application performance a fairly limited set of data
-      is needed.
-      Usually it is enough to identify
+    <para>
 
+    </para>
+    <para>Usually it is enough to identify
       <itemizedlist>
         <listitem>
           <para>the code fragments used within a test period,</para>
@@ -47,12 +54,15 @@
           <para>the number of fragment executions</para>
         </listitem>
       </itemizedlist>
-
-      to track down application hotspots. However collecting those data is either expensive (in
-      terms of budget or application side effects) or too low level...
+      to track down application hotspots.
+    </para>
+    <para>
+      The following
     </para>
   </preface>
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="intro/concepts.docbook"/>
+  <xi:include href="intro/concepts.docbook"/>
+
+  <xi:include href="integration/overview.docbook"/>
 
 </book>
