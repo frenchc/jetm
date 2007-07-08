@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <book xmlns="http://docbook.org/ns/docbook"
-       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-       xmlns:xi="http://www.w3.org/2001/XInclude"
-       version="5.0" xml:lang="en">
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      version="5.0" xml:lang="en">
   <info>
     <title>JETM Reference Guide</title>
-    <subtitle>Runtime performance monitoring made easy</subtitle>
     <copyright>
-      <year>2004 - 2007</year>
+      <year>2004</year>
+      <year>2005</year>
+      <year>2006</year>
+      <year>2007</year>
       <holder>void.fm</holder>
     </copyright>
-    <pubdate role="now"/>
+    <pubdate>TODO: dynamic publish data</pubdate>
     <releaseinfo>
       <!-- TODO: Is there a better way to include a dynamic attribute?? -->
       <xi:include parse="text"
                   href="../../../../build/tmp/doc/tmp/version.txt">
-        <xi:fallback ><xsl:text>??.??.??</xsl:text></xi:fallback>
+        <xi:fallback>
+          <xsl:text>??.??.??</xsl:text>
+        </xi:fallback>
       </xi:include>
     </releaseinfo>
     <legalnotice>
@@ -35,13 +39,72 @@
         </personname>
       </author>
     </authorgroup>
+
+    <abstract>
+      <para>This document is the JETM reference.</para>
+
+      <para>TODO</para>
+
+      <para>Even though I have spend endless hours configuring DocBook I have to admit that it would have been
+        impossible to create this document without the work from Christian Bauer
+        (of <link href="http://www.hibernate.org/">Hibernate</link> fame) and the Springframework team. You guys
+        have done a tremendous job of flattening the learning curve towards DocBook-XSL. Thanks!
+      </para>
+    </abstract>
+
   </info>
 
   <preface>
     <title>Preface</title>
     <para>
-
+      Consider a Java<!-- TODO &trade; --> SE or EE application that has or potentially may have performance problems.
+      What do you do?
     </para>
+
+    <para>Most likely you will go ahead and profile the application using a Java Profiler or just log execution times
+      using your favourite logging framework. Both strategies will give you enough information to understand
+      what is really going wrong in your application.
+    </para>
+
+    <para>However these two strategies do have their drawbacks.</para>
+
+    <para>
+      Even though a Java<!-- TODO &trade; --> Profiler offers a detailed inside-view to your application
+      you sometimes just can't use it. This is because typically a profiler makes use of the
+      Java<!-- TODO &trade; --> Virtual Machine Profiling Interface (JVMPI) or Java<!-- TODO &trade; --> Virtual
+      Machine Tool Interface (JVMTI) to collect fine-grained details such as object and memory allocations, execution
+      paths and garbage collector behavior. The usage of these interfaces and the related profiler extensions usually
+      <emphasis>adds some overhead</emphasis>
+      to executions times and thus may
+      <emphasis>slow down an application</emphasis>
+      to a point where it is impossible to be used in a production
+      environment.
+    </para>
+
+    <para>
+      As an alternative to profiling and often as part of the runtime monitoring process application developers tend
+      to log execution times to log files. Depending on the size of the application and the developer team this tends
+      to be a major nightmare in terms
+      <emphasis>data formatting, quality and consistency</emphasis>
+      .
+    </para>
+
+    <para>While leaving the in-depth application performance analysis in the hands of professional Java Profilers
+      <footnote>
+        <para>In the commercial field we recommend using YourKit or JProfiler from ej-technologies</para>
+      </footnote>
+      there is often a need to monitor an application under production load or even transparently during development
+      and testing. Therefore it is necessary to provide means to collect statistics similar to the ones of Java
+      Profilers without their side effects.
+    </para>
+
+    <para>From a high level perspective JETM gives you exactly this ability with minimal
+      (but existing) impact on application performance and minimal requirements for test setup and maintenance.
+    </para>
+    <!--</p>-->
+    <!--<h4>How does it work?</h4>-->
+
+
     <para>Usually it is enough to identify
       <itemizedlist>
         <listitem>
