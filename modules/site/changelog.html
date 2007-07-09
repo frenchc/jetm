@@ -31,6 +31,21 @@
 <div id="main">
 
 <h3>JETM Changelog</h3>
+
+<h4>Release 1.2.2</h4>
+<pre>New features
+ - First revision TabularData in JMX Beans (recommended by Nat Luengnaruemitchai)
+ - (Undocumented) JBoss AOP Support (target release will be JETM 1.3.0)
+ - Experimental JETM Connector for .ear deployment (target release will be JETM 1.3.0)
+
+ Changes, Fixes and Improvements
+ - Switched back to non Thread Context Classloader resource loading
+ - Fixed possible NullPointers in MonitoringBeanDefinitionParser (reported by Nat Luengnaruemitchai)
+ - Fixed NullPointer in 1.2 XML configuration parsing for interval based monitoring
+ - RFC 2616 compliant HTTP status response linefeeds (reported by Nat Luengnaruemitchai)
+ - Clarified aop.xml requirement for AspectWerkz offline weaving
+ - Fixed further documentation/javadoc errors</pre>
+
 <h4>Release 1.2.1</h4>
 <pre> New features
   - Dump current state to log file during reset - if dump plugin is active
