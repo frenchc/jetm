@@ -5,6 +5,7 @@ body {
   font-weight: 400;
   font-family: Verdana, Helvetica, sans-serif;
   text-align: center;
+  margin: 0 5px 0 0;
 }
 
 a:link {
@@ -32,9 +33,8 @@ li a:visited {
 }
 
 li a:hover {
-  text-decoration: underline;     
+  text-decoration: underline;
 }
-
 
 #header {
   font-size: 200%;
@@ -62,7 +62,7 @@ dt {
 #content {
   border: 1px solid #999;
   margin: auto;
-  margin-top: 25px;
+  margin-top: 5px;
   width: 720px;
   text-align: left;
   background: #fff;
@@ -94,29 +94,30 @@ dt {
   width: 350px;
 }
 
-#menu {
+.menu {
   color: #314E6C;
-  padding-top: 25px;
+  padding-top: 5px;
   padding-bottom: 0;
+  margin: 0 0 0 0;
   text-align: center;
   font-family: Arial, sans-serif;
 }
 
-#menu a {
+.menu a {
   padding: 0 2px 0 2px;
 }
 
-#menu a:link {
+.menu a:link {
   text-decoration: none;
   font-size: 8pt;
 }
 
-#menu a:visited {
+.menu a:visited {
   text-decoration: none;
   font-size: 8pt;
 }
 
-#menu a:hover {
+.menu a:hover {
   text-decoration: underline;
 }
 

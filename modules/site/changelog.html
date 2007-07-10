@@ -8,13 +8,44 @@
   <link rel="stylesheet" type="text/css" href="default.css"/>
 </head>
 <body>
-
+<div class="menu">
+  <a href="index.html">Home</a>
+  |
+  <a href="doc.html"><b>Documentation</b></a>
+  |
+  <a href="faq.html">FAQ</a>
+  |
+  <a href="@api@/index.html">JavaDoc</a>
+  |
+  <a href="files.html"><b>Download</b></a>
+  |
+  <a href="svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
 <div id="content">
 <div id="header">Java&trade; Execution Time Measurement Library</div>
 <div id="subheader">Runtime performance monitoring made easy</div>
 <div id="main">
 
 <h3>JETM Changelog</h3>
+
+<h4>Release 1.2.2</h4>
+<pre>New features
+ - First revision TabularData in JMX Beans (recommended by Nat Luengnaruemitchai)
+ - (Undocumented) JBoss AOP Support (target release will be JETM 1.3.0)
+ - Experimental JETM Connector for .ear deployment (target release will be JETM 1.3.0)
+
+ Changes, Fixes and Improvements
+ - Switched back to non Thread Context Classloader resource loading
+ - Fixed possible NullPointers in MonitoringBeanDefinitionParser (reported by Nat Luengnaruemitchai)
+ - Fixed NullPointer in 1.2 XML configuration parsing for interval based monitoring
+ - RFC 2616 compliant HTTP status response linefeeds (reported by Nat Luengnaruemitchai)
+ - Clarified aop.xml requirement for AspectWerkz offline weaving
+ - Fixed further documentation/javadoc errors</pre>
+
 <h4>Release 1.2.1</h4>
 <pre> New features
   - Dump current state to log file during reset - if dump plugin is active
@@ -134,24 +165,23 @@
 
 </div>
 
-<div id="menu">
+</div>
+<div class="menu">
   <a href="index.html">Home</a>
   |
-  <a href="doc.html">Documentation</a>
+  <a href="doc.html"><b>Documentation</b></a>
   |
   <a href="faq.html">FAQ</a>
   |
   <a href="@api@/index.html">JavaDoc</a>
   |
-  <a href="files.html">Download</a>
+  <a href="files.html"><b>Download</b></a>
   |
   <a href="svn.html">SVN</a>
   |
   <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
   |
   <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
-</div>
-
 </div>
 </body>
 <!-- Last modified  $Date$ -->

@@ -9,6 +9,23 @@
 </head>
 
 <body>
+<div class="menu">
+  <a href="../index.html">Home</a>
+  |
+  <a href="../doc.html"><b>Documentation</b></a>
+  |
+  <a href="../faq.html">FAQ</a>
+  |
+  <a href="../@api@/index.html">JavaDoc</a>
+  |
+  <a href="../files.html"><b>Download</b></a>
+  |
+  <a href="../svn.html">SVN</a>
+  |
+  <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
+  |
+  <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
+</div>
 
 <div id="content">
 <div id="header">Java&trade; Execution Time Measurement Library</div>
@@ -21,8 +38,9 @@
 
 <p>
   If you already use the new Spring 2.x schema based configuration you can use the JETM namespace to configure
-  performance monitoring. Otherwhise use Spring 1.x <a href="spring_1_x_integration.html">dtd based configuration</a>. 
+  performance monitoring. Otherwhise use Spring 1.x <a href="spring_1_x_integration.html">dtd based configuration</a>.
 </p>
+
 <p>
   Be aware that these <a href="spring_integration.html#prerequisites_constraints">prerequisites
   and constraints</a> apply.
@@ -44,7 +62,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                            <b>http://jetm.void.fm/schema/jetm_spring_config_1_2
-                           http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd</b>"&gt;
+                             http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd</b>"&gt;
 
   ...
     
@@ -121,8 +139,10 @@
 
 <p>
   As stated above the default aggregation chain uses a threshold based buffer. If you want to alter this behavior you
-  may chose between activating a distinct feature from a predefined set or specifying the complete aggregator chain manually.
+  may chose between activating a distinct feature from a predefined set or specifying the complete aggregator chain
+  manually.
 </p>
+
 <p>
   The nested element <i>jetm:features</i> supports access to predefined JETM aggregation features. Currently it is
   possible to alter the buffering capabilities, enable aggregation persistence and raw data logging. For further details
@@ -209,23 +229,23 @@
 
 </div>
 
-<div id="menu">
+</div>
+<div class="menu">
   <a href="../index.html">Home</a>
   |
-  <a href="../doc.html">Documentation</a>
+  <a href="../doc.html"><b>Documentation</b></a>
   |
   <a href="../faq.html">FAQ</a>
   |
   <a href="../@api@/index.html">JavaDoc</a>
   |
-  <a href="../files.html">Download</a>
+  <a href="../files.html"><b>Download</b></a>
   |
   <a href="../svn.html">SVN</a>
   |
   <a href="http://sourceforge.net/mail/?group_id=109626">Mailing Lists</a>
   |
   <a href="http://sourceforge.net/projects/jetm/">Sourceforge Project Page</a>
-</div>
 </div>
 </body>
 <!-- Last modified  $Date$ -->
