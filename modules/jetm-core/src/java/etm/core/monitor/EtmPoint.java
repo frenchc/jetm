@@ -55,21 +55,81 @@ package etm.core.monitor;
  */
 public interface EtmPoint {
 
+  /**
+   * Marks the current measurement as finished.
+   *
+   * @throws IllegalStateException Thrown in case the name of the measurement point is null.
+   */
+
   public void collect();
 
-  public  void alterName(String newName);
+  /**
+   * Alters the name of the measurement point.
+   * This may be usefull for executions where the outcome of an operation
+   * may change the scope of the measurement, e.g. an Exception.
+   *
+   * @param newName The new name of the measurement point.
+   */
+
+  public void alterName(String newName);
+
+  /**
+   * Returns the name of the measurement point.
+   *
+   * @return The name.
+   */
 
   public String getName();
 
+  /**
+   * Returns the start time of the measurement in the {@link etm.core.timer.ExecutionTimer}
+   * dependend precision.
+   *
+   * @return The start time.
+   * @see #getTicks()
+   */
+
   public long getStartTime();
+
+  /**
+   * Returns the end time of the measurement in the {@link etm.core.timer.ExecutionTimer}
+   * dependend precision.
+   *
+   * @return The end time.
+   * @see #getTicks()
+   */
 
   public long getEndTime();
 
+  /**
+   * Returns the number of ticks per milisecond as provided by the used {@link etm.core.timer.ExecutionTimer}.
+   *
+   * @return The number of ticks.
+   */
+
   public long getTicks();
+
+  /**
+   * Returns the parent of this measurement point.
+   *
+   * @return The parent, may be null.
+   */
 
   public EtmPoint getParent();
 
+  /**
+   * Returns the calculated processing time in miliseconds.
+   *
+   * @return The processing time.
+   */
   public double getTransactionTime();
+
+
+  /**
+   * Returns the time the measurement was startet.
+   *
+   * @return The time taken using <code>System.currentTimeMillis</code>
+   */
 
   public long getStartTimeMillis();
 }

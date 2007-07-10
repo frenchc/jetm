@@ -30,58 +30,44 @@
  *
  */
 
-package etm.core.util;
+package etm.contrib.aop.jboss;
 
-import etm.core.monitor.EtmMonitor;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import etm.core.monitor.EtmPoint;
 
 /**
- * Contains JETM version information.
+ * Base class for JBoss AOP support (even though current content is pretty generic...)
  *
  * @author void.fm
- * @version $Revision:129 $
- * @since 1.2.0
+ * @version $Revision$
+ * @since 1.2.2
  */
-public class Version {
+public class JbossInterceptorSupport {
 
-  private static Map properties;
+  /**
+   * Alter name in case an exception is caught during processing. Altering the
+   * name takes place after executing target method. Ensure that you never cause
+   * an exception within this code.
+   *
+   * @param aEtmPoint The EtmPoint to alter.
+   * @param t         The caught throwable t.
+   */
+  protected void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
+    aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
+  }
 
-  static {
-    Properties props = new Properties();
-    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream("jetm.version");
-    if (in != null) {
-      try {
-        try {
-          props.load(in);
-        } catch (IOException e) {
-          // also ignored
-        }
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
-        }
-      }
+  /**
+   * Calculate short name for a given class.
+   *
+   * @param clazz The class object.
+   * @return The short name for the given class.
+   */
+  protected String calculateShortName(Class clazz) {
+    String name = clazz.getName();
+    int beginIndex = name.lastIndexOf('.');
+    if (beginIndex > 0) {
+      return name.substring(beginIndex + 1);
+    } else {
+      return name;
     }
-    properties = props;
-  }
-
-  public static String getVersion() {
-    return (String) properties.get("jetm.version");
-  }
-
-  public static String getBuildDate() {
-    return (String) properties.get("jetm.build.date");
-
-  }
-
-  public static String getBuildBy() {
-    return (String) properties.get("jetm.build.by");
-
   }
 }

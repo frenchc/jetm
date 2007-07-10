@@ -32,10 +32,12 @@
 
 package etm.core.jmx;
 
+import etm.core.aggregation.Aggregate;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitor;
+import etm.core.renderer.MeasurementRenderer;
 import etm.core.renderer.SimpleTextRenderer;
 
 import javax.management.Attribute;
@@ -43,14 +45,28 @@ import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.DynamicMBean;
 import javax.management.InvalidAttributeValueException;
-import javax.management.MBeanAttributeInfo;
-import javax.management.MBeanConstructorInfo;
 import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.ReflectionException;
+import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.CompositeType;
+import javax.management.openmbean.OpenDataException;
+import javax.management.openmbean.OpenMBeanAttributeInfo;
+import javax.management.openmbean.OpenMBeanAttributeInfoSupport;
+import javax.management.openmbean.OpenMBeanConstructorInfo;
+import javax.management.openmbean.OpenMBeanInfoSupport;
+import javax.management.openmbean.OpenMBeanOperationInfo;
+import javax.management.openmbean.OpenMBeanOperationInfoSupport;
+import javax.management.openmbean.OpenType;
+import javax.management.openmbean.SimpleType;
+import javax.management.openmbean.TabularData;
+import javax.management.openmbean.TabularDataSupport;
+import javax.management.openmbean.TabularType;
 import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * An MBean that provides access to an EtmMonitor instance.
@@ -59,15 +75,18 @@ import java.io.StringWriter;
  * @version $Revision$
  * @since 1.2.0
  */
-public class EtmMonitorMBean implements DynamicMBean {
+public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
 
   private EtmMonitor etmMonitor;
+  private String measurementDomain;
 
-  private MBeanInfo activeInfo;
-  private MBeanInfo inactiveInfo;
+  private OpenMBeanInfoSupport activeInfo;
+  private OpenMBeanInfoSupport inactiveInfo;
+  protected TabularType tabularType;
 
-  public EtmMonitorMBean(EtmMonitor aEtmMonitor) {
+  public EtmMonitorMBean(EtmMonitor aEtmMonitor, String aMeasurementDomain) throws OpenDataException {
     etmMonitor = aEtmMonitor;
+    measurementDomain = aMeasurementDomain;
 
     String mbeanClassName = etmMonitor.getClass().getName();
     EtmMonitorMetaData etmMonitorMetaData = etmMonitor.getMetaData();
@@ -85,23 +104,33 @@ public class EtmMonitorMBean implements DynamicMBean {
       chain + "), Timer Implementation (" +
       etmMonitorMetaData.getTimerMetaData().getImplementationClass().getClass().getName() +
       ") ]";
-    activeInfo = new MBeanInfo(
+
+    tabularType = new TabularType("performanceDetails",
+      "blubbler",
+      new CompositeType("etmPoint", "blabla",
+        new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"},
+        new String[]{"EtmPoint name", "Number of measurements", "Average time (ms)", "Minimum time (ms)", "Maximum Time (ms)", "Total Time (ms)", "JMX ObjectName"},
+        new OpenType[]{SimpleType.STRING, SimpleType.LONG, SimpleType.DOUBLE, SimpleType.DOUBLE, SimpleType.DOUBLE, SimpleType.DOUBLE, SimpleType.OBJECTNAME}),
+      new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"});
+
+    activeInfo = new OpenMBeanInfoSupport(
       mbeanClassName,
       description,
       getAttributeInfos(),
-      new MBeanConstructorInfo[]{},
+      new OpenMBeanConstructorInfo[]{},
       getActiveMonitorOperation(),
       new MBeanNotificationInfo[]{}
     );
 
-    inactiveInfo = new MBeanInfo(
+    inactiveInfo = new OpenMBeanInfoSupport(
       mbeanClassName,
       description,
       getAttributeInfos(),
-      new MBeanConstructorInfo[]{},
+      new OpenMBeanConstructorInfo[]{},
       getInactiveMonitorOperation(),
       new MBeanNotificationInfo[]{}
     );
+
   }
 
 
@@ -127,11 +156,11 @@ public class EtmMonitorMBean implements DynamicMBean {
 
   public AttributeList getAttributes(String[] strings) {
     AttributeList list = new AttributeList();
-    for (int i=0; i < strings.length; i++) {
+    for (int i = 0; i < strings.length; i++) {
       try {
         list.add(i, new Attribute(strings[i], getAttribute(strings[i])));
       } catch (Exception e) {
-        list.add(i, new Attribute(strings[i], null));        
+        list.add(i, new Attribute(strings[i], null));
       }
     }
     return list;
@@ -144,15 +173,17 @@ public class EtmMonitorMBean implements DynamicMBean {
   public Object invoke(String string, Object[] objects, String[] strings) throws MBeanException, ReflectionException {
     if ("disableCollection".equals(string)) {
       etmMonitor.disableCollection();
-      return null;
     } else if ("enableCollection".equals(string)) {
       etmMonitor.enableCollection();
-      return null;
+    } else if ("reset".equals(string)) {
+      etmMonitor.reset();
     } else if ("renderResultsAsText".equals(string)) {
       return renderResultsAsText();
-    } else {
-      return null;
+    } else if ("results".equals(string)) {
+      return renderResults();
     }
+
+    return null;
   }
 
   public MBeanInfo getMBeanInfo() {
@@ -163,6 +194,34 @@ public class EtmMonitorMBean implements DynamicMBean {
     }
   }
 
+  private TabularData renderResults() {
+    final TabularDataSupport data = new TabularDataSupport(tabularType);
+    etmMonitor.render(new MeasurementRenderer() {
+      public void render(Map points) {
+        for (Iterator iterator = points.values().iterator(); iterator.hasNext();) {
+          Aggregate aggregate = (Aggregate) iterator.next();
+          try {
+            data.put(new CompositeDataSupport(
+              tabularType.getRowType(),
+              new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"},
+              new Object[]{
+                aggregate.getName(),
+                new Long(aggregate.getMeasurements()),
+                new Double(aggregate.getAverage()),
+                new Double(aggregate.getMin()),
+                new Double(aggregate.getMax()),
+                new Double(aggregate.getTotal()),
+                calculateObjectName(measurementDomain, aggregate)
+              }));
+          } catch (Exception e) {
+            throw new EtmException(e);
+          }
+        }
+      }
+    });
+    return data;
+  }
+
   public String renderResultsAsText() {
     StringWriter writer = new StringWriter();
     SimpleTextRenderer renderer = new SimpleTextRenderer(writer);
@@ -171,11 +230,13 @@ public class EtmMonitorMBean implements DynamicMBean {
     return writer.toString();
   }
 
-  private MBeanOperationInfo[] getActiveMonitorOperation() {
+  private OpenMBeanOperationInfo[] getActiveMonitorOperation() {
     try {
-      return new MBeanOperationInfo[]{
-        new MBeanOperationInfo("Disables performance monitoring.", etmMonitor.getClass().getMethod("disableCollection", new Class[]{})),
-        new MBeanOperationInfo("Renders aggregated performance statistics in text format", getClass().getMethod("renderResultsAsText", new Class[]{}))
+      return new OpenMBeanOperationInfoSupport[]{
+        new OpenMBeanOperationInfoSupport("disableCollection", "Disables performance monitoring.", null, SimpleType.VOID, MBeanOperationInfo.ACTION),
+        new OpenMBeanOperationInfoSupport("reset", "Resets current performance data.", null, SimpleType.VOID, MBeanOperationInfo.ACTION),
+        new OpenMBeanOperationInfoSupport("renderResultsAsText", "Renders aggregated performance statistics in text format", null, SimpleType.STRING, MBeanOperationInfo.ACTION),
+        new OpenMBeanOperationInfoSupport("results", "Current top level performance results.", null, tabularType, MBeanOperationInfo.INFO)
       };
     } catch (Exception e) {
       // this should be save
@@ -183,11 +244,13 @@ public class EtmMonitorMBean implements DynamicMBean {
     }
   }
 
-  private MBeanOperationInfo[] getInactiveMonitorOperation() {
+  private OpenMBeanOperationInfo[] getInactiveMonitorOperation() {
     try {
-      return new MBeanOperationInfo[]{
-        new MBeanOperationInfo("Enables performance monitoring.", etmMonitor.getClass().getMethod("enableCollection", new Class[]{})),
-        new MBeanOperationInfo("Renders aggregated performance statistics in text format", getClass().getMethod("renderResultsAsText", new Class[]{}))
+      return new OpenMBeanOperationInfoSupport[]{
+        new OpenMBeanOperationInfoSupport("enableCollection", "Enables performance monitoring.", null, SimpleType.VOID, MBeanOperationInfo.ACTION),
+        new OpenMBeanOperationInfoSupport("reset", "Resets current performance data.", null, SimpleType.VOID, MBeanOperationInfo.ACTION),
+        new OpenMBeanOperationInfoSupport("renderResultsAsText", "Renders aggregated performance statistics in text format", null, SimpleType.STRING, MBeanOperationInfo.ACTION),
+        new OpenMBeanOperationInfoSupport("results", "Current top level performance results.", null, tabularType, MBeanOperationInfo.INFO)
       };
     } catch (Exception e) {
       // this should be save
@@ -195,13 +258,13 @@ public class EtmMonitorMBean implements DynamicMBean {
     }
   }
 
-  private MBeanAttributeInfo[] getAttributeInfos() {
+  private OpenMBeanAttributeInfo[] getAttributeInfos() {
     try {
-      return new MBeanAttributeInfo[]{
-        new MBeanAttributeInfo("started", "Whether the monitor is started or not.", etmMonitor.getClass().getMethod("isStarted", new Class[]{}), null),
-        new MBeanAttributeInfo("collecting", "Whether the monitor is collecting or not.", etmMonitor.getClass().getMethod("isCollecting", new Class[]{}), null),
-        new MBeanAttributeInfo("startDate", "The date the application was started.", etmMonitor.getMetaData().getClass().getMethod("getStartTime", new Class[]{}), null),
-        new MBeanAttributeInfo("lastResetDate", "The date the monitor was resetted.", etmMonitor.getMetaData().getClass().getMethod("getLastResetTime", new Class[]{}), null),
+      return new OpenMBeanAttributeInfoSupport[]{
+        new OpenMBeanAttributeInfoSupport("started", "Whether the monitor is started or not.", SimpleType.BOOLEAN, true, false, true),
+        new OpenMBeanAttributeInfoSupport("collecting", "Whether the monitor is collecting or not.", SimpleType.BOOLEAN, true, false, true),
+        new OpenMBeanAttributeInfoSupport("startDate", "The date the application was started.", SimpleType.DATE, true, false, false),
+        new OpenMBeanAttributeInfoSupport("lastResetDate", "The date the monitor was resetted.", SimpleType.DATE, true, false, false)
       };
 
 

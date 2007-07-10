@@ -56,8 +56,10 @@ import java.util.TimeZone;
  */
 public class StandaloneConsoleResponse implements ConsoleResponse {
 
+  protected static final byte[] LINEFEED = "\r\n".getBytes();
+
   // todo implement chucked output
-  private static final byte[] SERVER_HEADER = "Server: JETM console\n".getBytes();
+  private static final byte[] SERVER_HEADER = "Server: JETM console\r\n".getBytes();
   private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
   private Map headers;
@@ -120,40 +122,62 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
     destination.write(String.valueOf(status.statusCode).getBytes());
     destination.write(' ');
     destination.write(status.description.getBytes());
-    destination.write("\n".getBytes());
+    destination.write(LINEFEED);
+
     destination.write(SERVER_HEADER);
-    destination.write(("Date: " + getRfc1123Date() + "\n").getBytes());
-    destination.write("Connection: close\n".getBytes());
-    destination.write("\n".getBytes());
+
+    destination.write(("Date: " + getRfc1123Date()).getBytes());
+    destination.write(LINEFEED);
+
+    destination.write("Connection: close".getBytes());
+    destination.write(LINEFEED);
+    destination.write(LINEFEED);
   }
 
   private void writeRedirect() throws IOException {
-    destination.write("HTTP/1.0 302 OK\n".getBytes());
+    destination.write("HTTP/1.0 302 OK".getBytes());
+    destination.write(LINEFEED);
+
     destination.write(SERVER_HEADER);
-    destination.write(("Date: " + getRfc1123Date() + "\n").getBytes());
+
+    destination.write(("Date: " + getRfc1123Date()).getBytes());
+    destination.write(LINEFEED);
+
     destination.write("Location: ".getBytes());
     destination.write(redirectUrl.getBytes());
-    destination.write("\n".getBytes());
-    destination.write("Connection: close\n".getBytes());
-    destination.write("\n".getBytes());
+
+    destination.write(LINEFEED);
+
+    destination.write("Connection: close".getBytes());
+    destination.write(LINEFEED);
+    destination.write(LINEFEED);
   }
 
   private void writeContent() throws IOException {
     bufferWriter.flush();
-    destination.write("HTTP/1.0 200 OK\n".getBytes());
+    destination.write("HTTP/1.0 200 OK".getBytes());
+    destination.write(LINEFEED);
+
     destination.write(SERVER_HEADER);
-    destination.write(("Date: " + getRfc1123Date() + "\n").getBytes());
+
+    destination.write(("Date: " + getRfc1123Date()).getBytes());
+    destination.write(LINEFEED);
+
     for (Iterator iterator = headers.keySet().iterator(); iterator.hasNext();) {
       String name = (String) iterator.next();
       destination.write(name.getBytes());
       destination.write(": ".getBytes());
       destination.write(((String) (headers.get(name))).getBytes());
-      destination.write("\n".getBytes());
+      destination.write(LINEFEED);
     }
 
-    destination.write(("Content-Length: " + bufferOutStream.size() + "\n").getBytes());
-    destination.write("Connection: close\n".getBytes());
-    destination.write("\n".getBytes());
+    destination.write(("Content-Length: " + bufferOutStream.size()).getBytes());
+    destination.write(LINEFEED);
+
+    destination.write("Connection: close".getBytes());
+    destination.write(LINEFEED);
+    destination.write(LINEFEED);
+
     destination.write(bufferOutStream.toByteArray());
   }
 

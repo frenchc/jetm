@@ -30,58 +30,56 @@
  *
  */
 
-package etm.core.util;
+package etm.contrib.aop.jboss;
 
+import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
+import org.jboss.aop.advice.Interceptor;
+import org.jboss.aop.joinpoint.ConstructorInvocation;
+import org.jboss.aop.joinpoint.Invocation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import java.lang.reflect.Constructor;
 
 /**
- * Contains JETM version information.
+ * A interceptor that may be used to advise constructor invocations. Be aware that binding
+ * this interceptor to a non constructor join point will likely cause a class cast exception.
  *
  * @author void.fm
- * @version $Revision:129 $
- * @since 1.2.0
+ * @version $Revision$
+ * @since 1.2.2
  */
-public class Version {
+public class EtmJbossConstructorInterceptor extends JbossInterceptorSupport implements Interceptor {
 
-  private static Map properties;
+  protected final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
-  static {
-    Properties props = new Properties();
-    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream("jetm.version");
-    if (in != null) {
-      try {
-        try {
-          props.load(in);
-        } catch (IOException e) {
-          // also ignored
-        }
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
-        }
-      }
+  public String getName() {
+    return "EtmJbossConstructorInterceptor";
+  }
+
+  public Object invoke(Invocation aInvocation) throws Throwable {
+    EtmPoint etmPoint = etmMonitor.createPoint(calculateName((ConstructorInvocation) aInvocation));
+    try {
+      return aInvocation.invokeNext();
+    } catch (Throwable t) {
+      alterNamePostException(etmPoint, t);
+      throw t;
+    } finally {
+      etmPoint.collect();
     }
-    properties = props;
   }
 
-  public static String getVersion() {
-    return (String) properties.get("jetm.version");
+  /**
+   * Calculate EtmPoint name based on the method.
+   *
+   * @param aInvocation The method invocation.
+   * @return The name of the EtmPoint.
+   */
+  protected String calculateName(ConstructorInvocation aInvocation) {
+    Constructor constructor = aInvocation.getConstructor();
+
+    return calculateShortName(constructor.getDeclaringClass()) + "::" + constructor.getName();
   }
 
-  public static String getBuildDate() {
-    return (String) properties.get("jetm.build.date");
 
-  }
-
-  public static String getBuildBy() {
-    return (String) properties.get("jetm.build.by");
-
-  }
 }

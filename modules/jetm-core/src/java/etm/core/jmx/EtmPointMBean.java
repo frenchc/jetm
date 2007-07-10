@@ -41,13 +41,18 @@ import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.DynamicMBean;
 import javax.management.InvalidAttributeValueException;
-import javax.management.MBeanAttributeInfo;
-import javax.management.MBeanConstructorInfo;
 import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.ReflectionException;
+import javax.management.openmbean.OpenMBeanAttributeInfo;
+import javax.management.openmbean.OpenMBeanAttributeInfoSupport;
+import javax.management.openmbean.OpenMBeanConstructorInfo;
+import javax.management.openmbean.OpenMBeanInfoSupport;
+import javax.management.openmbean.OpenMBeanOperationInfo;
+import javax.management.openmbean.OpenMBeanOperationInfoSupport;
+import javax.management.openmbean.SimpleType;
 
 /**
  * MBean for exporting an EtmPoint to JMX.
@@ -111,20 +116,20 @@ public class EtmPointMBean implements DynamicMBean {
   }
 
   public MBeanInfo getMBeanInfo() {
-    return new MBeanInfo(
+    return new OpenMBeanInfoSupport(
       Aggregate.class.getName(),
       "Performance results for " + aggregate.getName(),
       getAttributeInfos(),
-      new MBeanConstructorInfo[]{},
+      new OpenMBeanConstructorInfo[]{},
       getOperations(),
       new MBeanNotificationInfo[]{}
     );
   }
 
-  private MBeanOperationInfo[] getOperations() {
+  private OpenMBeanOperationInfo[] getOperations() {
     try {
-      return new MBeanOperationInfo[]{
-        new MBeanOperationInfo("Resets etm point.", aggregate.getClass().getMethod("reset", new Class[]{})),
+      return new OpenMBeanOperationInfo[]{
+        new OpenMBeanOperationInfoSupport("reset", "Resets etm point.", null, SimpleType.VOID, MBeanOperationInfo.ACTION)
       };
     } catch (Exception e) {
       // this should be save
@@ -132,14 +137,14 @@ public class EtmPointMBean implements DynamicMBean {
     }
   }
 
-  private MBeanAttributeInfo[] getAttributeInfos() {
+  private OpenMBeanAttributeInfo[] getAttributeInfos() {
     try {
-      return new MBeanAttributeInfo[]{
-        new MBeanAttributeInfo("measurements", "The number of measurements.", aggregate.getClass().getMethod("getMeasurements", new Class[]{}), null),
-        new MBeanAttributeInfo("average", "The average time in miliseconds.", aggregate.getClass().getMethod("getAverage", new Class[]{}), null),
-        new MBeanAttributeInfo("min", "The minimum time in miliseconds..", aggregate.getClass().getMethod("getMin", new Class[]{}), null),
-        new MBeanAttributeInfo("max", "The maximum time in miliseconds.", aggregate.getClass().getMethod("getMax", new Class[]{}), null),
-        new MBeanAttributeInfo("total", "The total time in miliseconds.", aggregate.getClass().getMethod("getTotal", new Class[]{}), null)
+      return new OpenMBeanAttributeInfo[]{
+        new OpenMBeanAttributeInfoSupport("measurements", "The number of measurements.", SimpleType.LONG, true, false, false),
+        new OpenMBeanAttributeInfoSupport("average", "The average time in miliseconds.", SimpleType.DOUBLE, true, false, false),
+        new OpenMBeanAttributeInfoSupport("min", "The minimum time in miliseconds..", SimpleType.DOUBLE, true, false, false),
+        new OpenMBeanAttributeInfoSupport("max", "The maximum time in miliseconds.", SimpleType.DOUBLE, true, false, false),
+        new OpenMBeanAttributeInfoSupport("total", "The total time in miliseconds.", SimpleType.DOUBLE, true, false, false)
       };
 
 

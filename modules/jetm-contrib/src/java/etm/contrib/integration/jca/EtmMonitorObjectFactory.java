@@ -29,59 +29,38 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.integration.jca;
 
-package etm.core.util;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
-import etm.core.monitor.EtmMonitor;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import javax.naming.Context;
+import javax.naming.Name;
+import javax.naming.Reference;
+import javax.naming.spi.ObjectFactory;
+import java.util.Hashtable;
 
 /**
- * Contains JETM version information.
+ * An JNDI object factory that provides access to a previously configured
+ * EtmMonitor.
  *
  * @author void.fm
- * @version $Revision:129 $
- * @since 1.2.0
+ * @version $Revision$
+ * @since 1.2.2
  */
-public class Version {
+public class EtmMonitorObjectFactory implements ObjectFactory {
 
-  private static Map properties;
+  private static final LogAdapter log = Log.getLog(EtmMonitorObjectFactory.class);
 
-  static {
-    Properties props = new Properties();
-    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream("jetm.version");
-    if (in != null) {
-      try {
-        try {
-          props.load(in);
-        } catch (IOException e) {
-          // also ignored
-        }
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
-        }
-      }
+  public Object getObjectInstance(Object obj, Name name, Context nameCtx, Hashtable environment) throws Exception {
+    if (obj instanceof Reference) {
+      Reference reference = (Reference) obj;
+      String referenceName = (String) reference.get("location").getContent();
+
+      log.warn("Returning EtmMonitor " + referenceName + "for JNDI name " + name.toString());
+      return EtmMonitorRepository.getMonitor(referenceName);
     }
-    properties = props;
-  }
 
-  public static String getVersion() {
-    return (String) properties.get("jetm.version");
-  }
-
-  public static String getBuildDate() {
-    return (String) properties.get("jetm.build.date");
-
-  }
-
-  public static String getBuildBy() {
-    return (String) properties.get("jetm.build.by");
-
+    return null;
   }
 }

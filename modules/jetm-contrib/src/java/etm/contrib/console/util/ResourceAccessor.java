@@ -33,6 +33,7 @@
 package etm.contrib.console.util;
 
 import etm.contrib.console.ConsoleException;
+import etm.core.monitor.EtmMonitor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class ResourceAccessor {
   }
 
   private byte[] loadResource(String resourcePath) {
-    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream(resourcePath);
     ByteArrayOutputStream output = new ByteArrayOutputStream();
 
     if (in != null) {

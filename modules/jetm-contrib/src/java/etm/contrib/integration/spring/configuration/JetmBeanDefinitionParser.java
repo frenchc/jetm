@@ -39,20 +39,19 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 /**
- *
  * Base class for our Spring BeanDefinitionParsers. This class alters the behavior of
  * {@link AbstractBeanDefinitionParser} such that it automatically assign a id if none
  * is given.
  *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
 public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
   protected String resolveId(Element element, AbstractBeanDefinition definition, ParserContext parserContext)
     throws BeanDefinitionStoreException {
     String id = super.resolveId(element, definition, parserContext);
-    if (id == null || id.length() ==0) {
+    if (id == null || id.length() == 0) {
       return generateName(definition, parserContext);
     }
     return id;

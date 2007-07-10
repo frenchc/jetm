@@ -29,59 +29,32 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.integration.jca;
 
-package etm.core.util;
-
-import etm.core.monitor.EtmMonitor;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import javax.naming.NamingException;
+import javax.naming.Reference;
+import javax.naming.Referenceable;
+import javax.naming.StringRefAddr;
 
 /**
- * Contains JETM version information.
+ * A class that stores a reference to a given
+ * EtmMonitor.
  *
  * @author void.fm
- * @version $Revision:129 $
- * @since 1.2.0
+ * @version $Revision$
+ * @since 1.2.2
  */
-public class Version {
+public class EtmMonitorReference implements Referenceable {
 
-  private static Map properties;
+  private String reference;
 
-  static {
-    Properties props = new Properties();
-    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream("jetm.version");
-    if (in != null) {
-      try {
-        try {
-          props.load(in);
-        } catch (IOException e) {
-          // also ignored
-        }
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
-        }
-      }
-    }
-    properties = props;
+  public void setReference(String aReference) {
+    reference = aReference;
   }
 
-  public static String getVersion() {
-    return (String) properties.get("jetm.version");
-  }
-
-  public static String getBuildDate() {
-    return (String) properties.get("jetm.build.date");
-
-  }
-
-  public static String getBuildBy() {
-    return (String) properties.get("jetm.build.by");
-
+  public Reference getReference() throws NamingException {
+    return new Reference(EtmMonitorReference.class.getName(),
+      new StringRefAddr("location", reference),
+      EtmMonitorObjectFactory.class.getName(), null);
   }
 }

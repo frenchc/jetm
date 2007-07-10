@@ -1,0 +1,36 @@
+<connector xmlns="http://java.sun.com/xml/ns/j2ee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+		 http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd"
+           version="1.5">
+  <display-name>JETM lifecycle adapter</display-name>
+  <vendor-name>void.fm</vendor-name>
+  <eis-type>JETM lifecycle adapter</eis-type>
+  <resourceadapter-version>1.0</resourceadapter-version>
+  <license>
+    <description>This adapter is shipped under BSD-style license. See http://jetm.void.fm/license.html</description>
+    <license-required>false</license-required>
+  </license>
+
+  <resourceadapter>
+
+    <resourceadapter-class>etm.contrib.integration.jca.EtmMonitorConnector</resourceadapter-class>
+
+    <!--
+      Alters the name for the jetm config file.
+    <config-property>
+      <config-property-name>configFile</config-property-name>
+      <config-property-type>java.lang.String</config-property-type>
+      <config-property-value>jetm-config.xml</config-property-value>
+    </config-property>  -->
+
+    <!--
+     Enables JNDI binding, currently not supported
+    <config-property>
+      <config-property-name>jndiName</config-property-name>
+      <config-property-type>java.lang.String</config-property-type>
+      <config-property-value>etm/EtmMonitor</config-property-value>
+    </config-property>
+    -->
+  </resourceadapter>
+</connector>

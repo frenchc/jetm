@@ -29,59 +29,40 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.integration.jca;
 
-package etm.core.util;
-
+import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitor;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
- * Contains JETM version information.
+ * The EtmMonitorRespository keeps track of local EtmMonitor instances. It assumes
+ * an EtmMonitor can be loaded statically.
  *
  * @author void.fm
- * @version $Revision:129 $
- * @since 1.2.0
+ * @version $Revision$
+ * @since 1.2.2
  */
-public class Version {
+class EtmMonitorRepository {
 
-  private static Map properties;
+  private static Map managedMonitors = new HashMap();
 
-  static {
-    Properties props = new Properties();
-    InputStream in = EtmMonitor.class.getClassLoader().getResourceAsStream("jetm.version");
-    if (in != null) {
-      try {
-        try {
-          props.load(in);
-        } catch (IOException e) {
-          // also ignored
-        }
-      } finally {
-        try {
-          in.close();
-        } catch (IOException e) {
-          // ignored
-        }
-      }
+  public static void register(String reference, EtmMonitor aMonitor) {
+    if (!managedMonitors.containsKey(reference)) {
+      managedMonitors.put(reference, aMonitor);
+    } else {
+      throw new EtmException("Reference " + reference + " already assigned. Ensure that the same jetm-config file is not " +
+        "reused accross multiple EtmMonitor instances.");
     }
-    properties = props;
   }
 
-  public static String getVersion() {
-    return (String) properties.get("jetm.version");
+  public static EtmMonitor deregister(String reference) {
+    return (EtmMonitor) managedMonitors.remove(reference);
   }
 
-  public static String getBuildDate() {
-    return (String) properties.get("jetm.build.date");
-
-  }
-
-  public static String getBuildBy() {
-    return (String) properties.get("jetm.build.by");
-
+  public static EtmMonitor getMonitor(String reference) {
+    return (EtmMonitor) managedMonitors.get(reference);
   }
 }

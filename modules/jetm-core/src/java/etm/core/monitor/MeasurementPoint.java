@@ -55,7 +55,7 @@ package etm.core.monitor;
  * @version $Revision$
  * @see EtmMonitor
  * @deprecated Please use {@link etm.core.monitor.EtmMonitor#createPoint(String)} instead. Will be made
- *  package visible with JETM 2.0.0.
+ *             package visible with JETM 2.0.0.
  */
 
 public class MeasurementPoint implements EtmPoint {
@@ -88,12 +88,6 @@ public class MeasurementPoint implements EtmPoint {
     monitor.visitPreMeasurement(this);
   }
 
-  /**
-   * Marks the current measurement as finished.
-   *
-   * @throws IllegalStateException Thrown in case the name of the measurement point is null.
-   */
-
   public void collect() {
     if (name == null) {
       throw new IllegalStateException("A measurement point may not be collected without a proper name.");
@@ -102,58 +96,26 @@ public class MeasurementPoint implements EtmPoint {
     monitor.visitPostCollect(this);
   }
 
-  /**
-   * Alters the name of the measurement point.
-   * This may be usefull for executions where the outcome of an operation
-   * may change the scope of the measurement, e.g. an Exception.
-   *
-   * @param newName The new name of the measurement point.
-   */
   public void alterName(String newName) {
     name = newName;
   }
 
-  /**
-   * Returns the name of the measurement point.
-   *
-   * @return The name.
-   */
 
   public String getName() {
     return name;
   }
 
-  /**
-   * Returns the start time of the measurement in the {@link etm.core.timer.ExecutionTimer}
-   * dependend precision.
-   *
-   * @return The start time.
-   */
   public long getStartTime() {
     return startTime;
   }
-
-  /**
-   * Returns the end time of the measurement in the {@link etm.core.timer.ExecutionTimer}
-   * dependend precision.
-   *
-   * @return The end time.
-   */
 
   public long getEndTime() {
     return endTime;
   }
 
-  /**
-   * Returns the number of ticks per milisecond as provided by the used {@link etm.core.timer.ExecutionTimer}.
-   *
-   * @return The number of ticks.
-   */
-
   public long getTicks() {
     return ticks;
   }
-
 
   /**
    * Sets a parent measurement point.
@@ -164,11 +126,6 @@ public class MeasurementPoint implements EtmPoint {
     parent = aParent;
   }
 
-  /**
-   * Returns the parent of this measurement point.
-   *
-   * @return The parent, may be null.
-   */
   public EtmPoint getParent() {
     return parent;
   }
@@ -203,21 +160,9 @@ public class MeasurementPoint implements EtmPoint {
     ticks = aTicks;
   }
 
-  /**
-   * Returns the calculated processing time.
-   *
-   * @return The processing time.
-   */
-
   public double getTransactionTime() {
     return ((double) ((endTime - startTime) * SECOND_MULTIPLIER)) / (double) ticks;
   }
-
-  /**
-   * Returns the time the measurement was startet.
-   *
-   * @return The time taken using <code>System.currentTimeMillis</code>
-   */
 
   public long getStartTimeMillis() {
     return startTimeMillis;
