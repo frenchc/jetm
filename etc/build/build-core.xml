@@ -40,7 +40,7 @@
     <manifest>
       <section name="JETM Core">
         <attribute name="Version" value="${release.version}"/>
-        <attribute name="Date" value="${current.date}"/>
+        <attribute name="Date" value="${release.datetime}"/>
       </section>
     </manifest>
   </jar>

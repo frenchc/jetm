@@ -2,6 +2,8 @@
 <book xmlns="http://docbook.org/ns/docbook"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:dyn="urn:jetm/build/dynamic-values"
       version="5.0" xml:lang="en">
   <info>
     <title>JETM Reference Guide</title>
@@ -12,15 +14,11 @@
       <year>2007</year>
       <holder>void.fm</holder>
     </copyright>
-    <pubdate>TODO: dynamic publish data</pubdate>
+    <pubdate>
+      <dyn:pubdate />
+    </pubdate>
     <releaseinfo>
-      <!-- TODO: Is there a better way to include a dynamic attribute?? -->
-      <xi:include parse="text"
-                  href="../../../../build/tmp/doc/tmp/version.txt">
-        <xi:fallback>
-          <xsl:text>??.??.??</xsl:text>
-        </xi:fallback>
-      </xi:include>
+      <dyn:releaseinfo />
     </releaseinfo>
     <legalnotice>
       <para>
@@ -41,14 +39,17 @@
     </authorgroup>
 
     <abstract>
-      <para>This document is the JETM reference.</para>
+      <para>This document is the rreference documentation for the Java&#x2122; Execution Time Measurement
+        Library - or short JETM. It provides all
+      </para>
 
-      <para>TODO</para>
 
       <para>Even though I have spend endless hours configuring DocBook I have to admit that it would have been
         impossible to create this document without the work from Christian Bauer
-        (of <link href="http://www.hibernate.org/">Hibernate</link> fame) and the Springframework team. You guys
-        have done a tremendous job of flattening the learning curve towards DocBook-XSL. Thanks!
+        (of
+        <link xlink:href="http://www.hibernate.org/">Hibernate</link>
+        fame) and the Springframework team. You guys
+        have done a tremendous job of lowering the learning curve towards DocBook-XSL. Thanks!
       </para>
     </abstract>
 
@@ -57,11 +58,12 @@
   <preface>
     <title>Preface</title>
     <para>
-      Consider a Java<!-- TODO &trade; --> SE or EE application that has or potentially may have performance problems.
+      Consider a Java&#x2122; SE or EE application that has or potentially may have performance problems.
       What do you do?
     </para>
 
-    <para>Most likely you will go ahead and profile the application using a Java Profiler or just log execution times
+    <para>Most likely you will go ahead and profile the application using a Java&#x2122; Profiler or just log execution
+      times
       using your favourite logging framework. Both strategies will give you enough information to understand
       what is really going wrong in your application.
     </para>
@@ -69,9 +71,9 @@
     <para>However these two strategies do have their drawbacks.</para>
 
     <para>
-      Even though a Java<!-- TODO &trade; --> Profiler offers a detailed inside-view to your application
+      Even though a Java&#x2122; Profiler offers a detailed inside-view to your application
       you sometimes just can't use it. This is because typically a profiler makes use of the
-      Java<!-- TODO &trade; --> Virtual Machine Profiling Interface (JVMPI) or Java<!-- TODO &trade; --> Virtual
+      Java&#x2122; Virtual Machine Profiling Interface (JVMPI) or Java&#x2122; Virtual
       Machine Tool Interface (JVMTI) to collect fine-grained details such as object and memory allocations, execution
       paths and garbage collector behavior. The usage of these interfaces and the related profiler extensions usually
       <emphasis>adds some overhead</emphasis>
@@ -89,12 +91,13 @@
       .
     </para>
 
-    <para>While leaving the in-depth application performance analysis in the hands of professional Java Profilers
+    <para>While leaving the in-depth application performance analysis in the hands of professional Java&#x2122;
+      Profilers
       <footnote>
         <para>In the commercial field we recommend using YourKit or JProfiler from ej-technologies</para>
       </footnote>
       there is often a need to monitor an application under production load or even transparently during development
-      and testing. Therefore it is necessary to provide means to collect statistics similar to the ones of Java
+      and testing. Therefore it is necessary to provide means to collect statistics similar to the ones of Java&#x2122;
       Profilers without their side effects.
     </para>
 

@@ -38,7 +38,7 @@
     <manifest>
       <section name="JETM Optional">
         <attribute name="Version" value="${release.version}"/>
-        <attribute name="Date" value="${current.date}"/>
+        <attribute name="Date" value="${release.datetime}"/>
       </section>
     </manifest>
   </jar>

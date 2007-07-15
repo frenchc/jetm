@@ -154,7 +154,12 @@
             <fo:table-cell text-align="center">
               <fo:block font-family="Helvetica" font-size="10pt" margin="0mm" padding-bottom="0mm">
                 <xsl:text>Copyright &#169; </xsl:text>
-                <xsl:value-of select="d:info/d:copyright/d:year"/>
+                <xsl:for-each select="d:info/d:copyright/d:year">
+                  <xsl:if test="position() > 1">
+                    <xsl:text>, </xsl:text>
+                  </xsl:if>
+                  <xsl:value-of select="current()" />
+                </xsl:for-each>
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="d:info/d:copyright/d:holder"/>
               </fo:block>

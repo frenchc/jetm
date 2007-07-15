@@ -5,7 +5,7 @@
 </path>
 
 <target name="create-doc" depends="init-doc, prepare-doc" description="Creates JETM documentation">
-  <!--<antcall target="doc-html"/>-->
+  <antcall target="doc-html"/>
   <antcall target="doc-pdf"/>
 </target>
 
@@ -52,12 +52,24 @@
 <target name="init-doc">
   <mkdir dir="${module.doc.dest}"/>
 
+
   <available property="docbook.expanded" file="${module.doc.dest.tmp}/${module.doc.docbook.version}" />
   <antcall target="expand-docbook" />
 
   <copy todir="${module.doc.dest.tmp}/${module.doc.docbook.version}">
     <fileset dir="${module.doc.dir}/src/style" />
   </copy>
+
+
+  <!-- Create dynamic values for XSL processing -->  
+  <echo file="${module.doc.dest.tmp}/${module.doc.docbook.version}/dynamic-values.xsl"><![CDATA[<?xml version="1.0"?>
+<xsl:stylesheet version="2.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">  
+  <xsl:param name="release.date">${release.date}</xsl:param>
+  <xsl:param name="release.version">${release.version}</xsl:param>
+</xsl:stylesheet>
+]]></echo>
+
 </target>
 
 <target name="clean-doc">
@@ -68,15 +80,12 @@
   <!-- process xinclude directives -->
   <mkdir dir="${module.doc.dest.tmp}/merged"/>
 
-  <echo file="${module.doc.dest.tmp}/version.txt" message="${release.version}"/>
-
   <java classname="net.sf.saxon.Transform" fork="true" dir="${basedir}">
     <classpath refid="doc.classpath"/>
     <arg value="-o"/>
     <arg value="${module.doc.dest.tmp}/merged/reference.merged"/>
     <arg value="${basedir}/${module.doc.dir}/src/docbook/reference.docbook"/>
     <arg value="${basedir}/${module.doc.dest.tmp}/${module.doc.docbook.version}/xipr.xsl"/>
-    <arg value="jetm.version=${release.version}" />
   </java>
 </target>
 

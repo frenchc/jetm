@@ -14,7 +14,11 @@
   <property environment="env"/>
 
   <tstamp>
-    <format property="current.date" pattern="dd-MM-yyyy hh:mm:ss aa" locale="en"/>
+    <format property="release.datetime" pattern="dd-MM-yyyy hh:mm:ss aa" locale="en"/>
+  </tstamp>
+
+  <tstamp>
+    <format property="release.date" pattern="yyyy/MM/dd" locale="en"/>
   </tstamp>
 
   <path id="build.classpath">
