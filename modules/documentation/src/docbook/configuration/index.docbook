@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<part xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
+  <title>Advanced Configuration</title>
+  <partintro>
+    <para>
+      An intro to configuration
+    </para>
+  </partintro>
+  <chapter>
+    <title>Static EtmManager configuration</title>
+    <para>Bla</para>
+  </chapter>
+</part>
+

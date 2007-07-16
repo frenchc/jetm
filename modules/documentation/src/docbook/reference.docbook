@@ -22,11 +22,9 @@
     </releaseinfo>
     <legalnotice>
       <para>
-        Copies of this document may be made for your own use and for
-        distribution to others, provided that you do not charge any
-        fee for such copies and further provided that each copy
-        contains this Copyright Notice, whether distributed in print
-        or electronically.
+        Copies of this document may be made for your own use and for distribution to others, provided that you do not
+        charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether
+        distributed in print or electronically.
       </para>
     </legalnotice>
     <authorgroup>
@@ -39,16 +37,14 @@
     </authorgroup>
 
     <abstract>
-      <para>This document is the rreference documentation for the Java&#x2122; Execution Time Measurement
+      <para>This document is the reference documentation for the Java&#x2122; Execution Time Measurement
         Library - or short JETM. It provides all
       </para>
 
 
       <para>Even though I have spend endless hours configuring DocBook I have to admit that it would have been
-        impossible to create this document without the work from Christian Bauer
-        (of
-        <link xlink:href="http://www.hibernate.org/">Hibernate</link>
-        fame) and the Springframework team. You guys
+        impossible to create this document without the work from Christian Bauer (of
+        <link xlink:href="http://www.hibernate.org/">Hibernate</link> fame) and the Springframework team. You guys
         have done a tremendous job of lowering the learning curve towards DocBook-XSL. Thanks!
       </para>
     </abstract>
@@ -63,46 +59,37 @@
     </para>
 
     <para>Most likely you will go ahead and profile the application using a Java&#x2122; Profiler or just log execution
-      times
-      using your favourite logging framework. Both strategies will give you enough information to understand
+      times using your favourite logging framework. Both strategies will give you enough information to understand
       what is really going wrong in your application.
     </para>
 
     <para>However these two strategies do have their drawbacks.</para>
 
     <para>
-      Even though a Java&#x2122; Profiler offers a detailed inside-view to your application
-      you sometimes just can't use it. This is because typically a profiler makes use of the
-      Java&#x2122; Virtual Machine Profiling Interface (JVMPI) or Java&#x2122; Virtual
-      Machine Tool Interface (JVMTI) to collect fine-grained details such as object and memory allocations, execution
-      paths and garbage collector behavior. The usage of these interfaces and the related profiler extensions usually
-      <emphasis>adds some overhead</emphasis>
-      to executions times and thus may
-      <emphasis>slow down an application</emphasis>
-      to a point where it is impossible to be used in a production
+      Even though a Java&#x2122; Profiler offers a detailed inside-view to your application you sometimes just can't
+      use it. This is because typically a profiler makes use of the Java&#x2122; Virtual Machine Profiling Interface
+      (JVMPI) or Java&#x2122; Virtual Machine Tool Interface (JVMTI) to collect fine-grained details such as object and
+      memory allocations, execution paths and garbage collector behavior. The usage of these interfaces and the related
+      profiler extensions usually <emphasis>adds some overhead</emphasis> to executions times and thus may
+      <emphasis>slow down an application </emphasis> to a point where it is impossible to be used in a production
       environment.
     </para>
 
     <para>
       As an alternative to profiling and often as part of the runtime monitoring process application developers tend
       to log execution times to log files. Depending on the size of the application and the developer team this tends
-      to be a major nightmare in terms
-      <emphasis>data formatting, quality and consistency</emphasis>
-      .
+      to be a major nightmare in terms <emphasis>data formatting, quality and consistency</emphasis>.
     </para>
 
     <para>While leaving the in-depth application performance analysis in the hands of professional Java&#x2122;
-      Profilers
-      <footnote>
-        <para>In the commercial field we recommend using YourKit or JProfiler from ej-technologies</para>
-      </footnote>
-      there is often a need to monitor an application under production load or even transparently during development
-      and testing. Therefore it is necessary to provide means to collect statistics similar to the ones of Java&#x2122;
-      Profilers without their side effects.
+      Profilers<footnote><para>In the commercial field we recommend YourKit or JProfiler from ej-technologies</para>
+      </footnote> there is often a need to monitor an application under production load or even transparently during
+      development and testing. Therefore it is necessary to provide means to collect statistics similar to the ones of
+      Java&#x2122; Profilers without their side effects.
     </para>
 
-    <para>From a high level perspective JETM gives you exactly this ability with minimal
-      (but existing) impact on application performance and minimal requirements for test setup and maintenance.
+    <para>From a high level perspective JETM gives you exactly this ability with minimal (but existing) impact on
+      application performance and minimal requirements for test setup and maintenance.
     </para>
     <!--</p>-->
     <!--<h4>How does it work?</h4>-->
@@ -127,8 +114,11 @@
     </para>
   </preface>
 
-  <xi:include href="intro/concepts.docbook"/>
-
-  <xi:include href="integration/overview.docbook"/>
+  <xi:include href="intro/index.docbook"/>
+  
+  <xi:include href="instrumentation/index.docbook"/>
+  <xi:include href="integration/index.docbook"/>
+  <xi:include href="configuration/index.docbook"/>
+  <xi:include href="packaging/index.docbook"/>
 
 </book>

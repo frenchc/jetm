@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: xipr.xsl 297 2007-04-04 01:58:59Z dret $ -->
+<!-- $Id$ -->
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- XInclude Processor (XIPr) -
 Erik Wilde (http://dret.net/netdret/) - http://dret.net/projects/xipr/ -->

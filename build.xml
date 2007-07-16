@@ -18,7 +18,7 @@
   </tstamp>
 
   <tstamp>
-    <format property="release.date" pattern="yyyy/MM/dd" locale="en"/>
+    <format property="release.date" pattern="dd-MM-yyyy" locale="en"/>
   </tstamp>
 
   <path id="build.classpath">

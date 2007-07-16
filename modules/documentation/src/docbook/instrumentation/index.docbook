@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<part xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
+  <title>Instrumentation</title>
+  <partintro>
+    <para>
+      An Intro to instrumentation
+    </para>
+  </partintro>
+  <chapter>
+    <title>Programmatic instrumentation</title>
+    <para>Bla</para>
+  </chapter>
+  <chapter>
+    <title>Dynamic instrumentation</title>
+    <para>Bla</para>
+
+    <sect1>
+      <title>AOPAlliance Support</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>AspectWerkz AOP Support</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>AspectJ Support</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>Springframework AOP Support</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>JBoss AOP Support</title>
+      <para>blabla</para>
+    </sect1>
+
+  </chapter>
+
+</part>
+

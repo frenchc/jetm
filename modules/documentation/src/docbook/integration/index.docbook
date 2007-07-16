@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<part xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
+  <title>Integration</title>
+  <partintro>
+    <para>
+      Integration text
+    </para>
+  </partintro>
+  <chapter>
+    <title>
+      Java SE Integration
+    </title>
+    <para>bla</para>
+    <sect1>
+      <title>JMX integration</title>
+      <para>blabla</para>
+    </sect1>
+  </chapter>
+  <chapter>
+    <title>
+      Java EE Integration
+    </title>
+    <para>bla</para>
+    <sect1>
+      <title>Generic web application integration</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>EJB 3.0 integration</title>
+      <para>blabla</para>
+    </sect1>
+
+  </chapter>
+  <chapter>
+    <title>
+      Java Framework Integration
+    </title>
+    <para>bla</para>
+    <sect1>
+      <title>Springframework integration</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>Struts integration</title>
+      <para>blabla</para>
+    </sect1>
+    <sect1>
+      <title>JBoss Seam integration</title>
+      <para>blabla</para>
+    </sect1>
+
+  </chapter>
+
+
+</part>
