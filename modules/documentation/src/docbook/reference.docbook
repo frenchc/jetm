@@ -38,14 +38,15 @@
 
     <abstract>
       <para>This document is the reference documentation for the Java&#x2122; Execution Time Measurement
-        Library - or short JETM. It provides all
+        Library - or short JETM. The document covers all topics that are required to integrate and configure
+        JETM within Java&#x2122; SE and EE environments.
       </para>
 
 
       <para>Even though I have spend endless hours configuring DocBook I have to admit that it would have been
         impossible to create this document without the work from Christian Bauer (of
-        <link xlink:href="http://www.hibernate.org/">Hibernate</link> fame) and the Springframework team. You guys
-        have done a tremendous job of lowering the learning curve towards DocBook-XSL. Thanks!
+        <link xlink:href="http://www.hibernate.org/">Hibernate</link> fame) and the Springframework team. Your work
+        was a good starting point for my own stylesheets and DocBook-XSL adjustments. Thanks!
       </para>
     </abstract>
 
@@ -70,7 +71,7 @@
       use it. This is because typically a profiler makes use of the Java&#x2122; Virtual Machine Profiling Interface
       (JVMPI) or Java&#x2122; Virtual Machine Tool Interface (JVMTI) to collect fine-grained details such as object and
       memory allocations, execution paths and garbage collector behavior. The usage of these interfaces and the related
-      profiler extensions usually <emphasis>adds some overhead</emphasis> to executions times and thus may
+      profiler extensions usually <emphasis>add some overhead</emphasis> to executions times and thus may
       <emphasis>slow down an application </emphasis> to a point where it is impossible to be used in a production
       environment.
     </para>
@@ -91,9 +92,10 @@
     <para>From a high level perspective JETM gives you exactly this ability with minimal (but existing) impact on
       application performance and minimal requirements for test setup and maintenance.
     </para>
-    <!--</p>-->
-    <!--<h4>How does it work?</h4>-->
 
+    <para>
+      How does it work?
+    </para>
 
     <para>Usually it is enough to identify
       <itemizedlist>
