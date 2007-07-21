@@ -32,6 +32,9 @@
 
 package etm.core.monitor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * The MeasurementPoint represents one measurement.
@@ -69,6 +72,7 @@ public class MeasurementPoint implements EtmPoint {
   private long endTime = 0;
   private long ticks = 0;
   private long startTimeMillis = 0;
+  private Map context;
 
   /**
    * Creates a new measurement point using the given
@@ -168,6 +172,16 @@ public class MeasurementPoint implements EtmPoint {
     return startTimeMillis;
   }
 
+  public void addContextDetail(String key, Object value) {
+    if (context == null) {
+      context = new HashMap();
+    }
+    context.put(key, value);
+  }
+
+  public Map getContext() {
+    return context;
+  }
 
   public String toString() {
     return "MeasurementPoint{" +
@@ -177,6 +191,8 @@ public class MeasurementPoint implements EtmPoint {
       ", startTime=" + startTime +
       ", endTime=" + endTime +
       ", ticks=" + ticks +
+      ", contextSize=" + ( context != null? context.size() : 0) +
+
       "}";
   }
 }

@@ -132,4 +132,15 @@ public interface EtmPoint {
    */
 
   public long getStartTimeMillis();
+
+  /**
+   *
+   * Adds arbitrary context information to a given
+   * etm point.
+   *
+   * @param key A key describing the context information.
+   * @param value  The context information.
+   */
+
+  public void addContextDetail(String key, Object value);
 }
