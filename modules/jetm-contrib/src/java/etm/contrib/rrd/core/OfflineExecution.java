@@ -92,4 +92,7 @@ class OfflineExecution implements EtmPoint {
     throw new UnsupportedOperationException();
   }
 
+  public void addContextDetail(String key, Object value) {
+    throw new UnsupportedOperationException();    
+  }
 }
