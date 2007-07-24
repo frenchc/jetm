@@ -29,28 +29,48 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.core.monitor.event;
+
+package etm.contrib.renderer.swing.tree;
+
+import etm.core.aggregation.Aggregate;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
- * A listener that informs about aggration detail changes.
+ * A AggregationNode represents one aggregated performance result,
+ * whether this aggregation is a top level or nested element.
  *
  * @author void.fm
  * @version $Revision$
- * @since 1.2.0
  */
-public interface AggregationListener extends EtmMonitorListener {
+public class AggregationNode extends DefaultMutableTreeNode {
 
-  public void onRootCreate(RootCreateEvent event);
+  protected Set childSet = new HashSet();
 
-  public void preRootReset(PreRootResetEvent event);
+  public AggregationNode(Aggregate aAggregate) {
+    this(aAggregate, null);
+  }
 
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
+  public AggregationNode(Aggregate aAggregate, MutableTreeNode aParent) {
+    userObject = aAggregate;
+    parent = aParent;
+  }
 
-  public void onStateReset(MonitorResetEvent event);
 
-  public void onAggregationFinished(AggregationFinishedEvent event);
+  public void insert(MutableTreeNode newChild, int childIndex) {
+    // TODO: this is wired - is there no way to locate a given
+    // Node containing a specific user object?
+    super.insert(newChild, childIndex);
+    childSet.add(((Aggregate) ((AggregationNode) newChild).getUserObject()).getName());
+  }
 
+
+  public boolean contains(String childName) {
+    return childSet.contains(childName);
+  }
 }
+

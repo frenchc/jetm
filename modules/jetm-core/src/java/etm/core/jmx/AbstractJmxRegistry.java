@@ -34,6 +34,7 @@ package etm.core.jmx;
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.persistence.PersistentEtmState;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.event.AggregationFinishedEvent;
 import etm.core.monitor.event.AggregationListener;
 import etm.core.monitor.event.AggregationStateListener;
 import etm.core.monitor.event.AggregationStateLoadedEvent;
@@ -231,6 +232,9 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
     // ignore
   }
 
+  public void onAggregationFinished(AggregationFinishedEvent event) {
+    // ignore
+  }
 
   protected void deregisterPerformanceResults() throws MalformedObjectNameException, InstanceNotFoundException, MBeanRegistrationException {
     ObjectName objectName = new ObjectName(measurementDomain + ":*");

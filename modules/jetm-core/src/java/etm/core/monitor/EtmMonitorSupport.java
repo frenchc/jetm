@@ -287,14 +287,16 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   public void addPlugin(EtmPlugin aEtmPlugin) {
-    if (started) {
-      throw new IllegalStateException("Monitor already started.");
-    }
     if (plugins == null) {
       plugins = new ArrayList();
     }
 
     plugins.add(aEtmPlugin);
+
+    if (started) {
+      startPlugin(aEtmPlugin);
+    }
+
   }
 
   public void setPlugins(List newPlugins) {
@@ -369,17 +371,21 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
       for (int i = 0; i < plugins.size(); i++) {
         EtmPlugin etmPlugin = (EtmPlugin) plugins.get(i);
-        try {
-          etmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
-          etmPlugin.start();
-          if (etmPlugin instanceof EtmMonitorListener) {
-            dispatcher.register((EtmMonitorListener) etmPlugin);
-          }
-        } catch (Exception e) {
-          log.warn("Error starting plugin " + etmPlugin.getPluginMetaData() + ". Keep plugin disabled. ", e);
-
-        }
+        startPlugin(etmPlugin);
       }
+    }
+  }
+
+  private void startPlugin(EtmPlugin aEtmPlugin) {
+    try {
+      aEtmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
+      aEtmPlugin.start();
+      if (aEtmPlugin instanceof EtmMonitorListener) {
+        dispatcher.register((EtmMonitorListener) aEtmPlugin);
+      }
+    } catch (Exception e) {
+      log.warn("Error starting plugin " + aEtmPlugin.getPluginMetaData() + ". Keep plugin disabled. ", e);
+
     }
   }
 
@@ -403,7 +409,6 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       "at some point in your application.");
     noStartedErrorMessageFlag = true;
   }
-
 
   class EtmMonitorSupportContext implements EtmMonitorContext {
     private EtmMonitor monitor;

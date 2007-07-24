@@ -35,6 +35,7 @@ package etm.core.aggregation;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
+import etm.core.monitor.event.AggregationFinishedEvent;
 import etm.core.renderer.MeasurementRenderer;
 
 /**
@@ -63,6 +64,7 @@ public class BufferedThresholdAggregator implements Aggregator {
   protected int threshold = DEFAULT_SIZE;
 
   protected BoundedBuffer buffer;
+  protected EtmMonitorContext context;
 
   /**
    * Creates a new BufferedThresholdAggregator for the given
@@ -122,6 +124,7 @@ public class BufferedThresholdAggregator implements Aggregator {
 
 
   public void init(EtmMonitorContext ctx) {
+    context = ctx;
     delegate.init(ctx);
   }
 
@@ -183,6 +186,7 @@ public class BufferedThresholdAggregator implements Aggregator {
         for (int i = 0; i < aLength; i++) {
           delegate.add(aCurrent[i]);
         }
+        context.fireEvent(new AggregationFinishedEvent(this));
       }
     }
 

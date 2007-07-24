@@ -29,28 +29,44 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.core.monitor.event;
+
+package etm.contrib.renderer.swing;
+
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import java.awt.BorderLayout;
 
 /**
+ * The EtmPanel is an embeddable Swing component that may be used to
+ * render performance details within an Swing application. It does not support remoting.
  *
- * A listener that informs about aggration detail changes.
- *
- * @author void.fm
  * @version $Revision$
- * @since 1.2.0
+ * @author void.fm
  */
-public interface AggregationListener extends EtmMonitorListener {
+public class EtmPanel extends JPanel {
 
-  public void onRootCreate(RootCreateEvent event);
+  public EtmPanel() {
+    this(EtmManager.getEtmMonitor());
+  }
 
-  public void preRootReset(PreRootResetEvent event);
+  public EtmPanel(EtmMonitor etmMonitor) {
+    JTabbedPane tabbedPane = new JTabbedPane();
+    setLayout(new BorderLayout());
 
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
+    PerformancePanel performancePanel = new PerformancePanel(etmMonitor);
+    PreferencesPanel preferencesPanel = new PreferencesPanel(etmMonitor);
 
-  public void onStateReset(MonitorResetEvent event);
+    tabbedPane.addTab("Performance Stats", performancePanel);
+    tabbedPane.addTab("Preferences", preferencesPanel);
 
-  public void onAggregationFinished(AggregationFinishedEvent event);
+    JScrollPane pane = new JScrollPane();
+    pane.setViewportView(tabbedPane);
+
+    add(pane, BorderLayout.CENTER);
+  }
 
 }

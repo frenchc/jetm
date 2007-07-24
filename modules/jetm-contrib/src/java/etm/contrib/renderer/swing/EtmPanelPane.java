@@ -29,28 +29,41 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.core.monitor.event;
+package etm.contrib.renderer.swing;
+
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
 
 /**
  *
- * A listener that informs about aggration detail changes.
+ * This abstract base class is a temporarty workaround that should
+ * force a min size to panel panes. 
  *
- * @author void.fm
  * @version $Revision$
- * @since 1.2.0
+ * @author void.fm
+ *
  */
-public interface AggregationListener extends EtmMonitorListener {
+public abstract class EtmPanelPane extends JPanel {
+  private static final int MIN_WIDTH = 300;
+  private static final int MIN_HEIGHT = 200;
 
-  public void onRootCreate(RootCreateEvent event);
+  public EtmPanelPane() {
+    super();
+  }
 
-  public void preRootReset(PreRootResetEvent event);
+  public EtmPanelPane(LayoutManager layout) {
+    super(layout);
+  }
 
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
+  public Dimension getPreferredSize() {
+    Dimension current = super.getPreferredSize();
 
-  public void onStateReset(MonitorResetEvent event);
+    Dimension preferred = new Dimension();
 
-  public void onAggregationFinished(AggregationFinishedEvent event);
+    preferred.width = current.width < MIN_WIDTH ? MIN_WIDTH : current.width;
+    preferred.height = current.height < MIN_HEIGHT ? MIN_HEIGHT : current.height;
 
+    return preferred;
+  }
 }

@@ -33,24 +33,15 @@ package etm.core.monitor.event;
 
 /**
  *
- * A listener that informs about aggration detail changes.
+ * Inidicates that a the aggregation of buffered results
+ * was finished.
  *
- * @author void.fm
  * @version $Revision$
- * @since 1.2.0
+ * @author void.fm
  */
-public interface AggregationListener extends EtmMonitorListener {
+public class AggregationFinishedEvent extends EtmMonitorEvent {
 
-  public void onRootCreate(RootCreateEvent event);
-
-  public void preRootReset(PreRootResetEvent event);
-
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
-
-  public void onStateReset(MonitorResetEvent event);
-
-  public void onAggregationFinished(AggregationFinishedEvent event);
-
+  public AggregationFinishedEvent(Object source) {
+    super(source);
+  }
 }

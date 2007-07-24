@@ -29,28 +29,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.core.monitor.event;
+
+package etm.contrib.renderer.swing;
+
+import javax.swing.JPanel;
 
 /**
- *
- * A listener that informs about aggration detail changes.
- *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.0
+ * Ignore
  */
-public interface AggregationListener extends EtmMonitorListener {
-
-  public void onRootCreate(RootCreateEvent event);
-
-  public void preRootReset(PreRootResetEvent event);
-
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
-
-  public void onStateReset(MonitorResetEvent event);
-
-  public void onAggregationFinished(AggregationFinishedEvent event);
-
+public class WidgetPreferencePanel extends JPanel {
 }

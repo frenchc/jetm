@@ -35,6 +35,7 @@ package etm.core.aggregation;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
+import etm.core.monitor.event.AggregationFinishedEvent;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
@@ -254,6 +255,8 @@ public class BufferedTimedAggregator implements Aggregator {
         for (int i = 0; i < length; i++) {
           delegate.add(current[i]);
         }
+
+        ctx.fireEvent(new AggregationFinishedEvent(this));        
       }
     }
   }

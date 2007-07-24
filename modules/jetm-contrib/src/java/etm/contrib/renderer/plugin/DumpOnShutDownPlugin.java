@@ -36,6 +36,7 @@ import etm.core.aggregation.Aggregate;
 import etm.core.metadata.EtmMonitorMetaData;
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitorContext;
+import etm.core.monitor.event.AggregationFinishedEvent;
 import etm.core.monitor.event.AggregationListener;
 import etm.core.monitor.event.MonitorResetEvent;
 import etm.core.monitor.event.PreMonitorResetEvent;
@@ -139,7 +140,11 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin, AggregationList
   }
 
   public void onStateReset(MonitorResetEvent event) {
+    // ignored
+  }
 
+  public void onAggregationFinished(AggregationFinishedEvent event) {
+    // ignored
   }
 
   /**

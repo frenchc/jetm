@@ -123,6 +123,8 @@ public class DefaultEventDispatcher implements EventDispatcher {
       new DispatchingRule(AggregationListener.class, "onRootReset"));
     dispatchingRules.put(PreRootResetEvent.class,
       new DispatchingRule(AggregationListener.class, "preRootReset"));
+    dispatchingRules.put(AggregationFinishedEvent.class,
+         new DispatchingRule(AggregationListener.class, "onAggregationFinished"));
 
     dispatchingRules.put(CollectionEnabledEvent.class,
       new DispatchingRule(CollectionStatusListener.class, "onCollectionEnabled"));

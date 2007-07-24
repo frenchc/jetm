@@ -29,28 +29,37 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.core.monitor.event;
+
+package etm.contrib.renderer.swing.tree;
+
+import etm.core.aggregation.Aggregate;
+
+import javax.swing.JTree;
+import javax.swing.tree.TreeModel;
 
 /**
  *
- * A listener that informs about aggration detail changes.
+ * A Swing JTree that represents Etm performance results.
  *
- * @author void.fm
  * @version $Revision$
- * @since 1.2.0
+ * @author void.fm
  */
-public interface AggregationListener extends EtmMonitorListener {
+public class EtmResultTree extends JTree {
 
-  public void onRootCreate(RootCreateEvent event);
+  public EtmResultTree(TreeModel newModel) {
+    super(newModel);
+    setRootVisible(false);
+    setShowsRootHandles(true);
+  }
 
-  public void preRootReset(PreRootResetEvent event);
-
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
-
-  public void onStateReset(MonitorResetEvent event);
-
-  public void onAggregationFinished(AggregationFinishedEvent event);
+  public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    if (value != null && value instanceof AggregationNode) {
+      Aggregate aggregate = (Aggregate) ((AggregationNode) value).getUserObject();
+      return aggregate.getName() + " [" +
+        aggregate.getMeasurements()
+        + "]";
+    }
+    return "";
+  }
 
 }

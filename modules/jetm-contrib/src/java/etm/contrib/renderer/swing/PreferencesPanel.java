@@ -29,28 +29,34 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package etm.core.monitor.event;
+
+package etm.contrib.renderer.swing;
+
+import etm.core.monitor.EtmMonitor;
+
+import javax.swing.border.SoftBevelBorder;
+import java.awt.GridLayout;
 
 /**
  *
- * A listener that informs about aggration detail changes.
+ * Ignore
  *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.0
  */
-public interface AggregationListener extends EtmMonitorListener {
+public class PreferencesPanel extends EtmPanelPane {
+  protected EtmMonitorPreferencePanel etmPrefPanel;
+  protected WidgetPreferencePanel widgetPrefPanel;
 
-  public void onRootCreate(RootCreateEvent event);
+  public PreferencesPanel(EtmMonitor aEtmMonitor) {
+    super(new GridLayout(2,1));
+    etmPrefPanel = new EtmMonitorPreferencePanel(aEtmMonitor);
+    widgetPrefPanel = new WidgetPreferencePanel();
 
-  public void preRootReset(PreRootResetEvent event);
+    SoftBevelBorder prefBorder = new SoftBevelBorder(SoftBevelBorder.LOWERED);
+    etmPrefPanel.setBorder(prefBorder);
+    widgetPrefPanel.setBorder(prefBorder);
 
-  public void onRootReset(RootResetEvent event);
-  
-  public void preStateReset(PreMonitorResetEvent event);
-
-  public void onStateReset(MonitorResetEvent event);
-
-  public void onAggregationFinished(AggregationFinishedEvent event);
+    add(etmPrefPanel);
+    add(widgetPrefPanel);
+  }
 
 }
