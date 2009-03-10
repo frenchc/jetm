@@ -1,3 +1,8 @@
+Release 1.2.3
+
+Changes, Fixes and Improvements
+ - Fixed NoSuchMethodError with Spring 2.5
+
 Release 1.2.2
  New features
  - First revision TabularData in JMX Beans (recommended by Nat Luengnaruemitchai)
