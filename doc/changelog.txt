@@ -5,7 +5,7 @@ Current trunk
  Changes, Fixes and Improvements
   - Removed programmatic startup/shutdown from weaving example.
   - Fixed NullPointer in interval buffer EtmManager configuration.
-  - NoSuchMethodError with Spring 2.5
+  - Fixed NoSuchMethodError with Spring 2.5
 
 Release 1.2.1
  New features
