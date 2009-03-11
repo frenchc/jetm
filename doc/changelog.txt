@@ -5,7 +5,27 @@ Current trunk
  Changes, Fixes and Improvements
   - Removed programmatic startup/shutdown from weaving example.
   - Fixed NullPointer in interval buffer EtmManager configuration.
-  - Fixed NoSuchMethodError with Spring 2.5
+
+Release 1.2.3
+ Changes, Fixes and Improvements
+ - Fixed NoSuchMethodError with Spring 2.5
+ - Removed "new DefaultTimer()" dependencies and replaced it with EtmManagerFactory.bestAvailable() invocations
+ - Added "bestAvailable" as a timer configuration value in spring xsd
+ - Removed unnecessary ant-junit.jar which can lead to FileNotFoundExceptions during test execution via ant
+
+Release 1.2.2
+ New features
+ - First revision TabularData in JMX Beans (recommended by Nat Luengnaruemitchai)
+ - (Undocumented) JBoss AOP Support (target release will be JETM 1.3.0)
+ - Experimental JETM Connector for .ear deployment (target release will be JETM 1.3.0)
+
+ Changes, Fixes and Improvements
+ - Switched back to non Thread Context Classloader resource loading
+ - Fixed possible NullPointers in MonitoringBeanDefinitionParser (reported by Nat Luengnaruemitchai)
+ - Fixed NullPointer in 1.2 XML configuration parsing for interval based monitoring
+ - RFC 2616 compliant HTTP status response linefeeds (reported by Nat Luengnaruemitchai)
+ - Clarified aop.xml requirement for AspectWerkz offline weaving
+ - Fixed further documentation/javadoc errors
   - Removed "new DefaultTimer()" dependencies and replaced it with EtmManagerFactory.bestAvailable() invocations
   - Added "bestAvailable" as a timer configuration value in spring xsd  
       
