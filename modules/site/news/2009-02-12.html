@@ -32,24 +32,27 @@
   <div id="subheader">Runtime performance monitoring made easy</div>
 
   <div id="main">
-    <h3>JETM News Archive</h3>
+    <h3>Spring bugfix release JETM 1.2.3</h3>
 
     <p>
-      Older JETM news...
+      After a long and quiet period J&uuml;rgen Englisch joined the "team" and helped me fixing the currently existing
+      Springframework 2.5 issues. Thanks Jürgen!
     </p>
 
     <p>
-      <a href="2007-01-22.html">2007/01/22</a> Feedback wanted: JETM 1.2.0 SNAPSHOT<br/>      
-      <a href="2006-12-31.html">2006/12/31</a> Five minute tutorial added, moved sources to SVN<br/>
-      <a href="2006-12-11.html">2006/12/11</a> JETM 1.1.1 released, Maven 2 availability<br/>
-      <a href="2006-10-19.html">2006/10/19</a> JETM Snapshots, JMX support added<br/>
-      <a href="2006-09-25.html">2006/09/25</a> JETM 1.1.0 released<br/>
-      <a href="2006-06-30.html">2006/06/30</a> First stable release 1.0.0 available<br/>
-      <a href="2006-06-28.html">2006/06/28</a> JETM demo online<br/>
-      <a href="2006-06-24.html">2006/06/24</a> JETM 0.8.0 released, advanced documentation added<br/>
-      <a href="2006-06-17.html">2006/06/17</a> JETM 0.7.0 released
+      Download JETM 1.2.3 <a href="../files.html">here</a> (Maven 2 artifacts should be available soon).
     </p>
 
+    <p>Full changelog:</p>
+    <pre>
+<b>Changes, Fixes and Improvements</b>
+ - Fixed NoSuchMethodError with Spring 2.5
+ - Removed "new DefaultTimer()" dependencies and replaced it with
+   EtmManagerFactory.bestAvailable() invocations
+ - Added "bestAvailable" as a timer configuration value in spring xsd
+ - Removed unnecessary ant-junit.jar which can lead to FileNotFoundExceptions
+   during test execution via ant
+ </pre>
   </div>
 
 </div>
