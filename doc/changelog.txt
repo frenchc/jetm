@@ -6,6 +6,9 @@ Current trunk
   - Removed programmatic startup/shutdown from weaving example.
   - Fixed NullPointer in interval buffer EtmManager configuration.
   - Fixed NoSuchMethodError with Spring 2.5
+  - Removed "new DefaultTimer()" dependency and replaced it with EtmManagerFactory.bestAvailable() invocations
+  - Added "bestAvailable" as a timer configuration value in spring xsd  
+      
 
 Release 1.2.1
  New features
