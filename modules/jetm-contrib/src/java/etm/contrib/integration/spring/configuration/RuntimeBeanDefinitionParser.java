@@ -41,6 +41,7 @@ import etm.core.aggregation.NotifyingAggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
+import etm.core.configuration.EtmMonitorFactory;
 import etm.core.jmx.EtmMonitorJmxPlugin;
 import etm.core.timer.DefaultTimer;
 import org.springframework.beans.FatalBeanException;
@@ -395,6 +396,8 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
       }
     } else if ("default".equals(aTimer)) {
       builder.addConstructorArg(new DefaultTimer());
+    } else if ("bestAvailable".equals(aTimer)) {
+      builder.addConstructorArg(EtmMonitorFactory.bestAvailableTimer());
     } else {
       RootBeanDefinition timerBeanDefinition = new RootBeanDefinition();
       timerBeanDefinition.setBeanClassName(aTimer);

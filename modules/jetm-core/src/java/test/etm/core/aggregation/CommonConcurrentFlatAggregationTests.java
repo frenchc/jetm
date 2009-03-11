@@ -175,14 +175,14 @@ public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
 
     assertEquals(aggregates.size(), pointSize);
 
-    final int expextecdExecutions = pointSize * threadSize * iterations;
+    final int expectedExecutions = pointSize * threadSize * iterations;
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
         assertTrue(points.size() == pointSize);
 
-        assertEquals(expextecdExecutions, new TestHelper().countExecutions(points));
+        assertEquals(expectedExecutions, new TestHelper().countExecutions(points));
 
         for (Iterator iterator = points.keySet().iterator(); iterator.hasNext();) {
           String s = (String) iterator.next();

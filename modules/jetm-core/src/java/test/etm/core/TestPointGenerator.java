@@ -34,6 +34,7 @@ package test.etm.core;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.RootAggregator;
+import etm.core.configuration.EtmMonitorFactory;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmMonitorContext;
@@ -56,7 +57,7 @@ import java.util.Map;
 
 public class TestPointGenerator {
 
-  ExecutionTimer timer = new DefaultTimer();
+  ExecutionTimer timer = EtmMonitorFactory.bestAvailableTimer();
   CollectingAggregator aggregator = new CollectingAggregator(new RootAggregator());
   EtmMonitor monitor = new NestedMonitor(timer, aggregator);
 

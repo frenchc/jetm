@@ -35,6 +35,7 @@ package test.etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
+import etm.core.configuration.EtmMonitorFactory;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
@@ -189,7 +190,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
 
 
   protected void setUp() throws Exception {
-    monitor = new NestedMonitor(new DefaultTimer());
+    monitor = new NestedMonitor(EtmMonitorFactory.bestAvailableTimer());
     monitor.start();
   }
 

@@ -173,12 +173,14 @@ public class EtmMonitorConfig {
       } catch (ClassNotFoundException e) {
         throw new EtmConfigurationException("Java 5.0 Nano Timer not available.");
       }
+    } else if ("bestAvailable".equalsIgnoreCase(timerType)) {
+      timerClass = EtmMonitorFactory.bestAvailableTimer().getClass();
     } else {
       Class clazz;
       try {
         clazz = Class.forName(timerType);
       } catch (ClassNotFoundException e) {
-        throw new EtmConfigurationException("Unsupported timer type or invalid timer class " + timerClass + ".");
+        throw new EtmConfigurationException("Unsupported timer type or invalid timer class " + timerClass + " for timer type " + timerType + ".");
       }
       if (ExecutionTimer.class.isAssignableFrom(clazz)) {
         this.timerClass = clazz;
