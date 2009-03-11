@@ -34,6 +34,7 @@ package test.etm.core.aggregation;
 
 import etm.core.aggregation.BufferedThresholdAggregator;
 import etm.core.aggregation.RootAggregator;
+import etm.core.configuration.EtmMonitorFactory;
 import etm.core.monitor.FlatMonitor;
 import etm.core.timer.DefaultTimer;
 
@@ -56,7 +57,7 @@ public class ConcurrentFlatThresholdAggregationTest extends CommonConcurrentFlat
 
   protected void setUp() throws Exception {
     super.setUp();
-    monitor = new FlatMonitor(new DefaultTimer(), new BufferedThresholdAggregator(new RootAggregator()));
+    monitor = new FlatMonitor(EtmMonitorFactory.bestAvailableTimer(), new BufferedThresholdAggregator(new RootAggregator()));
 
     monitor.start();
   }

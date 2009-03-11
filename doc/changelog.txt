@@ -2,6 +2,10 @@ Release 1.2.3
 
 Changes, Fixes and Improvements
  - Fixed NoSuchMethodError with Spring 2.5
+ - Removed "new DefaultTimer()" dependencies and replaced it with EtmManagerFactory.bestAvailable() invocations
+ - Added "bestAvailable" as a timer configuration value in spring xsd   
+ - Removed unnecessary ant-junit.jar which can lead to FileNotFoundExceptions during test execution via ant
+ 
 
 Release 1.2.2
  New features
