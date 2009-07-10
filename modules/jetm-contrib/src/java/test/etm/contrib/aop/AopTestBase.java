@@ -79,8 +79,6 @@ public abstract class AopTestBase extends TestCase {
       i--;
     }
 
-    //etmMonitor.render(new SimpleTextRenderer());
-
     etmMonitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertTrue("No measurement result found.", points.size() > 0);
