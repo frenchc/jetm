@@ -30,31 +30,53 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.joinpoint;
 
-import org.jboss.aop.advice.Interceptor;
-import org.jboss.aop.joinpoint.Invocation;
-
-import etm.contrib.aop.common.AbstractEtmAspect;
-import etm.contrib.aop.joinpoint.JoinPointFactory;
+import etm.core.monitor.EtmPoint;
 
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
+ * Abstract etm joinpoint provides basic functionality 
+ * for calculating #EtmPoint names.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4 
  *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public abstract class AbstractJoinPoint implements EtmJoinPoint {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
+  /**
+   * Calculate short name for a given class.
+   *
+   * @param clazz The class object.
+   * @return The short name for the given class.
+   */
+  protected String calculateShortName(Class clazz) {
+      String name = clazz.getName();
+      int beginIndex = name.lastIndexOf('.');
+      if (beginIndex > 0) {
+        return name.substring(beginIndex + 1);
+      } else {
+        return name;
+      }
+    }
+  
+  /**
+   * Calculate name based on the method invocation.
+   * 
+   * @param clazz
+   * @param methodName
+   * @return The 
+   */
+  protected String calculateName(Class clazz, String methodName) {
+    return calculateShortName(clazz) + "::" + methodName;
   }
-
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
-  }
-
+  
+  /**
+   * @see #alterNamePostException(EtmPoint, Throwable)
+   */
+   public void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
+     aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
+   }  
 
 }

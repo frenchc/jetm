@@ -30,31 +30,49 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.common;
 
-import org.jboss.aop.advice.Interceptor;
-import org.jboss.aop.joinpoint.Invocation;
-
-import etm.contrib.aop.common.AbstractEtmAspect;
-import etm.contrib.aop.joinpoint.JoinPointFactory;
+import etm.contrib.aop.joinpoint.EtmJoinPoint;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
+ * Base etm aspect that provides execution time measuring
+ * in {@link #monitor(EtmJoinPoint)} and {@link #monitor(EtmJoinPoint, String)}.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4
  *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public abstract class AbstractEtmAspect {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
+  private EtmMonitor etmMonitor;
+
+  public AbstractEtmAspect() {
+    this(EtmManager.getEtmMonitor());
   }
-
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
+  
+  public AbstractEtmAspect(EtmMonitor anEtmMonitor) {
+    etmMonitor = anEtmMonitor;
   }
-
+  
+  public Object monitor(EtmJoinPoint aJoinPoint) throws Throwable {
+    return monitor(aJoinPoint, aJoinPoint.calculateName());
+  }
+  
+  public Object monitor(EtmJoinPoint aJoinPoint, String aJoinPointName) throws Throwable {
+    EtmPoint etmPoint = etmMonitor.createPoint(aJoinPointName);
+    try {
+      return aJoinPoint.proceed();
+    } catch (Throwable t) {
+      aJoinPoint.alterNamePostException(etmPoint, t);
+      throw t;
+    } finally {
+      etmPoint.collect();
+    }
+  }  
 
 }
+ 

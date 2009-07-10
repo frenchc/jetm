@@ -30,31 +30,52 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.aspectj;
 
-import org.jboss.aop.advice.Interceptor;
-import org.jboss.aop.joinpoint.Invocation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.ProceedingJoinPoint;
 
 import etm.contrib.aop.common.AbstractEtmAspect;
+import etm.contrib.aop.joinpoint.EtmJoinPoint;
 import etm.contrib.aop.joinpoint.JoinPointFactory;
 
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
+ * Abstract AspectJ aspect that must be extended
+ * with a pointcut definition in order to be weaved
+ * into an application at compile time.
+ * 
+ * Example:
+ * 
+ * <code>
+ * public aspect AdFetcherEtmAspect extends AspectjEtmAspect {
+ *   pointcut methodsToBeMonitored(): execution(public * x.y.z.*.*(..));
+ * }
+ * </code>
+ * 
+ * Note: AspectJ 1.6 plans to support the configuration of concrete pointcuts
+ * for abstract aspects via aop.xml. Until then a new aspect has to be derived.
  *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public abstract aspect AspectjEtmAspect {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
+	private static final Log LOG = LogFactory.getLog(AspectjEtmAspect.class);
+	
+	Object around() throws Throwable: methodsToBeMonitored() {
+  	if (thisJoinPoint instanceof ProceedingJoinPoint) {
+  	  EtmJoinPoint joinPoint = JoinPointFactory.create((ProceedingJoinPoint) thisJoinPoint);
+  	  DefaultEtmAspect etmAspect = new DefaultEtmAspect();
+  	  return etmAspect.monitor(joinPoint);
+  	} else {
+  	  LOG.info("No ProceedingJoinPoint provided. Unable to measure execution times.");
+  	  return proceed();
+  	}
   }
 
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
-  }
-
-
+	private class DefaultEtmAspect extends AbstractEtmAspect {};
+  
 }

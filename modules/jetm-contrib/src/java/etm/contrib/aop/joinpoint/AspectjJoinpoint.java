@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2004, 2005, 2006, 2007 void.fm
+ * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 void.fm
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -30,44 +30,42 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.joinpoint;
 
-import etm.core.monitor.EtmPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
+import org.codehaus.aspectwerkz.joinpoint.impl.MethodSignatureImpl;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 
 /**
- * Base class for JBoss AOP support (even though current content is pretty generic...)
- *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
+ * AspectJ joinpoint.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4 
  */
-public class JbossInterceptorSupport {
+public class AspectjJoinpoint extends AbstractJoinPoint {
 
-  /**
-   * Alter name in case an exception is caught during processing. Altering the
-   * name takes place after executing target method. Ensure that you never cause
-   * an exception within this code.
-   *
-   * @param aEtmPoint The EtmPoint to alter.
-   * @param t         The caught throwable t.
-   */
-  protected void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
-    aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
+  private ProceedingJoinPoint joinPoint;
+  
+  public AspectjJoinpoint(ProceedingJoinPoint aJoinPoint) {
+    joinPoint = aJoinPoint;
   }
 
-  /**
-   * Calculate short name for a given class.
-   *
-   * @param clazz The class object.
-   * @return The short name for the given class.
-   */
-  protected String calculateShortName(Class clazz) {
-    String name = clazz.getName();
-    int beginIndex = name.lastIndexOf('.');
-    if (beginIndex > 0) {
-      return name.substring(beginIndex + 1);
-    } else {
-      return name;
-    }
+  public String calculateName() {
+    Object target = joinPoint.getTarget();
+    if (joinPoint instanceof MethodInvocationProceedingJoinPoint) {
+      Signature signature = ((MethodInvocationProceedingJoinPoint) joinPoint).getSignature();
+      if (signature instanceof MethodSignatureImpl) {
+        String method = ((MethodSignatureImpl) signature).getName();
+        return calculateName(target.getClass(), method);              
+      }      
+    } 
+    return calculateShortName(target.getClass());
   }
+
+  public Object proceed() throws Throwable {
+    return joinPoint.proceed();
+  }
+
 }

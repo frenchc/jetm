@@ -30,31 +30,46 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.joinpoint;
 
-import org.jboss.aop.advice.Interceptor;
-import org.jboss.aop.joinpoint.Invocation;
+import etm.core.monitor.EtmPoint;
 
-import etm.contrib.aop.common.AbstractEtmAspect;
-import etm.contrib.aop.joinpoint.JoinPointFactory;
 
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
+ * An etm joinpoint.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4 
  *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public interface EtmJoinPoint {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
-  }
+  /**
+   * Proceed with the wrapped method invocation.
+   * 
+   * @return The return value of the invoked method.
+   * @throws Throwable Any exception that may occur during the execution of the invoked method. 
+   */
+  public Object proceed() throws Throwable;
+  
+  /**
+   * Calculate EtmPoint name based on the method invocation.
+   *
+   * @return The name of the EtmPoint.
+   */
+  public String calculateName();
 
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
-  }
 
-
+  /**
+   * Alter name in case an exception is caught during processing. Altering the
+   * name takes place after executing target method. Ensure that you never cause
+   * an exception within this code.
+   *
+   * @param aEtmPoint The EtmPoint to alter.
+   * @param t The caught throwable t.
+   * 
+   */
+  public void alterNamePostException(EtmPoint aEtmPoint, Throwable t);
+  
 }

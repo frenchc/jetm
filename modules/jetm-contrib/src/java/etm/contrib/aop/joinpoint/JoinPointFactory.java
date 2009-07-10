@@ -30,31 +30,37 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.joinpoint;
 
-import org.jboss.aop.advice.Interceptor;
+import org.aopalliance.intercept.MethodInvocation;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 import org.jboss.aop.joinpoint.Invocation;
 
-import etm.contrib.aop.common.AbstractEtmAspect;
-import etm.contrib.aop.joinpoint.JoinPointFactory;
-
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
+ * Factory for the creation of etm joinpoints.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4 
  *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public class JoinPointFactory {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
+  public static EtmJoinPoint create(MethodInvocation aMethodInvocation) {
+    return new AopAllianceJoinPoint(aMethodInvocation);
   }
 
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
+  public static EtmJoinPoint create(StaticJoinPoint aJoinPoint) {
+    return new AspectWerkzJoinPoint(aJoinPoint);
   }
 
+  public static EtmJoinPoint create(Invocation anInvocation) {
+    return new JbossJoinPoint(anInvocation);
+  }
+  
+  public static EtmJoinPoint create(ProceedingJoinPoint aJoinPoint) {
+    return new AspectjJoinpoint(aJoinPoint);    
+  }
 
 }

@@ -30,31 +30,39 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.joinpoint;
 
-import org.jboss.aop.advice.Interceptor;
-import org.jboss.aop.joinpoint.Invocation;
-
-import etm.contrib.aop.common.AbstractEtmAspect;
-import etm.contrib.aop.joinpoint.JoinPointFactory;
+import org.codehaus.aspectwerkz.joinpoint.Signature;
+import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
- *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
+ * AspectWerkz joinpoint.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4 
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public class AspectWerkzJoinPoint extends AbstractJoinPoint {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
+  private StaticJoinPoint joinPoint;
+  
+  public AspectWerkzJoinPoint(StaticJoinPoint aJoinPoint) {
+    joinPoint = aJoinPoint;
   }
 
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
+  /**
+   * @see #proceed() 
+   */
+  public Object proceed() throws Throwable {
+    return joinPoint.proceed();
   }
 
+  /**
+   * @see #calculateName()
+   */
+  public String calculateName() {
+    Signature method = joinPoint.getSignature();
+    return calculateName(method.getDeclaringType(), method.getName());
+  }
 
 }

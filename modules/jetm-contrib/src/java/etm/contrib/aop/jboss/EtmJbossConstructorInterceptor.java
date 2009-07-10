@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2004, 2005, 2006, 2007 void.fm
+ * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 void.fm
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -32,14 +32,11 @@
 
 package etm.contrib.aop.jboss;
 
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
 import org.jboss.aop.advice.Interceptor;
-import org.jboss.aop.joinpoint.ConstructorInvocation;
 import org.jboss.aop.joinpoint.Invocation;
 
-import java.lang.reflect.Constructor;
+import etm.contrib.aop.common.AbstractEtmAspect;
+import etm.contrib.aop.joinpoint.JoinPointFactory;
 
 /**
  * A interceptor that may be used to advise constructor invocations. Be aware that binding
@@ -49,37 +46,14 @@ import java.lang.reflect.Constructor;
  * @version $Revision$
  * @since 1.2.2
  */
-public class EtmJbossConstructorInterceptor extends JbossInterceptorSupport implements Interceptor {
-
-  protected final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+public class EtmJbossConstructorInterceptor extends AbstractEtmAspect implements Interceptor {
 
   public String getName() {
     return "EtmJbossConstructorInterceptor";
   }
 
-  public Object invoke(Invocation aInvocation) throws Throwable {
-    EtmPoint etmPoint = etmMonitor.createPoint(calculateName((ConstructorInvocation) aInvocation));
-    try {
-      return aInvocation.invokeNext();
-    } catch (Throwable t) {
-      alterNamePostException(etmPoint, t);
-      throw t;
-    } finally {
-      etmPoint.collect();
-    }
+  public Object invoke(Invocation anInvocation) throws Throwable {
+    return monitor(JoinPointFactory.create(anInvocation));
   }
-
-  /**
-   * Calculate EtmPoint name based on the method.
-   *
-   * @param aInvocation The method invocation.
-   * @return The name of the EtmPoint.
-   */
-  protected String calculateName(ConstructorInvocation aInvocation) {
-    Constructor constructor = aInvocation.getConstructor();
-
-    return calculateShortName(constructor.getDeclaringClass()) + "::" + constructor.getName();
-  }
-
 
 }

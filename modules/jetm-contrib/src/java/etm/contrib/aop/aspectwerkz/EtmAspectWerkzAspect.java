@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2004, 2005, 2006, 2007 void.fm
+ * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 void.fm
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -32,14 +32,13 @@
 
 package etm.contrib.aop.aspectwerkz;
 
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
-import org.codehaus.aspectwerkz.joinpoint.Signature;
 import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 
+import etm.contrib.aop.common.AbstractEtmAspect;
+import etm.contrib.aop.joinpoint.JoinPointFactory;
+
 /**
- * AspectWerkz aspect that supports method invocations. Interally it uses
+ * AspectWerkz aspect that supports method invocations. Internally it uses
  * a static EtmMonitor provided by {@link etm.core.configuration.EtmManager#getEtmMonitor()}.
  * <p/>
  * Example usage that
@@ -55,63 +54,10 @@ import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
  * @author void.fm
  * @version $Revision$
  */
-public class EtmAspectWerkzAspect {
+public class EtmAspectWerkzAspect extends AbstractEtmAspect {
 
-  protected final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-
-
-  public Object monitor(StaticJoinPoint joinPoint) throws Throwable {
-    EtmPoint etmPoint = etmMonitor.createPoint(calculateName(joinPoint));
-    try {
-      return joinPoint.proceed();
-    } catch (Throwable t) {
-      alterNamePostException(etmPoint, t);
-      throw t;
-    } finally {
-      etmPoint.collect();
-    }
-
+  public Object monitor(StaticJoinPoint aJoinPoint) throws Throwable {
+    return monitor(JoinPointFactory.create(aJoinPoint));
   }
-
-  /**
-   * Calculate EtmPoint name based on the method invocation.
-   *
-   * @param joinPoint The method invocation.
-   * @return The name of the EtmPoint.
-   */
-  protected String calculateName(StaticJoinPoint joinPoint) {
-    Signature method = joinPoint.getSignature();
-
-    return calculateShortName(method.getDeclaringType()) + "::" + method.getName();
-  }
-
-  /**
-   * Alter name in case an exception is caught during processing. Altering the
-   * name takes place after executing target method. Ensure that you never cause
-   * an exception within this code.
-   *
-   * @param aEtmPoint The EtmPoint to alter.
-   * @param t The caught throwable t.
-   */
-  protected void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
-    aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
-  }
-
-
-  /**
-   * Calculate short name for a given class.
-   *
-   * @param clazz The class object.
-   * @return The short name for the given class.
-   */
-  protected String calculateShortName(Class clazz) {
-    String name = clazz.getName();
-    int beginIndex = name.lastIndexOf('.');
-    if (beginIndex > 0) {
-      return name.substring(beginIndex + 1);
-    } else {
-      return name;
-    }
-  }
-
+  
 }

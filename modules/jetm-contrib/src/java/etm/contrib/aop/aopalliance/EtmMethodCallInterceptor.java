@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2004, 2005, 2006, 2007 void.fm
+ * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 void.fm
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -32,12 +32,12 @@
 
 package etm.contrib.aop.aopalliance;
 
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-import java.lang.reflect.Method;
+import etm.contrib.aop.common.AbstractEtmAspect;
+import etm.contrib.aop.joinpoint.JoinPointFactory;
+import etm.core.monitor.EtmMonitor;
 
 /**
  * AopAlliance MethodInterceptor that may be used within Spring and
@@ -47,68 +47,14 @@ import java.lang.reflect.Method;
  * @version $Revision$
  */
 
-public class EtmMethodCallInterceptor implements MethodInterceptor {
+public class EtmMethodCallInterceptor extends AbstractEtmAspect implements MethodInterceptor {
 
-  private final EtmMonitor etmMonitor;
-
-  public EtmMethodCallInterceptor(EtmMonitor aEtmMonitor) {
-    etmMonitor = aEtmMonitor;
+  public EtmMethodCallInterceptor(EtmMonitor anEtmMonitor) {
+    super(anEtmMonitor);
   }
 
   public Object invoke(MethodInvocation aMethodInvocation) throws Throwable {
-
-    EtmPoint etmPoint = etmMonitor.createPoint(calculateName(aMethodInvocation));
-    try {
-      return aMethodInvocation.proceed();
-    } catch (Throwable t) {
-      alterNamePostException(etmPoint, t);
-      throw t;
-    } finally {
-      etmPoint.collect();
-    }
-
+    return monitor(JoinPointFactory.create(aMethodInvocation));
   }
-
-  /**
-   * Calculate EtmPoint name based on the method invocation.
-   *
-   * @param aMethodInvocation The method invocation.
-   * @return The name of the EtmPoint.
-   */
-  protected String calculateName(MethodInvocation aMethodInvocation) {
-    Object target = aMethodInvocation.getThis();
-    Method method = aMethodInvocation.getMethod();
-
-    return calculateShortName(target.getClass()) + "::" + method.getName();
-  }
-
-  /**
-   * Alter name in case an exception is caught during processing. Altering the
-   * name takes place after executing target method. Ensure that you never cause
-   * an exception within this code.
-   *
-   * @param aEtmPoint The EtmPoint to alter.
-   * @param t The caught throwable t.
-   * 
-   */
-  protected void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
-    aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
-  }
-
-
-  /**
-   * Calculate short name for a given class.
-   *
-   * @param clazz The class object.
-   * @return The short name for the given class.
-   */
-  protected String calculateShortName(Class clazz) {
-    String name = clazz.getName();
-    int beginIndex = name.lastIndexOf('.');
-    if (beginIndex > 0) {
-      return name.substring(beginIndex + 1);
-    } else {
-      return name;
-    }
-  }
+  
 }

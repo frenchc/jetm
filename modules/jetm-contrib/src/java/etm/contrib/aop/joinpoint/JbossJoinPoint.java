@@ -30,31 +30,51 @@
  *
  */
 
-package etm.contrib.aop.jboss;
+package etm.contrib.aop.joinpoint;
 
-import org.jboss.aop.advice.Interceptor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+import org.jboss.aop.joinpoint.ConstructorInvocation;
 import org.jboss.aop.joinpoint.Invocation;
+import org.jboss.aop.joinpoint.MethodInvocation;
 
-import etm.contrib.aop.common.AbstractEtmAspect;
-import etm.contrib.aop.joinpoint.JoinPointFactory;
 
 /**
- * An interceptor that may be used to advise method invocations. Be aware that binding
- * this interceptor to a non method join point will likely cause a class cast exception.
- *
- * @author void.fm
- * @version $Revision$
- * @since 1.2.2
+ * JbossAOP joinpoint.
+ * 
+ * @author jenglisch
+ * @version $Revision$ $Date$
+ * @since 1.2.4 
  */
-public class EtmJbossMethodInterceptor extends AbstractEtmAspect implements Interceptor {
+public class JbossJoinPoint extends AbstractJoinPoint implements EtmJoinPoint {
 
-  public String getName() {
-    return "EtmJbossMethodInterceptor";
+  private Invocation invocation;
+  
+  public JbossJoinPoint(Invocation anInvocation) {
+    invocation = anInvocation;
   }
 
-  public Object invoke(Invocation anInvocation) throws Throwable {
-    return monitor(JoinPointFactory.create(anInvocation));
+  /**
+   * @see #proceed() 
+   */
+  public Object proceed() throws Throwable {
+    return invocation.invokeNext();
   }
-
-
+  
+  /**
+   * @see #calculateName()
+   */
+  public String calculateName() {
+    if (invocation instanceof ConstructorInvocation) {
+      Constructor constructor = ((ConstructorInvocation) invocation).getConstructor();
+      return calculateShortName(constructor.getDeclaringClass()) + "::" + constructor.getName();      
+    } else if (invocation instanceof MethodInvocation) {
+      Method method = ((MethodInvocation) invocation).getMethod();
+      return calculateName(method.getDeclaringClass(),  method.getName());
+    } else {
+      return "Unsupported JBossAOP invocation type: " + invocation.getClass();
+    }
+  }
+  
 }
