@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.integration.spring.configuration.mockup;
+package etm.contrib.integration.spring.configuration.mockup;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;

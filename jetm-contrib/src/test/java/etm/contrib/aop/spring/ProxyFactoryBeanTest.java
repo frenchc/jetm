@@ -29,16 +29,16 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aop.spring;
+package etm.contrib.aop.spring;
 
 import etm.core.monitor.EtmMonitor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
-import test.etm.contrib.aop.AopTestBase;
-import test.etm.contrib.aop.resources.BarService;
-import test.etm.contrib.aop.resources.FooService;
-import test.etm.contrib.aop.resources.YaddaService;
+import etm.contrib.aop.AopTestBase;
+import etm.contrib.aop.resources.BarService;
+import etm.contrib.aop.resources.FooService;
+import etm.contrib.aop.resources.YaddaService;
 
 /**
  * Setup/Teardown methods for spring AOP using

@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.console;
+package etm.contrib.console;
 
 import etm.contrib.console.util.ConsoleUtil;
 import junit.framework.TestCase;

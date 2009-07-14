@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.rrd.rrd4j;
+package etm.contrib.rrd.rrd4j;
 
 import etm.contrib.rrd.rrd4j.Rrd4jPlugin;
 import etm.contrib.rrd.rrd4j.Rrd4jUtil;

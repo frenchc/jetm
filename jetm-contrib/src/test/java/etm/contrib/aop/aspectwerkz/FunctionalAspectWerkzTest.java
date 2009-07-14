@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.aop.aspectwerkz;
+package etm.contrib.aop.aspectwerkz;
 
 import junit.framework.TestCase;
 import etm.core.configuration.BasicEtmConfigurator;
@@ -48,7 +48,7 @@ import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.Signature;
 import org.codehaus.aspectwerkz.joinpoint.EnclosingStaticJoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.management.JoinPointType;
-import test.etm.contrib.aop.resources.FooService;
+import etm.contrib.aop.resources.FooService;
 
 /**
  * Tests aspectwerkz support

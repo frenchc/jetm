@@ -29,12 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aggregation.log;
+package etm.contrib.aggregation.log;
 
 import etm.contrib.aggregation.log.DefaultOutputFormatter;
 import etm.core.monitor.EtmPoint;
 import junit.framework.TestCase;
-import test.etm.core.TestPointGenerator;
+import etm.core.TestPointGenerator;
 
 import java.text.NumberFormat;
 import java.util.Locale;

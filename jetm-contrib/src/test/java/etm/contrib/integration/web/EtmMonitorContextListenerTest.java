@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.integration.web;
+package etm.contrib.integration.web;
 
 import etm.contrib.integration.web.EtmMonitorContextListener;
 import etm.core.configuration.EtmManager;

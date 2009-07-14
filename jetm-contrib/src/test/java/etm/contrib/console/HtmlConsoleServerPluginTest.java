@@ -29,11 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.console;
+package etm.contrib.console;
 
 import etm.contrib.console.HttpConsoleServerPlugin;
 import etm.core.monitor.NestedMonitor;
-import test.etm.core.TestPointGenerator;
+import etm.core.TestPointGenerator;
 
 /**
  * Tests our build-in console.

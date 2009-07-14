@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.integration.spring.configuration;
+package etm.contrib.integration.spring.configuration;
 
 import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
 import etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser;

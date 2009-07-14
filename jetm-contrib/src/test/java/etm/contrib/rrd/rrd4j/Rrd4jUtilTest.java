@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.rrd.rrd4j;
+package etm.contrib.rrd.rrd4j;
 
 import etm.contrib.rrd.rrd4j.Rrd4jUtil;
 import junit.framework.TestCase;

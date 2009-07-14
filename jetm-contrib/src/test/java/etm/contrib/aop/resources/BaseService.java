@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aop.resources;
+package etm.contrib.aop.resources;
 
 /**
  * Simple test service.

@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aop.aopalliance;
+package etm.contrib.aop.aopalliance;
 
 import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
 import etm.core.configuration.BasicEtmConfigurator;
@@ -38,7 +38,7 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 import org.aopalliance.intercept.MethodInvocation;
-import test.etm.contrib.aop.resources.FooService;
+import etm.contrib.aop.resources.FooService;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
