@@ -2,7 +2,7 @@
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <!--
 
-  Checkstyle configuration that checks JPA-Security coding conventions:
+  Checkstyle configuration that checks JETM coding conventions:
 
   Checkstyle is very configurable. Be sure to read the documentation at
   http://checkstyle.sf.net (or in your downloaded distribution).
