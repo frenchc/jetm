@@ -50,7 +50,7 @@ import java.util.Set;
  */
 public class DefaultEventDispatcher implements EventDispatcher {
 
-  private static final LogAdapter log = Log.getLog(DefaultEventDispatcher.class);
+  private static final LogAdapter LOG = Log.getLog(DefaultEventDispatcher.class);
 
 
   private Map dispatchingRules = new HashMap();
@@ -94,7 +94,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
         sendEvent(currentListeners.toArray(), rule.getMethod(), event);
       }
     } else {
-      log.warn("Unable to process event from type " + event.getClass());
+      LOG.warn("Unable to process event from type " + event.getClass());
     }
   }
 
@@ -104,7 +104,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
       try {
         aMethod.invoke(object, new Object[]{aEvent});
       } catch (Exception e) {
-       log.warn("Unable to send event " + aEvent, e);
+       LOG.warn("Unable to send event " + aEvent, e);
       }
     }
   }
@@ -152,8 +152,8 @@ public class DefaultEventDispatcher implements EventDispatcher {
       Method[] declaredMethods = listener.getDeclaredMethods();
       for (int i = 0; i < declaredMethods.length; i++) {
         Method declaredMethod = declaredMethods[i];
-        if (aMethodName.equals(declaredMethod.getName()) &&
-          declaredMethod.getParameterTypes().length == 1) {
+        if (aMethodName.equals(declaredMethod.getName()) 
+         && declaredMethod.getParameterTypes().length == 1) {
           method = declaredMethod;
           break;
         }

@@ -64,6 +64,5 @@ public class EtmPluginConfig extends PropertyConfig {
     } else {
       throw new EtmConfigurationException("Class " + pluginClassName + " is not a valid plugin implementation.");
     }
-  }
-  
+  }  
 }

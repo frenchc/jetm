@@ -82,24 +82,27 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--          	<id>compile</id>-->
-<!--          	<phase>compile</phase>-->
-<!--            <configuration>-->
-<!--              <configLocation>src/checkstyle/configuration.xml</configLocation>-->
-<!--              <encoding>UTF-8</encoding>-->
-<!--              <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
-<!--            </configuration>-->
-<!--          	<goals>-->
-<!--          	  <goal>check</goal>-->
-<!--          	</goals>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <executions>
+          <execution>
+          	<id>compile</id>
+          	<phase>compile</phase>
+            <configuration>
+              <configLocation>src/checkstyle/configuration.xml</configLocation>
+              <encoding>UTF-8</encoding>
+              <includeTestSourceDirectory>true</includeTestSourceDirectory>
+              <excludes>
+                <exclude>**/ConcurrentReaderHashMap.java</exclude>
+              </excludes>
+            </configuration>
+          	<goals>
+          	  <goal>check</goal>
+          	</goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -158,6 +161,12 @@
   </repositories>
   
   <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.6</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>

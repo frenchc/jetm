@@ -70,7 +70,7 @@ import java.net.URL;
  * @author void.fm
  * @version $Revision$
  */
-public class XmlEtmConfigurator {
+public final class XmlEtmConfigurator {
 
   private XmlEtmConfigurator() {
   }

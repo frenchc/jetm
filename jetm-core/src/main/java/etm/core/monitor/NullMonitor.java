@@ -47,7 +47,7 @@ import etm.core.util.LogAdapter;
  */
 
 public class NullMonitor extends EtmMonitorSupport {
-  private static final LogAdapter log = Log.getLog(NullMonitor.class);
+  private static final LogAdapter LOG = Log.getLog(NullMonitor.class);
 
 
   private static final String DESCRIPTION = "A monitor that does not record executions at all.";
@@ -83,7 +83,7 @@ public class NullMonitor extends EtmMonitorSupport {
 
 
   private void showWarning() {
-    log.warn("Warning - NullMonitor active. Performance results are discarded." +
+    LOG.warn("Warning - NullMonitor active. Performance results are discarded." +
       "This usually happens if you used EtmManager.getEtmMonitor() to retrieve " +
       "the current EtmMonitor instance and did not configure the Performance " +
       "sub system before. For further details see EtmManager documentation at " +

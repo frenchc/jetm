@@ -71,7 +71,7 @@ public class EtmMonitorJmxPlugin extends AbstractJmxRegistry implements EtmPlugi
     Map properties = new HashMap();
     properties.put("monitorObjectName", monitorObjectName);
     properties.put("mbeanServerName", mbeanServerName);
-    properties.put("measurementDomain",measurementDomain);
+    properties.put("measurementDomain", measurementDomain);
     properties.put("overwrite", String.valueOf(overwrite));
 
     return new PluginMetaData(EtmMonitorJmxPlugin.class, DESCRIPTION, properties);

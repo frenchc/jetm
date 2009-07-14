@@ -50,7 +50,10 @@ import java.util.TimerTask;
  * @version $Revision$
  */
 public class BufferedTimedAggregator implements Aggregator {
-  private static final LogAdapter log = Log.getLog(BufferedTimedAggregator.class);
+  private static final int MAX_BUFFER_SIZE = 1000;
+
+
+private static final LogAdapter LOG = Log.getLog(BufferedTimedAggregator.class);
 
 
   private static final String DESCRIPTION_PREFIX = "A time based buffering aggregator with a flush interval of ";
@@ -147,16 +150,16 @@ public class BufferedTimedAggregator implements Aggregator {
           if (t instanceof ThreadDeath) {
             started = false;
             cancel();
-            log.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            LOG.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
             throw (ThreadDeath) t;
           }
           if (t instanceof Error) {
             started = false;
             cancel();
-            log.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            LOG.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
             throw (Error) t;
           }
-          log.fatal("Error in aggregation buffer.", t);
+          LOG.fatal("Error in aggregation buffer.", t);
         }
       }
     }, sleepInterval, sleepInterval);
@@ -196,9 +199,9 @@ public class BufferedTimedAggregator implements Aggregator {
 
   public void setAggregationInterval(long aAggregationInterval) {
     if (aAggregationInterval < BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL) {
-      throw new IllegalArgumentException("Aggregation intervals lower than " +
-        BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL +
-        " miliseconds not supported.");
+      throw new IllegalArgumentException("Aggregation intervals lower than " 
+    		  						    + BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL 
+    		  						    + " miliseconds not supported.");
     }
 
     sleepInterval = aAggregationInterval;
@@ -213,7 +216,7 @@ public class BufferedTimedAggregator implements Aggregator {
    * @since 1.2.1
    */
   public void setInitialBufferSize(int aInitialBufferSize) {
-    if (aInitialBufferSize < 1000) {
+    if (aInitialBufferSize < MAX_BUFFER_SIZE) {
       throw new IllegalArgumentException("The initial buffer size may not be smaller than 1000.");
     }
     initialBufferSize = aInitialBufferSize;

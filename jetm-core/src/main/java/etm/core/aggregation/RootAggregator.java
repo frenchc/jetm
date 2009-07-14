@@ -55,6 +55,8 @@ import java.util.Map;
  */
 public class RootAggregator implements Aggregator {
 
+  private static final String AGGREGATOR_DESCRIPTION = "An cummulating aggregator for flat and nested representation.";
+
   protected Map aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
 
   protected EtmMonitorContext ctx;
@@ -84,7 +86,7 @@ public class RootAggregator implements Aggregator {
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(RootAggregator.class, "An cummulating aggregator for flat and nested representation.", false);
+    return new AggregatorMetaData(RootAggregator.class, AGGREGATOR_DESCRIPTION, false);
   }
 
   public void start() {

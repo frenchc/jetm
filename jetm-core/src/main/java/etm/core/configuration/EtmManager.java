@@ -47,7 +47,7 @@ import java.lang.reflect.Proxy;
  * @author void.fm
  * @version $Revision$
  */
-public class EtmManager {
+public final class EtmManager {
 
   private static EtmMonitor etmMonitor;
   private static boolean isProxy;
@@ -95,7 +95,6 @@ public class EtmManager {
   }
 
   private static void init() {
-
     etmMonitor = (EtmMonitor) Proxy.newProxyInstance(EtmMonitor.class.getClassLoader(),
       new Class[]{EtmMonitor.class},
       handler

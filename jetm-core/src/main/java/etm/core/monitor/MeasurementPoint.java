@@ -184,15 +184,14 @@ public class MeasurementPoint implements EtmPoint {
   }
 
   public String toString() {
-    return "MeasurementPoint{" +
-      "monitor=" + monitor +
-      ", parent=" + parent +
-      ", name='" + name + "'" +
-      ", startTime=" + startTime +
-      ", endTime=" + endTime +
-      ", ticks=" + ticks +
-      ", contextSize=" + ( context != null? context.size() : 0) +
-
-      "}";
+    return "MeasurementPoint{" 
+         + "monitor=" + monitor 
+         + ", parent=" + parent 
+         + ", name='" + name + "'" 
+         + ", startTime=" + startTime 
+         + ", endTime=" + endTime 
+         + ", ticks=" + ticks 
+         + ", contextSize=" + ( context != null? context.size() : 0) 
+         + "}";
   }
 }

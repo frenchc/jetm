@@ -32,8 +32,8 @@
 
 package etm.core.timer;
 
-import etm.core.metadata.TimerMetaData;
 import sun.misc.Perf;
+import etm.core.metadata.TimerMetaData;
 
 /**
  * The SunHighResTimer makes use of undocumented Sun

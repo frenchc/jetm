@@ -51,7 +51,7 @@ import org.w3c.dom.NodeList;
  * @since 1.2.0
  */
 class Xml12ConfigParser extends XmlConfigParser {
-  private static final LogAdapter log = Log.getLog(Xml12ConfigParser.class);
+  private static final LogAdapter LOG = Log.getLog(Xml12ConfigParser.class);
 
   public EtmMonitorConfig parse(Document aDocument) {
     EtmMonitorConfig monitorConfig = new EtmMonitorConfig();
@@ -127,7 +127,8 @@ class Xml12ConfigParser extends XmlConfigParser {
         NodeList properties = customBackendElement.getElementsByTagName("property");
         for (int j = 0; j < properties.getLength(); j++) {
           Element property = (Element) properties.item(j);
-          aggregatorConfig.addProperty("backendProperties." + getAttribute(property, "name"), getNodeFirstChildTextValue(property));
+          aggregatorConfig.addProperty("backendProperties." + getAttribute(property, "name"), 
+        		  					   getNodeFirstChildTextValue(property));
         }
 
       }
@@ -160,7 +161,7 @@ class Xml12ConfigParser extends XmlConfigParser {
 
     if (notifications.getLength() != 0) {
       if (thresholdBuffer.getLength() == 0 && intervalBuffer.getLength() == 0) {
-        log.warn("Missing buffering aggregator while notifications enabled. Adding BufferedThresholdAggregator.");
+        LOG.warn("Missing buffering aggregator while notifications enabled. Adding BufferedThresholdAggregator.");
         EtmAggregatorConfig aggregatorConfig = new EtmAggregatorConfig();
         aggregatorConfig.setAggregatorClass(BufferedThresholdAggregator.class);
         aMonitorConfig.appendAggregator(aggregatorConfig);

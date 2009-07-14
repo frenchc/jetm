@@ -34,9 +34,6 @@ package etm.core.configuration;
 
 import etm.core.monitor.EtmException;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 /**
  *
  * The EtmConfigurationException is thrown to indicate

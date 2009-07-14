@@ -84,8 +84,9 @@ class Log4jAdapter implements LogAdapter {
       Enumeration loggers = LogManager.getCurrentLoggers();
       while (loggers.hasMoreElements()) {
         Logger c = (Logger) loggers.nextElement();
-        if (c.getAllAppenders().hasMoreElements())
-          return true;
+        if (c.getAllAppenders().hasMoreElements()) {
+        	return true;
+        }
       }
     }
     return false;

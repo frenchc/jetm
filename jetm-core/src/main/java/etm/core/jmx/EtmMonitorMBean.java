@@ -100,13 +100,12 @@ public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
       metaData = metaData.getNestedMetaData();
     }
 
-    String description = etmMonitorMetaData.getDescription() + " Configuration: Aggregator Chain (" +
-      chain + "), Timer Implementation (" +
-      etmMonitorMetaData.getTimerMetaData().getImplementationClass().getClass().getName() +
-      ") ]";
+    String description = etmMonitorMetaData.getDescription() + " Configuration: Aggregator Chain (" 
+    				   + chain + "), Timer Implementation (" 
+    				   + etmMonitorMetaData.getTimerMetaData().getImplementationClass().getClass().getName() 
+    				   + ") ]";
 
-    tabularType = new TabularType("performanceDetails",
-      "blubbler",
+    tabularType = new TabularType("performanceDetails", "blubbler",
       new CompositeType("etmPoint", "blabla",
         new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"},
         new String[]{"EtmPoint name", "Number of measurements", "Average time (ms)", "Minimum time (ms)", "Maximum Time (ms)", "Total Time (ms)", "JMX ObjectName"},
