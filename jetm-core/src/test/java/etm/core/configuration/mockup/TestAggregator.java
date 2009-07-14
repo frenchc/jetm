@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.configuration.mockup;
+package etm.core.configuration.mockup;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;

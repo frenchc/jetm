@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.configuration;
+package etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.configuration.EtmManager;
@@ -41,10 +41,10 @@ import etm.core.monitor.NestedMonitor;
 import etm.core.plugin.EtmPlugin;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
-import test.etm.core.configuration.mockup.TestAggregator;
-import test.etm.core.configuration.mockup.TestMonitor;
-import test.etm.core.configuration.mockup.TestPlugin;
-import test.etm.core.configuration.mockup.TestTimer;
+import etm.core.configuration.mockup.TestAggregator;
+import etm.core.configuration.mockup.TestMonitor;
+import etm.core.configuration.mockup.TestPlugin;
+import etm.core.configuration.mockup.TestTimer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

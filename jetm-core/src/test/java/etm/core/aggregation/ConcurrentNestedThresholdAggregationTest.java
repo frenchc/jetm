@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.aggregation;
+package etm.core.aggregation;
 
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;

@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.configuration.mockup;
+package etm.core.configuration.mockup;
 
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;

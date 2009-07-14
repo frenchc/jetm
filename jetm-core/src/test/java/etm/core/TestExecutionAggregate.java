@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core;
+package etm.core;
 
 import etm.core.aggregation.ExecutionAggregate;
 

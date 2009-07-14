@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.aggregation;
+package etm.core.aggregation;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
@@ -38,7 +38,7 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
-import test.etm.core.TestHelper;
+import etm.core.TestHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

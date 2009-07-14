@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.configuration;
+package etm.core.configuration;
 
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;

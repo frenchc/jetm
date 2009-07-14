@@ -30,14 +30,14 @@
  *
  */
 
-package test.etm.core.monitor;
+package etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
-import test.etm.core.TestHelper;
+import etm.core.TestHelper;
 
 import java.util.Map;
 

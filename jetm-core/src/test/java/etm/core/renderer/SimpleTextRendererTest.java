@@ -31,11 +31,11 @@
  */
 
 
-package test.etm.core.renderer;
+package etm.core.renderer;
 
 import etm.core.renderer.SimpleTextRenderer;
 import junit.framework.TestCase;
-import test.etm.core.TestExecutionAggregate;
+import etm.core.TestExecutionAggregate;
 
 import java.io.StringWriter;
 import java.util.HashMap;

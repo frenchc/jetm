@@ -31,7 +31,7 @@
  */
 
 
-package test.etm.core.monitor;
+package etm.core.monitor;
 
 import etm.core.monitor.FlatMonitor;
 

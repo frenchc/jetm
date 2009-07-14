@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.aggregation.persistence.mockup;
+package etm.core.aggregation.persistence.mockup;
 
 import etm.core.aggregation.persistence.PersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;

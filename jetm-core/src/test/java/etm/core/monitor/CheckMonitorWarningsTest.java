@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.monitor;
+package etm.core.monitor;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;

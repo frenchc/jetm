@@ -30,14 +30,14 @@
  *
  */
 
-package test.etm.core.aggregation.persistence;
+package etm.core.aggregation.persistence;
 
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.XmlEtmConfigurator;
 import junit.framework.TestCase;
-import test.etm.core.aggregation.persistence.mockup.TestPersistenceBackend;
-import test.etm.core.aggregation.persistence.mockup.TestPersistentNestedAggregator;
-import test.etm.core.configuration.mockup.TestMonitor;
+import etm.core.aggregation.persistence.mockup.TestPersistenceBackend;
+import etm.core.aggregation.persistence.mockup.TestPersistentNestedAggregator;
+import etm.core.configuration.mockup.TestMonitor;
 
 import java.util.HashMap;
 
