@@ -1,0 +1,295 @@
+<rrd_def>
+  <path>${rrdfile}</path>
+  <start>0</start>
+  <step>5</step>
+
+  <datasource>
+    <name>transactions!</name>
+    <type>ABSOLUTE</type>
+    <heartbeat>100</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+  <datasource>
+    <name>min</name>
+    <type>GAUGE</type>
+    <heartbeat>100</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+  <datasource>
+    <name>max</name>
+    <type>GAUGE</type>
+    <heartbeat>100</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+  <datasource>
+    <name>average</name>
+    <type>GAUGE</type>
+    <heartbeat>100</heartbeat>
+    <min>0</min>
+    <max>U</max>
+  </datasource>
+
+  <!-- Average archives -->
+  <!-- Last two hours (7.200 seconds)-->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>1</steps>
+    <rows>1440</rows>
+  </archive>
+
+  <!-- Last 12 hours (43.200 seconds)-->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>3</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 24 hours (86.400 seconds)-->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>6</steps>
+    <rows>2880</rows>
+  </archive>
+  
+  <!-- Last seven days (604.800 seconds) -->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>42</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 30 days (2.592.000 seconds) -->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>180</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 60 days (5.184.000 seconds) -->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>360</steps>
+    <rows>2880</rows>
+  </archive>
+
+   <!-- Last 120 days (10.368.000 seconds) -->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>720</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 365 days (31.536.000 seconds) -->
+  <archive>
+    <cf>AVERAGE</cf>
+    <xff>0.5</xff>
+    <steps>2190</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Min archives -->
+  <!-- Last two hours (7.200 seconds)-->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>1</steps>
+    <rows>1440</rows>
+  </archive>
+
+  <!-- Last 12 hours (43.200 seconds)-->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>3</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 24 hours (86.400 seconds)-->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>6</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last seven days (604.800 seconds) -->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>42</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 30 days (2.592.000 seconds) -->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>180</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 60 days (5.184.000 seconds) -->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>360</steps>
+    <rows>2880</rows>
+  </archive>
+
+   <!-- Last 120 days (10.368.000 seconds) -->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>720</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 365 days (31.536.000 seconds) -->
+  <archive>
+    <cf>MIN</cf>
+    <xff>0.5</xff>
+    <steps>2190</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Max archive -->
+  <!-- Last two hours (7.200 seconds)-->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>1</steps>
+    <rows>1440</rows>
+  </archive>
+
+  <!-- Last 12 hours (43.200 seconds)-->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>3</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 24 hours (86.400 seconds)-->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>6</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last seven days (604.800 seconds) -->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>42</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 30 days (2.592.000 seconds) -->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>180</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 60 days (5.184.000 seconds) -->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>360</steps>
+    <rows>2880</rows>
+  </archive>
+
+   <!-- Last 120 days (10.368.000 seconds) -->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>720</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 365 days (31.536.000 seconds) -->
+  <archive>
+    <cf>MAX</cf>
+    <xff>0.5</xff>
+    <steps>2190</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last database -->
+  <!-- Last two hours (7.200 seconds)-->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>1</steps>
+    <rows>1440</rows>
+  </archive>
+
+  <!-- Last 12 hours (43.200 seconds)-->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>3</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 24 hours (86.400 seconds)-->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>6</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last seven days (604.800 seconds) -->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>42</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 30 days (2.592.000 seconds) -->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>180</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 60 days (5.184.000 seconds) -->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>360</steps>
+    <rows>2880</rows>
+  </archive>
+
+   <!-- Last 120 days (10.368.000 seconds) -->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>720</steps>
+    <rows>2880</rows>
+  </archive>
+
+  <!-- Last 365 days (31.536.000 seconds) -->
+  <archive>
+    <cf>LAST</cf>
+    <xff>0.5</xff>
+    <steps>2190</steps>
+    <rows>2880</rows>
+  </archive>
+
+</rrd_def>

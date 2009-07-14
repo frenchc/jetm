@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://jetm.void.fm/schema/jetm_spring_config_1_2 http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd">
+
+  <jetm:runtime id="etmMonitor"/>
+
+  <jetm:runtime id="etmMonitorTwo"/>
+
+  <jetm:monitoring runtime-ref="etmMonitor">
+    <jetm:bean-pattern>blabla</jetm:bean-pattern>
+  </jetm:monitoring>
+
+</beans>
