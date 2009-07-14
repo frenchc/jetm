@@ -82,24 +82,24 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <executions>
-          <execution>
-          	<id>compile</id>
-          	<phase>compile</phase>
-            <configuration>
-              <configLocation>src/checkstyle/configuration.xml</configLocation>
-              <encoding>UTF-8</encoding>
-              <includeTestSourceDirectory>true</includeTestSourceDirectory>
-            </configuration>
-          	<goals>
-          	  <goal>check</goal>
-          	</goals>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--          	<id>compile</id>-->
+<!--          	<phase>compile</phase>-->
+<!--            <configuration>-->
+<!--              <configLocation>src/checkstyle/configuration.xml</configLocation>-->
+<!--              <encoding>UTF-8</encoding>-->
+<!--              <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--            </configuration>-->
+<!--          	<goals>-->
+<!--          	  <goal>check</goal>-->
+<!--          	</goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -158,5 +158,11 @@
   </repositories>
   
   <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 </project>
