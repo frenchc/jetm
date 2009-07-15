@@ -78,7 +78,6 @@ public class PluginMetaData {
   }
 
   public String toString() {
-     return "implementationClass=" + implementationClass 
-     	  + ", description='" + description + "'";
+     return "implementationClass=" + implementationClass + ", description='" + description + "'";
   }
 }

@@ -41,7 +41,7 @@ package etm.core.util;
  * @since 1.2.0
  */
 public interface LogAdapter {
-  
+
   public void debug(String message);
 
   public void info(String message);

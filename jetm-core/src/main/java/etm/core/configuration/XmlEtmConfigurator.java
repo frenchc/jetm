@@ -86,7 +86,7 @@ public final class XmlEtmConfigurator {
     InputStream inStream = null;
     try {
       inStream = new ByteArrayInputStream(config.getBytes());
-      doConfigure(inStream);        
+      doConfigure(inStream);
     } catch (EtmConfigurationException e) {
       throw e;
     } catch (Exception e) {

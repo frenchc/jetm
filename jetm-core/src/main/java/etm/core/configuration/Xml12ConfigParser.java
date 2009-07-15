@@ -118,7 +118,6 @@ class Xml12ConfigParser extends XmlConfigParser {
 
         addPropertyByAttribute(fileBackendElement, aggregatorConfig, "filename", "backendProperties.filename");
         addPropertyByAttribute(fileBackendElement, aggregatorConfig, "path", "backendProperties.path");
-
       } else if (customBackend.getLength() != 0) {
         Element customBackendElement = ((Element) customBackend.item(0));
 
@@ -127,8 +126,8 @@ class Xml12ConfigParser extends XmlConfigParser {
         NodeList properties = customBackendElement.getElementsByTagName("property");
         for (int j = 0; j < properties.getLength(); j++) {
           Element property = (Element) properties.item(j);
-          aggregatorConfig.addProperty("backendProperties." + getAttribute(property, "name"), 
-        		  					   getNodeFirstChildTextValue(property));
+          aggregatorConfig.addProperty("backendProperties." + getAttribute(property, "name"),
+                                       getNodeFirstChildTextValue(property));
         }
 
       }

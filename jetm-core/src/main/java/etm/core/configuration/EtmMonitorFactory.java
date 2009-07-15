@@ -66,21 +66,22 @@ public class EtmMonitorFactory {
 
   public static EtmMonitor createEtmMonitor(EtmMonitorConfig monitorConfig) throws Exception {
     Object obj;
+    Class monitorClass = monitorConfig.getMonitorClass();
     try {
-      Constructor constructor = monitorConfig.getMonitorClass().getConstructor(new Class[]{ExecutionTimer.class, Aggregator.class});
+      Constructor constructor = monitorClass.getConstructor(new Class[]{ExecutionTimer.class, Aggregator.class});
       obj = constructor.newInstance(new Object[]{createTimer(monitorConfig), createAggregators(monitorConfig)});
     } catch (NoSuchMethodException e) {
       try {
-        Constructor constructor = monitorConfig.getMonitorClass().getConstructor(new Class[]{Aggregator.class});
+        Constructor constructor = monitorClass.getConstructor(new Class[]{Aggregator.class});
         obj = constructor.newInstance(new Object[]{createAggregators(monitorConfig)});
 
       } catch (NoSuchMethodException e1) {
         try {
-          Constructor constructor = monitorConfig.getMonitorClass().getConstructor(new Class[]{ExecutionTimer.class});
+          Constructor constructor = monitorClass.getConstructor(new Class[]{ExecutionTimer.class});
           obj = constructor.newInstance(new Object[]{createTimer(monitorConfig)});
 
         } catch (NoSuchMethodException e2) {
-          obj = monitorConfig.getMonitorClass().newInstance();
+          obj = monitorClass.newInstance();
         }
       }
     }
@@ -127,7 +128,8 @@ public class EtmMonitorFactory {
     }
   }
 
-  private static Aggregator createAggregators(EtmMonitorConfig monitorConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
+  private static Aggregator createAggregators(EtmMonitorConfig monitorConfig) throws IllegalAccessException, InstantiationException,
+                                                                                     InvocationTargetException, ClassNotFoundException {
     if (monitorConfig.getAggregatorRoot() != null) {
 
       Aggregator current = (Aggregator) monitorConfig.getAggregatorRoot().getAggregatorClass().newInstance();
@@ -164,7 +166,8 @@ public class EtmMonitorFactory {
     }
   }
 
-  private static void addPlugins(EtmMonitor aEtmMonitor, List aPluginConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
+  private static void addPlugins(EtmMonitor aEtmMonitor, List aPluginConfig) throws IllegalAccessException, InstantiationException,
+                                                                                    InvocationTargetException, ClassNotFoundException {
     for (int i = 0; i < aPluginConfig.size(); i++) {
       EtmPluginConfig etmPluginConfig = (EtmPluginConfig) aPluginConfig.get(i);
       Object obj = etmPluginConfig.getPluginClass().newInstance();
@@ -177,7 +180,8 @@ public class EtmMonitorFactory {
   }
 
 
-  private static void setProperties(Object obj, Map properties) throws IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+  private static void setProperties(Object obj, Map properties) throws IllegalAccessException, InvocationTargetException,
+                                                                       ClassNotFoundException {
     // todo just improve  ;)
     Method[] methods = obj.getClass().getMethods();
     for (int i = 0; i < methods.length; i++) {

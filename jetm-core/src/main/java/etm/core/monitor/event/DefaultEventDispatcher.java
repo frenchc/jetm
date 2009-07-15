@@ -152,7 +152,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
       Method[] declaredMethods = listener.getDeclaredMethods();
       for (int i = 0; i < declaredMethods.length; i++) {
         Method declaredMethod = declaredMethods[i];
-        if (aMethodName.equals(declaredMethod.getName()) 
+        if (aMethodName.equals(declaredMethod.getName())
          && declaredMethod.getParameterTypes().length == 1) {
           method = declaredMethod;
           break;

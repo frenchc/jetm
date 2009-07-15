@@ -100,10 +100,8 @@ public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
       metaData = metaData.getNestedMetaData();
     }
 
-    String description = etmMonitorMetaData.getDescription() + " Configuration: Aggregator Chain (" 
-    				   + chain + "), Timer Implementation (" 
-    				   + etmMonitorMetaData.getTimerMetaData().getImplementationClass().getClass().getName() 
-    				   + ") ]";
+    String description = etmMonitorMetaData.getDescription() + " Configuration: Aggregator Chain (" + chain + "), Timer Implementation ("
+                       + etmMonitorMetaData.getTimerMetaData().getImplementationClass().getClass().getName() + ") ]";
 
     tabularType = new TabularType("performanceDetails", "blubbler",
       new CompositeType("etmPoint", "blabla",

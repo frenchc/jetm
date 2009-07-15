@@ -35,8 +35,8 @@
     <module name="SuppressionFilter">
       <property name="file" value="src/checkstyle/suppressions.xml"/>
     </module>
-
-    <module name="TreeWalker">
+    
+   <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
@@ -87,7 +87,7 @@
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="FileLength"/>
         <module name="LineLength">
-            <property name="max" value="120"/>
+            <property name="max" value="180"/>
             <property name="ignorePattern" value="^\s*throw new."/>
         </module>
         <module name="MethodLength"/>
@@ -97,7 +97,7 @@
         <!-- See http://checkstyle.sf.net/config_whitespace.html -->
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceAfter">
-          <property name="tokens" value="ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS, TYPECAST"/>
+          <property name="tokens" value="ARRAY_INIT, BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS"/>
         </module>
         <module name="NoWhitespaceBefore"/>
         <module name="OperatorWrap"/>

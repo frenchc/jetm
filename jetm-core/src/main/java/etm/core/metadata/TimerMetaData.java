@@ -80,8 +80,6 @@ public class TimerMetaData implements Serializable {
   }
 
   public String toString() {
-    return "implementationClass=" + implementationClass +
-      ", description='" + description + "'" +
-      ", ticksPerSecond=" + ticksPerSecond;
+    return "implementationClass=" + implementationClass + ", description='" + description + "'" + ", ticksPerSecond=" + ticksPerSecond;
   }
 }

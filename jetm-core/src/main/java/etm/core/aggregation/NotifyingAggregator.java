@@ -53,6 +53,9 @@ import etm.core.util.LogAdapter;
  */
 public class NotifyingAggregator implements Aggregator {
 
+  private static final String AGGREGATOR_DESCRIPTION = "An aggregator that creates events for "
+                                                     + "newly collected performance results.";
+
   private static final LogAdapter LOG = Log.getLog(NotifyingAggregator.class);
 
   private Aggregator delegate;
@@ -103,8 +106,7 @@ public class NotifyingAggregator implements Aggregator {
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(NotifyingAggregator.class, "An aggregator that creates events for newly " +
-      "collected performance results.", false, delegate.getMetaData());
+    return new AggregatorMetaData(NotifyingAggregator.class, AGGREGATOR_DESCRIPTION, false, delegate.getMetaData());
   }
 
   public void init(EtmMonitorContext aCtx) {

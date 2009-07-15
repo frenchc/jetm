@@ -47,7 +47,7 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  * @since 1.2.0
- * 
+ *
  */
 public class EtmMonitorJmxPlugin extends AbstractJmxRegistry implements EtmPlugin {
 

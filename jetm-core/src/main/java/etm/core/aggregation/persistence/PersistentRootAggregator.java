@@ -104,14 +104,15 @@ public class PersistentRootAggregator extends RootAggregator {
     try {
       persistenceBackend = (PersistenceBackend) aPersistenceBackendClazz.newInstance();
     } catch (Exception e) {
-      throw new IllegalArgumentException("Error instantiating persistence class " 
-    		  							+ aPersistenceBackendClazz 
-    		  							+ ":" +  e.getMessage());
+      throw new IllegalArgumentException("Error instantiating persistence class "
+                                        + aPersistenceBackendClazz
+                                        + ":" + e.getMessage());
     }
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(PersistentRootAggregator.class, "A cummulating aggregator for nested and flat representation " +
-      "that restores previous state from a persistence backend.", false);
+    return new AggregatorMetaData(PersistentRootAggregator.class,
+                           "A cummulating aggregator for nested and flat representation that restores previous state "
+                         + "from a persistence backend.", false);
   }
 }

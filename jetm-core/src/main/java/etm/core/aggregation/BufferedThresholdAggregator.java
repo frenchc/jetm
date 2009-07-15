@@ -119,8 +119,8 @@ public class BufferedThresholdAggregator implements Aggregator {
   }
 
   public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(BufferedThresholdAggregator.class, DESCRIPTION + threshold, 
-    							  true, delegate.getMetaData());
+    return new AggregatorMetaData(BufferedThresholdAggregator.class, DESCRIPTION + threshold,
+                                  true, delegate.getMetaData());
   }
 
 

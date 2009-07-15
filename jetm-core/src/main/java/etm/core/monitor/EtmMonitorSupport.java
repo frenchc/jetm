@@ -403,10 +403,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   private void showMonitorNotStartedMessage() {
-    LOG.warn("Warning - Performance Monitoring currently disabled. " 
-    	   + "If you did not start the current EtmMonitor on purpose, " 
-    	   + "you may ignore this warning. Otherwhise ensure to call EtmMonitor.start() " 
-    	   + "at some point in your application.");
+    LOG.warn("Warning - Performance Monitoring currently disabled. "
+            + "If you did not start the current EtmMonitor on purpose, "
+            + "you may ignore this warning. Otherwhise ensure to call EtmMonitor.start() "
+            + "at some point in your application.");
     noStartedErrorMessageFlag = true;
   }
 

@@ -46,7 +46,7 @@ public interface AggregationListener extends EtmMonitorListener {
   public void preRootReset(PreRootResetEvent event);
 
   public void onRootReset(RootResetEvent event);
-  
+
   public void preStateReset(PreMonitorResetEvent event);
 
   public void onStateReset(MonitorResetEvent event);

@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 
 import java.util.Enumeration;
 
-
 /**
  * Adapter to log4j.
  *
@@ -85,7 +84,7 @@ class Log4jAdapter implements LogAdapter {
       while (loggers.hasMoreElements()) {
         Logger c = (Logger) loggers.nextElement();
         if (c.getAllAppenders().hasMoreElements()) {
-        	return true;
+          return true;
         }
       }
     }

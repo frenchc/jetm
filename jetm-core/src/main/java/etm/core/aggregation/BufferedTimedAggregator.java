@@ -199,11 +199,10 @@ private static final LogAdapter LOG = Log.getLog(BufferedTimedAggregator.class);
 
   public void setAggregationInterval(long aAggregationInterval) {
     if (aAggregationInterval < BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL) {
-      throw new IllegalArgumentException("Aggregation intervals lower than " 
-    		  						    + BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL 
-    		  						    + " miliseconds not supported.");
+      throw new IllegalArgumentException("Aggregation intervals lower than "
+                                        + BufferedTimedAggregator.MIN_AGGREGATION_INTERVAL
+                                        + " miliseconds not supported.");
     }
-
     sleepInterval = aAggregationInterval;
   }
 
@@ -258,8 +257,7 @@ private static final LogAdapter LOG = Log.getLog(BufferedTimedAggregator.class);
         for (int i = 0; i < length; i++) {
           delegate.add(current[i]);
         }
-
-        ctx.fireEvent(new AggregationFinishedEvent(this));        
+        ctx.fireEvent(new AggregationFinishedEvent(this));
       }
     }
   }

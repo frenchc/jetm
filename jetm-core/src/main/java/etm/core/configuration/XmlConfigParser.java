@@ -116,8 +116,7 @@ public abstract class XmlConfigParser {
   }
 
 
-  protected void addPropertyByAttribute(Element aElement, PropertyConfig aConfig, 
-		  							    String aAttributeName, String aPropertyName) {
+  protected void addPropertyByAttribute(Element aElement, PropertyConfig aConfig, String aAttributeName, String aPropertyName) {
     String path = aElement.getAttribute(aAttributeName);
 
     if (path != null && path.length() > 0) {

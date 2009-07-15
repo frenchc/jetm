@@ -53,8 +53,7 @@ import java.util.Hashtable;
 class JmxSupport {
   private static final LogAdapter LOG = Log.getLog(JmxSupport.class);
 
-  protected void registerMBean(MBeanServer mbeanServer, ObjectName objectName, 
-		  					   Object object, boolean overwrite) throws JMException {
+  protected void registerMBean(MBeanServer mbeanServer, ObjectName objectName, Object object, boolean overwrite) throws JMException {
     try {
       mbeanServer.registerMBean(object, objectName);
     } catch (InstanceAlreadyExistsException e) {

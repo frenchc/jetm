@@ -73,7 +73,6 @@ public class PropertySupport {
   }
 
   public static void setProperties(Object aObj, Map properties) {
-    
     try {
       Method[] methods = aObj.getClass().getMethods();
       for (int i = 0; i < methods.length; i++) {
@@ -113,8 +112,7 @@ public class PropertySupport {
           }
         }
       }
-    }
-    catch (IllegalAccessException e) {
+    } catch (IllegalAccessException e) {
       throw new EtmException(e.getMessage());
     } catch (InvocationTargetException e) {
       throw new EtmException(e.getMessage());

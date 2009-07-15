@@ -49,7 +49,7 @@ public class Java14LogAdapter extends Logger implements LogAdapter {
 
   public Java14LogAdapter(Class aClazz) {
     super(aClazz.getName(), null);
-    LogManager.getLogManager().addLogger(this);    
+    LogManager.getLogManager().addLogger(this);
   }
 
   public void debug(String message) {
@@ -77,7 +77,7 @@ public class Java14LogAdapter extends Logger implements LogAdapter {
 
     Enumeration names = LogManager.getLogManager().getLoggerNames();
 
-    while(names.hasMoreElements()) {
+    while (names.hasMoreElements()) {
       expectedNames.add(names.nextElement());
       if (expectedNames.size() == 0) {
         return true;

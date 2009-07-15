@@ -34,7 +34,7 @@ package etm.core.monitor.event;
 /**
  *
  * Base interface for our listeners.
- * 
+ *
  * @author void.fm
  * @version $Revision$
  * @since 1.2.0

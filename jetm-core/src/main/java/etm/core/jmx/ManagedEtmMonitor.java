@@ -144,17 +144,16 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
   class HtmlRenderer implements MeasurementRenderer {
     private static final String TREE_SIGN = "|-";
     private static final String HEAD =
-      "<table border=\"1\" cellpadding=\"5\" >\n" +
-        " <tr>\n" +
-        "  <th>Etm Point</th>\n" +
-        "  <th>Measurements</th>\n" +
-        "  <th>Average</th>\n" +
-        "  <th>Min/Max</th>\n" +
-        "  <th>Total Time</th>\n" +
-        " </tr>\n";
+        "<table border=\"1\" cellpadding=\"5\" >\n"
+      + " <tr>\n"
+      + "  <th>Etm Point</th>\n"
+      + "  <th>Measurements</th>\n"
+      + "  <th>Average</th>\n"
+      + "  <th>Min/Max</th>\n"
+      + "  <th>Total Time</th>\n"
+      + " </tr>\n";
 
-    private static final String FOOTER =
-      "</table>";
+    private static final String FOOTER = "</table>";
 
 
     private NumberFormat timeFormatter;

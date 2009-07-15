@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * MeasurementRenderer instances are used to render currently available
  * aggregated performace results. A renderer has to implement a callback method
- * that will have access to those results. 
+ * that will have access to those results.
  *
  * @author void.fm
  * @version $Revision$
