@@ -53,12 +53,12 @@ public class EtmManagerPersistenceTest extends TestCase {
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
       "<!DOCTYPE jetm-config PUBLIC \"-// void.fm //DTD JETM Config 1.0//EN\" \"http://jetm.void.fm/dtd/jetm_config_1_0.dtd\">\n" +
       "<jetm-config>\n" +
-      "  <monitor-class>test.etm.core.configuration.mockup.TestMonitor</monitor-class>" +
+      "  <monitor-class>etm.core.configuration.mockup.TestMonitor</monitor-class>" +
       "  <aggregator-chain>\n" +
       "    <chain-root>\n" +
-      "      <aggregator-class>test.etm.core.aggregation.persistence.mockup.TestPersistentNestedAggregator</aggregator-class>\n" +
+      "      <aggregator-class>etm.core.aggregation.persistence.mockup.TestPersistentNestedAggregator</aggregator-class>\n" +
       "      <properties>\n" +
-      "        <property name=\"persistenceBackendClass\">test.etm.core.aggregation.persistence.mockup.TestPersistenceBackend</property>\n" +
+      "        <property name=\"persistenceBackendClass\">etm.core.aggregation.persistence.mockup.TestPersistenceBackend</property>\n" +
       "        <property name=\"backendProperties.booleanTrue\">true</property>" +
       "        <property name=\"backendProperties.booleanFalse\">false</property>\n" +
       "        <property name=\"backendProperties.longValue\">12124234324234</property>\n" +

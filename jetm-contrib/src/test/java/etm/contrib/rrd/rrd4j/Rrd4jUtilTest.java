@@ -51,7 +51,7 @@ import java.util.Map;
 public class Rrd4jUtilTest extends TestCase {
 
   public void testCreateDb() throws Exception {
-    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
+    URL resource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
 
     File path = File.createTempFile("test", ".rrd");
 
@@ -73,7 +73,7 @@ public class Rrd4jUtilTest extends TestCase {
   }
 
   public void testCreateImage() throws Exception {
-    URL dbResource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
+    URL dbResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
     URL imageResource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/template/graph/average-and-tx-template.xml");
 
     File dbPath = File.createTempFile("test", ".rrd");

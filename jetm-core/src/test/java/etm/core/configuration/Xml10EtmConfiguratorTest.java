@@ -79,13 +79,13 @@ public class Xml10EtmConfiguratorTest extends TestCase {
   public void testMonitorConfig() throws Exception {
     Object[][] configurations = new Object[][]{
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_0/flat-type-config.xml", FlatMonitor.class
+        "etm/core/configuration/files/valid_1_0/flat-type-config.xml", FlatMonitor.class
       },
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_0/nested-type-config.xml", NestedMonitor.class
+        "etm/core/configuration/files/valid_1_0/nested-type-config.xml", NestedMonitor.class
       },
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_0/monitor-class-config.xml", TestMonitor.class
+        "etm/core/configuration/files/valid_1_0/monitor-class-config.xml", TestMonitor.class
       }
     };
 
@@ -103,10 +103,10 @@ public class Xml10EtmConfiguratorTest extends TestCase {
   public void testTimerConfig() throws Exception {
     Object[][] configurations = new Object[][]{
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_0/default-timer-config.xml", DefaultTimer.class
+        "etm/core/configuration/files/valid_1_0/default-timer-config.xml", DefaultTimer.class
       },
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_0/timer-class-config.xml", TestTimer.class
+        "etm/core/configuration/files/valid_1_0/timer-class-config.xml", TestTimer.class
       }
     };
 
@@ -121,7 +121,7 @@ public class Xml10EtmConfiguratorTest extends TestCase {
   }
 
   public void testAggregatorConfig() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_0/aggregator-config.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_0/aggregator-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -154,7 +154,7 @@ public class Xml10EtmConfiguratorTest extends TestCase {
 
 
   public void testPluginConfig() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_0/plugin-config.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_0/plugin-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -197,7 +197,7 @@ public class Xml10EtmConfiguratorTest extends TestCase {
 
 
   public void testAutostartConfig() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_0/autostart-on-config.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_0/autostart-on-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -207,7 +207,7 @@ public class Xml10EtmConfiguratorTest extends TestCase {
 
     etmMonitor.stop();
 
-    url = locateResource("test/etm/core/configuration/files/valid_1_0/autostart-off-config.xml");
+    url = locateResource("etm/core/configuration/files/valid_1_0/autostart-off-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
     etmMonitor = EtmManager.getEtmMonitor();

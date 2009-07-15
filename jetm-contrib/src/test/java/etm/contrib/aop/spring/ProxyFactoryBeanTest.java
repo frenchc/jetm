@@ -53,7 +53,7 @@ public class ProxyFactoryBeanTest extends AopTestBase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    beanFactory = new XmlBeanFactory(new ClassPathResource("test/etm/contrib/aop/spring/factory-bean.xml"));
+    beanFactory = new XmlBeanFactory(new ClassPathResource("etm/contrib/aop/spring/factory-bean.xml"));
     beanFactory.preInstantiateSingletons();
 
     etmMonitor = (EtmMonitor) beanFactory.getBean("etmMonitor");

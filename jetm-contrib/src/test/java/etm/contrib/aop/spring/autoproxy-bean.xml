@@ -24,11 +24,11 @@
         autowire="constructor"/>
 
 
-  <bean id="yaddaService" class="test.etm.contrib.aop.resources.YaddaService" autowire="constructor"/>
+  <bean id="yaddaService" class="etm.contrib.aop.resources.YaddaService" autowire="constructor"/>
 
-  <bean id="fooService" class="test.etm.contrib.aop.resources.FooService" autowire="constructor"/>
+  <bean id="fooService" class="etm.contrib.aop.resources.FooService" autowire="constructor"/>
 
-  <bean id="barService" class="test.etm.contrib.aop.resources.BarService" autowire="constructor"/>
+  <bean id="barService" class="etm.contrib.aop.resources.BarService" autowire="constructor"/>
 
 
 </beans>
