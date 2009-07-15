@@ -68,11 +68,10 @@
           <target>1.3</target>
           <encoding>UTF-8</encoding>
           <excludes>
-            <exclude>**/SunHighResTimer.java</exclude>
-            <exclude>**/Java15NanoTimer.java</exclude>
-            <exclude>**/Java15CollectionFactory.java</exclude>
+<!--            <exclude>**/SunHighResTimer.java</exclude>-->
+<!--            <exclude>**/Java15NanoTimer.java</exclude>-->
+<!--            <exclude>**/Java15CollectionFactory.java</exclude>-->
           </excludes>
-          <compilerArgument>-ea</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -82,6 +81,15 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+        </configuration>
+      </plugin>      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
