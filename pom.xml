@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fm.void.jetm</groupId> 
+  <artifactId>jetm-modules</artifactId>
+  <name>Java Execution Time Measurement (JETM) Modules</name>
+  <version>1.2.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.3</version>
+        <dependencies>
+          <dependency>
+            <groupId>fm.void.jetm</groupId> 
+            <artifactId>jetm-build-tools</artifactId>
+            <version>1.2.4-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+          <headerLocation>whizbang/LICENSE.txt</headerLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+  
+  
+  <modules>
+    <module>jetm-build-tools</module>
+    <module>jetm-core</module>
+    <module>jetm-contrib</module>
+  </modules>
+</project>
