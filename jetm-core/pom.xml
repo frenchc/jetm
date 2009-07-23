@@ -41,9 +41,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/trunk</connection>
-    <developerConnection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/trunk</developerConnection>
-    <url>http://jetm.svn.sourceforge.net/viewvc/jetm/jetm/trunk/</url>
+    <connection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-core</connection>
+    <developerConnection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-core</developerConnection>
+    <url>http://jetm.svn.sourceforge.net/viewvc/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-core/</url>
   </scm>
   
   <build>
