@@ -32,6 +32,10 @@
 
 package etm.core;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.configuration.EtmMonitorFactory;
@@ -41,12 +45,7 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
-import etm.core.timer.DefaultTimer;
 import etm.core.timer.ExecutionTimer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Test class for test point generation

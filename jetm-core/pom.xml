@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
+  <parent>
+    <groupId>fm.void.jetm</groupId> 
+    <artifactId>jetm-modules</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-core</artifactId>
-  <packaging>jar</packaging>
-  <name>Java Execution Time Measurement (JETM)</name>
-  <version>1.2.4-SNAPSHOT</version>
+  <name>Java Execution Time Measurement (JETM) Core</name>
   <description>
    JETM is a small and free library, that helps locating performance problems in existing Java™ applications.
    JETM enables developers to track down performance issues on demand, either programmatic or declarative 
@@ -59,17 +61,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-         <archive>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-            </manifest>
-            <manifestEntries>
-              <Build-Date>${maven.build.timestamp}</Build-Date>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -125,27 +116,28 @@ jetm.build.date=${build.time}
           <argLine>-Xms512m -Xmx512m</argLine>
         </configuration>  
       </plugin>     
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <executions>
-          <execution>
-          	<id>compile</id>
-          	<phase>compile</phase>
-            <configuration>
-              <configLocation>src/checkstyle/configuration.xml</configLocation>
-              <encoding>UTF-8</encoding>
-              <includeTestSourceDirectory>true</includeTestSourceDirectory>
-              <excludes>
-                <exclude>**/ConcurrentReaderHashMap.java</exclude>
-              </excludes>
-            </configuration>
-          	<goals>
-          	  <goal>check</goal>
-          	</goals>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--          	<id>compile</id>-->
+<!--          	<phase>compile</phase>-->
+<!--            <configuration>-->
+<!--              <configLocation>checkstyle.xml</configLocation>              -->
+<!--              <configLocation>src/checkstyle/configuration.xml</configLocation>-->
+<!--              <encoding>UTF-8</encoding>-->
+<!--              <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--              <excludes>-->
+<!--                <exclude>**/ConcurrentReaderHashMap.java</exclude>-->
+<!--              </excludes>-->
+<!--            </configuration>-->
+<!--          	<goals>-->
+<!--          	  <goal>check</goal>-->
+<!--          	</goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -165,14 +157,14 @@ jetm.build.date=${build.time}
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <configLocation>src/checkstyle/configuration.xml</configLocation>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--        <configuration>-->
+<!--          <configLocation>src/checkstyle/configuration.xml</configLocation>-->
+<!--          <encoding>UTF-8</encoding>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>

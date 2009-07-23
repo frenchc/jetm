@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <parent>
+    <groupId>fm.void.jetm</groupId> 
+    <artifactId>jetm-modules</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>jetm-build-tools</artifactId>
+  <name>Java Execution Time Measurement (JETM) Build Tools</name>
+  <description>
+   JETM is a small and free library, that helps locating performance problems in existing Java™ applications.
+   JETM enables developers to track down performance issues on demand, either programmatic or declarative 
+   with minimal impact on application performance, even in production. 
+  </description>
+  <url>http://jetm.void.fm/</url>
+
+  <prerequisites>
+    <maven>2.1.0</maven>
+  </prerequisites>
+  <issueManagement>
+    <system>Sourceforge Tracker</system>
+    <url>http://sourceforge.net/tracker/?group_id=109626&amp;atid=654000</url>
+  </issueManagement>
+  <inceptionYear>2004</inceptionYear>
+  <developers>
+    <developer>
+      <id>french_c</id>
+      <name>Jens Schumann</name>
+      <email>french_c(a)users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <id>jenglisch</id>
+      <name>Juergen Englisch</name>
+      <email>jenglisch(a)users.sourceforge.net</email>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>BSD</name>
+      <url>http://jetm.void.fm/license.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-contrib</connection>
+    <developerConnection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-contrib</developerConnection>
+    <url>http://jetm.svn.sourceforge.net/viewvc/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-contrib/</url>
+  </scm>  
+  
+  <build>
+    <defaultGoal>package</defaultGoal>
+  </build>
+  
+</project>
