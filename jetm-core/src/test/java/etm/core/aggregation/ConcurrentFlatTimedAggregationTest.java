@@ -32,11 +32,8 @@
 
 package etm.core.aggregation;
 
-import etm.core.aggregation.BufferedTimedAggregator;
-import etm.core.aggregation.RootAggregator;
 import etm.core.configuration.EtmMonitorFactory;
 import etm.core.monitor.FlatMonitor;
-import etm.core.timer.DefaultTimer;
 
 /**
  * Test to check possible concurrency issues during aggregation in flat monitors.

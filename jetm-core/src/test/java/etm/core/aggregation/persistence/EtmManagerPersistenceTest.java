@@ -72,6 +72,7 @@ public class EtmManagerPersistenceTest extends TestCase {
 
   protected void setUp() throws Exception {
     super.setUp();
+    EtmManager.reset();
     XmlEtmConfigurator.configure(JETM_CONFIG);
     EtmManager.getEtmMonitor().start();
   }
