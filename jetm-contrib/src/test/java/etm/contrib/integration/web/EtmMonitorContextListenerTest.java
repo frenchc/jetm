@@ -60,7 +60,7 @@ public class EtmMonitorContextListenerTest extends TestCase {
     EtmMonitorContextListener listener = new EtmMonitorContextListener();
 
     HashMap attributes = new HashMap();
-    attributes.put("jetm.config.filename", "test/etm/contrib/integration/web/classpath-config.xml");
+    attributes.put("jetm.config.filename", "etm/contrib/integration/web/classpath-config.xml");
     ServletContext ctx = getServletContext(attributes);
 
     assertTrue(Proxy.isProxyClass(EtmManager.getEtmMonitor().getClass()));

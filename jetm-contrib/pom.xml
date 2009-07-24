@@ -81,7 +81,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.7</version>
         <configuration>
+          <ajdtVersion>none</ajdtVersion>
           <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
@@ -140,12 +142,12 @@
       <groupId>jboss.jboss-aop</groupId>
       <artifactId>jboss-aop</artifactId>
       <version>1.5.0.GA</version>
-    </dependency>  
+    </dependency>
     <dependency>
-      <groupId>aspectj</groupId>
+      <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
-      <version>1.5.4</version>
-    </dependency>   
+      <version>1.6.5</version>
+    </dependency>    
     <dependency>
       <groupId>aspectwerkz</groupId>
       <artifactId>aspectwerkz</artifactId>
@@ -155,9 +157,7 @@
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm-core</artifactId>
       <version>1.2.4-SNAPSHOT</version>
-<!--      <classifier>tests</classifier>-->
       <type>test-jar</type>
-      
     </dependency>
     <dependency>
       <groupId>fm.void.jetm</groupId>

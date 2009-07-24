@@ -41,7 +41,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public abstract class ConfigurationTestCase extends TestCase {
 
   protected ClassPathXmlApplicationContext getContext(String file) {
-    String path = "test/etm/contrib/integration/spring/configuration/resources/" + file;
+    String path = "etm/contrib/integration/spring/configuration/resources/" + file;
 
     return new ClassPathXmlApplicationContext(path);
   }
