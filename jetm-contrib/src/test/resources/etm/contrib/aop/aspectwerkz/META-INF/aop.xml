@@ -1,0 +1,14 @@
+<!DOCTYPE aspectwerkz PUBLIC
+   "-//AspectWerkz//DTD 2.0//EN"
+   "http://aspectwerkz.codehaus.org/dtd/aspectwerkz2.dtd">
+
+<aspectwerkz>
+   <system id="jetm-unit-test">
+      <aspect class="etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect" deployment-model="perClass">
+         <pointcut name="testExcecution"
+                   expression="execution(* etm.contrib.aop.resources.*Service.*(..))" />
+         <advice name="monitor" type="around" bind-to="testExcecution" />
+      </aspect>
+
+   </system>
+</aspectwerkz>
