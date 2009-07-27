@@ -53,8 +53,8 @@ class EtmMonitorRepository {
     if (!managedMonitors.containsKey(reference)) {
       managedMonitors.put(reference, aMonitor);
     } else {
-      throw new EtmException("Reference " + reference + " already assigned. Ensure that the same jetm-config file is not " +
-        "reused accross multiple EtmMonitor instances.");
+      throw new EtmException("Reference " + reference + " already assigned. Ensure that the same jetm-config file is not " 
+                           + "reused accross multiple EtmMonitor instances.");
     }
   }
 

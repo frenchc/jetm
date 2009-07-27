@@ -54,7 +54,7 @@ public class SpringEtmMonitorContextSupport {
       try {
         return (EtmMonitor) ctx.getBean(etmMonitorName);
       } catch (BeansException e) {
-        throw new ServletException("Unable to locate EtmMonitor instance called '" + etmMonitorName + "'");         
+        throw new ServletException("Unable to locate EtmMonitor instance called '" + etmMonitorName + "'");
       }
     } else {
       Map map = ctx.getBeansOfType(EtmMonitor.class);
@@ -69,8 +69,8 @@ public class SpringEtmMonitorContextSupport {
             beanNames.append(',');
           }
           beanNames.deleteCharAt(beanNames.length() - 1);
-          throw new ServletException("Located more than one EtmMonitor instance. Please specify the name " +
-            "of EtmMonitor instance. [Found: " + beanNames + "]");
+          throw new ServletException("Located more than one EtmMonitor instance. Please specify the name "
+                                   + "of EtmMonitor instance. [Found: " + beanNames + "]");
         }
       } else {
         throw new ServletException("Unable to locate EtmMonitor instance in bean definitions.");

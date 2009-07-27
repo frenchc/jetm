@@ -58,7 +58,7 @@ public class ConsoleBeanDefinitionParser extends JetmBeanDefinitionParser {
     if (monitorRef != null && monitorRef.length() > 0) {
       builder.addConstructorArgReference(monitorRef);
     } else {
-      builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR); 
+      builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
     }
 
     if (expanded != null && expanded.length() > 0) {

@@ -37,7 +37,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 /**
  *
  * Registers JETM namespace to spring configuration.
- * 
+ *
  * @version $Revision$
  * @author $Id$
  * @since 1.2.0

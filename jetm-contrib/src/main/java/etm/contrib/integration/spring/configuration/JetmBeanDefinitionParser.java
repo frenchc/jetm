@@ -56,8 +56,8 @@ import etm.core.util.LogAdapter;
  */
 public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
-  private static final LogAdapter log = Log.getLog(JetmBeanDefinitionParser.class);
-  
+  private static final LogAdapter LOG = Log.getLog(JetmBeanDefinitionParser.class);
+
   protected String resolveId(Element element, AbstractBeanDefinition definition, ParserContext parserContext)
     throws BeanDefinitionStoreException {
     String id = super.resolveId(element, definition, parserContext);
@@ -103,12 +103,12 @@ public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionPar
   }
 
   private Method getGenerateBeanNameMethodSinceSpring11() throws NoSuchMethodException {
-    log.debug("Using BeanDefinitionReaderUtils.generateBeanName() method for spring < 2.5 and >= 1.1");
+    LOG.debug("Using BeanDefinitionReaderUtils.generateBeanName() method for spring < 2.5 and >= 1.1");
     return BeanDefinitionReaderUtils.class.getMethod("generateBeanName", new Class[] {AbstractBeanDefinition.class, BeanDefinitionRegistry.class, Boolean.TYPE});
   }
 
   private Method getGenerateBeanNameMethodSinceSpring25() throws NoSuchMethodException {
-    log.debug("Using BeanDefinitionReaderUtils.generateBeanName() method for spring >= 2.5");
+    LOG.debug("Using BeanDefinitionReaderUtils.generateBeanName() method for spring >= 2.5");
     return BeanDefinitionReaderUtils.class.getMethod("generateBeanName", new Class[] {BeanDefinition.class, BeanDefinitionRegistry.class, Boolean.TYPE});
   }
 

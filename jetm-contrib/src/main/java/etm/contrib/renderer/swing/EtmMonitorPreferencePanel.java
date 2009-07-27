@@ -41,7 +41,7 @@ import javax.swing.JPanel;
  *
  * @version $Revision$
  * @author void.fm
- * 
+ *
  */
 public class EtmMonitorPreferencePanel extends JPanel {
   private EtmMonitor etmMonitor;

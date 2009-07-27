@@ -64,7 +64,7 @@ public class DetailResultRenderer extends ConsoleRenderer {
     try {
       writeDetailHtmlHead(etmPointName);
 
-      response.write("<!-- Begin results -->");      
+      response.write("<!-- Begin results -->");
       response.write("<table>\n");
       writeTableHeader();
 
@@ -185,6 +185,5 @@ public class DetailResultRenderer extends ConsoleRenderer {
 
     response.write(" </tr>\n");
   }
-
 
 }

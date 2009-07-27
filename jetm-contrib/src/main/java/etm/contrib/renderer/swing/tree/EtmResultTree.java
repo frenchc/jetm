@@ -55,9 +55,7 @@ public class EtmResultTree extends JTree {
   public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     if (value != null && value instanceof AggregationNode) {
       Aggregate aggregate = (Aggregate) ((AggregationNode) value).getUserObject();
-      return aggregate.getName() + " [" +
-        aggregate.getMeasurements()
-        + "]";
+      return aggregate.getName() + " [" + aggregate.getMeasurements() + "]";
     }
     return "";
   }

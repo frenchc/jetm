@@ -38,7 +38,7 @@ import java.awt.LayoutManager;
 /**
  *
  * This abstract base class is a temporarty workaround that should
- * force a min size to panel panes. 
+ * force a min size to panel panes.
  *
  * @version $Revision$
  * @author void.fm

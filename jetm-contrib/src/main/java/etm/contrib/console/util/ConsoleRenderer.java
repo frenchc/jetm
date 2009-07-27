@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
+  
 package etm.contrib.console.util;
 
 import etm.contrib.console.ConsoleRequest;
@@ -57,10 +57,9 @@ import java.util.Map;
  * @version $Revision$
  */
 public abstract class ConsoleRenderer implements MeasurementRenderer {
-  protected static final String FOOTER = " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. " +
-    "Measurements provided by <a href=\"http://jetm.void.fm\" target=\"_default\">JETM " +
-    Version.getVersion() +
-    "</a></td></tr>\n";
+  protected static final String FOOTER = " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. " 
+                                       + "Measurements provided by <a href=\"http://jetm.void.fm\" target=\"_default\">JETM "
+                                       + Version.getVersion() + "</a></td></tr>\n";
   protected static final String NO_RESULTS = " <tr><td colspan=\"6\">No measurement results available.</td></tr>\n";
   protected NumberFormat timeFormatter;
   protected NumberFormat numberFormatter;

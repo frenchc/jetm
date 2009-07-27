@@ -194,7 +194,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
 
   /**
    *
-   * A EtmMethodCallInterceptor that uses one name for all measurement points. 
+   * A EtmMethodCallInterceptor that uses one name for all measurement points.
    *
    */
   public static class NamedEtmMethodCallInterceptor extends EtmMethodCallInterceptor {

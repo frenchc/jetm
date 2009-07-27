@@ -51,13 +51,13 @@ import java.util.Map;
  */
 public class Rrd4jPlugin extends AbstractRrdPlugin {
 
-  private static final LogAdapter log = Log.getLog(Rrd4jPlugin.class);
+  private static final LogAdapter LOG = Log.getLog(Rrd4jPlugin.class);
 
   private String configPath = System.getProperty("java.io.tmpdir");
   private List destinationConfiguration;
 
   public Rrd4jPlugin() {
-    log.warn("You are about to use an experimental JETM feature. Please report issues with it. Thanks.");
+    LOG.warn("You are about to use an experimental JETM feature. Please report issues with it. Thanks.");
   }
 
   public void setRrdFilePath(String path) {

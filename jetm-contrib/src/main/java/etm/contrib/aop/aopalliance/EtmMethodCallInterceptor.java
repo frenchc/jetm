@@ -56,5 +56,5 @@ public class EtmMethodCallInterceptor extends AbstractEtmAspect implements Metho
   public Object invoke(MethodInvocation aMethodInvocation) throws Throwable {
     return monitor(JoinPointFactory.create(aMethodInvocation));
   }
-  
+
 }

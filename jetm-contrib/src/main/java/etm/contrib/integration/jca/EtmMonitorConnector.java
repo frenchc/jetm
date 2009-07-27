@@ -67,7 +67,7 @@ import java.net.URL;
  * @since 1.2.2
  */
 public class EtmMonitorConnector implements ResourceAdapter, Referenceable, Serializable {
-  private static final LogAdapter log = Log.getLog(EtmMonitorConnector.class);
+  private static final LogAdapter LOG = Log.getLog(EtmMonitorConnector.class);
   private static final String DEFAULT_CONFIG_FILE_NAME = "jetm-config.xml";
 
   private String configFileName = DEFAULT_CONFIG_FILE_NAME;
@@ -92,7 +92,7 @@ public class EtmMonitorConnector implements ResourceAdapter, Referenceable, Seri
       throw new ResourceAdapterInternalException("Unable to locate JETM config file " + configFileName + " in classpath.");
     }
 
-    log.debug("Using JETM configuration file " + resource);
+    LOG.debug("Using JETM configuration file " + resource);
 
     if (jndiName == null) {
       // static usage
@@ -155,7 +155,7 @@ public class EtmMonitorConnector implements ResourceAdapter, Referenceable, Seri
       } catch (NameNotFoundException e) {
         // ignore
       } catch (Exception e) {
-        log.warn("Unable to deregister JETM monitor " + jndiName + " from JNDI tree", e);
+        LOG.warn("Unable to deregister JETM monitor " + jndiName + " from JNDI tree", e);
       } finally {
         if (ctx != null) {
           try {

@@ -38,19 +38,19 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * AopAlliance joinpoint.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  */
 public class AopAllianceJoinPoint extends AbstractJoinPoint {
 
   private MethodInvocation methodInvocation;
-  
+
   public AopAllianceJoinPoint(MethodInvocation aMethodInvocation) {
     methodInvocation = aMethodInvocation;
   }
-  
+
   /**
    * @see #calculateName()
    */
@@ -61,7 +61,7 @@ public class AopAllianceJoinPoint extends AbstractJoinPoint {
   }
 
   /**
-   * @see #proceed() 
+   * @see #proceed()
    */
   public Object proceed() throws Throwable {
     return methodInvocation.proceed();

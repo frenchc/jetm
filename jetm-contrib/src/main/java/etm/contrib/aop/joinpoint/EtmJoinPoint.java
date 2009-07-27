@@ -37,22 +37,22 @@ import etm.core.monitor.EtmPoint;
 
 /**
  * An etm joinpoint.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  *
  */
 public interface EtmJoinPoint {
 
   /**
    * Proceed with the wrapped method invocation.
-   * 
+   *
    * @return The return value of the invoked method.
-   * @throws Throwable Any exception that may occur during the execution of the invoked method. 
+   * @throws Throwable Any exception that may occur during the execution of the invoked method.
    */
   public Object proceed() throws Throwable;
-  
+
   /**
    * Calculate EtmPoint name based on the method invocation.
    *
@@ -68,8 +68,8 @@ public interface EtmJoinPoint {
    *
    * @param aEtmPoint The EtmPoint to alter.
    * @param t The caught throwable t.
-   * 
+   *
    */
   public void alterNamePostException(EtmPoint aEtmPoint, Throwable t);
-  
+
 }

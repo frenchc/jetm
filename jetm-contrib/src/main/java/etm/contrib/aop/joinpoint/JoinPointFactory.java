@@ -39,10 +39,10 @@ import org.jboss.aop.joinpoint.Invocation;
 
 /**
  * Factory for the creation of etm joinpoints.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  *
  */
 public class JoinPointFactory {
@@ -58,9 +58,9 @@ public class JoinPointFactory {
   public static EtmJoinPoint create(Invocation anInvocation) {
     return new JbossJoinPoint(anInvocation);
   }
-  
+
   public static EtmJoinPoint create(ProceedingJoinPoint aJoinPoint) {
-    return new AspectjJoinpoint(aJoinPoint);    
+    return new AspectjJoinpoint(aJoinPoint);
   }
 
 }

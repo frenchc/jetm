@@ -42,33 +42,33 @@ import org.jboss.aop.joinpoint.MethodInvocation;
 
 /**
  * JbossAOP joinpoint.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  */
 public class JbossJoinPoint extends AbstractJoinPoint implements EtmJoinPoint {
 
   private Invocation invocation;
-  
+
   public JbossJoinPoint(Invocation anInvocation) {
     invocation = anInvocation;
   }
 
   /**
-   * @see #proceed() 
+   * @see #proceed()
    */
   public Object proceed() throws Throwable {
     return invocation.invokeNext();
   }
-  
+
   /**
    * @see #calculateName()
    */
   public String calculateName() {
     if (invocation instanceof ConstructorInvocation) {
       Constructor constructor = ((ConstructorInvocation) invocation).getConstructor();
-      return calculateShortName(constructor.getDeclaringClass()) + "::" + constructor.getName();      
+      return calculateShortName(constructor.getDeclaringClass()) + "::" + constructor.getName();
     } else if (invocation instanceof MethodInvocation) {
       Method method = ((MethodInvocation) invocation).getMethod();
       return calculateName(method.getDeclaringClass(),  method.getName());
@@ -76,5 +76,5 @@ public class JbossJoinPoint extends AbstractJoinPoint implements EtmJoinPoint {
       return "Unsupported JBossAOP invocation type: " + invocation.getClass();
     }
   }
-  
+
 }

@@ -52,7 +52,7 @@ import java.util.Date;
  */
 public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
 
-  private static final LogAdapter log = Log.getLog(AbstractRrdExecutionWriter.class);
+  private static final LogAdapter LOG = Log.getLog(AbstractRrdExecutionWriter.class);
 
   private RrdDb db;
 
@@ -77,14 +77,12 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
     averageEnabled = validateDataSource(aDb, "average");
 
     if (!(transactionsEnabled || minEnabled || maxEnabled || averageEnabled)) {
-      throw new EtmException("Invalid datasource. " +
-        "One of the datasources 'transactions', 'min', 'max' or 'average' should exist in " +
-      aDb.getPath() + ".");
+      throw new EtmException("Invalid datasource. One of the datasources 'transactions', 'min', 'max' or 'average' should exist in " + aDb.getPath() + ".");
     }
 
     db = aDb;
 
-    log.debug("Using Rrd4j destination " + aDb.getPath() + " starting at " +
+    LOG.debug("Using Rrd4j destination " + aDb.getPath() + " starting at " +
       new Date(startInterval * 1000) + " with step " + increment + " seconds.");
   }
 

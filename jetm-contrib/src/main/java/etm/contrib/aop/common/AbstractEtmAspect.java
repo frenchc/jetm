@@ -40,7 +40,7 @@ import etm.core.monitor.EtmPoint;
 /**
  * Base etm aspect that provides execution time measuring
  * in {@link #monitor(EtmJoinPoint)} and {@link #monitor(EtmJoinPoint, String)}.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
  * @since 1.2.4
@@ -53,15 +53,15 @@ public abstract class AbstractEtmAspect {
   public AbstractEtmAspect() {
     this(EtmManager.getEtmMonitor());
   }
-  
+
   public AbstractEtmAspect(EtmMonitor anEtmMonitor) {
     etmMonitor = anEtmMonitor;
   }
-  
+
   public Object monitor(EtmJoinPoint aJoinPoint) throws Throwable {
     return monitor(aJoinPoint, aJoinPoint.calculateName());
   }
-  
+
   public Object monitor(EtmJoinPoint aJoinPoint, String aJoinPointName) throws Throwable {
     EtmPoint etmPoint = etmMonitor.createPoint(aJoinPointName);
     try {
@@ -72,7 +72,6 @@ public abstract class AbstractEtmAspect {
     } finally {
       etmPoint.collect();
     }
-  }  
+  }
 
 }
- 

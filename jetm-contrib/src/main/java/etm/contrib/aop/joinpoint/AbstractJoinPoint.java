@@ -35,12 +35,12 @@ package etm.contrib.aop.joinpoint;
 import etm.core.monitor.EtmPoint;
 
 /**
- * Abstract etm joinpoint provides basic functionality 
+ * Abstract etm joinpoint provides basic functionality
  * for calculating #EtmPoint names.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  *
  */
 public abstract class AbstractJoinPoint implements EtmJoinPoint {
@@ -60,23 +60,23 @@ public abstract class AbstractJoinPoint implements EtmJoinPoint {
         return name;
       }
     }
-  
+
   /**
    * Calculate name based on the method invocation.
-   * 
-   * @param clazz
-   * @param methodName
-   * @return The 
+   *
+   * @param clazz A class.
+   * @param methodName A methodName.
+   * @return The name for the given method invocation.
    */
   protected String calculateName(Class clazz, String methodName) {
     return calculateShortName(clazz) + "::" + methodName;
   }
-  
+
   /**
    * @see #alterNamePostException(EtmPoint, Throwable)
    */
    public void alterNamePostException(EtmPoint aEtmPoint, Throwable t) {
      aEtmPoint.alterName(aEtmPoint.getName() + " [" + calculateShortName(t.getClass()) + "]");
-   }  
+   }
 
 }

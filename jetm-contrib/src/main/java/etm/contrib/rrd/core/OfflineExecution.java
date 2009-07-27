@@ -37,7 +37,7 @@ import etm.core.monitor.EtmPoint;
 /**
  *
  * Represents parsed performance result.
- * 
+ *
  * @version $Revision$
  * @author void.fm
  * @since 1.2.0
@@ -93,6 +93,6 @@ class OfflineExecution implements EtmPoint {
   }
 
   public void addContextDetail(String key, Object value) {
-    throw new UnsupportedOperationException();    
+    throw new UnsupportedOperationException();
   }
 }

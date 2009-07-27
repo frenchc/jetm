@@ -39,15 +39,15 @@ import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 
 /**
  * AspectJ joinpoint.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  */
 public class AspectjJoinpoint extends AbstractJoinPoint {
 
   private ProceedingJoinPoint joinPoint;
-  
+
   public AspectjJoinpoint(ProceedingJoinPoint aJoinPoint) {
     joinPoint = aJoinPoint;
   }
@@ -58,9 +58,9 @@ public class AspectjJoinpoint extends AbstractJoinPoint {
       Signature signature = ((MethodInvocationProceedingJoinPoint) joinPoint).getSignature();
       if (signature instanceof MethodSignatureImpl) {
         String method = ((MethodSignatureImpl) signature).getName();
-        return calculateName(target.getClass(), method);              
-      }      
-    } 
+        return calculateName(target.getClass(), method);
+      }
+    }
     return calculateShortName(target.getClass());
   }
 

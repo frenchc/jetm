@@ -26,5 +26,4 @@ public class CollapsedResultViewAction extends AbstractAction {
     request.getEtmMonitor().render(collapsedResultRenderer);
   }
 
-
 }

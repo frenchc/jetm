@@ -60,7 +60,7 @@ import java.awt.event.ActionListener;
 
 /**
  * The main panel that renders performance results and refreshes
- * the current results 
+ * the current results
  *
  * @author void.fm
  * @version $Revision$

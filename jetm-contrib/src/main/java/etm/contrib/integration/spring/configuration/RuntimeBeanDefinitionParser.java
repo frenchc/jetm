@@ -348,7 +348,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
       bufferBuilder = BeanDefinitionBuilder.rootBeanDefinition(BufferedThresholdAggregator.class);
     }
 
-    // now build up chain - reverse 
+    // now build up chain - reverse
     BeanDefinitionBuilder chainBuilder = aggregationRootBuilder;
 
     if (rawDataBuilder != null) {
@@ -384,8 +384,8 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         Class clazz = Class.forName("etm.core.timer.Java15NanoTimer");
         builder.addConstructorArg(clazz.newInstance());
       } catch (Exception e) {
-        throw new FatalBeanException("Java15NanoTimer is not available for this platform. Please try 'sun' or " +
-          "'default' instead.", e);
+        throw new FatalBeanException("Java15NanoTimer is not available for this platform. Please try 'sun' or " 
+                                   + "'default' instead.", e);
       }
     } else if ("sun".equals(aTimer)) {
        try {

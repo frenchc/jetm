@@ -68,7 +68,7 @@ import javax.servlet.ServletException;
  */
 public class SpringHttpConsoleServlet extends HttpConsoleServlet {
 
-  
+
   protected EtmMonitor getEtmMonitor() throws ServletException {
     // retrieve name of EtmMonitor to use. may be null
     String etmMonitorName = servletConfig.getInitParameter(SpringEtmMonitorContextSupport.ETM_MONITOR_PARAMETER_NAME);

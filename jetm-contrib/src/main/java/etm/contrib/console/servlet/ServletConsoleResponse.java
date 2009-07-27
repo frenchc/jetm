@@ -46,7 +46,7 @@ import java.util.Map;
  *
  * @version $Revision$
  * @author void.fm
- * 
+ *
  */
 public class ServletConsoleResponse implements ConsoleResponse {
 

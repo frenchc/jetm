@@ -67,7 +67,7 @@ import javax.servlet.ServletException;
 public class SpringHttpRequestPerformanceFilter extends HttpRequestPerformanceFilter {
 
   protected EtmMonitor getEtmMonitor() throws ServletException {
-    // retrieve name of EtmMonitor to use. may be null    
+    // retrieve name of EtmMonitor to use. may be null
     String etmMonitorName = filterConfig.getInitParameter(SpringEtmMonitorContextSupport.ETM_MONITOR_PARAMETER_NAME);
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
 

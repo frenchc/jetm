@@ -71,15 +71,15 @@ public class EtmProxyFactoryBean extends ProxyConfig
   }
 
   public Class getObjectType() {
-    if (proxy != null)
+    if (proxy != null) { 
       return proxy.getClass();
-    if (target instanceof TargetSource)
+    } if (target instanceof TargetSource) {
       return ((TargetSource) target).getTargetClass();
-    if (target != null)
+    } if (target != null) {
       return target.getClass();
-    else
+    }  else {
       return null;
-
+    }
   }
 
   public boolean isSingleton() {
@@ -104,10 +104,11 @@ public class EtmProxyFactoryBean extends ProxyConfig
   }
 
   protected TargetSource createTargetSource(Object target) {
-    if (target instanceof TargetSource)
+    if (target instanceof TargetSource) {
       return (TargetSource) target;
-    else
+    } else {
       return new SingletonTargetSource(target);
+    }  
   }
 
 }

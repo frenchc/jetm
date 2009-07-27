@@ -37,21 +37,21 @@ import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
 
 /**
  * AspectWerkz joinpoint.
- * 
+ *
  * @author jenglisch
  * @version $Revision$ $Date$
- * @since 1.2.4 
+ * @since 1.2.4
  */
 public class AspectWerkzJoinPoint extends AbstractJoinPoint {
 
   private StaticJoinPoint joinPoint;
-  
+
   public AspectWerkzJoinPoint(StaticJoinPoint aJoinPoint) {
     joinPoint = aJoinPoint;
   }
 
   /**
-   * @see #proceed() 
+   * @see #proceed()
    */
   public Object proceed() throws Throwable {
     return joinPoint.proceed();

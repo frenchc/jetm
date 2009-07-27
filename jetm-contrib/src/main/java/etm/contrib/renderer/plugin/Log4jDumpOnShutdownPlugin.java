@@ -58,9 +58,9 @@ public class Log4jDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
   public void stop() {
     StringWriter writer = new StringWriter();
     ctx.getEtmMonitor().render(new SimpleTextRenderer(writer));
-    log.info("Dumping performance results..." +
-      System.getProperty("line.separator") +
-      writer.toString());
+    log.info("Dumping performance results..."
+            + System.getProperty("line.separator")
+            + writer.toString());
   }
 
   protected void logResetDetail(String information) {

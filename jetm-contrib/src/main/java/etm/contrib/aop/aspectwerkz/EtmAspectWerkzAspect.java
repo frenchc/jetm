@@ -59,5 +59,5 @@ public class EtmAspectWerkzAspect extends AbstractEtmAspect {
   public Object monitor(StaticJoinPoint aJoinPoint) throws Throwable {
     return monitor(JoinPointFactory.create(aJoinPoint));
   }
-  
+
 }

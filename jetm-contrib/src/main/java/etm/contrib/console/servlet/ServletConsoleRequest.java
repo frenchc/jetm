@@ -53,7 +53,7 @@ public class ServletConsoleRequest implements ConsoleRequest {
 
   public ServletConsoleRequest(EtmMonitor aMonitor, HttpServletRequest aRequest) {
     monitor = aMonitor;
-    
+
     Enumeration names = aRequest.getParameterNames();
 
     while (names.hasMoreElements()) {

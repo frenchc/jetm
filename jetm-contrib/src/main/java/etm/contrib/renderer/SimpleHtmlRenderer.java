@@ -121,17 +121,18 @@ import java.util.TreeMap;
 public class SimpleHtmlRenderer implements MeasurementRenderer {
 
   private static final String HEAD =
-    "<table>\n" +
-      " <tr>\n" +
-      "  <th>Measurement Point</th>\n" +
-      "  <th>#</th>\n" +
-      "  <th>Average</th>\n" +
-      "  <th>Min</th>\n" +
-      "  <th>Max</th>\n" +
-      "  <th>Total</th>\n" +
-      " </tr>\n";
+    "<table>\n"
+   +  " <tr>\n"
+   +  "  <th>Measurement Point</th>\n"
+   +  "  <th>#</th>\n"
+   +  "  <th>Average</th>\n"
+   +  "  <th>Min</th>\n"
+   +  "  <th>Max</th>\n"
+   +  "  <th>Total</th>\n"
+   + " </tr>\n";
 
-  private static final String FOOTER = " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. Measurements provided by <a href=\"http://jetm.void.fm\" target=\"_default\">JETM</a></td></tr>\n</table>";
+  private static final String FOOTER = " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. Measurements provided by "
+                                     + "<a href=\"http://jetm.void.fm\" target=\"_default\">JETM</a></td></tr>\n</table>";
   private static final String NO_RESULTS = " <tr><td colspan=\"6\">No measurement results available.</td></tr>\n";
 
   private NumberFormat timeFormatter;

@@ -56,7 +56,7 @@ public class ActionRegistry {
     } else {
       enableCollapsed();
     }
-    
+
     actions.put("/", new RedirectAction("index"));
     actions.put("/reset", new ResetMonitorAction());
     actions.put("/start", new StartMonitorAction());
@@ -69,7 +69,7 @@ public class ActionRegistry {
     actions.put("/down-arrow.png", new ResourceAction("image/png", resourceAccessor.getDownarrow()));
     actions.put("/up-arrow.png", new ResourceAction("image/png", resourceAccessor.getUparrow()));
     actions.put("/detail", new DetailAction());
-    
+
     // workaround to alter actions at runtime
     actions.put("/expand", new RedirectAction("index") {
       public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {

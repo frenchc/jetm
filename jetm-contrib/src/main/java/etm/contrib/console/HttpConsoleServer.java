@@ -74,7 +74,7 @@ import java.util.Stack;
 
 public class HttpConsoleServer {
 
-  private static final LogAdapter log = Log.getLog(HttpConsoleServer.class);
+  private static final LogAdapter LOG = Log.getLog(HttpConsoleServer.class);
 
   private static final int DEFAULT_LISTEN_PORT = 40000;
   private static final int DEFAULT_WORKER_SIZE = 2;
@@ -212,7 +212,7 @@ public class HttpConsoleServer {
           }
         } catch (Exception e) {
           if (shouldRun) {
-            log.warn("Error processing HTTP request", e);
+            LOG.warn("Error processing HTTP request", e);
           } else {
             // don't do anything. we are shutting down probably
             // so there is no need to log the exception
@@ -242,6 +242,7 @@ public class HttpConsoleServer {
    */
   class ConsoleWorker extends Thread {
 
+    private static final int SOCKET_TIMEOUT = 15 * 1000;
     private Socket clientSocket;
     private boolean shouldRun = true;
 
@@ -286,7 +287,7 @@ public class HttpConsoleServer {
         } catch (InterruptedIOException e) {
           // ignored, just close socket
         } catch (Exception e) {
-          log.warn("Error processing HTTP request", e);
+          LOG.warn("Error processing HTTP request", e);
         } finally {
           returnWorker(this);
         }
@@ -296,7 +297,7 @@ public class HttpConsoleServer {
 
     protected void process(Socket aClientSocket) throws IOException {
       try {
-        aClientSocket.setSoTimeout(15 * 1000);
+        aClientSocket.setSoTimeout(SOCKET_TIMEOUT);
         BufferedInputStream inputStream = new BufferedInputStream(aClientSocket.getInputStream());
         byte[] temp = new byte[3192];
 
@@ -380,7 +381,7 @@ public class HttpConsoleServer {
           }
         }
       } catch (Exception e) {
-        log.warn("Error processing HTTP request", e);
+        LOG.warn("Error processing HTTP request", e);
         action = error500;
       }
 

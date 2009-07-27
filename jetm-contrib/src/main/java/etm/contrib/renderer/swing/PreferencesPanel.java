@@ -47,7 +47,7 @@ public class PreferencesPanel extends EtmPanelPane {
   protected WidgetPreferencePanel widgetPrefPanel;
 
   public PreferencesPanel(EtmMonitor aEtmMonitor) {
-    super(new GridLayout(2,1));
+    super(new GridLayout(2, 1));
     etmPrefPanel = new EtmMonitorPreferencePanel(aEtmMonitor);
     widgetPrefPanel = new WidgetPreferencePanel();
 
