@@ -61,6 +61,15 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Build-Name>${project.name}</Build-Name>
+              <Build-Version>${project.version}</Build-Version>
+              <Build-Date>${build.timestamp}</Build-Date>
+            </manifestEntries>
+          </archive>
+        </configuration>        
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -123,17 +132,6 @@ jetm.build.date=${build.time}
           <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>      
     </plugins>
   </build>
   
