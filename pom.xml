@@ -30,8 +30,10 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.3</version>
         <configuration>
-          <configLocation>checkstyle.xml</configLocation>
-          <headerLocation>whizbang/LICENSE.txt</headerLocation>
+          <configLocation>checkstyle/checkstyle.xml</configLocation>
+          <headerLocation>checkstyle/java.header</headerLocation>
+          <suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
+          <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>          
         </configuration>
       </plugin>
     </plugins>
