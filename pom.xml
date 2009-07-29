@@ -43,6 +43,6 @@
   <modules>
     <module>jetm-build-tools</module>
     <module>jetm-core</module>
-    <module>jetm-contrib</module>
+    <module>jetm-optional</module>
   </modules>
 </project>

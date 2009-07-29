@@ -6,8 +6,8 @@
     <version>1.2.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>jetm-contrib</artifactId>
-  <name>Java Execution Time Measurement (JETM) Contribution</name>
+  <artifactId>jetm-optional</artifactId>
+  <name>Java Execution Time Measurement (JETM) Optional</name>
   <description>
    JETM is a small and free library, that helps locating performance problems in existing Java™ applications.
    JETM enables developers to track down performance issues on demand, either programmatic or declarative 
@@ -43,9 +43,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-contrib</connection>
-    <developerConnection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-contrib</developerConnection>
-    <url>http://jetm.svn.sourceforge.net/viewvc/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-contrib/</url>
+    <connection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-optional</connection>
+    <developerConnection>scm:svn:https://jetm.svn.sourceforge.net/svnroot/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-optional</developerConnection>
+    <url>http://jetm.svn.sourceforge.net/viewvc/jetm/jetm/branches/1.2.4-mvn-conversion/jetm-optional/</url>
   </scm>
   
   <build>
