@@ -6,6 +6,12 @@ Current trunk
   - Removed programmatic startup/shutdown from weaving example.
   - Fixed NullPointer in interval buffer EtmManager configuration.
 
+Release 1.2.4
+ Changes, Fixes and Improvements
+ - AspectJ Support for Spring
+ - Delayed collection of nested ETM points to ensure that name changes
+   will be possible
+
 Release 1.2.3
  Changes, Fixes and Improvements
  - Fixed NoSuchMethodError with Spring 2.5

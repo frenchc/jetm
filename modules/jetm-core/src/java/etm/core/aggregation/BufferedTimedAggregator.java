@@ -40,6 +40,9 @@ import etm.core.renderer.MeasurementRenderer;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.TimerTask;
 
 /**
@@ -67,6 +70,8 @@ public class BufferedTimedAggregator implements Aggregator {
   private int initialBufferSize = DEFAULT_BUFFER_SIZE;
 
   private EtmMonitorContext ctx;
+
+  protected List nonCollectable = new ArrayList();
 
 
   private boolean started = false;
@@ -252,8 +257,23 @@ public class BufferedTimedAggregator implements Aggregator {
       }
 
       synchronized (delegate) {
+        Iterator it = nonCollectable.iterator();
+        while(it.hasNext()) {
+          EtmPoint point = (EtmPoint) it.next();
+
+          if (point.isCollectable()) {
+            delegate.add(point);
+            it.remove();
+          }
+        }
+
         for (int i = 0; i < length; i++) {
-          delegate.add(current[i]);
+          EtmPoint point = current[i];
+          if (point.isCollectable()) {
+            delegate.add(point);
+          } else {
+            nonCollectable.add(point);
+          }
         }
 
         ctx.fireEvent(new AggregationFinishedEvent(this));        

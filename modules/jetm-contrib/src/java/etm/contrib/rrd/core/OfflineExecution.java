@@ -95,4 +95,8 @@ class OfflineExecution implements EtmPoint {
   public void addContextDetail(String key, Object value) {
     throw new UnsupportedOperationException();    
   }
+
+  public boolean isCollectable() {
+    return true;
+  }
 }

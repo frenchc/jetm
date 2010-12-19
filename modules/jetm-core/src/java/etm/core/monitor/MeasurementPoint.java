@@ -98,6 +98,7 @@ public class MeasurementPoint implements EtmPoint {
     }
 
     monitor.visitPostCollect(this);
+
   }
 
   public void alterName(String newName) {
@@ -132,6 +133,16 @@ public class MeasurementPoint implements EtmPoint {
 
   public EtmPoint getParent() {
     return parent;
+  }
+
+  public boolean isCollectable() {
+    // We always assume that parent is master.
+    // if the root parent is collectable, everything else should be collectable too.
+    if (parent != null) {
+      return parent.isCollectable();
+    }
+    
+    return endTime > 0l;
   }
 
   /**

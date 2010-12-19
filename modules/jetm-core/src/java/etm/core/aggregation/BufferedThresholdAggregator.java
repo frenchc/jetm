@@ -38,6 +38,10 @@ import etm.core.monitor.EtmPoint;
 import etm.core.monitor.event.AggregationFinishedEvent;
 import etm.core.renderer.MeasurementRenderer;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * <p/>
  * The BufferedThresholdAggregator wraps an Aggregator
@@ -65,6 +69,8 @@ public class BufferedThresholdAggregator implements Aggregator {
 
   protected BoundedBuffer buffer;
   protected EtmMonitorContext context;
+
+  protected List nonCollectable = new ArrayList();
 
   /**
    * Creates a new BufferedThresholdAggregator for the given
@@ -183,9 +189,25 @@ public class BufferedThresholdAggregator implements Aggregator {
 
     private void doFlush(EtmPoint[] aCurrent, int aLength) {
       synchronized (delegate) {
-        for (int i = 0; i < aLength; i++) {
-          delegate.add(aCurrent[i]);
+        Iterator it = nonCollectable.iterator();
+        while(it.hasNext()) {
+          EtmPoint point = (EtmPoint) it.next();
+
+          if (point.isCollectable()) {
+            delegate.add(point);
+            it.remove();
+          }
         }
+
+        for (int i = 0; i < aLength; i++) {
+          EtmPoint point = aCurrent[i];
+          if (point.isCollectable()) {
+            delegate.add(point);
+          } else {
+            nonCollectable.add(point);
+          }
+        }
+        
         context.fireEvent(new AggregationFinishedEvent(this));
       }
     }

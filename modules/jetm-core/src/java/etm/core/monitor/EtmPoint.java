@@ -143,4 +143,14 @@ public interface EtmPoint {
    */
 
   public void addContextDetail(String key, Object value);
+
+
+  /**
+   *
+   * Whether the current point can be collected. Check includes parents too.
+   *
+   * @return True for collectable events, otherwise false. 
+   * @since 1.2.4
+   */
+  public boolean isCollectable();
 }

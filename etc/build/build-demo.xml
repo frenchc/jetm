@@ -27,6 +27,7 @@
     debug="true"
     target="1.4"
     source="1.4"
+    includeantruntime="false"
     />
   <war destfile="${build.dist.dir}/${release.name}-demo.war"
        webxml="${module.demo.dir}/src/web/WEB-INF/web.xml">
