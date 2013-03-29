@@ -37,7 +37,7 @@ import etm.core.monitor.EtmPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
- * Temp commit. Duplicate joinpoint code.
+ * Temp commit. Duplicate join point code.
  *
  * @author void.fm
  * @version $Revision$
