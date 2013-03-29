@@ -45,14 +45,14 @@ import etm.core.metadata.TimerMetaData;
  */
 public class TestTimer implements ExecutionTimer {
   public long getCurrentTime() {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    return 0;
   }
 
   public long getTicksPerSecond() {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    return 0;
   }
 
   public TimerMetaData getMetaData() {
-    return null;  //To change body of implemented methods use File | Settings | File Templates.
+    return null;
   }
 }
