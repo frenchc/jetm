@@ -39,4 +39,23 @@
     <!--<module>modules/jetm-samples-tutorial-five-minute</module>-->
   </modules>
 
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>1.0-beta-7</version>
+      </extension>
+    </extensions>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>ok-repo</id>
+      <url>scp://repo.openknowledge.de/www/repo/repository</url>
+    </repository>
+  </distributionManagement>
+
+
 </project>
