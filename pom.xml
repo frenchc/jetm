@@ -28,9 +28,9 @@
     <module>modules/jetm-parent</module>
     <module>modules/jetm-core</module>
     <module>modules/jetm-console</module>
-    <!--<module>modules/jetm-aop</module>-->
+    <module>modules/jetm-aop</module>
     <module>modules/jetm-web</module>
-    <!--<module>modules/jetm-spring</module>-->
+    <module>modules/jetm-spring</module>
     <!--<module>modules/jetm-cdi</module>-->
     <!--<module>modules/jetm-rrd</module>-->
     <!--<module>modules/jetm-demo</module>-->

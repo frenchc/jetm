@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) void.fm
+ * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 void.fm
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,24 +29,43 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aop.resources;
+
+package etm.contrib.aop.joinpoint;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
+import org.codehaus.aspectwerkz.joinpoint.impl.MethodSignatureImpl;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 
 /**
- * Simple test service.
- *
- * @author void.fm
- * @version $Revision$
+ * AspectJ joinpoint.
+ * 
+ * @author jenglisch
+ * @version $Revision: 298 $ $Date: 2009-07-10 16:08:16 +0200 (Fr, 10 Jul 2009) $
+ * @since 1.2.4 
  */
-public class FooService extends BaseService {
+public class AspectjJoinpoint extends AbstractJoinPoint {
 
-
-  public void doFoo() {
-    sleep(20d);
+  private ProceedingJoinPoint joinPoint;
+  
+  public AspectjJoinpoint(ProceedingJoinPoint aJoinPoint) {
+    joinPoint = aJoinPoint;
   }
 
-  public void doFooFoo() {
-    sleep(40d);
+  public String calculateName() {
+    Object target = joinPoint.getTarget();
+    if (joinPoint instanceof MethodInvocationProceedingJoinPoint) {
+      Signature signature = ((MethodInvocationProceedingJoinPoint) joinPoint).getSignature();
+      if (signature instanceof MethodSignatureImpl) {
+        String method = ((MethodSignatureImpl) signature).getName();
+        return calculateName(target.getClass(), method);              
+      }      
+    } 
+    return calculateShortName(target.getClass());
   }
 
+  public Object proceed() throws Throwable {
+    return joinPoint.proceed();
+  }
 
 }

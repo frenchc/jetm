@@ -30,15 +30,15 @@
  *
  */
 
-package test.etm.contrib.aop;
+package etm.contrib.aop;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
-import test.etm.contrib.aop.resources.BarService;
-import test.etm.contrib.aop.resources.FooService;
-import test.etm.contrib.aop.resources.YaddaService;
+import etm.contrib.aop.resources.BarService;
+import etm.contrib.aop.resources.FooService;
+import etm.contrib.aop.resources.YaddaService;
 
 import java.util.Map;
 

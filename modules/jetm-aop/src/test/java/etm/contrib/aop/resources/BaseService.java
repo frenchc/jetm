@@ -29,36 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package test.etm.contrib.aop.resources;
+package etm.contrib.aop.resources;
 
 /**
- * Simple test service
+ * Simple test service.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class YaddaService extends BaseService {
+public class BaseService {
 
-  private BarService barService;
 
-  protected YaddaService() {
-  }
-
-  public YaddaService(BarService aBarService) {
-    barService = aBarService;
-  }
-
-  public void doYadda() {
-    barService.doBar();
-    sleep(10d);
-    barService.doBar();
-  }
-
-  public void doYaddaYadda() {
-    barService.doBar();
-    sleep(5d);
-    barService.doBar();
-    barService.doBarBar();
+  public void sleep(double time) {
+    try {
+      Thread.sleep((long) (time * Math.random()));
+    } catch (InterruptedException e) {
+      // ignored
+    }
   }
 }

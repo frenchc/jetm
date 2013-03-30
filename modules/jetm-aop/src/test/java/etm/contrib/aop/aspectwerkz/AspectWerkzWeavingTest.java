@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.aop.aspectwerkz;
+package etm.contrib.aop.aspectwerkz;
 
 import etm.core.configuration.EtmManager;
 import junit.framework.TestCase;

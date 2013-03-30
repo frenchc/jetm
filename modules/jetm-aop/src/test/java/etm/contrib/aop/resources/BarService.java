@@ -29,7 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aop.resources;
+
+package etm.contrib.aop.resources;
 
 /**
  * Simple test service.
@@ -37,14 +38,26 @@ package test.etm.contrib.aop.resources;
  * @author void.fm
  * @version $Revision$
  */
-public class BaseService {
+public class BarService extends BaseService {
 
+  private FooService fooService;
 
-  public void sleep(double time) {
-    try {
-      Thread.sleep((long) (time * Math.random()));
-    } catch (InterruptedException e) {
-      // ignored
-    }
+  protected BarService() {
   }
+
+  public BarService(FooService aFooService) {
+    fooService = aFooService;
+  }
+
+  public void doBar() {
+    sleep(3d);
+    fooService.doFoo();
+  }
+
+  public void doBarBar() {
+    fooService.doFoo();
+    sleep(9d);
+    fooService.doFooFoo();
+  }
+
 }

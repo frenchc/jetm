@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 void.fm
+ * Copyright (c) void.fm
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -30,42 +30,35 @@
  *
  */
 
-package etm.contrib.aop.joinpoint;
-
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
-import org.codehaus.aspectwerkz.joinpoint.impl.MethodSignatureImpl;
-import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
+package etm.contrib.aop.resources;
 
 /**
- * AspectJ joinpoint.
- * 
- * @author jenglisch
- * @version $Revision$ $Date$
- * @since 1.2.4 
+ * Simple test service
+ *
+ * @author void.fm
+ * @version $Revision$
  */
-public class AspectjJoinpoint extends AbstractJoinPoint {
+public class YaddaService extends BaseService {
 
-  private ProceedingJoinPoint joinPoint;
-  
-  public AspectjJoinpoint(ProceedingJoinPoint aJoinPoint) {
-    joinPoint = aJoinPoint;
+  private BarService barService;
+
+  protected YaddaService() {
   }
 
-  public String calculateName() {
-    Object target = joinPoint.getTarget();
-    if (joinPoint instanceof MethodInvocationProceedingJoinPoint) {
-      Signature signature = ((MethodInvocationProceedingJoinPoint) joinPoint).getSignature();
-      if (signature instanceof MethodSignatureImpl) {
-        String method = ((MethodSignatureImpl) signature).getName();
-        return calculateName(target.getClass(), method);              
-      }      
-    } 
-    return calculateShortName(target.getClass());
+  public YaddaService(BarService aBarService) {
+    barService = aBarService;
   }
 
-  public Object proceed() throws Throwable {
-    return joinPoint.proceed();
+  public void doYadda() {
+    barService.doBar();
+    sleep(10d);
+    barService.doBar();
   }
 
+  public void doYaddaYadda() {
+    barService.doBar();
+    sleep(5d);
+    barService.doBar();
+    barService.doBarBar();
+  }
 }

@@ -29,49 +29,43 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package etm.contrib.aop.aopalliance;
 
-package test.etm.contrib.aop.aspectwerkz;
-
-import junit.framework.TestCase;
+import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
-import etm.contrib.aop.aspectwerkz.EtmAspectWerkzAspect;
+import junit.framework.TestCase;
+import org.aopalliance.intercept.MethodInvocation;
+import etm.contrib.aop.resources.FooService;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Method;
 import java.util.Map;
-import java.lang.reflect.Modifier;
-
-import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
-import org.codehaus.aspectwerkz.joinpoint.Rtti;
-import org.codehaus.aspectwerkz.joinpoint.StaticJoinPoint;
-import org.codehaus.aspectwerkz.joinpoint.Signature;
-import org.codehaus.aspectwerkz.joinpoint.EnclosingStaticJoinPoint;
-import org.codehaus.aspectwerkz.joinpoint.management.JoinPointType;
-import test.etm.contrib.aop.resources.FooService;
 
 /**
- * Tests aspectwerkz support
+ * Simply test the default aop alliance
  * method interceptor with and withput an exception.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class FunctionalAspectWerkzTest extends TestCase {
+public class MethodCallInterceptorTest extends TestCase {
 
   private int counter = 0;
 
-  public void testAspectWerkzAspect() throws Throwable {
+  public void testMethodCallInterceptor() throws Throwable {
     EtmManager.reset();
     BasicEtmConfigurator.configure();
     EtmMonitor monitor = EtmManager.getEtmMonitor();
     monitor.start();
     try {
-      EtmAspectWerkzAspect aspect = new EtmAspectWerkzAspect();
+      EtmMethodCallInterceptor interceptor = new EtmMethodCallInterceptor(monitor);
 
-      aspect.monitor(new DummyJoinPoint());
+      interceptor.invoke(new DummyMethodInvocation());
       try {
-        aspect.monitor(new DummyJoinPoint());
+        interceptor.invoke(new DummyMethodInvocation());
         fail("An exception should have been thrown.");
       } catch (Exception e) {
         // ignored since expected
@@ -89,29 +83,24 @@ public class FunctionalAspectWerkzTest extends TestCase {
     }
   }
 
-  class DummyJoinPoint implements JoinPoint {
+  class DummyMethodInvocation implements MethodInvocation {
+
     private FooService fooService = new FooService();
 
+    public Method getMethod() {
+      try {
+        return fooService.getClass().getMethod("doFoo", new Class[]{});
+      } catch (NoSuchMethodException e) {
+        throw new RuntimeException(e.toString());
+      }
+    }
 
-    public Signature getSignature() {
-      return new Signature() {
-
-        public Class getDeclaringType() {
-          return FooService.class;
-        }
-
-        public int getModifiers() {
-          return Modifier.PUBLIC;
-        }
-
-        public String getName() {
-          return "doFoo";
-        }
-      };
+    public Object[] getArguments() {
+      return new Object[0];
     }
 
     public Object proceed() throws Throwable {
-      counter++;
+      counter ++;
       switch (counter % 2) {
         case 0:
           throw new Exception("Test Exception.");
@@ -127,52 +116,8 @@ public class FunctionalAspectWerkzTest extends TestCase {
       return fooService;
     }
 
-    public Object getCallee() {
-      return null;
-    }
-
-    public Object getCaller() {
-      return null;
-    }
-
-    public Object getTarget() {
-      return null;
-    }
-
-    public Rtti getRtti() {
-      return null;
-    }
-
-    public StaticJoinPoint copy() {
-      return null;
-    }
-
-    public Object getMetaData(Object object) {
-      return null;
-    }
-
-    public void addMetaData(Object object, Object object1) {
-
-    }
-
-    public Class getCallerClass() {
-      return null;
-    }
-
-    public Class getCalleeClass() {
-      return null;
-    }
-
-    public Class getTargetClass() {
-      return null;
-    }
-
-    public JoinPointType getType() {
-      return null;
-    }
-
-    public EnclosingStaticJoinPoint getEnclosingStaticJoinPoint() {
-      return null;
+    public AccessibleObject getStaticPart() {
+      throw new UnsupportedOperationException();
     }
   }
 }
