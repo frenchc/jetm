@@ -157,6 +157,7 @@ public abstract class ConsoleTests extends TestCase {
         pos += r;
       }
     } catch (Exception e) {
+      System.out.println("got buffer content " + new String(buffer));
       ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
       ThreadInfo[] threadInfos = mxBean.getThreadInfo(mxBean.getAllThreadIds(), 0);
       Map threadInfoMap = new HashMap();
