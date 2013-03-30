@@ -51,12 +51,13 @@ public class HtmlConsoleServerPluginTest extends ConsoleTests {
     HttpConsoleServerPlugin etmPlugin = new HttpConsoleServerPlugin();
     etmPlugin.setListenPort(40000);
     monitor.addPlugin(etmPlugin);
-    TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
-    testPointGenerator.getEtmPoints(5, 2);
     monitor.start();
 
     // sleep shortly to let the console start
     Thread.sleep(5000);
+
+    TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
+    testPointGenerator.getEtmPoints(5, 2);
   }
 
   protected void tearDown() throws Exception {
