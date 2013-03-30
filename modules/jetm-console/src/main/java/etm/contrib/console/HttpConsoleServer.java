@@ -217,6 +217,8 @@ public class HttpConsoleServer {
           } else {
             // don't do anything. we are shutting down probably
             // so there is no need to log the exception
+            log.debug("Error during shutdown" + e.toString());
+
           }
         }
 

@@ -39,12 +39,21 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -147,6 +156,24 @@ public abstract class ConsoleTests extends TestCase {
       while ((r = in.read(buffer, pos, buffer.length - pos)) > -1) {
         pos += r;
       }
+    } catch (Exception e) {
+      ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
+      ThreadInfo[] threadInfos = mxBean.getThreadInfo(mxBean.getAllThreadIds(), 0);
+      Map threadInfoMap = new HashMap();
+
+      for (int i = 0; i < threadInfos.length; i++) {
+        ThreadInfo threadInfo = threadInfos[i];
+        threadInfoMap.put(new Long(threadInfo.getThreadId()), threadInfo);
+      }
+
+      // choose our dump-file
+      Writer writer = new BufferedWriter(new OutputStreamWriter(System.out));
+      try {
+        dumpTraces(mxBean, threadInfoMap, writer);
+      } finally {
+        writer.close();
+      }
+
     } finally {
       in.close();
       socket.close();
@@ -155,4 +182,38 @@ public abstract class ConsoleTests extends TestCase {
     return new String(buffer);
 
   }
+
+  private void dumpTraces(ThreadMXBean mxBean, Map threadInfoMap, Writer writer)
+                  throws IOException {
+          Map stacks = Thread.getAllStackTraces();
+          writer.write("Dump of " + stacks.size() + " thread at "
+                          + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z").format(new Date(System.currentTimeMillis())) + "\n\n");
+
+    for (Iterator iterator = stacks.entrySet().iterator(); iterator.hasNext(); ) {
+      Map.Entry entry = (Map.Entry) iterator.next();
+
+      Thread thread = (Thread) entry.getKey();
+      writer.write("\"" + thread.getName() + "\" prio=" + thread.getPriority() + " tid=" + thread.getId() + " "
+        + thread.getState() + " " + (thread.isDaemon() ? "deamon" : "worker") + "\n");
+      ThreadInfo threadInfo = (ThreadInfo) threadInfoMap.get(new Long(thread.getId()));
+      if (threadInfo != null) {
+        writer.write("    native=" + threadInfo.isInNative() + ", suspended=" + threadInfo.isSuspended()
+          + ", block=" + threadInfo.getBlockedCount() + ", wait=" + threadInfo.getWaitedCount() + "\n");
+        writer.write("    lock=" + threadInfo.getLockName() + " owned by " + threadInfo.getLockOwnerName()
+          + " (" + threadInfo.getLockOwnerId() + "), cpu="
+          + (mxBean.getThreadCpuTime(threadInfo.getThreadId()) / 1000000L) + ", user="
+          + (mxBean.getThreadUserTime(threadInfo.getThreadId()) / 1000000L) + "\n");
+      }
+
+      StackTraceElement[] elements = (StackTraceElement[]) entry.getValue();
+
+      for (int i = 0; i < elements.length; i++) {
+        writer.write("        ");
+        writer.write(elements[i].toString());
+        writer.write("\n");
+      }
+      writer.write("\n");
+    }
+  }
+
 }
