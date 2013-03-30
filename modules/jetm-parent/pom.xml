@@ -60,8 +60,31 @@
         </configuration>
       </plugin>
     </plugins>
-  </build>
 
+    <pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <version>2.5.1</version>
+            <configuration>
+              <encoding>UTF-8</encoding>
+              <formats>
+                <format>html</format>
+              </formats>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>cobertura</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </pluginManagement>
+  </build>
 
   <dependencyManagement>
     <dependencies>
