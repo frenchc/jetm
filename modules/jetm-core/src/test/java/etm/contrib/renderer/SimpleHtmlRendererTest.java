@@ -30,11 +30,10 @@
  *
  */
 
-package test.etm.contrib.renderer;
+package etm.contrib.renderer;
 
-import etm.contrib.renderer.SimpleHtmlRenderer;
 import junit.framework.TestCase;
-import test.etm.core.TestExecutionAggregate;
+import etm.core.TestExecutionAggregate;
 
 import java.io.StringWriter;
 import java.util.HashMap;
