@@ -8,7 +8,7 @@
   <artifactId>jetm-modules</artifactId>
   <name>JETM</name>
   <packaging>pom</packaging>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.3.0-SNAPSHOT</version>
 
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library core package</description>
@@ -25,6 +25,7 @@
 
 
   <modules>
+    <module>modules/jetm-parent</module>
     <module>modules/jetm-core</module>
     <!--<module>modules/jetm-aop</module>-->
     <!--<module>modules/jetm-web</module>-->

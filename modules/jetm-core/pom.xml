@@ -5,10 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fm.void.jetm</groupId>
   <artifactId>jetm</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.3.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>JETM core</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library core package</description>
+
+  <parent>
+    <groupId>fm.void.jetm</groupId>
+    <artifactId>jetm-parent</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+    <relativePath>../jetm-parent/pom.xml</relativePath>
+  </parent>
 
 </project>
