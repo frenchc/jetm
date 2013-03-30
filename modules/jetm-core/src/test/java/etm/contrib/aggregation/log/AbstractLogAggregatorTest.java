@@ -30,9 +30,8 @@
  *
  */
 
-package test.etm.contrib.aggregation.log;
+package etm.contrib.aggregation.log;
 
-import etm.contrib.aggregation.log.AbstractLogAggregator;
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.metadata.AggregatorMetaData;

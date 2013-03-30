@@ -13,10 +13,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <version.junit>4.11</version.junit>
-    <version.log4j>1.2.17</version.log4j>
     <version.geronimo.specs>1.0</version.geronimo.specs>
 
+    <version.log4j>1.2.17</version.log4j>
+    <version.commons.logging>1.1.1</version.commons.logging>
+    <version.commons.logging.api>1.1</version.commons.logging.api>
+
+    <version.junit>4.11</version.junit>
   </properties>
 
   <build>
@@ -176,11 +179,12 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${version.junit}</version>
-        <scope>test</scope>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-servlet_3.0_spec</artifactId>
+        <version>${version.geronimo.specs}</version>
+        <scope>provided</scope>
       </dependency>
+
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
@@ -188,10 +192,23 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-servlet_3.0_spec</artifactId>
-        <version>${version.geronimo.specs}</version>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging-api</artifactId>
+        <version>${version.commons.logging.api}</version>
         <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>${version.commons.logging}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${version.junit}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
