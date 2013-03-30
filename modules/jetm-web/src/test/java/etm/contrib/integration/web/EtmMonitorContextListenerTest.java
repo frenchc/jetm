@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.contrib.integration.web;
+package etm.contrib.integration.web;
 
 import etm.contrib.integration.web.EtmMonitorContextListener;
 import etm.core.configuration.EtmManager;
@@ -60,7 +60,7 @@ public class EtmMonitorContextListenerTest extends TestCase {
     EtmMonitorContextListener listener = new EtmMonitorContextListener();
 
     HashMap attributes = new HashMap();
-    attributes.put("jetm.config.filename", "test/etm/contrib/integration/web/classpath-config.xml");
+    attributes.put("jetm.config.filename", "etm/contrib/integration/web/classpath-config.xml");
     ServletContext ctx = getServletContext(attributes);
 
     assertTrue(Proxy.isProxyClass(EtmManager.getEtmMonitor().getClass()));

@@ -7,7 +7,7 @@
   <artifactId>jetm</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>JETM core</name>
+  <name>JETM Core</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library core package</description>
 
