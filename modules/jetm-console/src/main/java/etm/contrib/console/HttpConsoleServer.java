@@ -150,14 +150,14 @@ public class HttpConsoleServer {
       workers.push(item);
     }
 
-    listenerThread = new ListenerThread();
-    synchronized (listenerThread) {
+    try {
+      ServerSocket socket = new ServerSocket(listenPort);
+      listenerThread = new ListenerThread(socket);
       listenerThread.start();
-      try {
-        listenerThread.wait();
-      } catch (InterruptedException e) {
-        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-      }
+
+      log.info("Started JETM console server listening at " + socket.toString());
+    } catch (IOException e) {
+      throw new ConsoleException(e);
     }
   }
 
@@ -194,24 +194,14 @@ public class HttpConsoleServer {
     private boolean shouldRun = true;
     private ServerSocket socket;
 
-    public ListenerThread() {
+    public ListenerThread(ServerSocket aSocket) {
       super("JETM HTTP Console Listener - Port " + listenPort);
+      socket = aSocket;
     }
 
     public void run() {
-      try {
-        socket = new ServerSocket(listenPort);
-        log.info("Started JETM console server listening at " + socket.toString());
-      } catch (IOException e) {
-        throw new ConsoleException(e);
-      }
-
-
       while (shouldRun) {
         try {
-          synchronized (this) {
-            this.notifyAll();
-          }
           Socket clientSocket = socket.accept();
 
           ConsoleWorker worker = getWorker();
