@@ -29,11 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.console;
 
-import etm.contrib.console.HttpConsoleServerPlugin;
+package etm.contrib.console;
+
 import etm.core.monitor.NestedMonitor;
-import test.etm.core.TestPointGenerator;
+import etm.core.TestPointGenerator;
 
 /**
  * Tests our build-in console.
@@ -41,13 +41,17 @@ import test.etm.core.TestPointGenerator;
  * @author void.fm
  * @version $Revision$
  */
-public class HtmlConsoleServerPluginTest extends ConsoleTests {
+public class HtmlConsoleServerTest extends ConsoleTests {
+  private HttpConsoleServer httpConsoleServer;
 
   protected void setUp() throws Exception {
     monitor = new NestedMonitor();
-    monitor.addPlugin(new HttpConsoleServerPlugin());
     TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
     testPointGenerator.getEtmPoints(5, 2);
+
+    httpConsoleServer = new HttpConsoleServer(monitor);
+    httpConsoleServer.start();
+
     monitor.start();
 
     // sleep shortly to let the console start
@@ -55,6 +59,9 @@ public class HtmlConsoleServerPluginTest extends ConsoleTests {
   }
 
   protected void tearDown() throws Exception {
+    if (httpConsoleServer != null) {
+      httpConsoleServer.stop();
+    }
     if (monitor != null) {
       monitor.stop();
     }

@@ -30,9 +30,8 @@
  *
  */
 
-package test.etm.contrib.console;
+package etm.contrib.console;
 
-import etm.contrib.console.ConsoleResponse;
 import etm.contrib.console.standalone.StandaloneConsoleRequest;
 import etm.contrib.console.util.CollapsedResultRenderer;
 import etm.contrib.util.ExecutionAggregateComparator;

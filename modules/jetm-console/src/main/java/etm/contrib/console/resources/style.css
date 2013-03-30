@@ -137,13 +137,13 @@ th a:hover {
 }
 
 .descending {
-  background-image: url( up-arrow.png );
+  background-image: url(up-arrow.png);
   background-position: right;
   background-repeat: no-repeat;
 }
 
 .ascending {
-  background-image: url( down-arrow.png );
+  background-image: url(down-arrow.png);
   background-position: right;
   background-repeat: no-repeat;
 }

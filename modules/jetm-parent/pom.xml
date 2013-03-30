@@ -15,6 +15,8 @@
 
     <version.junit>4.11</version.junit>
     <version.log4j>1.2.17</version.log4j>
+    <version.geronimo.specs>1.0</version.geronimo.specs>
+
   </properties>
 
   <build>
@@ -183,6 +185,12 @@
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>${version.log4j}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-servlet_3.0_spec</artifactId>
+        <version>${version.geronimo.specs}</version>
         <scope>provided</scope>
       </dependency>
     </dependencies>
