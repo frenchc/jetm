@@ -42,9 +42,15 @@ import etm.core.TestPointGenerator;
  */
 public class HtmlConsoleServerPluginTest extends ConsoleTests {
 
+  public HtmlConsoleServerPluginTest() {
+    super(40000);
+  }
+
   protected void setUp() throws Exception {
     monitor = new NestedMonitor();
-    monitor.addPlugin(new HttpConsoleServerPlugin());
+    HttpConsoleServerPlugin etmPlugin = new HttpConsoleServerPlugin();
+    etmPlugin.setListenPort(40000);
+    monitor.addPlugin(etmPlugin);
     TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
     testPointGenerator.getEtmPoints(5, 2);
     monitor.start();

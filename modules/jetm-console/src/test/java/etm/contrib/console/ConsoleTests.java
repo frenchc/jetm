@@ -67,6 +67,11 @@ public abstract class ConsoleTests extends TestCase {
 
   protected EtmMonitor monitor;
 
+  private int listenerPort;
+
+  protected ConsoleTests(int aListenerPort) {
+    listenerPort = aListenerPort;
+  }
 
   public void testResultRendering() throws Exception {
 
@@ -141,7 +146,7 @@ public abstract class ConsoleTests extends TestCase {
 
 
   protected String executeRequest(String request) throws Exception {
-    Socket socket = new Socket("127.0.0.1", 40000);
+    Socket socket = new Socket("127.0.0.1", listenerPort);
     socket.setSoTimeout(30000);
     OutputStream outputStream = socket.getOutputStream();
     outputStream.write(("GET " + request + " HTTP/1.0\n").getBytes());
