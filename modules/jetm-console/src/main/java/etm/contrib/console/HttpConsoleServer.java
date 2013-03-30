@@ -298,9 +298,10 @@ public class HttpConsoleServer {
 
 
     protected void process(Socket aClientSocket) throws IOException {
+      BufferedInputStream inputStream = null;
       try {
         aClientSocket.setSoTimeout(15 * 1000);
-        BufferedInputStream inputStream = new BufferedInputStream(aClientSocket.getInputStream());
+        inputStream = new BufferedInputStream(aClientSocket.getInputStream());
         byte[] temp = new byte[3192];
 
         int i = 0;
@@ -330,6 +331,14 @@ public class HttpConsoleServer {
           }
         }
       } finally {
+        if (inputStream != null) {
+          try {
+            inputStream.close();
+          } catch (IOException e) {
+            // ignored
+          }
+
+        }
         try {
           aClientSocket.close();
         } catch (IOException e) {
@@ -388,6 +397,7 @@ public class HttpConsoleServer {
       }
 
       StandaloneConsoleResponse consoleResponse = new StandaloneConsoleResponse(out);
+      log.debug("Processing " + action.getClass());
       action.execute(consoleRequest, consoleResponse);
       consoleResponse.flush();
     }
