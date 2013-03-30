@@ -194,7 +194,7 @@ public class HttpConsoleServer {
     public void run() {
       try {
         socket = new ServerSocket(listenPort);
-        log.info("Started console server listener for " + socket.toString());
+        log.info("Started JETM console server listening at " + socket.toString());
       } catch (IOException e) {
         throw new ConsoleException(e);
       }
