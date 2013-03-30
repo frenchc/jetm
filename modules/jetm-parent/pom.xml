@@ -152,6 +152,11 @@
             <formats>
               <format>html</format>
             </formats>
+            <instrumentation>
+              <excludes>
+                <exclude>etm/core/util/collection/EDU/**/*.class</exclude>
+              </excludes>
+            </instrumentation>
           </configuration>
           <executions>
             <execution>
