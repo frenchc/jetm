@@ -151,7 +151,14 @@ public class HttpConsoleServer {
     }
 
     listenerThread = new ListenerThread();
-    listenerThread.start();
+    synchronized (listenerThread) {
+      listenerThread.start();
+      try {
+        listenerThread.wait();
+      } catch (InterruptedException e) {
+        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+      }
+    }
   }
 
   public void stop() {
@@ -202,6 +209,9 @@ public class HttpConsoleServer {
 
       while (shouldRun) {
         try {
+          synchronized (this) {
+            this.notifyAll();
+          }
           Socket clientSocket = socket.accept();
 
           ConsoleWorker worker = getWorker();
@@ -221,7 +231,6 @@ public class HttpConsoleServer {
 
           }
         }
-
       }
     }
 

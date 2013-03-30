@@ -379,10 +379,10 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   private void startPlugin(EtmPlugin aEtmPlugin) {
     try {
       aEtmPlugin.init(new EtmMonitorSupportContext(this, scheduler));
-      aEtmPlugin.start();
       if (aEtmPlugin instanceof EtmMonitorListener) {
         dispatcher.register((EtmMonitorListener) aEtmPlugin);
       }
+      aEtmPlugin.start();
     } catch (Exception e) {
       log.warn("Error starting plugin " + aEtmPlugin.getPluginMetaData() + ". Keep plugin disabled. ", e);
 
