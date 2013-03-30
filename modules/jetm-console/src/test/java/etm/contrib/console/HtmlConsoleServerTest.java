@@ -50,18 +50,18 @@ public class HtmlConsoleServerTest extends ConsoleTests {
   }
 
   protected void setUp() throws Exception {
-    monitor = new NestedMonitor();
-    TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
-    testPointGenerator.getEtmPoints(5, 2);
-
-    httpConsoleServer = new HttpConsoleServer(monitor);
-    httpConsoleServer.setListenPort(40001);
-    httpConsoleServer.start();
-
-    monitor.start();
-
-    // sleep shortly to let the console start
-    Thread.sleep(100);
+//    monitor = new NestedMonitor();
+//    TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
+//    testPointGenerator.getEtmPoints(5, 2);
+//
+//    httpConsoleServer = new HttpConsoleServer(monitor);
+//    httpConsoleServer.setListenPort(40001);
+//    httpConsoleServer.start();
+//
+//    monitor.start();
+//
+//    // sleep shortly to let the console start
+//    Thread.sleep(100);
   }
 
   protected void tearDown() throws Exception {
