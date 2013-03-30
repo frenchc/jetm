@@ -4,11 +4,11 @@
   <features>
     <threshold-buffer threshold="1000"/>
     <persistence>
-      <file-backend filename="test.ser" path="${java.io.tmpdir}"/>
+      <file-backend filename="ser" path="${java.io.tmpdir}"/>
     </persistence>
 
     <jmx overwrite="true"
-         measurementDomain="test.performance" monitorObjectName="test:service=Foo"/>
+         measurementDomain="performance" monitorObjectName="test:service=Foo"/>
   </features>
 
 </jetm-config>

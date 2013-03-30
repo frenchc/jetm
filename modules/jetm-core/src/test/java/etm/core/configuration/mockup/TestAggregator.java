@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.configuration.mockup;
+package etm.core.configuration.mockup;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;
@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Simple test aggregator used for xml config test.
+ * Simple test aggregator used for xml config
  *
  * @author void.fm
  * @version $Revision$

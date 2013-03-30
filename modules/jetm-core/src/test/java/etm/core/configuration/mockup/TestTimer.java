@@ -30,7 +30,7 @@
  *
  */
 
-package test.etm.core.configuration.mockup;
+package etm.core.configuration.mockup;
 
 import etm.core.timer.ExecutionTimer;
 import etm.core.metadata.TimerMetaData;

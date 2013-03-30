@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.core.configuration.mockup;
+package etm.core.configuration.mockup;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.RootAggregator;
@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  *
- * Simple test monitor used for xml config test.
+ * Simple test monitor used for xml config
  *
  * @version $Revision$
  * @author void.fm

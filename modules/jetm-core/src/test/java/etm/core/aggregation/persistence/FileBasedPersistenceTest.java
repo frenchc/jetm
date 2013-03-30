@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.core.aggregation.persistence;
+package etm.core.aggregation.persistence;
 
 import etm.core.aggregation.persistence.FileSystemPersistenceBackend;
 import etm.core.aggregation.persistence.PersistentRootAggregator;
@@ -55,7 +55,7 @@ public class FileBasedPersistenceTest extends TestCase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    file = new File(System.getProperty("java.io.tmpdir"), "junit-test.ser");
+    file = new File(System.getProperty("java.io.tmpdir"), "junit-ser");
     if (file.exists()) {
       file.delete();
     }
@@ -69,7 +69,7 @@ public class FileBasedPersistenceTest extends TestCase {
 
   public void testPersistence() {
     FileSystemPersistenceBackend backend = new FileSystemPersistenceBackend();
-    backend.setFilename("junit-test.ser");
+    backend.setFilename("junit-ser");
 
     PersistentRootAggregator memoryAggregator = new PersistentRootAggregator();
     memoryAggregator.setPersistenceBackend(backend);

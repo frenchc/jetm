@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE jetm-config PUBLIC "-// void.fm //DTD JETM Config 1.2//EN" "http://jetm.void.fm/dtd/jetm_config_1_2.dtd">
-<jetm-config type="test.etm.core.configuration.mockup.TestMonitor">
+<jetm-config type="etm.core.configuration.mockup.TestMonitor">
   <aggregator-chain>
-    <chain-element class="test.etm.core.configuration.mockup.TestAggregator">
+    <chain-element class="etm.core.configuration.mockup.TestAggregator">
       <property name="booleanTrue">true</property>
       <property name="booleanFalse">false</property>
       <property name="longValue">12124234324234</property>

@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.core.configuration.mockup;
+package etm.core.configuration.mockup;
 
 import etm.core.aggregation.persistence.PersistenceBackend;
 import etm.core.aggregation.persistence.PersistentEtmState;

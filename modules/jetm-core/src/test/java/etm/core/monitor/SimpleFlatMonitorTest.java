@@ -31,12 +31,12 @@
  */
 
 
-package test.etm.core.monitor;
+package etm.core.monitor;
 
 import etm.core.monitor.FlatMonitor;
 
 /**
- * Non threaded flat monitor test. Just uses all common test cases for
+ * Non threaded flat monitor  Just uses all common test cases for
  * monitors.
  *
  * @author void.fm

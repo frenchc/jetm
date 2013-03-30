@@ -1,4 +1,4 @@
-package test.etm.core.configuration;
+package etm.core.configuration;
 
 import etm.core.aggregation.Aggregator;
 import etm.core.aggregation.BufferedThresholdAggregator;
@@ -15,10 +15,10 @@ import etm.core.monitor.NestedMonitor;
 import etm.core.plugin.EtmPlugin;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
-import test.etm.core.configuration.mockup.TestAggregator;
-import test.etm.core.configuration.mockup.TestMonitor;
-import test.etm.core.configuration.mockup.TestPlugin;
-import test.etm.core.configuration.mockup.TestTimer;
+import etm.core.configuration.mockup.TestAggregator;
+import etm.core.configuration.mockup.TestMonitor;
+import etm.core.configuration.mockup.TestPlugin;
+import etm.core.configuration.mockup.TestTimer;
 
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
@@ -53,13 +53,13 @@ public class Xml12EtmConfiguratorTest extends TestCase {
   public void testMonitorConfig() throws Exception {
     Object[][] configurations = new Object[][]{
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_2/flat-type-config.xml", FlatMonitor.class
+        "etm/core/configuration/files/valid_1_2/flat-type-config.xml", FlatMonitor.class
       },
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_2/nested-type-config.xml", NestedMonitor.class
+        "etm/core/configuration/files/valid_1_2/nested-type-config.xml", NestedMonitor.class
       },
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_2/monitor-class-config.xml", TestMonitor.class
+        "etm/core/configuration/files/valid_1_2/monitor-class-config.xml", TestMonitor.class
       }
     };
 
@@ -77,10 +77,10 @@ public class Xml12EtmConfiguratorTest extends TestCase {
   public void testTimerConfig() throws Exception {
     Object[][] configurations = new Object[][]{
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_2/default-timer-config.xml", DefaultTimer.class
+        "etm/core/configuration/files/valid_1_2/default-timer-config.xml", DefaultTimer.class
       },
       new Object[]{
-        "test/etm/core/configuration/files/valid_1_2/timer-class-config.xml", TestTimer.class
+        "etm/core/configuration/files/valid_1_2/timer-class-config.xml", TestTimer.class
       }
     };
 
@@ -95,7 +95,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
   }
 
   public void testIntervalBuffer() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/interval-buffer.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_2/interval-buffer.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -106,7 +106,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
   }
 
   public void testAggregatorConfig() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/aggregator-config.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_2/aggregator-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -138,7 +138,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
   }
 
   public void testPluginConfig() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/plugin-config.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_2/plugin-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -181,7 +181,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
 
 
   public void testAutostartConfig() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/autostart-on-config.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_2/autostart-on-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 
@@ -191,7 +191,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
 
     etmMonitor.stop();
 
-    url = locateResource("test/etm/core/configuration/files/valid_1_2/autostart-off-config.xml");
+    url = locateResource("etm/core/configuration/files/valid_1_2/autostart-off-config.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
     etmMonitor = EtmManager.getEtmMonitor();
@@ -204,7 +204,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
 
     MBeanServer server = MBeanServerFactory.createMBeanServer();
     try {
-      URL url = locateResource("test/etm/core/configuration/files/valid_1_2/features.xml");
+      URL url = locateResource("etm/core/configuration/files/valid_1_2/features.xml");
       EtmManager.reset();
       XmlEtmConfigurator.configure(url);
 
@@ -229,7 +229,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
 
       Map properties = pluginMetaData.getProperties();
       assertEquals("test:service=Foo", properties.get("monitorObjectName"));
-      assertEquals("test.performance", properties.get("measurementDomain"));
+      assertEquals("performance", properties.get("measurementDomain"));
       assertEquals("true", properties.get("overwrite"));
 
       etmMonitor.stop();
@@ -239,7 +239,7 @@ public class Xml12EtmConfiguratorTest extends TestCase {
   }
 
   public void testCustomBackend() throws Exception {
-    URL url = locateResource("test/etm/core/configuration/files/valid_1_2/features-custom-persistence.xml");
+    URL url = locateResource("etm/core/configuration/files/valid_1_2/features-custom-persistence.xml");
     EtmManager.reset();
     XmlEtmConfigurator.configure(url);
 

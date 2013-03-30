@@ -31,7 +31,7 @@
  */
 
 
-package test.etm.core.monitor;
+package etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
@@ -42,7 +42,7 @@ import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.timer.DefaultTimer;
 import junit.framework.TestCase;
-import test.etm.core.TestHelper;
+import etm.core.TestHelper;
 
 import java.util.ArrayList;
 import java.util.List;
