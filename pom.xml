@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fm.void.jetm</groupId>
+  <artifactId>jetm-modules</artifactId>
+  <name>JETM</name>
+  <packaging>pom</packaging>
+  <version>1.2.4-SNAPSHOT</version>
+
+  <url>http://jetm.void.fm</url>
+  <description>The Java Execution Time Measurement Library core package</description>
+  <licenses>
+    <license>
+      <name>BSD</name>
+      <url>http://jetm.void.fm/license.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>http://jetm.svn.sourceforge.net</url>
+  </scm>
+
+
+  <modules>
+    <module>modules/jetm-core</module>
+    <!--<module>modules/jetm-aop</module>-->
+    <!--<module>modules/jetm-web</module>-->
+    <!--<module>modules/jetm-spring</module>-->
+    <!--<module>modules/jetm-cdi</module>-->
+    <!--<module>modules/jetm-console</module>-->
+    <!--<module>modules/jetm-rrd</module>-->
+    <!--<module>modules/jetm-demo</module>-->
+    <!--<module>modules/jetm-samples-aop</module>-->
+    <!--<module>modules/jetm-samples-tutorial-one-minute</module>-->
+    <!--<module>modules/jetm-samples-tutorial-five-minute</module>-->
+  </modules>
+
+</project>
