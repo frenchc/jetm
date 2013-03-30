@@ -108,6 +108,7 @@ public class BufferedThresholdAggregator implements Aggregator {
 
   public void reset() {
     synchronized (delegate) {
+      buffer.reset();
       delegate.reset();
     }
   }
@@ -212,5 +213,9 @@ public class BufferedThresholdAggregator implements Aggregator {
       }
     }
 
+    public void reset() {
+      buffer = new EtmPoint[buffer.length];
+      currentPos = 0;
+    }
   }
 }

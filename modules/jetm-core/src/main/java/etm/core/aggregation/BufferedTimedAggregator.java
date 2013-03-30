@@ -105,6 +105,7 @@ public class BufferedTimedAggregator implements Aggregator {
   public void reset() {
     synchronized (delegate) {
       delegate.reset();
+      buffer.reset();
     }
   }
 
@@ -278,6 +279,11 @@ public class BufferedTimedAggregator implements Aggregator {
 
         ctx.fireEvent(new AggregationFinishedEvent(this));        
       }
+    }
+
+    public void reset() {
+      buffer = new EtmPoint[buffer.length];
+      currentPos = 0;
     }
   }
 

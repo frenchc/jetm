@@ -396,7 +396,7 @@ public class HttpConsoleServer {
       }
 
       StandaloneConsoleResponse consoleResponse = new StandaloneConsoleResponse(out);
-      log.info("Processing " + action.getClass());
+      log.debug("Processing " + action.getClass());
       action.execute(consoleRequest, consoleResponse);
       consoleResponse.flush();
     }
