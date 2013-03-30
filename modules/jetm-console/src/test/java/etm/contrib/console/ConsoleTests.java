@@ -142,9 +142,14 @@ public abstract class ConsoleTests extends TestCase {
     int pos = 0;
     InputStream in = socket.getInputStream();
 
-    int r;
-    while ((r = in.read(buffer, pos, buffer.length - pos)) > -1) {
-      pos += r;
+    try {
+      int r;
+      while ((r = in.read(buffer, pos, buffer.length - pos)) > -1) {
+        pos += r;
+      }
+    } finally {
+      in.close();
+      socket.close();
     }
 
     return new String(buffer);

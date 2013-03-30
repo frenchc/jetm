@@ -50,7 +50,7 @@ public class HtmlConsoleServerPluginTest extends ConsoleTests {
     monitor.start();
 
     // sleep shortly to let the console start
-    Thread.sleep(500);
+    Thread.sleep(100);
   }
 
   protected void tearDown() throws Exception {
