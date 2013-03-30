@@ -44,24 +44,19 @@ import etm.core.TestPointGenerator;
 public class HtmlConsoleServerTest extends ConsoleTests {
   private HttpConsoleServer httpConsoleServer;
 
-
-  public HtmlConsoleServerTest() {
-    super(40001);
-  }
-
   protected void setUp() throws Exception {
-//    monitor = new NestedMonitor();
-//    TestPointGenerator testPointGenerator = new TestPointGenerator(monitor);
-//    testPointGenerator.getEtmPoints(5, 2);
-//
-//    httpConsoleServer = new HttpConsoleServer(monitor);
-//    httpConsoleServer.setListenPort(40001);
-//    httpConsoleServer.start();
-//
-//    monitor.start();
-//
-//    // sleep shortly to let the console start
-//    Thread.sleep(100);
+    monitor = new NestedMonitor();
+
+
+    httpConsoleServer = new HttpConsoleServer(monitor);
+    httpConsoleServer.start();
+
+    monitor.start();
+
+    TestPointGenerator testPointGenerator = new TestPointGenerator(monitor, false);
+    testPointGenerator.getEtmPoints(5, 2);
+    // sleep shortly to let the console start
+    Thread.sleep(100);
   }
 
   protected void tearDown() throws Exception {

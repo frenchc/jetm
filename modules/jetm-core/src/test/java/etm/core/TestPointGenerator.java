@@ -60,6 +60,7 @@ public class TestPointGenerator {
   ExecutionTimer timer = EtmMonitorFactory.bestAvailableTimer();
   CollectingAggregator aggregator = new CollectingAggregator(new RootAggregator());
   EtmMonitor monitor = new NestedMonitor(timer, aggregator);
+  boolean autoStart = true;
 
   public TestPointGenerator() {
   }
@@ -68,8 +69,15 @@ public class TestPointGenerator {
     monitor = aMonitor;
   }
 
+  public TestPointGenerator(EtmMonitor aMonitor, boolean aAutoStart) {
+    monitor = aMonitor;
+    autoStart = aAutoStart;
+  }
+
   public EtmPoint getEtmPoint() {
-    monitor.start();
+    if (autoStart) {
+      monitor.start();
+    }
 
     try {
       EtmPoint point = monitor.createPoint("Testpoint");
@@ -83,12 +91,16 @@ public class TestPointGenerator {
 
       return point;
     } finally {
-      monitor.stop();
+      if (autoStart) {
+        monitor.stop();
+      }
     }
   }
 
   public List getEtmPoints(int topLevel, int nestedSize) {
-    monitor.start();
+    if (autoStart) {
+      monitor.start();
+    }
 
     try {
       for (int i = 0; i < topLevel; i++) {
@@ -110,7 +122,9 @@ public class TestPointGenerator {
 
       return aggregator.getPoints();
     } finally {
-      monitor.stop();
+      if (autoStart) {
+        monitor.stop();
+      }
     }
 
   }

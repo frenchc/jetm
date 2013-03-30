@@ -49,6 +49,8 @@ import java.io.Writer;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,12 +68,6 @@ import java.util.Map;
 public abstract class ConsoleTests extends TestCase {
 
   protected EtmMonitor monitor;
-
-  private int listenerPort;
-
-  protected ConsoleTests(int aListenerPort) {
-    listenerPort = aListenerPort;
-  }
 
   public void testResultRendering() throws Exception {
 
@@ -127,7 +123,7 @@ public abstract class ConsoleTests extends TestCase {
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
-        assertEquals(points.size(), 0);
+        assertEquals(0, points.size());
       }
     });
   }
@@ -146,7 +142,7 @@ public abstract class ConsoleTests extends TestCase {
 
 
   protected String executeRequest(String request) throws Exception {
-    Socket socket = new Socket("127.0.0.1", listenerPort);
+    Socket socket = new Socket(InetAddress.getLoopbackAddress().getHostAddress(), HttpConsoleServer.DEFAULT_LISTEN_PORT);
     socket.setSoTimeout(30000);
     OutputStream outputStream = socket.getOutputStream();
     outputStream.write(("GET " + request + " HTTP/1.0\n").getBytes());

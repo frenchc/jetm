@@ -76,7 +76,7 @@ public class HttpConsoleServer {
 
   private static final LogAdapter log = Log.getLog(HttpConsoleServer.class);
 
-  private static final int DEFAULT_LISTEN_PORT = 40000;
+  public static final int DEFAULT_LISTEN_PORT = 40000;
   private static final int DEFAULT_WORKER_SIZE = 2;
 
   protected EtmMonitor etmMonitor;
