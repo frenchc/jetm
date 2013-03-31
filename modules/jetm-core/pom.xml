@@ -27,7 +27,7 @@
         <version>1.6</version>
         <executions>
           <execution>
-            <id>jdepend-fix</id>
+            <id>generate-jetm-version</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>run</goal>

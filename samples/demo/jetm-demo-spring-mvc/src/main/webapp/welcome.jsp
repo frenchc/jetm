@@ -20,10 +20,10 @@
 
 <body>
 <div id="content">
-  <div id="header">JETM Online Demo</div>
+  <div id="header">JETM Spring MVC Online Demo</div>
   <div id="subheader">Runtime performance monitoring made easy</div>
   <div id="main">
-    <h3>JETM Online Demo - Welcome</h3>
+    <h3>JETM Spring MVC Online Demo - Welcome</h3>
 
     <div style="float: left; margin-right: 40px; margin-bottom: 20px;">
       <form action="login.action" method="post">
@@ -40,6 +40,10 @@
               <td><input name="password" type="password" size="10"/></td>
             </tr>
           </spring:bind>
+          <tr>
+            <td colspan="2" align="center"><input type="SUBMIT" value="Login"/></td>
+          </tr>
+
         </table>
       </form>
       <p align="center"><a href="showRegistration.action">Register now!</a></p>

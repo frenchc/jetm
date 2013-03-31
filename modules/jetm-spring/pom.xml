@@ -30,6 +30,7 @@
       <artifactId>jetm-aop</artifactId>
       <version>1.3.0-SNAPSHOT</version>
       <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>fm.void.jetm</groupId>

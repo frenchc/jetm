@@ -25,7 +25,7 @@
   <div id="header">JETM Web Demo</div>
   <div id="subheader">Runtime performance monitoring made easy</div>
   <div id="main">
-    <h3>JETM Online Demo - Member login</h3>
+    <h3>JETM Spring MVC Online Demo - Member login</h3>
 
     <p>
       Hi

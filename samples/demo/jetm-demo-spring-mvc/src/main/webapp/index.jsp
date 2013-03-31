@@ -23,7 +23,7 @@
   <div id="header">JETM Web Demo</div>
   <div id="subheader">Runtime performance monitoring made easy</div>
   <div id="main">
-    <h3>JETM Online Demo</h3>
+    <h3>JETM Spring MVC Online Demo</h3>
 
     <a onclick="openConsole(); return false;">
       <img height="80" style="float: left; margin-right: 15px; margin-bottom: 15px;" border="0"

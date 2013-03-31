@@ -25,7 +25,7 @@
 <div id="header">JETM Web Demo</div>
 <div id="subheader">Runtime performance monitoring made easy</div>
 <div id="main">
-<h3>JETM Online Demo - Registration page</h3>
+<h3>JETM Spring MVC Online Demo - Registration page</h3>
 
 <p>
   This page allows you to register to the web demo. All registation data are just collected
