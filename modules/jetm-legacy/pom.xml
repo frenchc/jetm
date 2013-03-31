@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>fm.void.jetm</groupId>
     <artifactId>jetm-parent</artifactId>
@@ -12,12 +11,12 @@
   </parent>
 
   <groupId>fm.void.jetm</groupId>
-  <artifactId>jetm-swing</artifactId>
+  <artifactId>jetm-legacy</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>JETM Swing Support (Experimental)</name>
+  <name>JETM Legacy</name>
   <url>http://jetm.void.fm</url>
-  <description>The Java Execution Time Measurement Library swing support package</description>
+  <description>The Java Execution Time Measurement Library legacy classes</description>
 
 
   <dependencies>
@@ -25,6 +24,11 @@
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm</artifactId>
       <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-j2ee-connector_1.5_spec</artifactId>
     </dependency>
 
   </dependencies>

@@ -21,7 +21,8 @@
     <version.jboss.aop>2.2.2.GA</version.jboss.aop>
 
 
-    <version.geronimo.specs>1.0</version.geronimo.specs>
+    <version.geronimo.specs.servlet>1.0</version.geronimo.specs.servlet>
+    <version.geronimo.specs.jca>2.0.0</version.geronimo.specs.jca>
 
     <version.rrd4j>2.1.1</version.rrd4j>
 
@@ -191,7 +192,13 @@
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
         <artifactId>geronimo-servlet_3.0_spec</artifactId>
-        <version>${version.geronimo.specs}</version>
+        <version>${version.geronimo.specs.servlet}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-j2ee-connector_1.5_spec</artifactId>
+        <version>${version.geronimo.specs.jca}</version>
         <scope>provided</scope>
       </dependency>
 
