@@ -79,13 +79,13 @@ public class XmlEtmConfigurator {
    * Configures the EtmManager using the given string which represents
    * a valid XmlEtmConfigurator configuration.
    *
-   * @param config The xml configuration string.
+   * @param config The xml configuration string in UTF-8 format.
    * @throws EtmConfigurationException Thrown in case an error occures.
    */
   public static void configure(String config) {
     InputStream inStream = null;
     try {
-      inStream = new ByteArrayInputStream(config.getBytes());
+      inStream = new ByteArrayInputStream(config.getBytes("UTF-8"));
       doConfigure(inStream);        
     } catch (EtmConfigurationException e) {
       throw e;

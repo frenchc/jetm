@@ -38,6 +38,7 @@ import etm.core.monitor.EtmException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
    */
 
   public SimpleTextRenderer() {
-    this(new OutputStreamWriter(System.out), Locale.getDefault());
+    this(new OutputStreamWriter(System.out, Charset.defaultCharset()), Locale.getDefault());
   }
 
   /**
@@ -86,7 +87,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
    * @param locale The locale to use.
    */
   public SimpleTextRenderer(Locale locale) {
-    this(new OutputStreamWriter(System.out), locale);
+    this(new OutputStreamWriter(System.out, Charset.defaultCharset()), locale);
   }
 
   /**
@@ -112,7 +113,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
    */
 
   public SimpleTextRenderer(NumberFormat aTimeFormatter) {
-    writer = new OutputStreamWriter(System.out);
+    writer = new OutputStreamWriter(System.out, Charset.defaultCharset());
     timeFormatter = aTimeFormatter;
   }
 

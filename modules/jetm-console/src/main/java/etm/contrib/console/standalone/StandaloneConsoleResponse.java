@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,10 +57,10 @@ import java.util.TimeZone;
  */
 public class StandaloneConsoleResponse implements ConsoleResponse {
 
-  protected static final byte[] LINEFEED = "\r\n".getBytes();
+  protected static final byte[] LINEFEED = new byte[] {'\r', '\n'};
 
   // todo implement chucked output
-  private static final byte[] SERVER_HEADER = "Server: JETM console\r\n".getBytes();
+  private static final byte[] SERVER_HEADER = "Server: JETM console\r\n".getBytes(Charset.defaultCharset());
   private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
   private Map headers;
@@ -119,62 +120,62 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
 
   private void writeStatus() throws IOException {
     destination.write("HTTP/1.0 ".getBytes());
-    destination.write(String.valueOf(status.statusCode).getBytes());
+    destination.write(String.valueOf(status.statusCode).getBytes("UTF-8"));
     destination.write(' ');
     destination.write(status.description.getBytes());
     destination.write(LINEFEED);
 
     destination.write(SERVER_HEADER);
 
-    destination.write(("Date: " + getRfc1123Date()).getBytes());
+    destination.write(("Date: " + getRfc1123Date()).getBytes("UTF-8"));
     destination.write(LINEFEED);
 
-    destination.write("Connection: close".getBytes());
+    destination.write("Connection: close".getBytes("UTF-8"));
     destination.write(LINEFEED);
     destination.write(LINEFEED);
   }
 
   private void writeRedirect() throws IOException {
-    destination.write("HTTP/1.0 302 OK".getBytes());
+    destination.write("HTTP/1.0 302 OK".getBytes("UTF-8"));
     destination.write(LINEFEED);
 
     destination.write(SERVER_HEADER);
 
-    destination.write(("Date: " + getRfc1123Date()).getBytes());
+    destination.write(("Date: " + getRfc1123Date()).getBytes("UTF-8"));
     destination.write(LINEFEED);
 
-    destination.write("Location: ".getBytes());
-    destination.write(redirectUrl.getBytes());
+    destination.write("Location: ".getBytes("UTF-8"));
+    destination.write(redirectUrl.getBytes("UTF-8"));
 
     destination.write(LINEFEED);
 
-    destination.write("Connection: close".getBytes());
+    destination.write("Connection: close".getBytes("UTF-8"));
     destination.write(LINEFEED);
     destination.write(LINEFEED);
   }
 
   private void writeContent() throws IOException {
     bufferWriter.flush();
-    destination.write("HTTP/1.0 200 OK".getBytes());
+    destination.write("HTTP/1.0 200 OK".getBytes("UTF-8"));
     destination.write(LINEFEED);
 
     destination.write(SERVER_HEADER);
 
-    destination.write(("Date: " + getRfc1123Date()).getBytes());
+    destination.write(("Date: " + getRfc1123Date()).getBytes("UTF-8"));
     destination.write(LINEFEED);
 
     for (Iterator iterator = headers.keySet().iterator(); iterator.hasNext();) {
       String name = (String) iterator.next();
-      destination.write(name.getBytes());
-      destination.write(": ".getBytes());
-      destination.write(((String) (headers.get(name))).getBytes());
+      destination.write(name.getBytes("UTF-8"));
+      destination.write(": ".getBytes("UTF-8"));
+      destination.write(((String) (headers.get(name))).getBytes("UTF-8"));
       destination.write(LINEFEED);
     }
 
-    destination.write(("Content-Length: " + bufferOutStream.size()).getBytes());
+    destination.write(("Content-Length: " + bufferOutStream.size()).getBytes("UTF-8"));
     destination.write(LINEFEED);
 
-    destination.write("Connection: close".getBytes());
+    destination.write("Connection: close".getBytes("UTF-8"));
     destination.write(LINEFEED);
     destination.write(LINEFEED);
 
