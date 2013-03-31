@@ -36,8 +36,9 @@ import etm.core.util.LogAdapter;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -93,7 +94,7 @@ public class OfflineLogParser {
     int processedLines = 0;
     Pattern regex = Pattern.compile(pattern);
 
-    BufferedReader in = new BufferedReader(new FileReader(aFile));
+    BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(aFile), "UTF-8"));
 
     try {
       for (int i = 0; i < destinations.size(); i++) {

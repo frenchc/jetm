@@ -167,22 +167,22 @@ public class Rrd4jMain {
   private static long calculate(String aTimeframe) {
     // h, d , m, y
     if (aTimeframe == null || aTimeframe.length() < 2) {
-      return 60 * 60;
+      return 60L * 60L;
     }
 
     int value = Integer.parseInt(aTimeframe.substring(0, aTimeframe.length() - 1));
     switch (aTimeframe.charAt(aTimeframe.length() - 1)) {
       case 'h':
-        return (value * 60 * 60);
+        return (value * 60L * 60L);
       case 'd':
-        return (value * 60 * 60 * 24);
+        return (value * 60L * 60L * 24L);
       case 'm':
-        return (value * 60 * 60 * 24 * 30);
+        return (value * 60L * 60L * 24L * 30L);
       case 'y':
-        return (value * 60 * 60 * 24 * 365);
+        return (value * 60L * 60L * 24L * 365L);
     }
 
-    return 60 * 60;
+    return 60L * 60L;
   }
 
   private static Calendar getCalendar(String aDate) {
