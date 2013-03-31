@@ -46,6 +46,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class Rrd4jPluginTest extends TestCase {
       monitor.start();
 
       tmpErr.flush();
-      String s = new String(out.toByteArray());
+      String s = new String(out.toByteArray(), Charset.defaultCharset());
       assertTrue(s.indexOf("NotifyingAggregator") > -1);
 
     } finally {

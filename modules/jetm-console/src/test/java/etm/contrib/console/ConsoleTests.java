@@ -152,7 +152,7 @@ public abstract class ConsoleTests extends TestCase {
       socket.close();
     }
 
-    return new String(buffer);
+    return new String(buffer, "UTF-8");
 
   }
 

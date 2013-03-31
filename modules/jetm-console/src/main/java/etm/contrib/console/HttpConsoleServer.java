@@ -374,12 +374,12 @@ public class HttpConsoleServer {
 
             // do we have get parameters in our request
             if (parameterStart > 0) {
-              requestName = new String(aTemp, 4, parameterStart - 4);
+              requestName = new String(aTemp, 4, parameterStart - 4, "UTF-8");
 
               Map parameters = ConsoleUtil.extractRequestParameters(aTemp, parameterStart, endOfRequestString);
               consoleRequest.setRequestParameters(parameters);
             } else {
-              requestName = new String(aTemp, 4, endOfRequestString - 4);
+              requestName = new String(aTemp, 4, endOfRequestString - 4, "UTF-8");
             }
 
             action = actionRegistry.getAction(requestName);
