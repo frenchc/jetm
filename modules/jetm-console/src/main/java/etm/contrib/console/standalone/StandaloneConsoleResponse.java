@@ -123,7 +123,7 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
     destination.write("HTTP/1.0 ".getBytes(HttpConsoleServer.DEFAULT_ENCODING));
     destination.write(String.valueOf(status.statusCode).getBytes(HttpConsoleServer.DEFAULT_ENCODING));
     destination.write(' ');
-    destination.write(status.description.getBytes());
+    destination.write(status.description.getBytes(HttpConsoleServer.DEFAULT_ENCODING));
     destination.write(LINEFEED);
 
     destination.write(SERVER_HEADER);

@@ -3,26 +3,26 @@
 <beans>
 
   <bean id="etmProxyTemplate" abstract="true"
-        class="etm.contrib.aop.etm.contrib.integration.spring.EtmProxyFactoryBean">
+        class="etm.contrib.aop.spring.EtmProxyFactoryBean">
     <property name="etmMonitor" ref="etmMonitor"/>
   </bean>
 
   <bean id="yaddaService" parent="etmProxyTemplate">
     <property name="target">
-      <bean class="test.etm.contrib.aop.resources.YaddaService" autowire="constructor"/>
+      <bean class="etm.contrib.aop.resources.YaddaService" autowire="constructor"/>
     </property>
   </bean>
 
 
   <bean id="fooService" parent="etmProxyTemplate">
     <property name="target">
-      <bean class="test.etm.contrib.aop.resources.FooService"/>
+      <bean class="etm.contrib.aop.resources.FooService"/>
     </property>
   </bean>
 
   <bean id="barService" parent="etmProxyTemplate">
     <property name="target">
-      <bean class="test.etm.contrib.aop.resources.BarService" autowire="constructor"/>
+      <bean class="etm.contrib.aop.resources.BarService" autowire="constructor"/>
     </property>
   </bean>
 

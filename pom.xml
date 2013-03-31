@@ -33,6 +33,8 @@
     <module>modules/jetm-spring</module>
     <!--<module>modules/jetm-cdi</module>-->
     <module>modules/jetm-rrd</module>
+    <module>modules/jetm-swing</module>
+
     <!--<module>modules/jetm-demo</module>-->
     <!--<module>modules/jetm-samples-aop</module>-->
     <!--<module>modules/jetm-samples-tutorial-one-minute</module>-->

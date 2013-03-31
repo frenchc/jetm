@@ -84,35 +84,41 @@ public class ConsoleUtil {
   }
 
   public static Map extractRequestParameters(byte[] aTemp, int parameterStart, int endOfLine) {
-    Map map = new HashMap();
+    try {
+      Map map = new HashMap();
 
-    int index = parameterStart;
-    int lastEnd = parameterStart;
-    int currentDelimiter = parameterStart;
+      int index = parameterStart;
+      int lastEnd = parameterStart;
+      int currentDelimiter = parameterStart;
 
-    while (index < endOfLine) {
-      switch (aTemp[index]) {
-        case'=':
-          currentDelimiter = index;
-          break;
-        case'&': {
-          parseParameters(map, aTemp, index, lastEnd, currentDelimiter);
-          currentDelimiter = index;
-          lastEnd = index;
-          break;
+      while (index < endOfLine) {
+        switch (aTemp[index]) {
+          case '=':
+            currentDelimiter = index;
+            break;
+          case '&': {
+            parseParameters(map, aTemp, index, lastEnd, currentDelimiter);
+            currentDelimiter = index;
+            lastEnd = index;
+            break;
+          }
         }
+
+        index++;
       }
 
-      index++;
+      parseParameters(map, aTemp, index, lastEnd, currentDelimiter);
+      return map;
+    } catch (UnsupportedEncodingException e) {
+      // will hopefully never happen since UTF-8 should be supported.
+      throw new EtmException(e);
     }
-
-    parseParameters(map, aTemp, index, lastEnd, currentDelimiter);
-    return map;
   }
 
-  private static void parseParameters(Map aMap, byte[] aTemp, int aIndex, int aLastEnd, int aCurrentDelimiter) {
+  private static void parseParameters(Map aMap, byte[] aTemp, int aIndex, int aLastEnd, int aCurrentDelimiter)
+  throws UnsupportedEncodingException{
     if (aCurrentDelimiter <= aLastEnd) {
-      String key = new String(aTemp, aLastEnd + 1, aIndex - aLastEnd - 1);
+      String key = new String(aTemp, aLastEnd + 1, aIndex - aLastEnd - 1, HttpConsoleServer.DEFAULT_ENCODING);
       try {
         aMap.put(URLDecoder.decode(key, HttpConsoleServer.DEFAULT_ENCODING), "");
       } catch (UnsupportedEncodingException e) {

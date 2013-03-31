@@ -29,41 +29,36 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.aop.spring;
+package etm.contrib.aop.spring;
 
 import etm.core.monitor.EtmMonitor;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
-import test.etm.contrib.aop.AopTestBase;
-import test.etm.contrib.aop.resources.BarService;
-import test.etm.contrib.aop.resources.FooService;
-import test.etm.contrib.aop.resources.YaddaService;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import etm.contrib.aop.AopTestBase;
+import etm.contrib.aop.resources.BarService;
+import etm.contrib.aop.resources.FooService;
+import etm.contrib.aop.resources.YaddaService;
 
 /**
- * Setup/Teardown methods for etm.contrib.integration.spring AOP using
- * etm.contrib.integration.spring factory beans.
+ * Test using SpringFramework BeanPostProcesor
+ * BeanNameAutoProxyCreator.
  *
  * @author void.fm
  * @version $Revision$
  */
-public class ProxyFactoryBeanTest extends AopTestBase {
-
-  private DefaultListableBeanFactory beanFactory;
+public class AutoProxyBeanTest extends AopTestBase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    beanFactory = new XmlBeanFactory(new ClassPathResource("test/etm/contrib/aop/etm.contrib.integration.spring/factory-bean.xml"));
-    beanFactory.preInstantiateSingletons();
+    ApplicationContext applicationContext = new ClassPathXmlApplicationContext("etm/contrib/aop/spring/autoproxy-bean.xml");
 
-    etmMonitor = (EtmMonitor) beanFactory.getBean("etmMonitor");
-    yaddaService = (YaddaService) beanFactory.getBean("yaddaService");
-    barService = (BarService) beanFactory.getBean("barService");
-    fooService = (FooService) beanFactory.getBean("fooService");
+    etmMonitor = (EtmMonitor) applicationContext.getBean("etmMonitor");
+    yaddaService = (YaddaService) applicationContext.getBean("yaddaService");
+    barService = (BarService) applicationContext.getBean("barService");
+    fooService = (FooService) applicationContext.getBean("fooService");
   }
 
   protected void tearDown() throws Exception {
-    beanFactory.destroySingletons();
     super.tearDown();
   }
 

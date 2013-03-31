@@ -94,13 +94,8 @@ public class EtmProxyFactoryBean extends ProxyConfig
     TargetSource targetSource = createTargetSource(target);
     proxyFactory.setTargetSource(targetSource);
 
-    proxy = getProxy(proxyFactory);
+    proxy = proxyFactory.getProxy();
 
-  }
-
-
-  protected Object getProxy(AopProxy aopProxy) {
-    return aopProxy.getProxy();
   }
 
   protected TargetSource createTargetSource(Object target) {
