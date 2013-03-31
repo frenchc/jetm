@@ -6,6 +6,11 @@ Current trunk
   - Removed programmatic startup/shutdown from weaving example.
   - Fixed NullPointer in interval buffer EtmManager configuration.
 
+ Others
+  - Switched to maven 2 layout (finally)
+  - Updated lot's of libraries
+  - Deprecated JCA stuff. Use CDI instead.
+
 Release 1.2.4
  Changes, Fixes and Improvements
  - AspectJ Support for Spring
