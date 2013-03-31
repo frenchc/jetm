@@ -36,8 +36,7 @@
     <module>modules/jetm-swing</module>
     <module>modules/jetm-legacy</module>
 
-
-    <!--<module>modules/jetm-demo</module>-->
+    <module>samples/demo/jetm-demo-spring-mvc</module>
     <!--<module>modules/jetm-samples-aop</module>-->
     <!--<module>modules/jetm-samples-tutorial-one-minute</module>-->
     <!--<module>modules/jetm-samples-tutorial-five-minute</module>-->
