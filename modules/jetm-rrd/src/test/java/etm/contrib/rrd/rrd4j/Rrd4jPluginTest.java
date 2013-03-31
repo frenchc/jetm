@@ -30,10 +30,8 @@
  *
  */
 
-package test.etm.contrib.rrd.rrd4j;
+package etm.contrib.rrd.rrd4j;
 
-import etm.contrib.rrd.rrd4j.Rrd4jPlugin;
-import etm.contrib.rrd.rrd4j.Rrd4jUtil;
 import etm.core.aggregation.NotifyingAggregator;
 import etm.core.aggregation.RootAggregator;
 import etm.core.monitor.EtmMonitor;
@@ -83,7 +81,7 @@ public class Rrd4jPluginTest extends TestCase {
   }
 
   public void testRrdDbWrite() throws Exception {
-    URL resource = Thread.currentThread().getContextClassLoader().getResource("test/etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
+    URL resource = Thread.currentThread().getContextClassLoader().getResource("etm/contrib/rrd/rrd4j/resources/basic_db_template.xml");
     File path = File.createTempFile("test", ".rrd");
 
     try {

@@ -23,6 +23,8 @@
 
     <version.geronimo.specs>1.0</version.geronimo.specs>
 
+    <version.rrd4j>2.1.1</version.rrd4j>
+
     <version.log4j>1.2.17</version.log4j>
     <version.commons.logging>1.1.1</version.commons.logging>
     <version.commons.logging.api>1.1</version.commons.logging.api>
@@ -249,7 +251,13 @@
         <scope>provided</scope>
       </dependency>
 
+      <dependency>
+        <groupId>org.rrd4j</groupId>
+        <artifactId>rrd4j</artifactId>
+        <version>${version.rrd4j}</version>
+        <scope>provided</scope>
 
+      </dependency>
 
       <dependency>
         <groupId>log4j</groupId>
