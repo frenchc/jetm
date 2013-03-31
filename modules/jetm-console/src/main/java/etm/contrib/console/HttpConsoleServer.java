@@ -74,6 +74,7 @@ import java.util.Stack;
 
 public class HttpConsoleServer {
 
+  public static final String DEFAULT_ENCODING = "UTF-8";
   private static final LogAdapter log = Log.getLog(HttpConsoleServer.class);
 
   public static final int DEFAULT_LISTEN_PORT = 40000;
@@ -374,12 +375,12 @@ public class HttpConsoleServer {
 
             // do we have get parameters in our request
             if (parameterStart > 0) {
-              requestName = new String(aTemp, 4, parameterStart - 4, "UTF-8");
+              requestName = new String(aTemp, 4, parameterStart - 4, DEFAULT_ENCODING);
 
               Map parameters = ConsoleUtil.extractRequestParameters(aTemp, parameterStart, endOfRequestString);
               consoleRequest.setRequestParameters(parameters);
             } else {
-              requestName = new String(aTemp, 4, endOfRequestString - 4, "UTF-8");
+              requestName = new String(aTemp, 4, endOfRequestString - 4, DEFAULT_ENCODING);
             }
 
             action = actionRegistry.getAction(requestName);

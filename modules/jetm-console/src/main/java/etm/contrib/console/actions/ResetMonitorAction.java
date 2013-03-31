@@ -34,6 +34,7 @@ package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.HttpConsoleServer;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -51,7 +52,8 @@ public class ResetMonitorAction extends AbstractAction {
 
     if (point != null) {
       request.getEtmMonitor().reset(point);
-      response.sendRedirect("detail?point=" + URLEncoder.encode(point, "UTF-8"),request.getRequestParameters());
+      response.sendRedirect("detail?point=" + URLEncoder.encode(point, HttpConsoleServer.DEFAULT_ENCODING),
+        request.getRequestParameters());
     } else {
       request.getEtmMonitor().reset();
       response.sendRedirect("index", request.getRequestParameters());

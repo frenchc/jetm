@@ -2,6 +2,7 @@ package etm.contrib.console.actions;
 
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.console.util.CollapsedResultRenderer;
 import etm.contrib.util.ExecutionAggregateComparator;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class CollapsedResultViewAction extends AbstractAction {
 
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException {
-    response.addHeader("Content-Type", "text/html;charset=UTF-8");
+    response.addHeader("Content-Type", "text/html;charset=" + HttpConsoleServer.DEFAULT_ENCODING);
     response.addHeader("Pragma", "no-cache");
     response.addHeader("Cache-Control", "no-cache");
 

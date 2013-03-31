@@ -33,6 +33,7 @@
 package etm.contrib.console.servlet;
 
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.console.util.ConsoleUtil;
 import etm.core.monitor.EtmException;
 
@@ -55,7 +56,7 @@ public class ServletConsoleResponse implements ConsoleResponse {
 
   public ServletConsoleResponse(HttpServletResponse aResponse) {
     response = aResponse;
-    response.setCharacterEncoding("UTF-8");
+    response.setCharacterEncoding(HttpConsoleServer.DEFAULT_ENCODING);
   }
 
   public void addHeader(String header, String value) {

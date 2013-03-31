@@ -32,6 +32,7 @@
 
 package etm.contrib.console.util;
 
+import etm.contrib.console.HttpConsoleServer;
 import etm.core.monitor.EtmException;
 
 import java.io.UnsupportedEncodingException;
@@ -67,7 +68,8 @@ public class ConsoleUtil {
           if (removeDetails && "point".equals(name)) {
             continue;
           }
-          url = url + URLEncoder.encode(name, "UTF-8") + "=" + URLEncoder.encode((String) parameters.get(name), "UTF-8") + "&amp;";
+          url = url + URLEncoder.encode(name, HttpConsoleServer.DEFAULT_ENCODING) + "="
+            + URLEncoder.encode((String) parameters.get(name), HttpConsoleServer.DEFAULT_ENCODING) + "&amp;";
         }
 
         if (url.endsWith("&amp;")) {
@@ -112,7 +114,7 @@ public class ConsoleUtil {
     if (aCurrentDelimiter <= aLastEnd) {
       String key = new String(aTemp, aLastEnd + 1, aIndex - aLastEnd - 1);
       try {
-        aMap.put(URLDecoder.decode(key, "UTF-8"), "");
+        aMap.put(URLDecoder.decode(key, HttpConsoleServer.DEFAULT_ENCODING), "");
       } catch (UnsupportedEncodingException e) {
         // ignored
       }
@@ -120,7 +122,8 @@ public class ConsoleUtil {
       try {
         String key = new String(aTemp, aLastEnd + 1, aCurrentDelimiter - aLastEnd - 1);
         String value = new String(aTemp, aCurrentDelimiter + 1, aIndex - aCurrentDelimiter - 1).trim();
-        aMap.put(URLDecoder.decode(key, "UTF-8"), URLDecoder.decode(value, "UTF-8"));
+        aMap.put(URLDecoder.decode(key,HttpConsoleServer.DEFAULT_ENCODING),
+                 URLDecoder.decode(value, HttpConsoleServer.DEFAULT_ENCODING));
       } catch (UnsupportedEncodingException e) {
         // ignored
       }

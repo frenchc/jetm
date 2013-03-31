@@ -34,6 +34,7 @@ package etm.contrib.console.util;
 
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.util.ExecutionAggregateComparator;
 import etm.core.aggregation.Aggregate;
 import etm.core.renderer.MeasurementRenderer;
@@ -106,7 +107,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
 
   protected void writeDetailHtmlHead(String point) throws IOException {
     writeCommonHtmlHead();
-    String pointEncoded = URLEncoder.encode(point, "UTF-8");
+    String pointEncoded = URLEncoder.encode(point, HttpConsoleServer.DEFAULT_ENCODING);
 
     Date currentTime = new Date();
 
@@ -308,7 +309,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
   protected void writeName(Aggregate aPoint) throws IOException {
     String link = "detail?point=";
     try {
-      link = link + URLEncoder.encode(aPoint.getName(), "UTF-8");
+      link = link + URLEncoder.encode(aPoint.getName(), HttpConsoleServer.DEFAULT_ENCODING);
     } catch (UnsupportedEncodingException e) {
       // ignored
     }

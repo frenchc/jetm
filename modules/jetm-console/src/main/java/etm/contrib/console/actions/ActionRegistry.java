@@ -35,6 +35,7 @@ package etm.contrib.console.actions;
 import etm.contrib.console.ConsoleAction;
 import etm.contrib.console.ConsoleRequest;
 import etm.contrib.console.ConsoleResponse;
+import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.console.util.ResourceAccessor;
 
 import java.io.IOException;
@@ -63,8 +64,10 @@ public class ActionRegistry {
     actions.put("/stop", new StopMonitorAction());
 
     // content requests
-    actions.put("/style.css", new ResourceAction("text/css;charset=UTF-8", resourceAccessor.getStyleSheet()));
-    actions.put("/robots.txt", new ResourceAction("text/plain;charset=UTF-8", resourceAccessor.getRobotsTxt()));
+    actions.put("/style.css", new ResourceAction("text/css;charset=" + HttpConsoleServer.DEFAULT_ENCODING,
+      resourceAccessor.getStyleSheet()));
+    actions.put("/robots.txt", new ResourceAction("text/plain;charset=" + HttpConsoleServer.DEFAULT_ENCODING,
+      resourceAccessor.getRobotsTxt()));
     actions.put("/favicon.ico", new ResourceAction("image/x-icon", resourceAccessor.getFavicon()));
     actions.put("/down-arrow.png", new ResourceAction("image/png", resourceAccessor.getDownarrow()));
     actions.put("/up-arrow.png", new ResourceAction("image/png", resourceAccessor.getUparrow()));
