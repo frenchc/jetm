@@ -29,20 +29,48 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.integration.spring.configuration;
+package etm.contrib.integration.spring.configuration.mockup;
 
-import junit.framework.TestCase;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import etm.core.aggregation.Aggregator;
+import etm.core.metadata.AggregatorMetaData;
+import etm.core.monitor.EtmMonitorContext;
+import etm.core.monitor.EtmPoint;
+import etm.core.renderer.MeasurementRenderer;
 
 /**
- * @author void.fm
+ * Test aggregator for etm.contrib.integration.spring chain test.
+ *
  * @version $Revision$
+ * @author void.fm
  */
-public abstract class ConfigurationTestCase extends TestCase {
+public class SpringRootAggregator implements Aggregator {
 
-  protected ClassPathXmlApplicationContext getContext(String file) {
-    String path = "test/etm/contrib/integration/spring/configuration/resources/" + file;
 
-    return new ClassPathXmlApplicationContext(path);
+  public void add(EtmPoint point) {
+  }
+
+  public void flush() {
+  }
+
+  public void reset() {
+  }
+
+  public void reset(String symbolicName) {
+  }
+
+  public void render(MeasurementRenderer renderer) {
+  }
+
+  public AggregatorMetaData getMetaData() {
+    return new AggregatorMetaData(SpringRootAggregator.class,"Test", false);
+  }
+
+  public void init(EtmMonitorContext ctx) {
+  }
+
+  public void start() {
+  }
+
+  public void stop() {
   }
 }

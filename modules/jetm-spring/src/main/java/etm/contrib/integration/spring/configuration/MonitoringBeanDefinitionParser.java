@@ -100,7 +100,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
       String[] names = definitionRegistry.getBeanDefinitionNames();
       for (int i = 0; i < names.length; i++) {
         BeanDefinition definition = definitionRegistry.getBeanDefinition(names[i]);
-        if ("etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser$NamedEtmMethodCallInterceptor".equals(definition.getBeanClassName())) {
+        if ("etm.contrib.integration.etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser$NamedEtmMethodCallInterceptor".equals(definition.getBeanClassName())) {
           MutablePropertyValues propertyValues = definition.getPropertyValues();
           PropertyValue propertyValue = propertyValues.getPropertyValue("name");
           if (propertyValue.getValue().equals(group)) {

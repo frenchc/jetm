@@ -40,20 +40,20 @@ import javax.servlet.ServletException;
 
 /**
  * A Servlet Filter that spans performance monitoring around HTTP requests for
- * spring managed EtmMonitor instances. The filter requires the existence of an Spring
+ * etm.contrib.integration.spring managed EtmMonitor instances. The filter requires the existence of an Spring
  * WebApplicationContext that was created through a Spring <code>ContextLoaderListener</code> or
  * <code>ContextLoaderServlet</code> (<i>It should be possible to locate the WebApplicationContext with
  * WebApplicationContextUtils.getRequiredWebApplicationContext()</i>).
  * <p/>
  * Usually the filter is able to locate the EtmMonitor automatically, however if you have more than one EtmMonitor
- * instance you need specify the monitor bean name as specified in your spring configuration. Therefore add the filter
+ * instance you need specify the monitor bean name as specified in your etm.contrib.integration.spring configuration. Therefore add the filter
  * init parameter called <code>etmMonitorName</code> holding its name.
  * <p/>
  * Example:
  * <pre>
  * &lt;filter&gt;
  *   &lt;filter-name&gt;requestPerformanceFilter&lt;/filter-name&gt;
- *   &lt;filter-class&gt;etm.contrib.integration.spring.web.SpringHttpRequestPerformanceFilter&lt;/filter-class&gt;
+ *   &lt;filter-class&gt;etm.contrib.integration.etm.contrib.integration.spring.web.SpringHttpRequestPerformanceFilter&lt;/filter-class&gt;
  *   &lt;init-param&gt;
  *     &lt;param-name&gt;etmMonitorName&lt;/param-name&gt;
  *     &lt;param-value&gt;lala&lt;/param-value&gt;

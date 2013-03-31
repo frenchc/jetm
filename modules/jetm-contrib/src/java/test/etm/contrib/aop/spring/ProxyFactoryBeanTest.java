@@ -41,8 +41,8 @@ import test.etm.contrib.aop.resources.FooService;
 import test.etm.contrib.aop.resources.YaddaService;
 
 /**
- * Setup/Teardown methods for spring AOP using
- * spring factory beans.
+ * Setup/Teardown methods for etm.contrib.integration.spring AOP using
+ * etm.contrib.integration.spring factory beans.
  *
  * @author void.fm
  * @version $Revision$
@@ -53,7 +53,7 @@ public class ProxyFactoryBeanTest extends AopTestBase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    beanFactory = new XmlBeanFactory(new ClassPathResource("test/etm/contrib/aop/spring/factory-bean.xml"));
+    beanFactory = new XmlBeanFactory(new ClassPathResource("test/etm/contrib/aop/etm.contrib.integration.spring/factory-bean.xml"));
     beanFactory.preInstantiateSingletons();
 
     etmMonitor = (EtmMonitor) beanFactory.getBean("etmMonitor");

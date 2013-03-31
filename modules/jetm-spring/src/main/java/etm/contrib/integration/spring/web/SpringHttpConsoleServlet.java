@@ -40,21 +40,21 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.ServletException;
 
 /**
- * A servlet that provides access to aggregated performance statistics for spring managed EtmMonitor instances similar to
+ * A servlet that provides access to aggregated performance statistics for etm.contrib.integration.spring managed EtmMonitor instances similar to
  * a standalone {@link etm.contrib.console.HttpConsoleServer}. The servlet requires the existence of an Spring
  * WebApplicationContext that was created through a Spring <code>ContextLoaderListener</code> or
  * <code>ContextLoaderServlet</code> (<i>It should be possible to locate the WebApplicationContext with
  * WebApplicationContextUtils.getRequiredWebApplicationContext()</i>).
  * <p/>
  * Usually the servlet is able to locate the EtmMonitor automatically, however if you have more than one EtmMonitor
- * instance you need specify the monitor bean name as specified in your spring configuration. Therefore add the servlet
+ * instance you need specify the monitor bean name as specified in your etm.contrib.integration.spring configuration. Therefore add the servlet
  * init parameter called <code>etmMonitorName</code> holding its name.
  * <p/>
  * Example:
  * <pre>
  * &lt;servlet&gt;
  *  &lt;servlet-name&gt;performanceMonitor&lt;/servlet-name&gt;
- *  &lt;servlet-class&gt;etm.contrib.integration.spring.web.SpringHttpConsoleServlet&lt;/servlet-class&gt;
+ *  &lt;servlet-class&gt;etm.contrib.integration.etm.contrib.integration.spring.web.SpringHttpConsoleServlet&lt;/servlet-class&gt;
  *  &lt;init-param&gt;
  *    &lt;param-name&gt;etmMonitorName&lt;/param-name&gt;
  *    &lt;param-value&gt;myEtmMonitor&lt;/param-value&gt;

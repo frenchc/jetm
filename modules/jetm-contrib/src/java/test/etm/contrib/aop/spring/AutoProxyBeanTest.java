@@ -50,7 +50,7 @@ public class AutoProxyBeanTest extends AopTestBase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    ApplicationContext applicationContext = new ClassPathXmlApplicationContext("test/etm/contrib/aop/spring/autoproxy-bean.xml");
+    ApplicationContext applicationContext = new ClassPathXmlApplicationContext("test/etm/contrib/aop/etm.contrib.integration.spring/autoproxy-bean.xml");
 
     etmMonitor = (EtmMonitor) applicationContext.getBean("etmMonitor");
     yaddaService = (YaddaService) applicationContext.getBean("yaddaService");

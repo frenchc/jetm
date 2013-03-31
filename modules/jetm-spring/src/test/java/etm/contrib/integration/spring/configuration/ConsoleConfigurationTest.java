@@ -29,48 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.integration.spring.configuration.mockup;
 
-import etm.core.aggregation.Aggregator;
-import etm.core.metadata.AggregatorMetaData;
-import etm.core.monitor.EtmMonitorContext;
-import etm.core.monitor.EtmPoint;
-import etm.core.renderer.MeasurementRenderer;
+package etm.contrib.integration.spring.configuration;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Test aggregator for spring chain test.
- *
- * @version $Revision$
  * @author void.fm
+ * @version $Revision$
  */
-public class SpringRootAggregator implements Aggregator {
+public class ConsoleConfigurationTest extends ConfigurationTestCase {
 
+  public void testMonitorRef() {
+    ClassPathXmlApplicationContext ctx = getContext("console-monitor-ref.xml");
+    ctx.start();
 
-  public void add(EtmPoint point) {
+    ctx.destroy();
   }
 
-  public void flush() {
-  }
+  public void testMonitorAutowire() {
+    ClassPathXmlApplicationContext ctx = getContext("console-monitor-autowire.xml");
 
-  public void reset() {
-  }
+    ctx.start();
 
-  public void reset(String symbolicName) {
-  }
-
-  public void render(MeasurementRenderer renderer) {
-  }
-
-  public AggregatorMetaData getMetaData() {
-    return new AggregatorMetaData(SpringRootAggregator.class,"Test", false);
-  }
-
-  public void init(EtmMonitorContext ctx) {
-  }
-
-  public void start() {
-  }
-
-  public void stop() {
+    ctx.destroy();
   }
 }

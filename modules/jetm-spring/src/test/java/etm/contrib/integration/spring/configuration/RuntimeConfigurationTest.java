@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.integration.spring.configuration;
+package etm.contrib.integration.spring.configuration;
 
 import etm.contrib.aggregation.log.CommonsLoggingAggregator;
 import etm.contrib.aggregation.log.Log4jAggregator;
@@ -44,7 +44,7 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.NestedMonitor;
 import etm.core.timer.DefaultTimer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import test.etm.contrib.integration.spring.configuration.mockup.SpringRootAggregator;
+import etm.contrib.integration.spring.configuration.mockup.SpringRootAggregator;
 
 /**
  * @author void.fm

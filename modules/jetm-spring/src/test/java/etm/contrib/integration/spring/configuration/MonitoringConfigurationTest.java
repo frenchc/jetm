@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package test.etm.contrib.integration.spring.configuration;
+package etm.contrib.integration.spring.configuration;
 
 import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
 import etm.contrib.integration.spring.configuration.MonitoringBeanDefinitionParser;
@@ -79,13 +79,13 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
 
     try {
       String[] proxyCreators = ctx.getBeanNamesForType(BeanNameAutoProxyCreator.class);
-      assertEquals(3, proxyCreators.length);
+      assertEquals(4, proxyCreators.length);
 
       String[] etmInterceptor = ctx.getBeanNamesForType(EtmMethodCallInterceptor.class);
-      assertEquals(3, etmInterceptor.length);
+      assertEquals(4, etmInterceptor.length);
 
       String[] namedInterceptor = ctx.getBeanNamesForType(MonitoringBeanDefinitionParser.NamedEtmMethodCallInterceptor.class);
-      assertEquals(2, namedInterceptor.length);
+      assertEquals(3, namedInterceptor.length);
 
       String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
       assertEquals(1, monitors.length);

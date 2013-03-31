@@ -1,9 +1,9 @@
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/etm.contrib.integration.spring-beans.dtd">
 
 <beans>
 
   <bean id="etmProxyTemplate" abstract="true"
-        class="etm.contrib.aop.spring.EtmProxyFactoryBean">
+        class="etm.contrib.aop.etm.contrib.integration.spring.EtmProxyFactoryBean">
     <property name="etmMonitor" ref="etmMonitor"/>
   </bean>
 

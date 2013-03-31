@@ -40,7 +40,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Helper class to retrieve EtmMonitor instance from spring configuration.
+ * Helper class to retrieve EtmMonitor instance from etm.contrib.integration.spring configuration.
  *
  * @author void.fm
  * @version $Revision$
