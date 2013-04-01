@@ -22,6 +22,10 @@
 
 
     <version.geronimo.specs.servlet>1.0</version.geronimo.specs.servlet>
+    <version.geronimo.specs.cdi>1.0</version.geronimo.specs.cdi>
+    <version.geronimo.specs.atinject>1.0</version.geronimo.specs.atinject>
+    <version.geronimo.specs.interceptor>1.0</version.geronimo.specs.interceptor>
+
     <version.geronimo.specs.jca>2.0.0</version.geronimo.specs.jca>
 
     <version.rrd4j>2.1.1</version.rrd4j>
@@ -199,6 +203,25 @@
         <groupId>org.apache.geronimo.specs</groupId>
         <artifactId>geronimo-j2ee-connector_1.5_spec</artifactId>
         <version>${version.geronimo.specs.jca}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-interceptor_1.1_spec</artifactId>
+        <version>${version.geronimo.specs.interceptor}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-jcdi_1.0_spec</artifactId>
+        <version>${version.geronimo.specs.cdi}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-atinject_1.0_spec</artifactId>
+        <version>${version.geronimo.specs.atinject}</version>
         <scope>provided</scope>
       </dependency>
 
