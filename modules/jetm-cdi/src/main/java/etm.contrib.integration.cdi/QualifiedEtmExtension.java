@@ -33,6 +33,7 @@
 package etm.contrib.integration.cdi;
 
 import etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi.AbstractCdiBean;
+import etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi.DelegatingAnnotatedMethod;
 import etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi.DelegatingAnnotatedType;
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;
@@ -49,6 +50,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
+import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
@@ -61,6 +63,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A CDI extension that activates performance monitoring using basic or xml based ETM configurations.
@@ -129,9 +132,16 @@ public class QualifiedEtmExtension implements Extension {
 
   public <T> void addMeasurement(@Observes ProcessAnnotatedType<T> event) {
     AnnotatedType<T> annotatedType = event.getAnnotatedType();
-    if (!annotatedType.isAnnotationPresent(Measure.class) && resolver.qualifies(annotatedType)) {
-      event.setAnnotatedType(new DelegatingAnnotatedType<T>(annotatedType, new AnnotationLiteral<Measure>() {
-      }));
+    if (!annotatedType.isAnnotationPresent(Measure.class)) {
+      AnnotationLiteral<Measure> annotationLiteral = new AnnotationLiteral<Measure>() {
+      };
+      if (resolver.isQualifiedApiType(annotatedType)) {
+        event.setAnnotatedType(new DelegatingAnnotatedType<T>(annotatedType, annotationLiteral));
+
+      } else if (resolver.isQualifiedMethodType(annotatedType)) {
+        event.setAnnotatedType(new ApplyToDelegatingAnnotatedType<T>(annotatedType));
+
+      }
     }
   }
 
@@ -186,29 +196,52 @@ public class QualifiedEtmExtension implements Extension {
     private Map<String, ApplyTo> cache = new HashMap<String, ApplyTo>();
 
 
-    protected <T> boolean qualifies(AnnotatedType<T> type) {
-      return qualifies(type.getJavaClass().getPackage().getName(), type);
+    protected <T> boolean isQualifiedApiType(AnnotatedType<T> type) {
+      ApplyTo applyTo = findApplyTo(type.getJavaClass().getPackage().getName(), type);
+
+      if (applyTo != null) {
+        for (Class<? extends Annotation> t : applyTo.qualifiedApi()) {
+          if (type.isAnnotationPresent(t)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    protected <T> boolean isQualifiedMethodType(AnnotatedType<T> type) {
+      ApplyTo applyTo = findApplyTo(type.getJavaClass().getPackage().getName(), type);
+
+      if (applyTo != null) {
+        for (Class<? extends Annotation> t : applyTo.qualifiedMethod()) {
+          if (type.isAnnotationPresent(t)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
     }
 
 
-    protected <T> boolean qualifies(String packageName, AnnotatedType<T> type) {
+    protected <T> ApplyTo findApplyTo(String packageName, AnnotatedType<T> type) {
       if (cache.containsKey(packageName)) {
-        ApplyTo applyTo = cache.get(packageName);
-        return applyTo != null && qualifies(type, applyTo);
+        return cache.get(packageName);
       } else {
         List<String> packages = new ArrayList<String>();
 
-        ApplyTo result = resursiveSearch(packageName, packages);
+        ApplyTo result = recursiveSearch(packageName, packages);
         for (String pkg : packages) {
           cache.put(pkg, result);
         }
 
         // now try again
-        return qualifies(packageName, type);
+        return findApplyTo(packageName, type);
       }
     }
 
-    private ApplyTo resursiveSearch(String packageName, List<String> aPackages) {
+    private ApplyTo recursiveSearch(String packageName, List<String> aPackages) {
       aPackages.add(packageName);
 
       ApplyTo cached = cache.get(packageName);
@@ -228,7 +261,7 @@ public class QualifiedEtmExtension implements Extension {
       }
 
       if (packageName.contains(".")) {
-        return resursiveSearch(getParentPackage(packageName), aPackages);
+        return recursiveSearch(getParentPackage(packageName), aPackages);
       } else {
         return null;
       }
@@ -242,21 +275,22 @@ public class QualifiedEtmExtension implements Extension {
       return null;
     }
 
-    protected <T> boolean qualifies(AnnotatedType<T> type, ApplyTo applyTo) {
-      for (Class<? extends Annotation> t : applyTo.qualifiedApi()) {
-        if (type.isAnnotationPresent(t)) {
-          return true;
-        }
-      }
+  }
 
-      for (Class<? extends Annotation> t : applyTo.qualifiedMethod()) {
-        if (type.isAnnotationPresent(t)) {
-          return true;
-        }
-      }
+  static class ApplyToDelegatingAnnotatedType<T> extends DelegatingAnnotatedType<T> {
 
-      return false;
+    public ApplyToDelegatingAnnotatedType(AnnotatedType<T> delegateType) {
+      super(delegateType);
     }
 
+    protected AnnotatedMethod<? super T> processAnnotatedMethod(AnnotatedMethod<? super T> method) {
+      String name = method.getJavaMember().getName();
+      if (!name.startsWith("get") && !name.startsWith("set") &&
+        !name.startsWith("is") && !method.isAnnotationPresent(Measure.class)) {
+        return new DelegatingAnnotatedMethod(this, method, new AnnotationLiteral<Measure>() {});
+      } else {
+        return method;
+      }
+    }
   }
 }
