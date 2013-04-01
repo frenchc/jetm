@@ -41,6 +41,8 @@ import etm.core.configuration.EtmMonitorFactory;
 import etm.core.configuration.XmlConfigParser;
 import etm.core.monitor.EtmException;
 import etm.core.monitor.EtmMonitor;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -55,6 +57,10 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.util.AnnotationLiteral;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A CDI extension that activates performance monitoring using basic or xml based ETM configurations.
@@ -69,11 +75,14 @@ import java.lang.annotation.Annotation;
  */
 public class QualifiedEtmExtension implements Extension {
 
+  private static final LogAdapter LOG = Log.getLog(EtmMonitor.class);
   private static final String DEFAULT_CONFIG_FILE = "jetm-config.xml";
 
   private EtmMonitorConfig monitorConfig;
   private boolean delayedAutoStart;
   private EtmMonitor etmMonitor;
+
+  private ApplyToResolver resolver = new ApplyToResolver();
 
   public void beforeScan(@Observes BeforeBeanDiscovery event) {
     InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_CONFIG_FILE);
@@ -120,15 +129,10 @@ public class QualifiedEtmExtension implements Extension {
 
   public <T> void addMeasurement(@Observes ProcessAnnotatedType<T> event) {
     AnnotatedType<T> annotatedType = event.getAnnotatedType();
-    if (!annotatedType.isAnnotationPresent(Measure.class) && qualifies(annotatedType)) {
+    if (!annotatedType.isAnnotationPresent(Measure.class) && resolver.qualifies(annotatedType)) {
       event.setAnnotatedType(new DelegatingAnnotatedType<T>(annotatedType, new AnnotationLiteral<Measure>() {
       }));
     }
-  }
-
-  private <T> boolean qualifies(AnnotatedType<T> aAnnotatedType) {
-    // TODO metadata parsing
-    return false;
   }
 
 
@@ -175,5 +179,84 @@ public class QualifiedEtmExtension implements Extension {
     protected static void configure(EtmMonitor aEtmMonitor) {
       EtmManager.configure(aEtmMonitor);
     }
+  }
+
+  static class ApplyToResolver {
+
+    private Map<String, ApplyTo> cache = new HashMap<String, ApplyTo>();
+
+
+    protected <T> boolean qualifies(AnnotatedType<T> type) {
+      return qualifies(type.getJavaClass().getPackage().getName(), type);
+    }
+
+
+    protected <T> boolean qualifies(String packageName, AnnotatedType<T> type) {
+      if (cache.containsKey(packageName)) {
+        ApplyTo applyTo = cache.get(packageName);
+        return applyTo != null && qualifies(type, applyTo);
+      } else {
+        List<String> packages = new ArrayList<String>();
+
+        ApplyTo result = resursiveSearch(packageName, packages);
+        for (String pkg : packages) {
+          cache.put(pkg, result);
+        }
+
+        // now try again
+        return qualifies(packageName, type);
+      }
+    }
+
+    private ApplyTo resursiveSearch(String packageName, List<String> aPackages) {
+      aPackages.add(packageName);
+
+      ApplyTo cached = cache.get(packageName);
+
+      if (cached != null) {
+        return cached;
+      }
+
+      Package aPackage = Package.getPackage(packageName);
+
+      if (aPackage != null) {
+        if (aPackage.isAnnotationPresent(ApplyTo.class)) {
+          ApplyTo annotation = aPackage.getAnnotation(ApplyTo.class);
+          LOG.info("Using " + annotation + " for " + aPackage.getName() + " and above.");
+          return annotation;
+        }
+      }
+
+      if (packageName.contains(".")) {
+        return resursiveSearch(getParentPackage(packageName), aPackages);
+      } else {
+        return null;
+      }
+    }
+
+    protected String getParentPackage(String aPackage) {
+      int i = aPackage.lastIndexOf('.');
+      if (i >= 0) {
+        return aPackage.substring(0, i);
+      }
+      return null;
+    }
+
+    protected <T> boolean qualifies(AnnotatedType<T> type, ApplyTo applyTo) {
+      for (Class<? extends Annotation> t : applyTo.qualifiedApi()) {
+        if (type.isAnnotationPresent(t)) {
+          return true;
+        }
+      }
+
+      for (Class<? extends Annotation> t : applyTo.qualifiedMethod()) {
+        if (type.isAnnotationPresent(t)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
   }
 }
