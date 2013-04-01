@@ -41,8 +41,8 @@ import java.lang.annotation.Target;
 
 /**
  * A package level annotation that enables measurement for a given
- * set of qualifier. Differentiates etm monitoring between all public methods ({@link #apiQualifier() / {@link #classApiPattern()}}
- * and all public methods expect attributes (no setter/getter methods {@link #methodQualifier() / {@link #classMethodPattern()}}.
+ * set of qualifier. Differentiates etm monitoring between all public methods ({@link #qualifiedApi() / {@link #apiPattern()}}
+ * and all public methods expect attributes (no setter/getter methods {@link #qualifiedMethod() / {@link #methodPattern()}}.
  *
  * @author void.fm
  * @version $Revision: 3373 $
@@ -51,14 +51,14 @@ import java.lang.annotation.Target;
 @Target({ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface ApplyMeasurement {
+public @interface ApplyTo {
 
-  Class<? extends Annotation>[] apiQualifier() default {};
+  Class<? extends Annotation>[] qualifiedApi() default {};
 
-  Class<? extends Annotation>[] methodQualifier() default {};
+  Class<? extends Annotation>[] qualifiedMethod() default {};
 
-  String[] classApiPattern() default {};
+  String[] apiPattern() default {};
 
-  String[] classMethodPattern() default {};
+  String[] methodPattern() default {};
 
 }
