@@ -41,9 +41,22 @@ import java.lang.annotation.Target;
 
 /**
  * A package level annotation that enables measurement for a given
- * set of qualifier. Differentiates etm monitoring between all public methods ({@link #qualifiedApi() / {@link #apiPattern()}}
- * and all public methods expect attributes (no setter/getter methods {@link #qualifiedMethod() / {@link #methodPattern()}}.
- *
+ * set of qualifier for the give package and below. Differentiates performance
+ * monitoring between all public methods ({@link #qualifiedApi()} / {@link #apiPattern()})
+ * and all public methods expect attributes (no setter/getter methods
+ * ({@link #qualifiedMethod()} / {@link #methodPattern()}).
+ * <p/>
+ * Example package-info.java:
+ * <pre>
+ * &#64;ApplyTo(
+ *  qualifiedApi = {Service.class, Repository.class, Path.class},
+ *  qualifiedMethod = {Named.class}
+ *  apiPattern = {"*EJB"},
+ *  methodPattern = {"*Bean"}
+ * )
+ package etm.application;
+
+ * </pre>
  * @author void.fm
  * @version $Revision: 3373 $
  * @since 1.3.0

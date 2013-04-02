@@ -40,6 +40,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *
+ * The measure annotation enables JETM performance monitoring for the
+ * given public method (if used for a method) or all public methods (if
+ * used for a class). Alternatively you may enable performance monitoring
+ * on a metadata/class level. See {@link ApplyTo} for further details.
+ *
  * @author void.fm
  * @version $Revision: 3373 $
  * @since 1.3.0
