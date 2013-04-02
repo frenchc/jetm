@@ -63,7 +63,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A CDI extension that activates performance monitoring using basic or xml based ETM configurations.
@@ -284,6 +283,7 @@ public class QualifiedEtmExtension implements Extension {
     }
 
     protected AnnotatedMethod<? super T> processAnnotatedMethod(AnnotatedMethod<? super T> method) {
+      // TODO
       String name = method.getJavaMember().getName();
       if (!name.startsWith("get") && !name.startsWith("set") &&
         !name.startsWith("is") && !method.isAnnotationPresent(Measure.class)) {

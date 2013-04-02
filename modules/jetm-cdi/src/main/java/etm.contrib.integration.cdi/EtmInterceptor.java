@@ -42,6 +42,9 @@ import javax.interceptor.InvocationContext;
 import java.io.Serializable;
 
 /**
+ *
+ * Our CDI interceptor for public method monitoring.
+ *
  * @author void.fm
  * @version $Revision: 3373 $
  * @since 1.3.0
