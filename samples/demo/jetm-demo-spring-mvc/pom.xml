@@ -18,7 +18,7 @@
   <packaging>war</packaging>
   <name>JETM Spring MVC Demo</name>
   <url>http://jetm.void.fm</url>
-  <description>The Java Execution Time Measurement Library - Spring MVC DEMO</description>
+  <description>The Java Execution Time Measurement Library - Spring MVC Demo</description>
 
   <build>
     <plugins>
@@ -52,16 +52,16 @@
             <configuration>
               <target>
 
-                <zip destfile="${project.build.directory}/${project.build.finalName}/jetm-demo-src.zip"
+                <zip destfile="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.zip"
                      basedir="${project.basedir}"
                      includes="pom.xml, src/**"/>
 
-                <tar destfile="${project.build.directory}/${project.build.finalName}/jetm-demo-src.tar"
+                <tar destfile="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.tar"
                      basedir="${project.basedir}"
                      includes="pom.xml, src/**"/>
 
-                <gzip src="${project.build.directory}/${project.build.finalName}/jetm-demo-src.tar"
-                      destfile="${project.build.directory}/${project.build.finalName}/jetm-demo-src.tar.gz"/>
+                <gzip src="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.tar"
+                      destfile="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.tar.gz"/>
 
 
               </target>

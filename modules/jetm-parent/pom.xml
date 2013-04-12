@@ -14,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <version.springframework>3.2.2.RELEASE</version.springframework>
+    <version.myfaces>2.1.10</version.myfaces>
 
     <version.aopalliance>1.0</version.aopalliance>
     <version.aspectj>1.7.2</version.aspectj>
@@ -25,8 +26,9 @@
     <version.geronimo.specs.cdi>1.0</version.geronimo.specs.cdi>
     <version.geronimo.specs.atinject>1.0</version.geronimo.specs.atinject>
     <version.geronimo.specs.interceptor>1.0</version.geronimo.specs.interceptor>
-
+    <version.geronimo.specs.jpa>1.0</version.geronimo.specs.jpa>
     <version.geronimo.specs.jca>2.0.0</version.geronimo.specs.jca>
+
 
     <version.rrd4j>2.1.1</version.rrd4j>
 
@@ -226,6 +228,14 @@
       </dependency>
 
       <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-jpa_2.0_spec</artifactId>
+        <version>${version.geronimo.specs.jpa}</version>
+        <scope>provided</scope>
+      </dependency>
+
+
+      <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
         <version>${version.aspectj}</version>
@@ -249,6 +259,20 @@
         <version>${version.jboss.aop}</version>
         <scope>provided</scope>
       </dependency>
+
+      <dependency>
+        <groupId>org.apache.myfaces.core</groupId>
+        <artifactId>myfaces-api</artifactId>
+        <version>${version.myfaces}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.myfaces.core</groupId>
+        <artifactId>myfaces-impl</artifactId>
+        <version>${version.myfaces}</version>
+        <scope>provided</scope>
+      </dependency>
+
 
       <dependency>
         <groupId>org.springframework</groupId>

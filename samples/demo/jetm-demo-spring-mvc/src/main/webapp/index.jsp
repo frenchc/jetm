@@ -20,7 +20,7 @@
 
 <body>
 <div id="content">
-  <div id="header">JETM Web Demo</div>
+  <div id="header">JETM Spring MVC Web Demo</div>
   <div id="subheader">Runtime performance monitoring made easy</div>
   <div id="main">
     <h3>JETM Spring MVC Online Demo</h3>
@@ -32,7 +32,7 @@
     </a>
 
     <p>
-      Welcome to the JETM online demo.
+      Welcome to the JETM Spring MVC online demo.
     </p>
 
 

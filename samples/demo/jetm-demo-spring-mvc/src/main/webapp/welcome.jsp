@@ -68,8 +68,8 @@
 
     <p style="clear: left">
       This demo uses Springframework MVC to demonstrate declarative performance monitoring.
-      Demo Sources are available as <a href="jetm-demo-src.tar.gz">tar.gz</a>,
-      <a href="jetm-demo-src.zip">zip</a> or via <a href="http://jetm.void.fm/svn.html">subversion respository</a>.
+      Demo Sources are available as <a href="jetm-spring-mvc-demo-src.tar.gz">tar.gz</a>,
+      <a href="jetm-spring-mvc-demo-src.zip">zip</a> or via <a href="http://jetm.void.fm/svn.html">subversion respository</a>.
     </p>
 
   </div>

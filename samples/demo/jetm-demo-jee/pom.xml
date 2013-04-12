@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <parent>
+    <groupId>fm.void.jetm</groupId>
+    <artifactId>jetm-parent</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+    <relativePath>../../../modules/jetm-parent/pom.xml</relativePath>
+  </parent>
+
+
+  <groupId>fm.void.jetm</groupId>
+  <artifactId>jetm-demo-jee</artifactId>
+  <version>1.3.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>JETM Java EE 6 Demo</name>
+  <url>http://jetm.void.fm</url>
+  <description>The Java Execution Time Measurement Library - Java EE Demo</description>
+
+  <properties>
+    <version.owb>1.1.8</version.owb>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+        <version>6.1.25</version>
+
+        <configuration>
+          <webAppConfig>
+            <contextPath>/jetm-jee</contextPath>
+            <tempDirectory>${project.build.directory}/work</tempDirectory>
+
+          </webAppConfig>
+          <stopKey>jetm-jee</stopKey>
+          <stopPort>9999</stopPort>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>create-sources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+
+                <zip destfile="${project.build.directory}/${project.build.finalName}/jetm-java-ee-demo-src.zip"
+                     basedir="${project.basedir}"
+                     includes="pom.xml, src/**"/>
+
+                <tar destfile="${project.build.directory}/${project.build.finalName}/jetm-java-ee-demo-src.tar"
+                     basedir="${project.basedir}"
+                     includes="pom.xml, src/**"/>
+
+                <gzip src="${project.build.directory}/${project.build.finalName}/jetm-java-ee-demo-src.tar"
+                      destfile="${project.build.directory}/${project.build.finalName}/jetm-java-ee-demo-src.tar.gz"/>
+
+
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>fm.void.jetm</groupId>
+      <artifactId>jetm-console</artifactId>
+      <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>fm.void.jetm</groupId>
+      <artifactId>jetm-cdi</artifactId>
+      <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.myfaces.core</groupId>
+      <artifactId>myfaces-api</artifactId>
+      <version>${version.myfaces}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.myfaces.core</groupId>
+      <artifactId>myfaces-impl</artifactId>
+      <version>${version.myfaces}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+      <version>${version.commons.logging.api}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${version.commons.logging}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-jcdi_1.0_spec</artifactId>
+      <version>${version.geronimo.specs.cdi}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-interceptor_1.1_spec</artifactId>
+      <version>${version.geronimo.specs.interceptor}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-atinject_1.0_spec</artifactId>
+      <version>${version.geronimo.specs.atinject}</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+
+
+
+
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-jsf</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-impl</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-web</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-spi</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+
+
+
+  </dependencies>
+
+</project>

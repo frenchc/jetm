@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ C:/Repositories/nsf-wave/wave/trunk/wave-application/src/main/webapp/WEB-INF/web.xml
+  ~
+  ~ This document contains trade secret data which are the property of
+  ~ Nordstern Finanz GmbH, Mannheim, Germany. Information contained herein must not be used,
+  ~ copied or disclosed in whole or part unless permitted in writing by Nordstern Finanz GmbH.
+  ~ All rights reserved by Nordstern Finanz GmbH.
+  ~                                                             *
+  ~ Copyright (C) 2012 Nordstern Finanz GmbH / Mannheim / Germany
+  -->
+
+<web-app
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    id="nsf-wave" version="3.0">
+
+  <description>Java EE </description>
+  <display-name>nsf-wave</display-name>
+
+  <context-param>
+    <param-name>org.apache.myfaces.LOG_WEB_CONTEXT_PARAMS</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+    <param-value>.xhtml</param-value>
+  </context-param>
+
+  <!-- do not render comments -->
+  <context-param>
+    <param-name>javax.faces.FACELETS_SKIP_COMMENT</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <!-- do not ignore empty input fields -->
+  <context-param>
+    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <!-- calculateStatus also empty fields -->
+  <context-param>
+    <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <!--<context-param>-->
+    <!--<param-name>javax.el.ExpressionFactory</param-name>-->
+    <!--<param-value>de.odysseus.el.ExpressionFactoryImpl</param-value>-->
+  <!--</context-param>-->
+
+
+  <!--<filter-mapping>-->
+    <!--<filter-name>performance-monitor</filter-name>-->
+    <!--<url-pattern>*.jsf</url-pattern>-->
+  <!--</filter-mapping>-->
+
+  <listener>
+    <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
+  </listener>
+
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>performanceMonitor</servlet-name>
+    <servlet-class>etm.contrib.integration.web.HttpConsoleServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+
+  <servlet-mapping>
+    <servlet-name>performanceMonitor</servlet-name>
+    <url-pattern>/performance/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>/index.html</welcome-file>
+  </welcome-file-list>
+
+
+
+
+</web-app>

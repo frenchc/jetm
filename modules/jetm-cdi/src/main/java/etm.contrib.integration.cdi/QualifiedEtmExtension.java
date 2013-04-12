@@ -139,7 +139,6 @@ public class QualifiedEtmExtension implements Extension {
 
       } else if (resolver.isQualifiedMethodType(annotatedType)) {
         event.setAnnotatedType(new ApplyToDelegatingAnnotatedType<T>(annotatedType));
-
       }
     }
   }
