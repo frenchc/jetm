@@ -177,6 +177,7 @@
             <instrumentation>
               <excludes>
                 <exclude>etm/core/util/collection/EDU/**/*.class</exclude>
+                <exclude>etm/demo/**/*.class</exclude>
               </excludes>
             </instrumentation>
           </configuration>

@@ -23,6 +23,10 @@
 
   <properties>
     <version.owb>1.1.8</version.owb>
+    <version.juel>2.2.6</version.juel>
+    <version.validation.api>1.0.0.GA</version.validation.api>
+    <version.hibernate.validator>4.2.0.Final</version.hibernate.validator>
+
   </properties>
 
   <build>
@@ -51,6 +55,18 @@
           <stopKey>jetm-jee</stopKey>
           <stopPort>9999</stopPort>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-impl</artifactId>
+            <version>${version.juel}</version>
+          </dependency>
+          <dependency>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-api</artifactId>
+            <version>${version.juel}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -169,6 +185,18 @@
       <groupId>org.apache.openwebbeans</groupId>
       <artifactId>openwebbeans-spi</artifactId>
       <version>${version.owb}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${version.validation.api}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${version.hibernate.validator}</version>
     </dependency>
 
 

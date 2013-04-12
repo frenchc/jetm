@@ -25,6 +25,11 @@
   </context-param>
 
   <context-param>
+    <param-name>org.apache.myfaces.annotation.SCAN_PACKAGES</param-name>
+    <param-value>etm.demo.webapp.javaee</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
   </context-param>
