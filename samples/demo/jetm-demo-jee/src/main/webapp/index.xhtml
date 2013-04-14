@@ -21,7 +21,7 @@
     </script>
   </h:head>
 
-  <body>
+  <h:body>
   <div id="content">
     <div id="header">JETM Java EE Web Demo</div>
     <div id="subheader">Runtime performance monitoring made easy</div>
@@ -46,11 +46,11 @@
 
       <p><br/> <br/> <br/> <br/></p>
 
-      <div align="center" style="clear: left;"><a href="welcome.action"><b>Proceed to the demo</b></a></div>
+      <div align="center" style="clear: left;"><h:form><h:commandLink action="welcome.xhtml"><b>Proceed to the demo</b></h:commandLink></h:form></div>
       <p><br/> <br/></p>
 
       <div id="menu">
-        <a href="welcome.action">Demo Home</a>
+        <h:form style="display: inline"><h:commandLink action="welcome.xhtml">Demo Home</h:commandLink></h:form>
         |
         <a href="#" onclick="openConsole(); return false;">Monitoring Console</a>
         |
@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  </body>
+  </h:body>
   <!-- Last modified  $Date: 2006/10/18 07:54:42 $ -->
 </f:view>
 </html>

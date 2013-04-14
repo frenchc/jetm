@@ -32,6 +32,8 @@
     <module>modules/jetm-web</module>
     <module>modules/jetm-spring</module>
     <module>modules/jetm-cdi</module>
+    <module>modules/jetm-jee</module>
+
     <module>modules/jetm-rrd</module>
     <module>modules/jetm-swing</module>
     <module>modules/jetm-legacy</module>

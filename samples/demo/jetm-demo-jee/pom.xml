@@ -26,6 +26,7 @@
     <version.juel>2.2.6</version.juel>
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.hibernate.validator>4.2.0.Final</version.hibernate.validator>
+    <version.myfaces>2.1.10</version.myfaces>
 
   </properties>
 
@@ -112,7 +113,12 @@
     </dependency>
     <dependency>
       <groupId>fm.void.jetm</groupId>
-      <artifactId>jetm-cdi</artifactId>
+      <artifactId>jetm-jee</artifactId>
+      <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>fm.void.jetm</groupId>
+      <artifactId>jetm-web</artifactId>
       <version>1.3.0-SNAPSHOT</version>
     </dependency>
 
