@@ -3,13 +3,12 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-  >
+      xmlns:f="http://java.sun.com/jsf/core">
 <f:view locale="en_US">
   <h:head>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
     <title>Java(TM) Execution Time Measurement Library</title>
-    <link rel="stylesheet" type="text/css" href="default.css"/>
+    <h:outputStylesheet library="css" name="default.css"/>
     <script type="text/javascript">
       function submit() {
         document.forms['loginForm'].submit();
@@ -29,9 +28,10 @@
       <h3>JETM Java EE Online Demo</h3>
 
       <a onclick="openConsole(); return false;">
-        <img height="80" style="float: left; margin-right: 15px; margin-bottom: 15px;" border="0"
-             src="img/jetm_console_thumb.png"
-             alt="JETM Console"/>
+        <h:graphicImage height="80" style="float: left; margin-right: 15px; margin-bottom: 15px;" border="0"
+                        library="img"
+                        name="jetm_console_thumb.png"
+                        alt="JETM Console"/>
       </a>
 
       <p>

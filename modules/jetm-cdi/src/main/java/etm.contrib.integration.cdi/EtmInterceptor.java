@@ -35,6 +35,7 @@ package etm.contrib.integration.cdi;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -75,4 +76,26 @@ public class EtmInterceptor implements Serializable {
       point.collect();
     }
   }
+
+
+  @PostConstruct
+  public void measureCreate(InvocationContext ctx) {
+    Class<? extends Object> aClass = ctx.getTarget().getClass();
+    if (aClass.isSynthetic()) {
+      aClass = aClass.getSuperclass();
+    }
+
+    String targetMethod = aClass.getSimpleName() + "<PostConstruct>";
+
+    EtmPoint point = monitor.createPoint(targetMethod);
+    try {
+      ctx.proceed();
+    } catch (Exception e) {
+      point.alterName(targetMethod + "[ " + e.getClass().getSimpleName() + "]");
+      throw new RuntimeException(e);
+    } finally {
+      point.collect();
+    }
+  }
+
 }

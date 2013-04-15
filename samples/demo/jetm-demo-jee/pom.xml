@@ -48,6 +48,12 @@
         <version>6.1.25</version>
 
         <configuration>
+          <systemProperties>
+            <systemProperty>
+              <name>faces.PROJECT_STAGE</name>
+              <value>Development</value>
+            </systemProperty>
+          </systemProperties>
           <webAppConfig>
             <contextPath>/jetm-jee</contextPath>
             <tempDirectory>${project.build.directory}/work</tempDirectory>
@@ -114,11 +120,6 @@
     <dependency>
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm-jee</artifactId>
-      <version>1.3.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>fm.void.jetm</groupId>
-      <artifactId>jetm-web</artifactId>
       <version>1.3.0-SNAPSHOT</version>
     </dependency>
 

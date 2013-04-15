@@ -119,4 +119,8 @@ public class User {
   public void setEmail(String aEmail) {
     email = aEmail;
   }
+
+  public String getName() {
+    return firstName + " " + lastName;
+  }
 }

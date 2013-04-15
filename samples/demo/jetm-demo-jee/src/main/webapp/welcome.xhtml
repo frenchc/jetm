@@ -9,7 +9,7 @@
 <h:head>
   <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
   <title>Java(TM) Execution Time Measurement Library</title>
-  <link rel="stylesheet" type="text/css" href="default.css"/>
+  <h:outputStylesheet library="css" name="default.css"/>
   <script type="text/javascript">
     function submit() {
       document.forms['loginForm'].submit();
@@ -29,23 +29,25 @@
     <h3>JETM Java EE Online Demo - Welcome</h3>
 
     <div style="float: left; margin-right: 40px; margin-bottom: 20px;">
-      <form action="login.action" method="post">
+      <h:form>
         <table>
             <tr>
               <td>Login</td>
-              <td><input name="username" type="text" size="10" value="${status.value}"/></td>
+              <td><h:inputText size="10" value="#{authenticationBean.username}" required="true"/></td>
             </tr>
             <tr>
               <td>Password</td>
-              <td><input name="password" type="password" size="10"/></td>
+              <td><h:inputSecret size="10" value="#{authenticationBean.password}" required="true"/></td>
             </tr>
           <tr>
-            <td colspan="2" align="center"><input type="SUBMIT" value="Login"/></td>
+            <td colspan="2" align="center"><h:commandButton value="Login" action="#{authenticationBean.authenticate}"/></td>
           </tr>
 
         </table>
-      </form>
-      <p align="center"><h:commandLink action="showRegistration.xhtml">Register now!</h:commandLink></p>
+      </h:form>
+      <h:form>
+      <p align="center"><h:commandLink action="registration.xhtml?faces-redirect=true">Register now!</h:commandLink></p>
+      </h:form>
     </div>
 
     <p>
@@ -74,7 +76,7 @@
   </div>
 
   <div id="menu">
-    <h:commandLink action="welcome.xhtml">Demo Home</h:commandLink>
+    <h:form style="display: inline"><h:commandLink action="welcome.xhtml?faces-redirect=true">Demo Home</h:commandLink></h:form>
     |
     <a href="#" onclick="openConsole(); return false;">Monitoring Console</a>
     |

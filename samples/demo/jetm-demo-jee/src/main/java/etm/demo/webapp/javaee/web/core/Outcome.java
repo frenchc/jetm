@@ -30,75 +30,15 @@
  *
  */
 
-package etm.demo.webapp.javaee.web.authentication;
-
-import etm.demo.webapp.javaee.core.qualifier.Registered;
-import etm.demo.webapp.javaee.domain.user.User;
-import etm.demo.webapp.javaee.domain.user.UserManagementService;
-import etm.demo.webapp.javaee.web.core.Outcome;
-
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.Serializable;
+package etm.demo.webapp.javaee.web.core;
 
 /**
- * @author void.fm
+ *
+ *
  * @version $Revision: 372 $
+ * @author void.fm
+ *
  */
-@Named
-@SessionScoped
-public class AuthenticationBean implements Serializable {
-
-  @Inject
-  private UserManagementService service;
-
-  private String username;
-  private String password;
-
-  private User user;
-
-  @Produces
-  @Named("currentUser")
-  @RequestScoped
-  public User getCurrentUser() {
-    return user;
-  }
-
-  public Outcome authenticate() {
-    User authenticated = service.authenticate(username, password);
-    if (authenticated != null) {
-      user = authenticated;
-
-      password = null;
-      return Outcome.SUCCESS;
-    }
-    return Outcome.FAILURE;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String aPassword) {
-    password = aPassword;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String aUsername) {
-    username = aUsername;
-  }
-
-
-  public void onNewUser(@Observes @Registered User newUser) {
-    user = newUser;
-    username = user.getUserName();
-  }
-
+public enum Outcome {
+  SUCCESS, FAILURE
 }

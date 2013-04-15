@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<f:view locale="en_US">
+  <h:head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+    <title>JETM Web Demo</title>
+    <h:outputStylesheet library="css" name="default.css"/>
+    <script type="text/javascript">
+      function openConsole() {
+        window.open('performance/index', 'console', 'width=900,left=0,top=0,scrollbars=true');
+      }
+    </script>
+  </h:head>
+
+  <h:body>
+    <div id="content">
+      <div id="header">JETM Java EE Demo</div>
+      <div id="subheader">Runtime performance monitoring made easy</div>
+      <div id="main">
+        <h3>JETM Java EE Online Demo - Registration page</h3>
+
+        <p>
+          This page allows you to register to the web demo. All registation data are just collected
+          for demonstration purposes. They will actually be stored in memory and thrown away at
+          restart. If you don't like to register use "foo"/"bar" for username/password or click
+          <a href="#" onclick="submit(); return false;">here</a> to login directly.
+        </p>
+
+        <div align="center">
+          <h:form>
+            <table>
+              <tr>
+                <td>
+                  <h:outputLabel for="firstName" value="Firstname"/>
+                </td>
+                <td>
+                  <h:inputText id="firstName" size="25" value="#{registrationBean.firstName}"/>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <h:outputLabel for="lastName" value="Lastname"/>
+                </td>
+                <td>
+                  <h:inputText id="lastName" size="25" value="#{registrationBean.lastName}"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h:outputLabel for="eMail" value="E-Mail"/>
+                </td>
+                <td>
+                  <h:inputText id="eMail" size="25" value="#{registrationBean.eMail}"/>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <h:outputLabel for="login" value="Login"/>
+                </td>
+                <td>
+                  <h:inputText id="login" size="25" value="#{registrationBean.userName}"/>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <h:outputLabel value="Password" for="password"/>
+                </td>
+                <td>
+                  <h:inputSecret id="password" type="password" size="25"
+                                 value="#{registrationBean.password}"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h:outputLabel value="Password repeat" for="passwordrepeat"/>
+                </td>
+                <td>
+                  <h:inputSecret id="passwordrepeat" type="password" size="25"
+                                 value="#{registrationBean.passwordRepeat}"/>
+                </td>
+              </tr>
+
+              <tr>
+                <td></td>
+                <td><h:commandButton value="submit" action="#{registrationBean.register}"/></td>
+              </tr>
+            </table>
+          </h:form>
+        </div>
+      </div>
+
+      <div id="menu">
+        <h:form style="display: inline"><h:commandLink
+          action="welcome.xhtml?faces-redirect=true">Demo Home</h:commandLink></h:form>
+        |
+        <a href="#" onclick="openConsole(); return false;">Monitoring Console</a>
+        |
+        <a href="http://jetm.void.fm">JETM Home</a>
+      </div>
+    </div>
+
+  </h:body>
+</f:view>
+<!-- Last modified  $Date: 2006/10/06 21:38:12 $ -->
+</html>

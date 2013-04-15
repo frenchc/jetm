@@ -32,6 +32,11 @@
 
 package etm.demo.webapp.javaee.web.registration;
 
+import etm.demo.webapp.javaee.domain.user.UserManagementService;
+import etm.demo.webapp.javaee.web.core.Outcome;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -42,5 +47,71 @@ import javax.inject.Named;
  *
  */
 @Named
+@RequestScoped
 public class RegistrationBean {
+
+  @Inject
+  private UserManagementService service;
+
+
+  private String firstName;
+  private String lastName;
+  private String eMail;
+  private String userName;
+  private String password;
+  private String passwordRepeat;
+
+  public String geteMail() {
+    return eMail;
+  }
+
+  public void seteMail(String aEMail) {
+    eMail = aEMail;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String aFirstName) {
+    firstName = aFirstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String aLastName) {
+    lastName = aLastName;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String aPassword) {
+    password = aPassword;
+  }
+
+  public String getPasswordRepeat() {
+    return passwordRepeat;
+  }
+
+  public void setPasswordRepeat(String aPasswordRepeat) {
+    passwordRepeat = aPasswordRepeat;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String aUserName) {
+    userName = aUserName;
+  }
+
+  public Outcome register() {
+    service.create(firstName, lastName, userName, password, eMail);
+
+    return Outcome.SUCCESS;
+  }
 }

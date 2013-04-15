@@ -32,8 +32,10 @@
 
 package etm.demo.webapp.javaee.domain.user;
 
+import etm.demo.webapp.javaee.core.qualifier.Registered;
 import etm.demo.webapp.javaee.core.stereotype.Service;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.io.Serializable;
 
@@ -48,13 +50,16 @@ import java.io.Serializable;
 public class UserManagementService implements Serializable {
 
   private UserRepository userRepository;
+  private Event<User> eventSource;
 
   protected UserManagementService() {
   }
 
+
   @Inject
-  public UserManagementService(UserRepository aUserRepository) {
+  public UserManagementService(UserRepository aUserRepository, @Registered Event<User> aUserSource) {
     userRepository = aUserRepository;
+    eventSource = aUserSource;
   }
 
   public User authenticate(String username, String password) {
@@ -69,7 +74,9 @@ public class UserManagementService implements Serializable {
     user.setPassword(password);
     user.setEmail(email);
 
-    return userRepository.create(user);
+    User newUser = userRepository.create(user);
+    eventSource.fire(newUser);
+    return newUser;
   }
 
   public boolean isUnusedUserName(String userName) {
