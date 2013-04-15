@@ -7,4 +7,10 @@
     <interval-buffer interval="5000"/>
   </features>
 
+  <extension>
+    <plugin class="etm.contrib.integration.jee.jsf.EtmJsfPlugin">
+      <property name="componentMonitoring">true</property>
+    </plugin>
+  </extension>
+
 </jetm-config>

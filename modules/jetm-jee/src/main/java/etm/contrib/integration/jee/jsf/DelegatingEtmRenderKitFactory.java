@@ -33,23 +33,16 @@
 package etm.contrib.integration.jee.jsf;
 
 import etm.core.configuration.EtmManager;
+import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
-import javax.faces.render.Renderer;
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author void.fm
@@ -59,29 +52,40 @@ public class DelegatingEtmRenderKitFactory extends RenderKitFactory {
 
   private static final LogAdapter LOG = Log.getLog(DelegatingEtmRenderKitFactory.class);
 
+  private static final String CGLIB_DELEGATE_CLASS_NAME = "etm.contrib.integration.jee.jsf.renderkit.CglibDelegatingRenderKit";
 
-  private final RenderKitFactory delegate;
-  private final EtmMonitor etmMonitor;
+  private RenderKitFactory delegate;
 
   public DelegatingEtmRenderKitFactory(RenderKitFactory aKitFactory) {
+    // default value, may be overridden
     delegate = aKitFactory;
-    etmMonitor = EtmManager.getEtmMonitor();
 
-    LOG.debug("Activated " + getClass().getSimpleName() + ".");
+    if (!isEnabled()) {
+      LOG.info("JSF component monitoring disabled.");
+    } else if (isCglibAvailable()) {
+      try {
+        Class<RenderKitFactory> aClass = (Class<RenderKitFactory>) Class.forName(CGLIB_DELEGATE_CLASS_NAME);
+        Constructor<RenderKitFactory> constructor = aClass.getConstructor(new Class[]{RenderKitFactory.class});
+        delegate = constructor.newInstance(aKitFactory);
+
+        LOG.debug("Activated JSF component monitoring.");
+      } catch (Exception e) {
+        LOG.warn("Unable to create CGLIB proxy for " + aKitFactory.getClass() + ". Component monitoring disabled:" + e.getMessage());
+      }
+    } else {
+      LOG.warn("CGLIB not found. Component monitoring disabled.");
+    }
+  }
+
+
+  @Override
+  public void addRenderKit(String renderKitId, RenderKit renderKit) {
+    delegate.addRenderKit(renderKitId, renderKit);
   }
 
   @Override
-  public void addRenderKit(String s, RenderKit aRenderKit) {
-    Enhancer enhancer = new Enhancer();
-    enhancer.setSuperclass(aRenderKit.getClass());
-    enhancer.setCallback(new RenderKitInterceptor(aRenderKit));
-
-    delegate.addRenderKit(s, (RenderKit) enhancer.create());
-  }
-
-  @Override
-  public RenderKit getRenderKit(FacesContext aFacesContext, String s) {
-    return delegate.getRenderKit(aFacesContext, s);
+  public RenderKit getRenderKit(FacesContext context, String renderKitId) {
+    return delegate.getRenderKit(context, renderKitId);
   }
 
   @Override
@@ -91,82 +95,30 @@ public class DelegatingEtmRenderKitFactory extends RenderKitFactory {
 
   @Override
   public RenderKitFactory getWrapped() {
-    return delegate.getWrapped();
+    return delegate;
   }
 
+  protected Boolean isEnabled() {
+    Boolean enabled = false;
 
-  class RenderKitInterceptor implements MethodInterceptor {
-    private RenderKit target;
-    private Map<Renderer, Renderer> proxyCache = new ConcurrentHashMap<Renderer, Renderer>();
-
-
-    RenderKitInterceptor(RenderKit aTarget) {
-      target = aTarget;
-    }
-
-    @Override
-    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-      if (method.getName().equals("getRenderer")) {
-        Renderer renderer = (Renderer) method.invoke(target, args);
-        if (renderer == null) {
-          return null;
-        } else {
-          if (proxyCache.containsKey(renderer)) {
-            return proxyCache.get(renderer);
-          }
-
-          Renderer proxyInstance = createProxyIfPossible(renderer);
-          proxyCache.put(renderer, proxyInstance);
-
-          return proxyInstance;
-
-        }
-      } else {
-        return method.invoke(target, args);
+    EtmMonitor monitor = EtmManager.getEtmMonitor();
+    PluginMetaData pluginMetaData = monitor.getMetaData().getPluginMetaData(EtmJsfPlugin.class);
+    if (pluginMetaData != null) {
+      String obj = (String) pluginMetaData.getProperties().get(EtmJsfPlugin.CONFIG_COMPONENT_MONITORING);
+      if (obj != null) {
+        enabled = Boolean.parseBoolean(obj);
       }
     }
+    return enabled;
+  }
 
-    protected Renderer createProxyIfPossible(Renderer aRenderer) {
-      Enhancer enhancer = new Enhancer();
-      enhancer.setSuperclass(aRenderer.getClass());
-      enhancer.setCallback(new RenderEtmInterceptor(aRenderer));
-
-      return (Renderer) enhancer.create();
-
+  protected boolean isCglibAvailable() {
+    try {
+      Class.forName("net.sf.cglib.proxy.Enhancer");
+      return true;
+    } catch (ClassNotFoundException e) {
+      return false;
     }
   }
 
-  public class RenderEtmInterceptor implements MethodInterceptor {
-    private Renderer target;
-
-    public RenderEtmInterceptor(Renderer aTarget) {
-      target = aTarget;
-    }
-
-    @Override
-    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-      if (method.getName().equals("encodeBegin")) {
-        FacesContext context = (FacesContext) args[0];
-        UIComponent component = (UIComponent) args[1];
-        EtmPoint point = etmMonitor.createPoint("Render " + component.getClientId());
-        context.getAttributes().put("ETM__" + component.getClientId(), point);
-
-        return method.invoke(target, args);
-
-      } else if (method.getName().equals("encodeEnd")) {
-        try {
-          return method.invoke(target, args);
-        } finally {
-          FacesContext context = (FacesContext) args[0];
-          UIComponent component = (UIComponent) args[1];
-          EtmPoint point = (EtmPoint) context.getAttributes().get("ETM__" + component.getClientId());
-          if (point != null) {
-            point.collect();
-          }
-        }
-     } else {
-        return method.invoke(target, args);
-      }
-    }
-  }
 }

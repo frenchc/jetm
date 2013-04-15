@@ -44,7 +44,6 @@ import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
  * A JSF phase listener that monitors overall request processing
  * and execution time per phase. Defaults to request uri for
  * outer measurement point unless {@link NameInterceptingActionListener}
@@ -62,7 +61,7 @@ public class JsfPerformancePhaseListener implements PhaseListener {
   private static final LogAdapter LOG = Log.getLog(JsfPerformancePhaseListener.class);
 
   public JsfPerformancePhaseListener() {
-    LOG.debug("Activated JSF Phase Performance Monitoring.");
+    LOG.debug("Activated JSF phase performance monitoring.");
   }
 
   public void beforePhase(PhaseEvent event) {

@@ -35,6 +35,7 @@ package etm.core.metadata;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -138,6 +139,25 @@ public class EtmMonitorMetaData implements Serializable {
    */
   public List getPluginMetaData() {
     return pluginMetaData;
+  }
+
+
+  /**
+   * Returns the plugin Metadata for the given etmPlugin class. May be null if absent.
+   *
+   * @return The plugin metadata for the given plugin.
+   * @since 1.3.0
+   */
+  public PluginMetaData getPluginMetaData(Class etmPlugin) {
+    Iterator it = pluginMetaData.iterator();
+    while (it.hasNext()) {
+      PluginMetaData next = (PluginMetaData) it.next();
+      if (next.getImplementationClass().equals(etmPlugin)) {
+        return next;
+      }
+    }
+
+    return null;
   }
 
   public String toString() {

@@ -9,9 +9,9 @@
     <view-handler>etm.contrib.integration.jee.jsf.DelegatingEtmViewHandler</view-handler>
   </application>
 
-  <!--<factory>-->
-    <!--<render-kit-factory>etm.contrib.integration.jee.jsf.DelegatingEtmRenderKitFactory</render-kit-factory>-->
-  <!--</factory>-->
+  <factory>
+    <render-kit-factory>etm.contrib.integration.jee.jsf.DelegatingEtmRenderKitFactory</render-kit-factory>
+  </factory>
 
   <lifecycle>
     <phase-listener>etm.contrib.integration.jee.jsf.JsfPerformancePhaseListener</phase-listener>
