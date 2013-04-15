@@ -32,14 +32,24 @@
 
 package etm.contrib.integration.jee.jsf;
 
-import etm.contrib.integration.jee.jsf.renderkit.DelegatingEtmRenderKit;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
+import javax.faces.render.Renderer;
+import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author void.fm
@@ -51,15 +61,22 @@ public class DelegatingEtmRenderKitFactory extends RenderKitFactory {
 
 
   private final RenderKitFactory delegate;
+  private final EtmMonitor etmMonitor;
 
   public DelegatingEtmRenderKitFactory(RenderKitFactory aKitFactory) {
     delegate = aKitFactory;
+    etmMonitor = EtmManager.getEtmMonitor();
+
     LOG.debug("Activated " + getClass().getSimpleName() + ".");
   }
 
   @Override
   public void addRenderKit(String s, RenderKit aRenderKit) {
-    delegate.addRenderKit(s, new DelegatingEtmRenderKit(aRenderKit));
+    Enhancer enhancer = new Enhancer();
+    enhancer.setSuperclass(aRenderKit.getClass());
+    enhancer.setCallback(new RenderKitInterceptor(aRenderKit));
+
+    delegate.addRenderKit(s, (RenderKit) enhancer.create());
   }
 
   @Override
@@ -75,5 +92,81 @@ public class DelegatingEtmRenderKitFactory extends RenderKitFactory {
   @Override
   public RenderKitFactory getWrapped() {
     return delegate.getWrapped();
+  }
+
+
+  class RenderKitInterceptor implements MethodInterceptor {
+    private RenderKit target;
+    private Map<Renderer, Renderer> proxyCache = new ConcurrentHashMap<Renderer, Renderer>();
+
+
+    RenderKitInterceptor(RenderKit aTarget) {
+      target = aTarget;
+    }
+
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+      if (method.getName().equals("getRenderer")) {
+        Renderer renderer = (Renderer) method.invoke(target, args);
+        if (renderer == null) {
+          return null;
+        } else {
+          if (proxyCache.containsKey(renderer)) {
+            return proxyCache.get(renderer);
+          }
+
+          Renderer proxyInstance = createProxyIfPossible(renderer);
+          proxyCache.put(renderer, proxyInstance);
+
+          return proxyInstance;
+
+        }
+      } else {
+        return method.invoke(target, args);
+      }
+    }
+
+    protected Renderer createProxyIfPossible(Renderer aRenderer) {
+      Enhancer enhancer = new Enhancer();
+      enhancer.setSuperclass(aRenderer.getClass());
+      enhancer.setCallback(new RenderEtmInterceptor(aRenderer));
+
+      return (Renderer) enhancer.create();
+
+    }
+  }
+
+  public class RenderEtmInterceptor implements MethodInterceptor {
+    private Renderer target;
+
+    public RenderEtmInterceptor(Renderer aTarget) {
+      target = aTarget;
+    }
+
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+      if (method.getName().equals("encodeBegin")) {
+        FacesContext context = (FacesContext) args[0];
+        UIComponent component = (UIComponent) args[1];
+        EtmPoint point = etmMonitor.createPoint("Render " + component.getClientId());
+        context.getAttributes().put("ETM__" + component.getClientId(), point);
+
+        return method.invoke(target, args);
+
+      } else if (method.getName().equals("encodeEnd")) {
+        try {
+          return method.invoke(target, args);
+        } finally {
+          FacesContext context = (FacesContext) args[0];
+          UIComponent component = (UIComponent) args[1];
+          EtmPoint point = (EtmPoint) context.getAttributes().get("ETM__" + component.getClientId());
+          if (point != null) {
+            point.collect();
+          }
+        }
+     } else {
+        return method.invoke(target, args);
+      }
+    }
   }
 }

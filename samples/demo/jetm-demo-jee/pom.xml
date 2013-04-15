@@ -201,6 +201,13 @@
       <version>${version.hibernate.validator}</version>
     </dependency>
 
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>${version.cglib}</version>
+      <scope>compile</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>log4j</groupId>

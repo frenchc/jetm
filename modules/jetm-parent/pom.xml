@@ -20,6 +20,7 @@
     <version.aspectj>1.7.2</version.aspectj>
     <version.aspectwerkz>2.0</version.aspectwerkz>
     <version.jboss.aop>2.2.2.GA</version.jboss.aop>
+    <version.cglib>2.2</version.cglib>
 
 
     <version.geronimo.specs.servlet>1.0</version.geronimo.specs.servlet>
@@ -313,11 +314,17 @@
       </dependency>
 
       <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>${version.cglib}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
         <groupId>org.rrd4j</groupId>
         <artifactId>rrd4j</artifactId>
         <version>${version.rrd4j}</version>
         <scope>provided</scope>
-
       </dependency>
 
       <dependency>
