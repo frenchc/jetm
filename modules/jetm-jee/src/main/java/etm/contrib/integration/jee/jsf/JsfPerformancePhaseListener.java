@@ -34,6 +34,8 @@ package etm.contrib.integration.jee.jsf;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmPoint;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -42,14 +44,26 @@ import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ *
+ * A JSF phase listener that monitors overall request processing
+ * and execution time per phase. Defaults to request uri for
+ * outer measurement point unless {@link NameInterceptingActionListener}
+ * detects a valid action name.
+ *
  * @author void.fm
  * @version $Revision: 372 $
  */
 public class JsfPerformancePhaseListener implements PhaseListener {
 
-  public static final String ROOT_ETM_POINT = "ETM__RequestPoint";
+
+  public static final String ROOT_ETM_POINT = "ETM__RootRequestPoint";
   private static final String CURRENT_PHASE_POINT = "ETM__CurrentPhasePoint";
 
+  private static final LogAdapter LOG = Log.getLog(JsfPerformancePhaseListener.class);
+
+  public JsfPerformancePhaseListener() {
+    LOG.debug("Activated JSF Phase Performance Monitoring.");
+  }
 
   public void beforePhase(PhaseEvent event) {
     FacesContext facesContext = event.getFacesContext();
@@ -61,23 +75,27 @@ public class JsfPerformancePhaseListener implements PhaseListener {
 
     EtmPoint oldPoint = (EtmPoint) facesContext.getAttributes().get(CURRENT_PHASE_POINT);
     if (oldPoint != null) {
+      // do some cleanup, should never happen actually
       oldPoint.alterName(oldPoint.getName() + " - uncollected");
       oldPoint.collect();
     }
 
-    EtmPoint point = EtmManager.getEtmMonitor().createPoint("JSF Phase " + event.getPhaseId().getOrdinal()
-      + " - " + String.valueOf(event.getPhaseId()));
+    String symbolicName = "JSF Phase " + event.getPhaseId().getOrdinal() + " - " + String.valueOf(event.getPhaseId());
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint(symbolicName);
     facesContext.getAttributes().put(CURRENT_PHASE_POINT, point);
   }
 
   public void afterPhase(PhaseEvent event) {
     FacesContext facesContext = event.getFacesContext();
+
+    // stop recording current phase time
     EtmPoint point = (EtmPoint) facesContext.getAttributes().get(CURRENT_PHASE_POINT);
     if (point != null) {
       point.collect();
       facesContext.getAttributes().put(CURRENT_PHASE_POINT, null);
     }
 
+    // stop recording request time if response complete or response rendered
     if (event.getFacesContext().getResponseComplete() || event.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
       EtmPoint requestPoint = (EtmPoint) facesContext.getAttributes().get(ROOT_ETM_POINT);
       if (requestPoint != null) {
@@ -94,7 +112,7 @@ public class JsfPerformancePhaseListener implements PhaseListener {
   protected String getDefaultRequestName(FacesContext context) {
     HttpServletRequest httpServletRequest = (HttpServletRequest) context.getExternalContext().getRequest();
     String request = httpServletRequest.getRequestURI();
-    int index = request.indexOf(';');
+    int index = request.indexOf(';'); // get rid of jession id's etc.
     if (index > 0) {
       request = request.substring(0, index);
     }

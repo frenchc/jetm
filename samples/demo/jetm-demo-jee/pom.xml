@@ -27,7 +27,7 @@
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.hibernate.validator>4.2.0.Final</version.hibernate.validator>
     <version.myfaces>2.1.10</version.myfaces>
-
+    <version.slf4j>1.6.4</version.slf4j>
   </properties>
 
   <build>
@@ -168,10 +168,6 @@
     </dependency>
 
 
-
-
-
-
     <dependency>
       <groupId>org.apache.openwebbeans</groupId>
       <artifactId>openwebbeans-jsf</artifactId>
@@ -205,6 +201,24 @@
       <version>${version.hibernate.validator}</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${version.log4j}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${version.slf4j}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${version.slf4j}</version>
+    </dependency>
 
 
   </dependencies>

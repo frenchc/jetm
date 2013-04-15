@@ -9,13 +9,18 @@
       <param name="ConversionPattern" value="%d{ISO8601} [%c{1}] %m%n"/>
     </layout>
   </appender>
+
   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
     <param name="Target" value="System.err"/>
-    <param name="Threshold" value="FATAL"/>
+    <param name="Threshold" value="DEBUG"/>
     <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d{ISO8601} [%c{1}] %m%n"/>
+      <param name="ConversionPattern" value="%d{ISO8601} [%p] [%x] [%t] [%c{1}] %m%n"/>
     </layout>
   </appender>
+
+  <category name="org.apache.commons">
+    <priority value="INFO"/>
+  </category>
 
   <category name="etm-raw-data">
     <priority value="INFO"/>

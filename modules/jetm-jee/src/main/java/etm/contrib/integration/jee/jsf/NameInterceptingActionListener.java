@@ -32,6 +32,7 @@
 
 package etm.contrib.integration.jee.jsf;
 
+import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 
 import javax.el.MethodExpression;
@@ -45,6 +46,10 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 /**
+ *
+ * Renames request parent etm point to current executed action
+ * and delegates action event to delegate.
+ *
  * @author void.fm
  * @version $Revision: 372 $
  */
@@ -64,15 +69,16 @@ public class NameInterceptingActionListener implements ActionListener {
       MethodExpression methodExpression = null;
       if (component instanceof ActionSource2) {
         methodExpression = ((ActionSource2) component).getActionExpression();
-        etmRootPoint.alterName("JSF Action " + methodExpression.getExpressionString());
+        if (methodExpression != null) {
+          etmRootPoint.alterName("JSF Action " + methodExpression.getExpressionString());
+        }
       }
       if (methodExpression == null && component instanceof ActionSource) {
         MethodBinding methodBinding = ((ActionSource) component).getAction();
-        etmRootPoint.alterName("JSF Action " + methodBinding.getExpressionString());
-
-      }
-
-
+        if (methodBinding != null) {
+          etmRootPoint.alterName("JSF Action " + methodBinding.getExpressionString());
+        }
+     }
     }
 
     delegate.processAction(actionEvent);
