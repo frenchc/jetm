@@ -366,6 +366,11 @@
       <id>JBoss Releases</id>
       <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
     </repository>
+    <repository>
+      <id>ok-repo</id>
+      <url>http://repo.openknowledge.de</url>
+    </repository>
+
   </repositories>
 
 
