@@ -33,7 +33,6 @@
 package etm.contrib.integration.jee.jsf;
 
 import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
@@ -58,11 +57,9 @@ public class DelegatingEtmViewHandler extends ViewHandler {
   private static final LogAdapter LOG = Log.getLog(DelegatingEtmViewHandler.class);
 
   private ViewHandler delegate;
-  private EtmMonitor etmMonitor;
 
   public DelegatingEtmViewHandler(ViewHandler aDelegate) {
     delegate = aDelegate;
-    etmMonitor = EtmManager.getEtmMonitor();
     LOG.debug("Activated " + getClass().getSimpleName() + ".");
   }
 
@@ -128,7 +125,7 @@ public class DelegatingEtmViewHandler extends ViewHandler {
 
   @Override
   public UIViewRoot createView(FacesContext aFacesContext, String s) {
-    EtmPoint point = etmMonitor.createPoint("Create view " + s);
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint("Create view " + s);
     try {
       return delegate.createView(aFacesContext, s);
     } finally {
@@ -148,7 +145,7 @@ public class DelegatingEtmViewHandler extends ViewHandler {
 
   @Override
   public void renderView(FacesContext aFacesContext, UIViewRoot aUIViewRoot) throws IOException, FacesException {
-    EtmPoint point = etmMonitor.createPoint("Render view " + aUIViewRoot.getViewId());
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint("Render view " + aUIViewRoot.getViewId());
     try {
       delegate.renderView(aFacesContext, aUIViewRoot);
     } finally {
@@ -158,7 +155,7 @@ public class DelegatingEtmViewHandler extends ViewHandler {
 
   @Override
   public UIViewRoot restoreView(FacesContext aFacesContext, String s) {
-    EtmPoint point = etmMonitor.createPoint("Restore view " + s);
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint("Restore view " + s);
     try {
       return delegate.restoreView(aFacesContext, s);
     } finally {
@@ -168,7 +165,7 @@ public class DelegatingEtmViewHandler extends ViewHandler {
 
   @Override
   public void writeState(FacesContext aFacesContext) throws IOException {
-    EtmPoint point = etmMonitor.createPoint("Write state");
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint("Write state");
     try {
       delegate.writeState(aFacesContext);
     } finally {

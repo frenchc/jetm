@@ -91,7 +91,7 @@ public class JsfPerformancePhaseListener implements PhaseListener {
     EtmPoint point = (EtmPoint) facesContext.getAttributes().get(CURRENT_PHASE_POINT);
     if (point != null) {
       point.collect();
-      facesContext.getAttributes().put(CURRENT_PHASE_POINT, null);
+      facesContext.getAttributes().remove(CURRENT_PHASE_POINT);
     }
 
     // stop recording request time if response complete or response rendered
@@ -99,6 +99,7 @@ public class JsfPerformancePhaseListener implements PhaseListener {
       EtmPoint requestPoint = (EtmPoint) facesContext.getAttributes().get(ROOT_ETM_POINT);
       if (requestPoint != null) {
         requestPoint.collect();
+        facesContext.getAttributes().remove(ROOT_ETM_POINT);
       }
 
     }

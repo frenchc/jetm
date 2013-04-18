@@ -1,9 +1,8 @@
 package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
 
-import java.lang.annotation.Annotation;
-
 import javax.enterprise.inject.spi.AnnotatedCallable;
 import javax.enterprise.inject.spi.AnnotatedParameter;
+import java.lang.annotation.Annotation;
 
 /**
  * This implementation can be used to modify the scanned annotations of a CDI bean during annotation-processing

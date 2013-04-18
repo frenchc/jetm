@@ -1,10 +1,9 @@
 package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedType;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 
 /**
  * This implementation can be used to modify the scanned annotations of a CDI bean during annotation-processing

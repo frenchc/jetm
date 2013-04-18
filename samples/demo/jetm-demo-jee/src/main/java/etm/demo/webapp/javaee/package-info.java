@@ -31,7 +31,9 @@
  */
 
 @ApplyTo(
-  qualifiedApi = {Service.class, Repository.class, Named.class}
+  qualifiedApi = {Service.class, Repository.class},
+  qualifiedMethod = {Named.class, Model.class}
+
 )
 package etm.demo.webapp.javaee;
 
@@ -39,5 +41,5 @@ import etm.contrib.integration.cdi.ApplyTo;
 import etm.demo.webapp.javaee.core.stereotype.Repository;
 import etm.demo.webapp.javaee.core.stereotype.Service;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Model;
 import javax.inject.Named;

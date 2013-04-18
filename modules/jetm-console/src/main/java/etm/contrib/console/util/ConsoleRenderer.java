@@ -319,7 +319,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write(link);
     response.write("\" >");
 
-    response.write(aPoint.getName());
+    response.write(encodeHtml(aPoint.getName()));
     response.write("</a></div>");
   }
 
@@ -360,7 +360,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
       response.write("<div class=\"parentname\" >");
     }
 
-    response.write(aElement.getName());
+    response.write(encodeHtml(aElement.getName()));
 
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
@@ -470,6 +470,39 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     }
 
     response.write("</div>");
+  }
+
+  protected String encodeHtml(String text) {
+    StringBuffer result = new StringBuffer();
+    char[] chars = text.toCharArray();
+    for (int i = 0; i < chars.length; i++) {
+      char c = chars[i];
+      switch(c) {
+        case '&':
+          result.append("&amp;");
+          break;
+        case '<':
+          result.append("&lt;");
+          break;
+        case '>':
+          result.append("&gt;");
+          break;
+        case '"':
+          result.append("&quot;");
+          break;
+        default:
+          int charAsInt = (int) c;
+          if (charAsInt > 0x80) {
+            result.append("&#");
+            result.append(charAsInt);
+            result.append(';');
+          } else {
+            result.append(c);
+          }
+      }
+    }
+
+    return result.toString();
   }
 
   protected class SortedExecutionGraph implements Aggregate {

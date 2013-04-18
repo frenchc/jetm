@@ -48,6 +48,7 @@ import javax.enterprise.event.Observes;
 @Service
 public class MessagingService {
 
+
   public void onNewUser(@Observes @Registered User user) {
     sendMail(user, "registration");
   }

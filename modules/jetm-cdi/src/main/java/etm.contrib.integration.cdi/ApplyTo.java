@@ -33,6 +33,7 @@
 package etm.contrib.integration.cdi;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -43,7 +44,7 @@ import java.lang.annotation.Target;
  * A package level annotation that enables measurement for a given
  * set of qualifier for the give package and below. Differentiates performance
  * monitoring between all public methods ({@link #qualifiedApi()} / {@link #apiPattern()})
- * and all public methods expect attributes (no setter/getter methods
+ * and all public methods except attributes (no setter/getter methods
  * ({@link #qualifiedMethod()} / {@link #methodPattern()}).
  * <p/>
  * Example package-info.java:
@@ -61,6 +62,7 @@ import java.lang.annotation.Target;
  * @version $Revision: 3373 $
  * @since 1.3.0
  */
+@Documented
 @Target({ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited

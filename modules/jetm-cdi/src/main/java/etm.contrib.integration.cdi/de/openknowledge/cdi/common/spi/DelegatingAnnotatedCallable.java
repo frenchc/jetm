@@ -1,13 +1,12 @@
 package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
 
+import javax.enterprise.inject.spi.AnnotatedCallable;
+import javax.enterprise.inject.spi.AnnotatedParameter;
+import javax.enterprise.inject.spi.AnnotatedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.enterprise.inject.spi.AnnotatedCallable;
-import javax.enterprise.inject.spi.AnnotatedParameter;
-import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
  * This implementation can be used to modify the scanned annotations of a CDI bean during annotation-processing
@@ -39,20 +38,22 @@ import javax.enterprise.inject.spi.AnnotatedType;
 public class DelegatingAnnotatedCallable<T, M extends Member> extends DelegatingAnnotatedMember<T, M>
   implements AnnotatedCallable<T> {
 
-  private AnnotatedCallable<T> delegate;
+  private final List<AnnotatedParameter<T>> parameters;
 
   public DelegatingAnnotatedCallable(AnnotatedType<T> declaringType,
                                      AnnotatedCallable<T> delegateCallable,
                                      Annotation... additionalAnnotations) {
     super(declaringType, delegateCallable, additionalAnnotations);
-    delegate = delegateCallable;
-  }
-
-  public List<AnnotatedParameter<T>> getParameters() {
-    List<AnnotatedParameter<T>> parameters = new ArrayList<AnnotatedParameter<T>>();
-    for (AnnotatedParameter<T> annotatedParameter : delegate.getParameters()) {
+    parameters = new ArrayList<AnnotatedParameter<T>>();
+    for (AnnotatedParameter<T> annotatedParameter : delegateCallable.getParameters()) {
       parameters.add(processAnnotatedParameter(annotatedParameter));
     }
+  }
+
+
+
+  public List<AnnotatedParameter<T>> getParameters() {
+
     return parameters;
   }
 

@@ -22,6 +22,11 @@
     <priority value="INFO"/>
   </category>
 
+  <category name="org.jboss">
+    <priority value="INFO"/>
+  </category>
+
+
   <category name="etm-raw-data">
     <priority value="INFO"/>
     <appender-ref ref="ETM_LOG"/>

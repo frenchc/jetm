@@ -16,14 +16,13 @@
 
 package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
 
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This implementation can be used to modify the scanned annotations of a CDI bean during annotation-processing
@@ -52,8 +51,8 @@ import javax.enterprise.inject.spi.AnnotatedType;
  *
  *   private Annotation[] additionalAnnotations;
  *
- *   public MyAnnotatedType(AnnotatedType<T> delegate, Annotation... additionalAnnotations) {
- *     super(delegate, additionalAnnotations);
+ *   public MyAnnotatedType(AnnotatedType<T> typeDelegate, Annotation... additionalAnnotations) {
+ *     super(typeDelegate, additionalAnnotations);
  *     this.additionalAnnotations = additionalAnnotations;
  *   }
  *
@@ -67,38 +66,49 @@ import javax.enterprise.inject.spi.AnnotatedType;
  */
 public class DelegatingAnnotatedType<T> extends DelegatingAnnotated implements AnnotatedType<T> {
 
-  private AnnotatedType<T> delegate;
+  private final Set<AnnotatedMethod<? super T>> methods;
+  private final Set<AnnotatedConstructor<T>> constructors;
+  private final Set<AnnotatedField<? super T>> fields;
 
   public DelegatingAnnotatedType(AnnotatedType<T> delegateType, Annotation... additionalAnnotations) {
     super(delegateType, additionalAnnotations);
-    delegate = delegateType;
+
+    constructors = new HashSet<AnnotatedConstructor<T>>();
+    for (AnnotatedConstructor<T> constructor : delegateType.getConstructors()) {
+      constructors.add(processAnnotatedConstructor(constructor));
+    }
+
+
+    methods = new HashSet<AnnotatedMethod<? super T>>();
+    for (AnnotatedMethod<? super T> method : delegateType.getMethods()) {
+      methods.add(processAnnotatedMethod(method));
+    }
+
+    fields = new HashSet<AnnotatedField<? super T>>();
+    for (AnnotatedField<? super T> field : delegateType.getFields()) {
+      fields.add(processAnnotatedField(field));
+    }
   }
 
   public Class<T> getJavaClass() {
-    return delegate.getJavaClass();
+    return getDelegate().getJavaClass();
+  }
+
+  @Override
+  public AnnotatedType<T> getDelegate() {
+    return (AnnotatedType<T>) super.getDelegate();
   }
 
   public Set<AnnotatedConstructor<T>> getConstructors() {
-    Set<AnnotatedConstructor<T>> constructors = new HashSet<AnnotatedConstructor<T>>();
-    for (AnnotatedConstructor<T> constructor : delegate.getConstructors()) {
-      constructors.add(processAnnotatedConstructor(constructor));
-    }
     return constructors;
   }
 
+
   public Set<AnnotatedMethod<? super T>> getMethods() {
-    Set<AnnotatedMethod<? super T>> methods = new HashSet<AnnotatedMethod<? super T>>();
-    for (AnnotatedMethod<? super T> method : delegate.getMethods()) {
-      methods.add(processAnnotatedMethod(method));
-    }
     return methods;
   }
 
   public Set<AnnotatedField<? super T>> getFields() {
-    Set<AnnotatedField<? super T>> fields = new HashSet<AnnotatedField<? super T>>();
-    for (AnnotatedField<? super T> field : delegate.getFields()) {
-      fields.add(processAnnotatedField(field));
-    }
     return fields;
   }
 

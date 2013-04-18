@@ -59,9 +59,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.util.AnnotationLiteral;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,7 +82,7 @@ public class QualifiedEtmExtension implements Extension {
   private boolean delayedAutoStart;
   private EtmMonitor etmMonitor;
 
-  private ApplyToResolver resolver = new ApplyToResolver();
+  private ApplyToResolver resolver;
 
   public void beforeScan(@Observes BeforeBeanDiscovery event) {
     InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_CONFIG_FILE);
@@ -102,6 +100,9 @@ public class QualifiedEtmExtension implements Extension {
     } catch (Exception e) {
       throw new EtmException(e);
     }
+
+    resolver = new ApplyToResolver();
+
   }
 
   public void afterScan(@Observes AfterBeanDiscovery event, BeanManager bm) {
@@ -135,10 +136,12 @@ public class QualifiedEtmExtension implements Extension {
       AnnotationLiteral<Measure> annotationLiteral = new AnnotationLiteral<Measure>() {
       };
       if (resolver.isQualifiedApiType(annotatedType)) {
+        LOG.debug("Adding public API performance monitoring to " + annotatedType.getJavaClass());
         event.setAnnotatedType(new DelegatingAnnotatedType<T>(annotatedType, annotationLiteral));
 
       } else if (resolver.isQualifiedMethodType(annotatedType)) {
-        event.setAnnotatedType(new ApplyToDelegatingAnnotatedType<T>(annotatedType));
+        LOG.debug("Adding public method performance monitoring to " + annotatedType.getJavaClass());
+        event.setAnnotatedType(new PublicMethodApplyToDelegatingAnnotatedType<T>(annotatedType));
       }
     }
   }
@@ -193,9 +196,16 @@ public class QualifiedEtmExtension implements Extension {
 
     private Map<String, ApplyTo> cache = new HashMap<String, ApplyTo>();
 
+    ApplyToResolver() {
+      // preload packages
+      Package[] packages = Package.getPackages();
+      for (Package pkg : packages) {
+        registerApplyToIfAppropriate(pkg.getName(), pkg.getAnnotation(ApplyTo.class));
+      }
+    }
 
     protected <T> boolean isQualifiedApiType(AnnotatedType<T> type) {
-      ApplyTo applyTo = findApplyTo(type.getJavaClass().getPackage().getName(), type);
+      ApplyTo applyTo = findApplyTo(type.getJavaClass().getPackage().getName());
 
       if (applyTo != null) {
         for (Class<? extends Annotation> t : applyTo.qualifiedApi()) {
@@ -209,7 +219,7 @@ public class QualifiedEtmExtension implements Extension {
     }
 
     protected <T> boolean isQualifiedMethodType(AnnotatedType<T> type) {
-      ApplyTo applyTo = findApplyTo(type.getJavaClass().getPackage().getName(), type);
+      ApplyTo applyTo = findApplyTo(type.getJavaClass().getPackage().getName());
 
       if (applyTo != null) {
         for (Class<? extends Annotation> t : applyTo.qualifiedMethod()) {
@@ -223,46 +233,45 @@ public class QualifiedEtmExtension implements Extension {
     }
 
 
-    protected <T> ApplyTo findApplyTo(String packageName, AnnotatedType<T> type) {
-      if (cache.containsKey(packageName)) {
-        return cache.get(packageName);
-      } else {
-        List<String> packages = new ArrayList<String>();
+    protected boolean registerApplyToIfAppropriate(String packageName, ApplyTo annotation) {
+      if (annotation != null) {
+        LOG.info("Using " + annotation + " for " + packageName + " and above.");
+        cache.put(packageName, annotation);
 
-        ApplyTo result = recursiveSearch(packageName, packages);
-        for (String pkg : packages) {
-          cache.put(pkg, result);
+        Package[] packages = Package.getPackages();
+        for (Package pkg : packages) {
+          String name = pkg.getName();
+
+          if (name.startsWith(packageName) && !cache.containsKey(name)) {
+            cache.put(name, annotation);
+          }
         }
-
-        // now try again
-        return findApplyTo(packageName, type);
+        return true;
       }
+      return false;
     }
 
-    private ApplyTo recursiveSearch(String packageName, List<String> aPackages) {
-      aPackages.add(packageName);
-
-      ApplyTo cached = cache.get(packageName);
-
-      if (cached != null) {
-        return cached;
-      }
-
-      Package aPackage = Package.getPackage(packageName);
-
-      if (aPackage != null) {
-        if (aPackage.isAnnotationPresent(ApplyTo.class)) {
-          ApplyTo annotation = aPackage.getAnnotation(ApplyTo.class);
-          LOG.info("Using " + annotation + " for " + aPackage.getName() + " and above.");
-          return annotation;
+    protected <T> ApplyTo findApplyTo(String packageName) {
+      while (packageName != null) {
+        ApplyTo applyTo = cache.get(packageName);
+        if (applyTo != null) {
+          return applyTo;
+        } else {
+          try {
+            Class<?> aClass = Class.forName(packageName + ".package-info");
+            ApplyTo annotation = aClass.getAnnotation(ApplyTo.class);
+            registerApplyToIfAppropriate(packageName, annotation);
+            if (annotation != null) {
+              return annotation;
+            }
+          } catch (ClassNotFoundException e) {
+            // ignored
+          }
         }
-      }
+        packageName = getParentPackage(packageName);
 
-      if (packageName.contains(".")) {
-        return recursiveSearch(getParentPackage(packageName), aPackages);
-      } else {
-        return null;
       }
+      return null;
     }
 
     protected String getParentPackage(String aPackage) {
@@ -275,18 +284,24 @@ public class QualifiedEtmExtension implements Extension {
 
   }
 
-  static class ApplyToDelegatingAnnotatedType<T> extends DelegatingAnnotatedType<T> {
+  static class PublicMethodApplyToDelegatingAnnotatedType<T> extends DelegatingAnnotatedType<T> {
 
-    public ApplyToDelegatingAnnotatedType(AnnotatedType<T> delegateType) {
+    private Measure defaultMeasureAttribute;
+
+    public PublicMethodApplyToDelegatingAnnotatedType(AnnotatedType<T> delegateType) {
       super(delegateType);
+      defaultMeasureAttribute = delegateType.getAnnotation(Measure.class);
     }
 
     protected AnnotatedMethod<? super T> processAnnotatedMethod(AnnotatedMethod<? super T> method) {
       // TODO
       String name = method.getJavaMember().getName();
-      if (!name.startsWith("get") && !name.startsWith("set") &&
+      if (defaultMeasureAttribute == null &&
+        !name.startsWith("get") && !name.startsWith("set") &&
         !name.startsWith("is") && !method.isAnnotationPresent(Measure.class)) {
-        return new DelegatingAnnotatedMethod(this, method, new AnnotationLiteral<Measure>() {});
+        LOG.debug("Public Method Monitoring enabled for " + method.getJavaMember());
+        return new DelegatingAnnotatedMethod(this, method, new AnnotationLiteral<Measure>() {
+        });
       } else {
         return method;
       }

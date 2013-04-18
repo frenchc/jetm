@@ -1,10 +1,9 @@
 package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Member;
-
 import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.AnnotatedType;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
 
 /**
  * An implementation of {@link AnnotatedMember} that delegates and the superclass of various implementations

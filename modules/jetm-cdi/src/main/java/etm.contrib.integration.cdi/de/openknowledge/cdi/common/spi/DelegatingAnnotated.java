@@ -16,14 +16,13 @@
 
 package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
 
+import javax.enterprise.inject.spi.Annotated;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import javax.enterprise.inject.spi.Annotated;
 
 /**
  * An implementation of {@link Annotated} that delegates and the superclass of various implementations
@@ -35,8 +34,7 @@ public class DelegatingAnnotated {
 
   private Annotated delegate;
   private Map<Class<? extends Annotation>, Annotation> additionalAnnotations;
-  private Map<Class<? extends Annotation>, Annotation> removedAnnotations =
-    new HashMap<Class<? extends Annotation>, Annotation>();
+  private Map<Class<? extends Annotation>, Annotation> removedAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
 
   public DelegatingAnnotated(Annotated annotated, Annotation... annotationsToAdd) {
     delegate = annotated;

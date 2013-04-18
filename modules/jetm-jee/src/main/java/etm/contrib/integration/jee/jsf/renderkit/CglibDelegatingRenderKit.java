@@ -33,7 +33,6 @@
 package etm.contrib.integration.jee.jsf.renderkit;
 
 import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -56,11 +55,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CglibDelegatingRenderKit extends RenderKitFactory {
 
   private final RenderKitFactory delegate;
-  private final EtmMonitor etmMonitor;
 
   public CglibDelegatingRenderKit(RenderKitFactory aDelegate) {
     delegate = aDelegate;
-    etmMonitor = EtmManager.getEtmMonitor();
   }
 
   @Override
@@ -141,7 +138,7 @@ public class CglibDelegatingRenderKit extends RenderKitFactory {
       if (method.getName().equals("encodeBegin")) {
         FacesContext context = (FacesContext) args[0];
         UIComponent component = (UIComponent) args[1];
-        EtmPoint point = etmMonitor.createPoint("Render " + component.getClientId());
+        EtmPoint point = EtmManager.getEtmMonitor().createPoint("Render " + component.getClientId());
         context.getAttributes().put("ETM__" + component.getClientId(), point);
 
         return method.invoke(target, args);

@@ -23,11 +23,16 @@
 
   <properties>
     <version.owb>1.1.8</version.owb>
+    <version.weld>1.1.11.Final</version.weld>
+    <version.weld.api>1.1.Final</version.weld.api>
+
+    <version.weld.spi>1.1.Final</version.weld.spi>
+
     <version.juel>2.2.6</version.juel>
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.hibernate.validator>4.2.0.Final</version.hibernate.validator>
     <version.myfaces>2.1.10</version.myfaces>
-    <version.slf4j>1.6.4</version.slf4j>
+    <version.slf4j>1.7.2</version.slf4j>
   </properties>
 
   <build>
@@ -168,28 +173,54 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- comment out for owb -->
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core</artifactId>
+      <version>${version.weld}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-api</artifactId>
+      <version>${version.weld.api}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-spi</artifactId>
+      <version>${version.weld.spi}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld.servlet</groupId>
+      <artifactId>weld-servlet-core</artifactId>
+      <version>${version.weld}</version>
+    </dependency>
 
-    <dependency>
-      <groupId>org.apache.openwebbeans</groupId>
-      <artifactId>openwebbeans-jsf</artifactId>
-      <version>${version.owb}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openwebbeans</groupId>
-      <artifactId>openwebbeans-impl</artifactId>
-      <version>${version.owb}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openwebbeans</groupId>
-      <artifactId>openwebbeans-web</artifactId>
-      <version>${version.owb}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openwebbeans</groupId>
-      <artifactId>openwebbeans-spi</artifactId>
-      <version>${version.owb}</version>
-    </dependency>
+    <!-- end comment out for owb -->
 
+    <!-- comment out for weld -->
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.openwebbeans</groupId>-->
+      <!--<artifactId>openwebbeans-jsf</artifactId>-->
+      <!--<version>${version.owb}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.openwebbeans</groupId>-->
+      <!--<artifactId>openwebbeans-impl</artifactId>-->
+      <!--<version>${version.owb}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.openwebbeans</groupId>-->
+      <!--<artifactId>openwebbeans-web</artifactId>-->
+      <!--<version>${version.owb}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.openwebbeans</groupId>-->
+      <!--<artifactId>openwebbeans-spi</artifactId>-->
+      <!--<version>${version.owb}</version>-->
+    <!--</dependency>-->
+
+    <!-- end comment out for weld -->
 
     <dependency>
       <groupId>javax.validation</groupId>

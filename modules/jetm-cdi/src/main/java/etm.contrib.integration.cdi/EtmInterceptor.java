@@ -32,18 +32,21 @@
 
 package etm.contrib.integration.cdi;
 
-import etm.core.monitor.EtmMonitor;
+import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmPoint;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
  * Our CDI interceptor for public method monitoring.
  *
  * @author void.fm
@@ -53,20 +56,30 @@ import java.io.Serializable;
 @Interceptor
 @Measure
 public class EtmInterceptor implements Serializable {
-  @Inject
-  private EtmMonitor monitor;
+
+
+
+  private Map<Method, String> methodNameCache = new ConcurrentHashMap<Method, String>();
+  private Map<Class, String> classNameCache = new ConcurrentHashMap<Class, String>();
+
+  private Set<Class> proxyClasses = new HashSet<Class>();
+  private static final String[] PROXY_CLASSES = {"javassist.util.proxy.ProxyObject"};
+
+  public EtmInterceptor() {
+    for (String className : PROXY_CLASSES) {
+      try {
+        proxyClasses.add(Class.forName(className));
+      } catch (ClassNotFoundException e) {
+        // ignore, does not exist in classpath
+      }
+    }
+  }
 
   @AroundInvoke
   public Object measure(InvocationContext ctx) throws Exception {
+    String targetMethod = calculateMethodName(ctx);
 
-    Class<? extends Object> aClass = ctx.getTarget().getClass();
-    if (aClass.isSynthetic()) {
-      aClass = aClass.getSuperclass();
-    }
-
-    String targetMethod = aClass.getSimpleName() + ":" + ctx.getMethod().getName();
-
-    EtmPoint point = monitor.createPoint(targetMethod);
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint(targetMethod);
     try {
       return ctx.proceed();
     } catch (Exception e) {
@@ -80,14 +93,10 @@ public class EtmInterceptor implements Serializable {
 
   @PostConstruct
   public void measureCreate(InvocationContext ctx) {
-    Class<? extends Object> aClass = ctx.getTarget().getClass();
-    if (aClass.isSynthetic()) {
-      aClass = aClass.getSuperclass();
-    }
+    Class aClass = ctx.getTarget().getClass();
+    String targetMethod = calculateClassName(aClass) + ":<PostConstruct>";
 
-    String targetMethod = aClass.getSimpleName() + "<PostConstruct>";
-
-    EtmPoint point = monitor.createPoint(targetMethod);
+    EtmPoint point = EtmManager.getEtmMonitor().createPoint(targetMethod);
     try {
       ctx.proceed();
     } catch (Exception e) {
@@ -96,6 +105,61 @@ public class EtmInterceptor implements Serializable {
     } finally {
       point.collect();
     }
+  }
+
+  protected String calculateMethodName(InvocationContext ctx) {
+    Class targetClass = ctx.getTarget().getClass();
+    Method method = ctx.getMethod();
+
+    String name = methodNameCache.get(method);
+    if (name == null) {
+
+
+      StringBuilder buffer = new StringBuilder();
+      buffer.append(calculateClassName(targetClass));
+      buffer.append(':');
+      buffer.append(method.getName());
+      buffer.append('(');
+      Class<?>[] parameterTypes = method.getParameterTypes();
+      for (Class clazz : parameterTypes) {
+        buffer.append(clazz.getSimpleName());
+        buffer.append(",");
+      }
+      if (parameterTypes.length > 0) {
+        buffer.setCharAt(buffer.length() - 1, ')');
+      } else {
+        buffer.append(')');
+      }
+      name = buffer.toString();
+      methodNameCache.put(method, name);
+    }
+    return name;
+  }
+
+  protected String calculateClassName(Class clazz) {
+    String className = classNameCache.get(clazz);
+
+    if (className == null) {
+      if (clazz.isSynthetic() || isProxy(clazz)) {
+        className = clazz.getSuperclass().getSimpleName();
+      } else {
+        className = clazz.getSimpleName();
+      }
+      classNameCache.put(clazz, className);
+    }
+
+    return className;
+  }
+
+
+  private boolean isProxy(Class aTargetClass) {
+    for(Class clazz : aTargetClass.getInterfaces()) {
+      if (proxyClasses.contains(clazz)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

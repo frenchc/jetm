@@ -4,7 +4,7 @@
 <jetm-config type="nested" autostart="true">
 
   <features>
-    <interval-buffer interval="5000"/>
+    <threshold-buffer threshold="5000"/>
   </features>
 
   <extension>
