@@ -22,10 +22,9 @@
   <description>The Java Execution Time Measurement Library - Java EE Demo</description>
 
   <properties>
-    <version.owb>1.1.8</version.owb>
+    <version.owb>1.2.0-SNAPSHOT</version.owb>
     <version.weld>1.1.11.Final</version.weld>
     <version.weld.api>1.1.Final</version.weld.api>
-
     <version.weld.spi>1.1.Final</version.weld.spi>
 
     <version.juel>2.2.6</version.juel>
@@ -174,51 +173,51 @@
     </dependency>
 
     <!-- comment out for owb -->
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core</artifactId>
-      <version>${version.weld}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-api</artifactId>
-      <version>${version.weld.api}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-spi</artifactId>
-      <version>${version.weld.spi}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.weld.servlet</groupId>
-      <artifactId>weld-servlet-core</artifactId>
-      <version>${version.weld}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.jboss.weld</groupId>-->
+      <!--<artifactId>weld-core</artifactId>-->
+      <!--<version>${version.weld}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.jboss.weld</groupId>-->
+      <!--<artifactId>weld-api</artifactId>-->
+      <!--<version>${version.weld.api}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.jboss.weld</groupId>-->
+      <!--<artifactId>weld-spi</artifactId>-->
+      <!--<version>${version.weld.spi}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.jboss.weld.servlet</groupId>-->
+      <!--<artifactId>weld-servlet-core</artifactId>-->
+      <!--<version>${version.weld}</version>-->
+    <!--</dependency>-->
 
     <!-- end comment out for owb -->
 
     <!-- comment out for weld -->
 
-    <!--<dependency>-->
-      <!--<groupId>org.apache.openwebbeans</groupId>-->
-      <!--<artifactId>openwebbeans-jsf</artifactId>-->
-      <!--<version>${version.owb}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.apache.openwebbeans</groupId>-->
-      <!--<artifactId>openwebbeans-impl</artifactId>-->
-      <!--<version>${version.owb}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.apache.openwebbeans</groupId>-->
-      <!--<artifactId>openwebbeans-web</artifactId>-->
-      <!--<version>${version.owb}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.apache.openwebbeans</groupId>-->
-      <!--<artifactId>openwebbeans-spi</artifactId>-->
-      <!--<version>${version.owb}</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-jsf</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-impl</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-web</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openwebbeans</groupId>
+      <artifactId>openwebbeans-spi</artifactId>
+      <version>${version.owb}</version>
+    </dependency>
 
     <!-- end comment out for weld -->
 
@@ -261,5 +260,18 @@
 
 
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>ASF-SNAPSHOTS</id>
+      <url>https://repository.apache.org/content/groups/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 
 </project>

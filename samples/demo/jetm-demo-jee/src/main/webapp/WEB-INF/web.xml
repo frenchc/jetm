@@ -44,13 +44,13 @@
     <param-value>true</param-value>
   </context-param>
 
-  <!--<listener>-->
-    <!--<listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>-->
-  <!--</listener>-->
-
   <listener>
-    <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
   </listener>
+
+  <!--<listener>-->
+    <!--<listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>-->
+  <!--</listener>-->
 
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
