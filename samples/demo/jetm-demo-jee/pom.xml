@@ -35,6 +35,8 @@
   </properties>
 
   <build>
+    <finalName>/jetm-jee</finalName>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -78,6 +80,28 @@
             <version>${version.juel}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>com.googlecode.t7mp</groupId>
+        <artifactId>maven-t7-plugin</artifactId>
+        <version>0.9.12</version>
+        <configuration>
+          <systemProperties>
+            <faces.PROJECT_STAGE>Development</faces.PROJECT_STAGE>
+          </systemProperties>
+          <libs>
+            <jarArtifact>
+              <groupId>de.odysseus.juel</groupId>
+              <artifactId>juel-impl</artifactId>
+              <version>${version.juel}</version>
+            </jarArtifact>
+            <jarArtifact>
+              <groupId>de.odysseus.juel</groupId>
+              <artifactId>juel-api</artifactId>
+              <version>${version.juel}</version>
+            </jarArtifact>
+          </libs>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -174,24 +198,24 @@
 
     <!-- comment out for owb -->
     <!--<dependency>-->
-      <!--<groupId>org.jboss.weld</groupId>-->
-      <!--<artifactId>weld-core</artifactId>-->
-      <!--<version>${version.weld}</version>-->
+    <!--<groupId>org.jboss.weld</groupId>-->
+    <!--<artifactId>weld-core</artifactId>-->
+    <!--<version>${version.weld}</version>-->
     <!--</dependency>-->
     <!--<dependency>-->
-      <!--<groupId>org.jboss.weld</groupId>-->
-      <!--<artifactId>weld-api</artifactId>-->
-      <!--<version>${version.weld.api}</version>-->
+    <!--<groupId>org.jboss.weld</groupId>-->
+    <!--<artifactId>weld-api</artifactId>-->
+    <!--<version>${version.weld.api}</version>-->
     <!--</dependency>-->
     <!--<dependency>-->
-      <!--<groupId>org.jboss.weld</groupId>-->
-      <!--<artifactId>weld-spi</artifactId>-->
-      <!--<version>${version.weld.spi}</version>-->
+    <!--<groupId>org.jboss.weld</groupId>-->
+    <!--<artifactId>weld-spi</artifactId>-->
+    <!--<version>${version.weld.spi}</version>-->
     <!--</dependency>-->
     <!--<dependency>-->
-      <!--<groupId>org.jboss.weld.servlet</groupId>-->
-      <!--<artifactId>weld-servlet-core</artifactId>-->
-      <!--<version>${version.weld}</version>-->
+    <!--<groupId>org.jboss.weld.servlet</groupId>-->
+    <!--<artifactId>weld-servlet-core</artifactId>-->
+    <!--<version>${version.weld}</version>-->
     <!--</dependency>-->
 
     <!-- end comment out for owb -->

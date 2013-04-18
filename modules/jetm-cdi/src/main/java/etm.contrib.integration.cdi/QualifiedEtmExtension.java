@@ -233,24 +233,6 @@ public class QualifiedEtmExtension implements Extension {
     }
 
 
-    protected boolean registerApplyToIfAppropriate(String packageName, ApplyTo annotation) {
-      if (annotation != null) {
-        LOG.info("Using " + annotation + " for " + packageName + " and above.");
-        cache.put(packageName, annotation);
-
-        Package[] packages = Package.getPackages();
-        for (Package pkg : packages) {
-          String name = pkg.getName();
-
-          if (name.startsWith(packageName) && !cache.containsKey(name)) {
-            cache.put(name, annotation);
-          }
-        }
-        return true;
-      }
-      return false;
-    }
-
     protected <T> ApplyTo findApplyTo(String packageName) {
       while (packageName != null) {
         ApplyTo applyTo = cache.get(packageName);
@@ -272,6 +254,24 @@ public class QualifiedEtmExtension implements Extension {
 
       }
       return null;
+    }
+
+    protected boolean registerApplyToIfAppropriate(String packageName, ApplyTo annotation) {
+      if (annotation != null) {
+        LOG.info("Using " + annotation + " for " + packageName + " and above.");
+        cache.put(packageName, annotation);
+
+        Package[] packages = Package.getPackages();
+        for (Package pkg : packages) {
+          String name = pkg.getName();
+
+          if (name.startsWith(packageName) && !cache.containsKey(name)) {
+            cache.put(name, annotation);
+          }
+        }
+        return true;
+      }
+      return false;
     }
 
     protected String getParentPackage(String aPackage) {

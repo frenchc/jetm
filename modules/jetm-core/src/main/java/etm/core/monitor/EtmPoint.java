@@ -65,7 +65,7 @@ public interface EtmPoint {
 
   /**
    * Alters the name of the measurement point.
-   * This may be usefull for executions where the outcome of an operation
+   * This may be useful for executions where the outcome of an operation
    * may change the scope of the measurement, e.g. an Exception.
    *
    * @param newName The new name of the measurement point.
@@ -102,7 +102,7 @@ public interface EtmPoint {
   public long getEndTime();
 
   /**
-   * Returns the number of ticks per milisecond as provided by the used {@link etm.core.timer.ExecutionTimer}.
+   * Returns the number of ticks per millisecond as provided by the used {@link etm.core.timer.ExecutionTimer}.
    *
    * @return The number of ticks.
    */
@@ -126,7 +126,7 @@ public interface EtmPoint {
 
 
   /**
-   * Returns the time the measurement was startet.
+   * Returns the time the measurement was started.
    *
    * @return The time taken using <code>System.currentTimeMillis</code>
    */

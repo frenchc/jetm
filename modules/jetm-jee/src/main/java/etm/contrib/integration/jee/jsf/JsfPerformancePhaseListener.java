@@ -41,23 +41,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * A JSF phase listener that monitors overall request processing
- * and execution time per phase. Defaults to request uri for
- * outer measurement point unless {@link NameInterceptingActionListener}
- * detects a valid action name.
+ * and execution time per phase.
  *
  * @author void.fm
  * @version $Revision: 372 $
  */
 public class JsfPerformancePhaseListener implements PhaseListener {
 
-
-  public static final String ROOT_ETM_POINT = "ETM__RootRequestPoint";
   private static final String CURRENT_PHASE_POINT = "ETM__CurrentPhasePoint";
-
   private static final LogAdapter LOG = Log.getLog(JsfPerformancePhaseListener.class);
 
   public JsfPerformancePhaseListener() {
@@ -66,11 +60,6 @@ public class JsfPerformancePhaseListener implements PhaseListener {
 
   public void beforePhase(PhaseEvent event) {
     FacesContext facesContext = event.getFacesContext();
-
-    if (event.getPhaseId().equals(PhaseId.RESTORE_VIEW)) {
-      EtmPoint requestPoint = EtmManager.getEtmMonitor().createPoint(getDefaultRequestName(facesContext));
-      facesContext.getAttributes().put(ROOT_ETM_POINT, requestPoint);
-    }
 
     EtmPoint oldPoint = (EtmPoint) facesContext.getAttributes().get(CURRENT_PHASE_POINT);
     if (oldPoint != null) {
@@ -93,32 +82,12 @@ public class JsfPerformancePhaseListener implements PhaseListener {
       point.collect();
       facesContext.getAttributes().remove(CURRENT_PHASE_POINT);
     }
-
-    // stop recording request time if response complete or response rendered
-    if (event.getFacesContext().getResponseComplete() || event.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
-      EtmPoint requestPoint = (EtmPoint) facesContext.getAttributes().get(ROOT_ETM_POINT);
-      if (requestPoint != null) {
-        requestPoint.collect();
-        facesContext.getAttributes().remove(ROOT_ETM_POINT);
-      }
-
-    }
   }
 
   public PhaseId getPhaseId() {
     return PhaseId.ANY_PHASE;
   }
 
-  protected String getDefaultRequestName(FacesContext context) {
-    HttpServletRequest httpServletRequest = (HttpServletRequest) context.getExternalContext().getRequest();
-    String request = httpServletRequest.getRequestURI();
-    int index = request.indexOf(';'); // get rid of jession id's etc.
-    if (index > 0) {
-      request = request.substring(0, index);
-    }
 
-    String method = httpServletRequest.getMethod();
-    return "HTTP " + method + " " + request;
-  }
 
 }

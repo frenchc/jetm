@@ -57,8 +57,6 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  * @see EtmMonitor
- * @deprecated Please use {@link etm.core.monitor.EtmMonitor#createPoint(String)} instead. Will be made
- *             package visible with JETM 2.0.0.
  */
 
 public class MeasurementPoint implements EtmPoint {
@@ -82,10 +80,12 @@ public class MeasurementPoint implements EtmPoint {
    * @param aName    The name of this measurement point, may be null at construction time.
    *                 In this case you may need to set the name using {@link #alterName(String)}
    *                 before calling {@link #collect()}.
+   * @deprecated Please use {@link etm.core.monitor.EtmMonitor#createPoint(String)} instead. Will be made
+   *             package visible with JETM 2.0.0.
    */
 
   public MeasurementPoint(EtmMonitor aMonitor, String aName) {
-    // will be removed with JETM 2.0.0
+    // will be made package visible with JETM 2.0.0
     monitor = (EtmMonitorSupport) aMonitor;
     name = aName;
     startTimeMillis = System.currentTimeMillis();
@@ -166,7 +166,7 @@ public class MeasurementPoint implements EtmPoint {
   }
 
   /**
-   * Sets the number of ticks per millsecond.
+   * Sets the number of ticks per millisecond.
    *
    * @param aTicks The number of ticks.
    */
