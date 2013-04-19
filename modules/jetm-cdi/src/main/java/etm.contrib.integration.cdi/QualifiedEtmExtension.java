@@ -265,8 +265,12 @@ public class QualifiedEtmExtension implements Extension {
         for (Package pkg : packages) {
           String name = pkg.getName();
 
-          if (name.startsWith(packageName) && !cache.containsKey(name)) {
-            cache.put(name, annotation);
+          if (!name.equals(packageName) && name.startsWith(packageName) && !cache.containsKey(name)) {
+            if (pkg.isAnnotationPresent(ApplyTo.class)) {
+               registerApplyToIfAppropriate(name, pkg.getAnnotation(ApplyTo.class));
+            } else {
+              cache.put(name, annotation);
+            }
           }
         }
         return true;
