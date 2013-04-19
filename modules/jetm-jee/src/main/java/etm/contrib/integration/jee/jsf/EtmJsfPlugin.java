@@ -44,6 +44,8 @@ import java.util.Map;
  * @version $Revision: 372 $
  */
 public class EtmJsfPlugin implements EtmPlugin {
+  public static final String ROOT_ETM_POINT = "ETM__RootRequestPoint";
+
   protected static final String CONFIG_COMPONENT_MONITORING = "EtmJsfPlugin.componentMonitoring";
   private static final String DESCRIPTION = "Provides JSF component monitoring configuration";
   private boolean componentMonitoring;

@@ -62,7 +62,7 @@ public class NameInterceptingActionListener implements ActionListener {
   public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
     UIComponent component = actionEvent.getComponent();
     EtmPoint etmRootPoint =
-      (EtmPoint) FacesContext.getCurrentInstance().getAttributes().get(JsfPerformancePhaseListener.ROOT_ETM_POINT);
+      (EtmPoint) FacesContext.getCurrentInstance().getAttributes().get(EtmJsfPlugin.ROOT_ETM_POINT);
     if (etmRootPoint != null) {
       MethodExpression methodExpression = null;
       if (component instanceof ActionSource2) {

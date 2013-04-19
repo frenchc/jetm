@@ -83,7 +83,6 @@ public class DelegatingEtmLifecycleFactory extends LifecycleFactory {
   }
 
   class InterceptedLifeCycle extends Lifecycle {
-    public static final String ROOT_ETM_POINT = "ETM__RootRequestPoint";
 
     private Lifecycle delegate;
 
@@ -99,7 +98,7 @@ public class DelegatingEtmLifecycleFactory extends LifecycleFactory {
     @Override
     public void execute(FacesContext context) throws FacesException {
       EtmPoint requestPoint = EtmManager.getEtmMonitor().createPoint(getDefaultRequestName(context));
-      context.getAttributes().put(ROOT_ETM_POINT, requestPoint);
+      context.getAttributes().put(EtmJsfPlugin.ROOT_ETM_POINT, requestPoint);
 
       delegate.execute(context);
     }
@@ -119,10 +118,10 @@ public class DelegatingEtmLifecycleFactory extends LifecycleFactory {
       try {
         delegate.render(context);
       } finally {
-        EtmPoint requestPoint = (EtmPoint) context.getAttributes().get(ROOT_ETM_POINT);
+        EtmPoint requestPoint = (EtmPoint) context.getAttributes().get(EtmJsfPlugin.ROOT_ETM_POINT);
         if (requestPoint != null) {
           requestPoint.collect();
-          context.getAttributes().remove(ROOT_ETM_POINT);
+          context.getAttributes().remove(EtmJsfPlugin.ROOT_ETM_POINT);
         }
       }
     }
