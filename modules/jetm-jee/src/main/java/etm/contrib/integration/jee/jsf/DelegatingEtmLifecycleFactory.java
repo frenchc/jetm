@@ -47,8 +47,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The outer jsf request performance monitoring. Defaults to request uri for
-  * outer measurement point unless {@link NameInterceptingActionListener}
-  * detects a valid action name.
+ * outer measurement point unless {@link NameInterceptingActionListener}
+ * detects a valid action name.
  *
  * @author void.fm
  * @version $Revision: 372 $

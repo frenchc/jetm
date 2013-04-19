@@ -52,7 +52,7 @@ public class DelegatingEtmRenderKitFactory extends RenderKitFactory {
 
   private static final LogAdapter LOG = Log.getLog(DelegatingEtmRenderKitFactory.class);
 
-  private static final String CGLIB_DELEGATE_CLASS_NAME = "etm.contrib.integration.jee.jsf.renderkit.CglibDelegatingRenderKit";
+  private static final String CGLIB_DELEGATE_CLASS_NAME = "etm.contrib.integration.jee.jsf.wrapped.CglibDelegatingRenderKit";
 
   private RenderKitFactory delegate;
 
