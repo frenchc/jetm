@@ -30,7 +30,7 @@
  *
  */
 
-package etm.contrib.integration.jee.jsf.renderkit;
+package etm.contrib.integration.jee.jsf.wrapped;
 
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmPoint;
