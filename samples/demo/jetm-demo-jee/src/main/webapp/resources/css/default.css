@@ -42,10 +42,13 @@ li a:hover, dd a:hover
 
 input[type='text'] {
   width: 150px;
+  background: #FFFFFF;
+
 }
 
 input[type='password'] {
   width: 150px;
+  background: #FFFFFF;
 }
 
 #header {

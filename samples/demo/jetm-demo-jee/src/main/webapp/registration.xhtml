@@ -77,11 +77,17 @@
                   <h:outputLabel for="username" value="Username"/>
                 </td>
                 <td>
-                  <h:inputText id="username" value="#{registrationBean.userName}"/>
-                  <v:errorPopup forDivId="login"
-                                forId="registration:username"
-                                forFullId=":registration:username"
-                                width="150"/>
+                  <h:panelGroup id="userNameGroup" layout="block">
+
+                    <h:inputText id="username" value="#{registrationBean.userName}">
+                      <f:validator binding="#{usernameValidator}"/>
+                      <f:ajax event="valueChange" render="userNameGroup" execute="@this"/>
+                    </h:inputText>
+                    <v:errorPopup forDivId="login"
+                                  forId="registration:username"
+                                  forFullId=":registration:username"
+                                  width="150"/>
+                  </h:panelGroup>
                 </td>
               </tr>
 

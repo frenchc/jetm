@@ -32,10 +32,13 @@
 
 package etm.demo.webapp.javaee.web.registration;
 
+import etm.demo.webapp.javaee.domain.user.NonUniqueUserNameException;
 import etm.demo.webapp.javaee.domain.user.UserManagementService;
 import etm.demo.webapp.javaee.web.core.Outcome;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
@@ -122,7 +125,14 @@ public class RegistrationBean {
   }
 
   public Outcome register() {
-    service.create(firstName, lastName, userName, password, email);
+    try {
+      service.create(firstName, lastName, userName, password, email);
+    } catch (NonUniqueUserNameException e) {
+      FacesContext.getCurrentInstance().addMessage("registration:username",
+        new FacesMessage("Username " + userName + " already registered."));
+      // stay on same page
+      return null;
+    }
 
     return Outcome.SUCCESS;
   }
