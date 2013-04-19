@@ -52,11 +52,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author void.fm
  * @version $Revision: 372 $
  */
-public class CglibDelegatingRenderKit extends RenderKitFactory {
+public class CGlibDelegatingRenderKitFactory extends RenderKitFactory {
 
   private final RenderKitFactory delegate;
 
-  public CglibDelegatingRenderKit(RenderKitFactory aDelegate) {
+  public CGlibDelegatingRenderKitFactory(RenderKitFactory aDelegate) {
     delegate = aDelegate;
   }
 

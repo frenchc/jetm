@@ -10,6 +10,7 @@
   <extension>
     <plugin class="etm.contrib.integration.jee.jsf.EtmJsfPlugin">
       <property name="componentMonitoring">true</property>
+      <property name="converterValidatorMonitoring">true</property>
     </plugin>
   </extension>
 

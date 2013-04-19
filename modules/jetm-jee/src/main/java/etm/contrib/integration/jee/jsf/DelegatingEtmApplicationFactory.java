@@ -32,8 +32,15 @@
 
 package etm.contrib.integration.jee.jsf;
 
+import etm.core.configuration.EtmManager;
+import etm.core.metadata.PluginMetaData;
+import etm.core.monitor.EtmMonitor;
+import etm.core.util.Log;
+import etm.core.util.LogAdapter;
+
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
+import java.lang.reflect.Constructor;
 
 /**
  * @author void.fm
@@ -41,10 +48,31 @@ import javax.faces.application.ApplicationFactory;
  */
 public class DelegatingEtmApplicationFactory extends ApplicationFactory {
 
+  private static final LogAdapter LOG = Log.getLog(DelegatingEtmApplicationFactory.class);
+
+  private static final String CGLIB_DELEGATE_CLASS_NAME = "etm.contrib.integration.jee.jsf.wrapped.CGlibDelegatingApplicationFactory";
+
   private ApplicationFactory delegate;
 
   public DelegatingEtmApplicationFactory(ApplicationFactory aDelegate) {
     delegate = aDelegate;
+
+    if (!isEnabled()) {
+      LOG.info("JSF converter/validator monitoring disabled.");
+    } else if (isCglibAvailable()) {
+      try {
+        Class<ApplicationFactory> aClass = (Class<ApplicationFactory>) Class.forName(CGLIB_DELEGATE_CLASS_NAME);
+        Constructor<ApplicationFactory> constructor = aClass.getConstructor(new Class[]{ApplicationFactory.class});
+        delegate = constructor.newInstance(aDelegate);
+
+        LOG.debug("Activated JSF converter/validator monitoring.");
+      } catch (Exception e) {
+        LOG.warn("Unable to create CGLIB proxy for " + aDelegate.getClass() + ". Converter/validator monitoring disabled: ", e);
+      }
+    } else {
+      LOG.warn("CGLIB not found. Converter/validator monitoring disabled.");
+    }
+
   }
 
   @Override
@@ -55,5 +83,28 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
   @Override
   public void setApplication(Application application) {
     delegate.setApplication(application);
+  }
+
+  protected Boolean isEnabled() {
+    Boolean enabled = false;
+
+    EtmMonitor monitor = EtmManager.getEtmMonitor();
+    PluginMetaData pluginMetaData = monitor.getMetaData().getPluginMetaData(EtmJsfPlugin.class);
+    if (pluginMetaData != null) {
+      String obj = (String) pluginMetaData.getProperties().get(EtmJsfPlugin.CONFIG_CONVERTER_VALIDATOR_MONITORING);
+      if (obj != null) {
+        enabled = Boolean.parseBoolean(obj);
+      }
+    }
+    return enabled;
+  }
+
+  protected boolean isCglibAvailable() {
+    try {
+      Class.forName("net.sf.cglib.proxy.Enhancer");
+      return true;
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
   }
 }

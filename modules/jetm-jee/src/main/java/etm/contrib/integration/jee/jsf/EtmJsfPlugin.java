@@ -47,13 +47,17 @@ public class EtmJsfPlugin implements EtmPlugin {
   public static final String ROOT_ETM_POINT = "ETM__RootRequestPoint";
 
   protected static final String CONFIG_COMPONENT_MONITORING = "EtmJsfPlugin.componentMonitoring";
+  protected static final String CONFIG_CONVERTER_VALIDATOR_MONITORING = "EtmJsfPlugin.converterValidatorMonitoring";
+
   private static final String DESCRIPTION = "Provides JSF component monitoring configuration";
   private boolean componentMonitoring;
+  private boolean converterValidatorMonitoring;
 
   @Override
   public PluginMetaData getPluginMetaData() {
     Map<String, String> properties = new HashMap<String, String>();
     properties.put(CONFIG_COMPONENT_MONITORING, String.valueOf(isComponentMonitoring()));
+    properties.put(CONFIG_CONVERTER_VALIDATOR_MONITORING, String.valueOf(isConverterValidatorMonitoring()));
 
     return new PluginMetaData(EtmJsfPlugin.class, DESCRIPTION, properties);
   }
@@ -79,5 +83,13 @@ public class EtmJsfPlugin implements EtmPlugin {
 
   public void setComponentMonitoring(boolean enabled) {
     componentMonitoring = enabled;
+  }
+
+  public boolean isConverterValidatorMonitoring() {
+    return converterValidatorMonitoring;
+  }
+
+  public void setConverterValidatorMonitoring(boolean aConverterValidatorMonitoring) {
+    converterValidatorMonitoring = aConverterValidatorMonitoring;
   }
 }
