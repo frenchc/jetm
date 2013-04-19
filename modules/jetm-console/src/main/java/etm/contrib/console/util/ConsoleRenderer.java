@@ -150,7 +150,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     response.write(ConsoleUtil.appendParameters("index", request.getRequestParameters(), true));
     response.write("\">Back to overview</a></td>\n");
 
-    response.write("<tr>\n</table>\n");
+    response.write("</tr>\n</table>\n");
   }
 
   protected void writeHtmlHead(boolean expanded) throws IOException {
