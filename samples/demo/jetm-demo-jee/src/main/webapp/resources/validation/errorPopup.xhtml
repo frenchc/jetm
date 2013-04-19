@@ -1,0 +1,82 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html"
+              >
+
+  <composite:interface>
+    <composite:attribute name="forId"/>
+    <composite:attribute name="forFullId"/>
+    <composite:attribute name="forDivId"/>
+    <composite:attribute name="width"/>
+    <composite:attribute name="arrowPos"/>
+    <composite:attribute name="onHover"/>
+  </composite:interface>
+
+  <composite:implementation>
+    <h:outputStylesheet library="css" name="errorPopup.css"/>
+    <h:outputText rendered="#{facesContext.getMessages(cc.attrs.forId).hasNext()}">
+    <h:outputScript library="js" name="errorPopup.js" target="head"/>
+    <h:outputScript library="js" name="jquery-1.9.1.min.js" target="head"/>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        var forId = escapeId("#{cc.attrs.forId}");
+        var forFullId = escapeId("#{cc.attrs.forFullId}");
+        var forDivId = escapeId("#{cc.attrs.forDivId}");
+        var custWidth = "#{cc.attrs.width}";
+        var onHover = "#{cc.attrs.onHover}";
+        var pos = calculatePosition("#{cc.attrs.forId}", "#{cc.attrs.forDivId}", custWidth);
+
+        $("div[id$='error_#{cc.attrs.forDivId}']").css({
+              "display": "none",
+              "position": "absolute",
+              "top": pos.callerTopPosition,
+              "left": pos.callerleftPosition,
+              "marginTop": pos.marginTopSize,
+              "opacity": 0.87
+        });
+        var field = $("#" + forId);
+        field.addClass("errorInputField");
+        $("#" + forId + "_input").addClass("errorInputField");
+        field.blur(function() {
+          $("div[id$='error_" + forDivId + "']").hide();
+        });
+        field.focus(function() {
+          $("div[id$='error_" + forDivId + "']").show();
+        });
+
+        if(onHover) {
+          field.mouseleave(function() {
+            $("div[id$='error_" + forDivId + "']").hide();
+          });
+          field.mouseenter(function() {
+            $("div[id$='error_" + forDivId + "']").show();
+          });
+        }
+      });
+    </script>
+    </h:outputText>
+
+
+    <h:panelGroup id="error_#{cc.attrs.forDivId}" layout="block"
+                  prependId="false"
+                  styleClass="reqformError parentFormformID formError"  style="display:none;"
+                  rendered="#{facesContext.getMessages(cc.attrs.forId).hasNext()}">
+      <div class="formErrorContent"><strong><h:message for="#{cc.attrs.forFullId}" /></strong><br /></div>
+      <div class="formErrorArrow">
+        <div class="line10"><!-- --></div>
+        <div class="line9"><!-- --></div>
+        <div class="line8"><!-- --></div>
+        <div class="line7"><!-- --></div>
+        <div class="line6"><!-- --></div>
+        <div class="line5"><!-- --></div>
+        <div class="line4"><!-- --></div>
+        <div class="line3"><!-- --></div>
+        <div class="line2"><!-- --></div>
+        <div class="line1"><!-- --></div>
+      </div>
+    </h:panelGroup>
+  </composite:implementation>
+
+</ui:component>

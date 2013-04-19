@@ -40,6 +40,14 @@ li a:hover, dd a:hover
 }
 
 
+input[type='text'] {
+  width: 150px;
+}
+
+input[type='password'] {
+  width: 150px;
+}
+
 #header {
   color: green;
   font-size: 200%;

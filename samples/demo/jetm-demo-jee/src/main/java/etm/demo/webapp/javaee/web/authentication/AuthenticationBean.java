@@ -43,6 +43,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -79,6 +80,7 @@ public class AuthenticationBean implements Serializable {
     return Outcome.FAILURE;
   }
 
+  @NotNull
   public String getPassword() {
     return password;
   }
@@ -87,6 +89,7 @@ public class AuthenticationBean implements Serializable {
     password = aPassword;
   }
 
+  @NotNull
   public String getUsername() {
     return username;
   }

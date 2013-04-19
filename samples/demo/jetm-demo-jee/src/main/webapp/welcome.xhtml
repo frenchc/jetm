@@ -3,7 +3,9 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:v="http://java.sun.com/jsf/composite/validation"
+
   >
 <f:view locale="en_US">
 <h:head>
@@ -16,7 +18,7 @@
     }
 
     function openConsole() {
-      window.open('performance/index', 'console', 'width=900,left=0,top=0,scrollbars=true');
+      window.open('performance/index', 'console', 'width=1000,left=0,top=0,scrollbars=true');
     }
   </script>
 </h:head>
@@ -29,15 +31,27 @@
     <h3>JETM Java EE Online Demo - Welcome</h3>
 
     <div style="float: left; margin-right: 40px; margin-bottom: 20px;">
-      <h:form>
+      <h:form id="login">
         <table>
             <tr>
               <td>Login</td>
-              <td><h:inputText size="10" value="#{authenticationBean.username}" required="true"/></td>
+              <td>
+                <h:inputText id="username" value="#{authenticationBean.username}" required="true"/>
+                <v:errorPopup forDivId="username"
+                              forId="login:username"
+                              forFullId=":login:username"
+                              width="150"/>
+              </td>
             </tr>
             <tr>
               <td>Password</td>
-              <td><h:inputSecret size="10" value="#{authenticationBean.password}" required="true"/></td>
+              <td>
+                <h:inputSecret id="password" value="#{authenticationBean.password}" required="true"/>
+                <v:errorPopup forDivId="password"
+                              forId="login:password"
+                              forFullId=":login:password"
+                              width="150"/>
+              </td>
             </tr>
           <tr>
             <td colspan="2" align="center"><h:commandButton value="Login" action="#{authenticationBean.authenticate}"/></td>

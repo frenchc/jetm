@@ -38,6 +38,8 @@ import etm.demo.webapp.javaee.web.core.Outcome;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -56,19 +58,21 @@ public class RegistrationBean {
 
   private String firstName;
   private String lastName;
-  private String eMail;
+  private String email;
   private String userName;
   private String password;
   private String passwordRepeat;
 
-  public String geteMail() {
-    return eMail;
+  public String getEmail() {
+    return email;
   }
 
-  public void seteMail(String aEMail) {
-    eMail = aEMail;
+  public void setEmail(String aEmail) {
+    email = aEmail;
   }
 
+  @NotNull
+  @Size(min= 1)
   public String getFirstName() {
     return firstName;
   }
@@ -77,6 +81,8 @@ public class RegistrationBean {
     firstName = aFirstName;
   }
 
+  @NotNull
+  @Size(min= 1)
   public String getLastName() {
     return lastName;
   }
@@ -85,6 +91,8 @@ public class RegistrationBean {
     lastName = aLastName;
   }
 
+  @NotNull
+  @Size(min= 1, max = 15)
   public String getPassword() {
     return password;
   }
@@ -93,6 +101,8 @@ public class RegistrationBean {
     password = aPassword;
   }
 
+  @NotNull
+  @Size(min= 1, max = 15)
   public String getPasswordRepeat() {
     return passwordRepeat;
   }
@@ -101,6 +111,8 @@ public class RegistrationBean {
     passwordRepeat = aPasswordRepeat;
   }
 
+  @NotNull
+  @Size(min= 2, max = 15)
   public String getUserName() {
     return userName;
   }
@@ -110,7 +122,7 @@ public class RegistrationBean {
   }
 
   public Outcome register() {
-    service.create(firstName, lastName, userName, password, eMail);
+    service.create(firstName, lastName, userName, password, email);
 
     return Outcome.SUCCESS;
   }

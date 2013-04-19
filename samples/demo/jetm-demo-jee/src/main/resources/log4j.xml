@@ -26,6 +26,9 @@
     <priority value="INFO"/>
   </category>
 
+  <category name="org.hibernate">
+    <priority value="INFO"/>
+  </category>
 
   <category name="etm-raw-data">
     <priority value="INFO"/>

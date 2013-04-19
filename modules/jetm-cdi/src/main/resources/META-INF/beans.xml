@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ beans.xml
-  ~
-  ~ This document contains trade secret data which are the property of
-  ~ Nordstern Finanz GmbH, Mannheim, Germany. Information contained herein must not be used,
-  ~ copied or disclosed in whole or part unless permitted in writing by Nordstern Finanz GmbH.
-  ~ All rights reserved by Nordstern Finanz GmbH.
-  ~
-  ~ Copyright (C) 2012 Nordstern Finanz GmbH / Mannheim / Germany
-  -->
 <beans xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
   <interceptors>

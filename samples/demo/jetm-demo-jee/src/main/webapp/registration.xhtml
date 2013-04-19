@@ -3,7 +3,8 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:v="http://java.sun.com/jsf/composite/validation">
 <f:view locale="en_US">
   <h:head>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
@@ -11,7 +12,7 @@
     <h:outputStylesheet library="css" name="default.css"/>
     <script type="text/javascript">
       function openConsole() {
-        window.open('performance/index', 'console', 'width=900,left=0,top=0,scrollbars=true');
+        window.open('performance/index', 'console', 'width=1000,left=0,top=0,scrollbars=true');
       }
     </script>
   </h:head>
@@ -31,14 +32,18 @@
         </p>
 
         <div align="center">
-          <h:form>
+          <h:form id="registration">
             <table>
               <tr>
                 <td>
                   <h:outputLabel for="firstName" value="Firstname"/>
                 </td>
                 <td>
-                  <h:inputText id="firstName" size="25" value="#{registrationBean.firstName}"/>
+                  <h:inputText id="firstName" value="#{registrationBean.firstName}" />
+                  <v:errorPopup forDivId="firstName"
+                                forId="registration:firstName"
+                                forFullId=":registration:firstName"
+                                width="150"/>
                 </td>
               </tr>
 
@@ -47,24 +52,36 @@
                   <h:outputLabel for="lastName" value="Lastname"/>
                 </td>
                 <td>
-                  <h:inputText id="lastName" size="25" value="#{registrationBean.lastName}"/>
+                  <h:inputText id="lastName" value="#{registrationBean.lastName}"/>
+                  <v:errorPopup forDivId="lastName"
+                                forId="registration:lastName"
+                                forFullId=":registration:lastName"
+                                width="150"/>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <h:outputLabel for="eMail" value="E-Mail"/>
+                  <h:outputLabel for="email" value="E-Mail"/>
                 </td>
                 <td>
-                  <h:inputText id="eMail" size="25" value="#{registrationBean.eMail}"/>
+                  <h:inputText id="email" value="#{registrationBean.email}"/>
+                  <v:errorPopup forDivId="email"
+                                forId="registration:email"
+                                forFullId=":registration:email"
+                                width="150"/>
                 </td>
               </tr>
 
               <tr>
                 <td>
-                  <h:outputLabel for="login" value="Login"/>
+                  <h:outputLabel for="username" value="Username"/>
                 </td>
                 <td>
-                  <h:inputText id="login" size="25" value="#{registrationBean.userName}"/>
+                  <h:inputText id="username" value="#{registrationBean.userName}"/>
+                  <v:errorPopup forDivId="login"
+                                forId="registration:username"
+                                forFullId=":registration:username"
+                                width="150"/>
                 </td>
               </tr>
 
@@ -74,7 +91,11 @@
                 </td>
                 <td>
                   <h:inputSecret id="password" type="password" size="25"
-                                 value="#{registrationBean.password}"/>
+                                 value="#{registrationBean.password}" binding="#{password}"/>
+                  <v:errorPopup forDivId="password"
+                                forId="registration:password"
+                                forFullId=":registration:password"
+                                width="150"/>
                 </td>
               </tr>
               <tr>
@@ -83,7 +104,15 @@
                 </td>
                 <td>
                   <h:inputSecret id="passwordrepeat" type="password" size="25"
-                                 value="#{registrationBean.passwordRepeat}"/>
+                                 value="#{registrationBean.passwordRepeat}">
+                    <f:validator validatorId="equalsValidator" />
+                    <f:attribute name="compareTo" value="#{password}"/>
+
+                  </h:inputSecret>
+                  <v:errorPopup forDivId="passwordrepeat"
+                                forId="registration:passwordrepeat"
+                                forFullId=":registration:passwordrepeat"
+                                width="150"/>
                 </td>
               </tr>
 
