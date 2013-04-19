@@ -30,40 +30,13 @@
  *
  */
 
+// disable performance monitoring for this package
+@ApplyTo
 package etm.demo.webapp.javaee.web.core;
 
-import etm.demo.webapp.javaee.domain.user.UserRepository;
+import etm.contrib.integration.cdi.ApplyTo;
+import etm.demo.webapp.javaee.core.stereotype.Repository;
+import etm.demo.webapp.javaee.core.stereotype.Service;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-import javax.inject.Inject;
+import javax.enterprise.inject.Model;
 import javax.inject.Named;
-
-/**
- * @author void.fm
- * @version $Revision: 372 $
- */
-@Named("usernameValidator")
-@ApplicationScoped
-public class UserNameValidator implements Validator {
-
-  @Inject
-  private UserRepository userRepository;
-
-  public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-    if (value == null) {
-      return;
-    }
-    String userName = (String) value;
-    if (userRepository.hasUserWithUsername(userName)) {
-      throw new ValidatorException(new FacesMessage(
-        "Username " + userName + " already registered."
-      ));
-    }
-
-  }
-}
