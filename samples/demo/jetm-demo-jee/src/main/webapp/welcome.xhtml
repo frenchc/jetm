@@ -14,7 +14,9 @@
   <h:outputStylesheet library="css" name="default.css"/>
   <script type="text/javascript">
     function submit() {
-      document.forms['loginForm'].submit();
+      $("#login\\:username").val("foo");
+      $("#login\\:password").val("bar");
+      $("#login\\:submit").click();
     }
 
     function openConsole() {
@@ -54,7 +56,7 @@
               </td>
             </tr>
           <tr>
-            <td colspan="2" align="center"><h:commandButton value="Login" action="#{authenticationBean.authenticate}"/></td>
+            <td colspan="2" align="center"><h:commandButton id="submit" value="Login" action="#{authenticationBean.authenticate}"/></td>
           </tr>
 
         </table>
