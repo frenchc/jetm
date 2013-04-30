@@ -63,7 +63,9 @@ public class EtmInterceptor implements Serializable {
   private Map<Class, String> classNameCache = new ConcurrentHashMap<Class, String>();
 
   private Set<Class> proxyClasses = new HashSet<Class>();
-  private static final String[] PROXY_CLASSES = {"javassist.util.proxy.ProxyObject"};
+  private static final String[] PROXY_CLASSES = {"javassist.util.proxy.ProxyObject","org.jboss.weld.bean.proxy.ProxyObject"};
+
+
 
   public EtmInterceptor() {
     for (String className : PROXY_CLASSES) {
