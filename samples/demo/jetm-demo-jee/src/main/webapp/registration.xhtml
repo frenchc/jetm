@@ -14,6 +14,13 @@
       function openConsole() {
         window.open('performance/index', 'console', 'width=1000,left=0,top=0,scrollbars=true');
       }
+
+      function submit() {
+        $("#login\\:username").val("foo");
+        $("#login\\:password").val("bar");
+        $("#login\\:submit").click();
+      }
+
     </script>
   </h:head>
 
@@ -127,6 +134,11 @@
                 <td><h:commandButton value="submit" action="#{registrationBean.register}"/></td>
               </tr>
             </table>
+          </h:form>
+          <h:form id="login" style="display: none">
+            <h:inputText id="username" value="#{authenticationBean.username}" required="true"/>
+            <h:inputSecret id="password" value="#{authenticationBean.password}" required="true"/>
+            <h:commandButton id="submit" value="Login" action="#{authenticationBean.authenticate}"/>
           </h:form>
         </div>
       </div>
