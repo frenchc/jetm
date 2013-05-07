@@ -8,14 +8,14 @@
   <parent>
     <groupId>fm.void.jetm</groupId>
     <artifactId>jetm-parent</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0-Beta1</version>
     <relativePath>../../../modules/jetm-parent/pom.xml</relativePath>
   </parent>
 
 
   <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-demo-jee</artifactId>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.3.0-Beta1</version>
   <packaging>war</packaging>
   <name>JETM Java EE 6 Demo</name>
   <url>http://jetm.void.fm</url>
@@ -209,12 +209,12 @@
     <dependency>
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm-console</artifactId>
-      <version>1.3.0-SNAPSHOT</version>
+      <version>1.3.0-Beta1</version>
     </dependency>
     <dependency>
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm-jee</artifactId>
-      <version>1.3.0-SNAPSHOT</version>
+      <version>1.3.0-Beta1</version>
     </dependency>
 
 
