@@ -59,7 +59,7 @@ public class BusinessService {
       nestedMethod();
 
     } catch (InterruptedException e) {
-      // igored
+      // ignored
     } finally {
       point.collect();
     }
@@ -67,7 +67,7 @@ public class BusinessService {
 
   public void nestedMethod() {
 
-    EtmPoint point = etmMonitor.createPoint( "BusinessService:nestedMethod");
+    EtmPoint point = etmMonitor.createPoint("BusinessService:nestedMethod");
 
     try {
 
