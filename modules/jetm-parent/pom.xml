@@ -6,7 +6,7 @@
 
   <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-parent</artifactId>
-  <version>1.3.0-Beta1</version>
+  <version>1.3.0-SNAPSHOT</version>
   <name>JETM Parent POM</name>
   <packaging>pom</packaging>
 
