@@ -99,4 +99,8 @@ class OfflineExecution implements EtmPoint {
   public boolean isCollectable() {
     return true;
   }
+
+  public boolean isCollected() {
+    return true;
+  }
 }

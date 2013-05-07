@@ -60,8 +60,8 @@ public class EqualsValidator implements Validator {
         Object thisValue = value;
         Object compareToValue = compareToComponent.getValue();
         if (thisValue == null || !thisValue.equals(compareToValue)) {
-          String thisLabelText = thisComponent.getClientId();
-          String compareToLabelText = compareToComponent.getClientId();
+          String thisLabelText = thisComponent.getClientId(context);
+          String compareToLabelText = compareToComponent.getClientId(context);
           if (compareToLabel != null) {
             compareToLabelText = (String) compareToLabel.getValue();
           }

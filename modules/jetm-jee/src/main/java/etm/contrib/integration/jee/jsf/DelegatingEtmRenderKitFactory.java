@@ -114,7 +114,7 @@ public class DelegatingEtmRenderKitFactory extends RenderKitFactory {
 
   protected boolean isCglibAvailable() {
     try {
-      Class.forName("net.sf.cglib.proxy.Enhancer");
+      Class.forName("net.sf.cglib.proxy.Enhancer", false, delegate.getClass().getClassLoader());
       return true;
     } catch (ClassNotFoundException e) {
       return false;

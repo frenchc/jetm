@@ -126,9 +126,11 @@ public interface EtmPoint {
 
 
   /**
-   * Returns the time the measurement was started.
+   * Returns the time the measurement was started. This may be used
+   * for ordering events only.
    *
    * @return The time taken using <code>System.currentTimeMillis</code>
+   * @throws IllegalStateException Thrown if not collected yet.
    */
 
   public long getStartTimeMillis();
@@ -147,10 +149,23 @@ public interface EtmPoint {
 
   /**
    *
-   * Whether the current point can be collected. Check includes parents too.
+   * Whether the current point can be collected, meaning that performance monitoring is
+   * completed for the overall business transaction. EtmPoint in flat mode are always
+   * collectable, in nested mode EtmPoint's are only collectable is the parent point is
+   * all parents are collectable too.
+   *
+   * Check includes parents too.
    *
    * @return True for collectable events, otherwise false. 
    * @since 1.2.4
    */
   public boolean isCollectable();
+
+  /**
+   * Whether the etm point is already collected or not.
+   *
+   * @return True if collected, otherwhise false.
+   * @since 1.3.0
+   */
+  boolean isCollected();
 }

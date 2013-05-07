@@ -23,14 +23,21 @@
 
   <properties>
     <version.owb>1.2.0-SNAPSHOT</version.owb>
+
+    <!--<version.weld>2.0.1-SNAPSHOT</version.weld>-->
+    <!--<version.weld.api>2.0.Final</version.weld.api>-->
+    <!--<version.weld.spi>2.0.Final</version.weld.spi>-->
+
     <version.weld>1.1.11.Final</version.weld>
     <version.weld.api>1.1.Final</version.weld.api>
     <version.weld.spi>1.1.Final</version.weld.spi>
 
+    <version.myfaces>2.1.10</version.myfaces>
+    <version.mojarra>2.1.21</version.mojarra>
+
     <version.juel>2.2.6</version.juel>
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.hibernate.validator>4.2.0.Final</version.hibernate.validator>
-    <version.myfaces>2.1.10</version.myfaces>
     <version.slf4j>1.7.2</version.slf4j>
   </properties>
 
@@ -50,14 +57,23 @@
       </plugin>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.25</version>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>8.1.10.v20130312</version>
 
         <configuration>
+
           <systemProperties>
             <systemProperty>
               <name>faces.PROJECT_STAGE</name>
               <value>Development</value>
+            </systemProperty>
+            <systemProperty>
+              <name>javax.el.ExpressionFactory</name>
+              <value>de.odysseus.el.ExpressionFactoryImpl</value>
+            </systemProperty>
+            <systemProperty>
+              <name>javax.el.ignoreReturnType</name>
+              <value>true</value>
             </systemProperty>
           </systemProperties>
           <webAppConfig>
@@ -69,6 +85,36 @@
           <stopPort>9999</stopPort>
         </configuration>
         <dependencies>
+
+          <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>${version.cglib}</version>
+          </dependency>
+
+          <!--<dependency>-->
+            <!--<groupId>com.sun.faces</groupId>-->
+            <!--<artifactId>jsf-api</artifactId>-->
+            <!--<version>${version.mojarra}</version>-->
+          <!--</dependency>-->
+          <!--<dependency>-->
+            <!--<groupId>com.sun.faces</groupId>-->
+            <!--<artifactId>jsf-impl</artifactId>-->
+            <!--<version>${version.mojarra}</version>-->
+          <!--</dependency>-->
+
+          <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
+            <version>${version.myfaces}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-impl</artifactId>
+            <version>${version.myfaces}</version>
+          </dependency>
+
           <dependency>
             <groupId>de.odysseus.juel</groupId>
             <artifactId>juel-impl</artifactId>
@@ -88,8 +134,28 @@
         <configuration>
           <systemProperties>
             <faces.PROJECT_STAGE>Development</faces.PROJECT_STAGE>
+            <javax.el.ExpressionFactory>de.odysseus.el.ExpressionFactoryImpl</javax.el.ExpressionFactory>
+            <javax.el.ignoreReturnType>true</javax.el.ignoreReturnType>
           </systemProperties>
           <libs>
+            <jarArtifact>
+              <groupId>cglib</groupId>
+              <artifactId>cglib-nodep</artifactId>
+              <version>${version.cglib}</version>
+            </jarArtifact>
+
+            <jarArtifact>
+              <groupId>com.sun.faces</groupId>
+              <artifactId>jsf-api</artifactId>
+              <version>${version.mojarra}</version>
+            </jarArtifact>
+            <jarArtifact>
+              <groupId>com.sun.faces</groupId>
+              <artifactId>jsf-impl</artifactId>
+              <version>${version.mojarra}</version>
+            </jarArtifact>
+
+
             <jarArtifact>
               <groupId>de.odysseus.juel</groupId>
               <artifactId>juel-impl</artifactId>
@@ -151,18 +217,14 @@
       <version>1.3.0-SNAPSHOT</version>
     </dependency>
 
+
     <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-api</artifactId>
-      <version>${version.myfaces}</version>
-      <scope>compile</scope>
+      <groupId>com.sun.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>${version.mojarra}</version>
+      <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-impl</artifactId>
-      <version>${version.myfaces}</version>
-      <scope>compile</scope>
-    </dependency>
+
 
     <dependency>
       <groupId>commons-logging</groupId>
@@ -183,6 +245,14 @@
       <version>${version.geronimo.specs.cdi}</version>
       <scope>compile</scope>
     </dependency>
+
+    <!--<dependency>-->
+      <!--<groupId>javax.enterprise</groupId>-->
+      <!--<artifactId>cdi-api</artifactId>-->
+      <!--<version>1.1</version>-->
+      <!--<scope>compile</scope>-->
+    <!--</dependency>-->
+
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
       <artifactId>geronimo-interceptor_1.1_spec</artifactId>
@@ -198,24 +268,24 @@
 
     <!-- comment out for owb -->
     <!--<dependency>-->
-    <!--<groupId>org.jboss.weld</groupId>-->
-    <!--<artifactId>weld-core</artifactId>-->
-    <!--<version>${version.weld}</version>-->
+      <!--<groupId>org.jboss.weld</groupId>-->
+      <!--<artifactId>weld-core</artifactId>-->
+      <!--<version>${version.weld}</version>-->
     <!--</dependency>-->
     <!--<dependency>-->
-    <!--<groupId>org.jboss.weld</groupId>-->
-    <!--<artifactId>weld-api</artifactId>-->
-    <!--<version>${version.weld.api}</version>-->
+      <!--<groupId>org.jboss.weld</groupId>-->
+      <!--<artifactId>weld-api</artifactId>-->
+      <!--<version>${version.weld.api}</version>-->
     <!--</dependency>-->
     <!--<dependency>-->
-    <!--<groupId>org.jboss.weld</groupId>-->
-    <!--<artifactId>weld-spi</artifactId>-->
-    <!--<version>${version.weld.spi}</version>-->
+      <!--<groupId>org.jboss.weld</groupId>-->
+      <!--<artifactId>weld-spi</artifactId>-->
+      <!--<version>${version.weld.spi}</version>-->
     <!--</dependency>-->
     <!--<dependency>-->
-    <!--<groupId>org.jboss.weld.servlet</groupId>-->
-    <!--<artifactId>weld-servlet-core</artifactId>-->
-    <!--<version>${version.weld}</version>-->
+      <!--<groupId>org.jboss.weld.servlet</groupId>-->
+      <!--<artifactId>weld-servlet-core</artifactId>-->
+      <!--<version>${version.weld}</version>-->
     <!--</dependency>-->
 
     <!-- end comment out for owb -->
@@ -249,6 +319,19 @@
       <version>${version.owb}</version>
     </dependency>
 
+    <dependency>
+      <groupId>de.odysseus.juel</groupId>
+      <artifactId>juel-api</artifactId>
+      <version>${version.juel}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.odysseus.juel</groupId>
+      <artifactId>juel-impl</artifactId>
+      <version>${version.juel}</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- end comment out for weld -->
 
     <dependency>
@@ -261,14 +344,6 @@
       <artifactId>hibernate-validator</artifactId>
       <version>${version.hibernate.validator}</version>
     </dependency>
-
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib-nodep</artifactId>
-      <version>${version.cglib}</version>
-      <scope>compile</scope>
-    </dependency>
-
 
     <dependency>
       <groupId>log4j</groupId>

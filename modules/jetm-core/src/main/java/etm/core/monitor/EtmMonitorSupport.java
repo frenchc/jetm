@@ -174,7 +174,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       return;
     }
 
-    if (measurementPoint == null) {
+    if (measurementPoint == null || measurementPoint.isCollected()) {
       return;
     }
 

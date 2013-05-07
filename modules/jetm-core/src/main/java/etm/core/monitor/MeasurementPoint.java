@@ -66,8 +66,8 @@ public class MeasurementPoint implements EtmPoint {
   private MeasurementPoint parent = null;
 
   private String name;
-  private long startTime = 0;
-  private long endTime = 0;
+  private Long startTime;
+  private Long endTime;
   private long ticks = 0;
   private long startTimeMillis = 0;
   private Map context;
@@ -111,11 +111,11 @@ public class MeasurementPoint implements EtmPoint {
   }
 
   public long getStartTime() {
-    return startTime;
+    return startTime.longValue();
   }
 
   public long getEndTime() {
-    return endTime;
+    return endTime != null ? endTime.longValue() : 0L;
   }
 
   public long getTicks() {
@@ -142,7 +142,7 @@ public class MeasurementPoint implements EtmPoint {
       return parent.isCollectable();
     }
     
-    return endTime > 0l;
+    return endTime != null;
   }
 
   /**
@@ -152,7 +152,7 @@ public class MeasurementPoint implements EtmPoint {
    */
 
   protected void setStartTime(long aStartTime) {
-    startTime = aStartTime;
+    startTime = new Long(aStartTime);
   }
 
   /**
@@ -162,7 +162,7 @@ public class MeasurementPoint implements EtmPoint {
    */
 
   protected void setEndTime(long aEndTime) {
-    endTime = aEndTime;
+    endTime = new Long(aEndTime);
   }
 
   /**
@@ -176,12 +176,21 @@ public class MeasurementPoint implements EtmPoint {
   }
 
   public double getTransactionTime() {
-    return ((double) ((endTime - startTime) * SECOND_MULTIPLIER)) / (double) ticks;
+    if (isCollected()) {
+      return ((double) ((endTime.longValue() - startTime.longValue()) * SECOND_MULTIPLIER)) / (double) ticks;
+    } else {
+      throw new IllegalStateException("EtmPoint not collected yet.");
+    }
+  }
+
+  public boolean isCollected() {
+    return endTime != null;
   }
 
   public long getStartTimeMillis() {
     return startTimeMillis;
   }
+
 
   public void addContextDetail(String key, Object value) {
     if (context == null) {

@@ -35,12 +35,20 @@ package etm.contrib.integration.jee.jsf;
 import etm.core.configuration.EtmManager;
 import etm.core.metadata.PluginMetaData;
 import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
+import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
-import java.lang.reflect.Constructor;
+import javax.faces.application.ApplicationWrapper;
+import javax.faces.component.StateHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
 /**
  * @author void.fm
@@ -50,38 +58,35 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
 
   private static final LogAdapter LOG = Log.getLog(DelegatingEtmApplicationFactory.class);
 
-  private static final String CGLIB_DELEGATE_CLASS_NAME = "etm.contrib.integration.jee.jsf.wrapped.CGlibDelegatingApplicationFactory";
-
   private ApplicationFactory delegate;
+
+  private Application wrappedDelegate;
 
   public DelegatingEtmApplicationFactory(ApplicationFactory aDelegate) {
     delegate = aDelegate;
 
     if (!isEnabled()) {
       LOG.info("JSF converter/validator monitoring disabled.");
-    } else if (isCglibAvailable()) {
-      try {
-        Class<ApplicationFactory> aClass = (Class<ApplicationFactory>) Class.forName(CGLIB_DELEGATE_CLASS_NAME);
-        Constructor<ApplicationFactory> constructor = aClass.getConstructor(new Class[]{ApplicationFactory.class});
-        delegate = constructor.newInstance(aDelegate);
-
-        LOG.debug("Activated JSF converter/validator monitoring.");
-      } catch (Exception e) {
-        LOG.warn("Unable to create CGLIB proxy for " + aDelegate.getClass() + ". Converter/validator monitoring disabled: ", e);
-      }
     } else {
-      LOG.warn("CGLIB not found. Converter/validator monitoring disabled.");
+      LOG.debug("JSF converter/validator monitoring enabled.");
     }
-
   }
 
   @Override
   public Application getApplication() {
-    return delegate.getApplication();
+    if (isEnabled() && wrappedDelegate == null) {
+      wrappedDelegate = new EtmApplication(delegate.getApplication());
+    }  else {
+      return delegate.getApplication();
+    }
+    return wrappedDelegate;
   }
 
   @Override
   public void setApplication(Application application) {
+    if (isEnabled()) {
+      wrappedDelegate = new EtmApplication(application);
+    }
     delegate.setApplication(application);
   }
 
@@ -99,12 +104,114 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
     return enabled;
   }
 
-  protected boolean isCglibAvailable() {
-    try {
-      Class.forName("net.sf.cglib.proxy.Enhancer");
-      return true;
-    } catch (ClassNotFoundException e) {
-      return false;
+
+  class EtmApplication extends ApplicationWrapper {
+    private Application wrapped;
+
+    EtmApplication(Application aWrapped) {
+      wrapped = aWrapped;
+    }
+
+    @Override
+    public Application getWrapped() {
+      return wrapped;
+    }
+
+    @Override
+    public Validator createValidator(String validatorId) throws FacesException {
+      Validator validator = getWrapped().createValidator(validatorId);
+      if (validator != null) {
+        return new EtmValidator(validator);
+      }
+
+      return null;
+    }
+
+    @Override
+    public Converter createConverter(String converterId) {
+      Converter converter = getWrapped().createConverter(converterId);
+      if (converter != null) {
+        return new EtmConverter(converter);
+      }
+
+      return null;
+    }
+
+  }
+
+  class EtmConverter implements Converter {
+
+    private Converter converter;
+    private String asObjectName;
+    private String asStringName;
+
+    EtmConverter(Converter aAConverter) {
+      converter = aAConverter;
+      asObjectName = aAConverter.getClass().getSimpleName() + ":getAsObject";
+      asStringName = aAConverter.getClass().getSimpleName() + ":getAsString";
+    }
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+      EtmPoint point = EtmManager.getEtmMonitor().createPoint(asObjectName);
+      try {
+        return converter.getAsObject(context, component, value);
+      } finally {
+        point.collect();
+      }
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+      EtmPoint point = EtmManager.getEtmMonitor().createPoint(asStringName);
+      try {
+        return converter.getAsString(context, component, value);
+      } finally {
+        point.collect();
+      }
     }
   }
+
+  class EtmValidator implements Validator, StateHolder {
+
+    private Validator validator;
+    private String pointName;
+
+    EtmValidator(Validator aAValidator) {
+      validator = aAValidator;
+      pointName = aAValidator.getClass().getSimpleName() + ":validate";
+    }
+
+    @Override
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+      EtmPoint point = EtmManager.getEtmMonitor().createPoint(pointName);
+      try {
+        validator.validate(context, component, value);
+      } finally {
+        point.collect();
+      }
+    }
+
+    @Override
+    public boolean isTransient() {
+      return true;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+      return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+      //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setTransient(boolean newTransientValue) {
+      //To change body of implemented methods use File | Settings | File Templates.
+    }
+  }
+
+
 }

@@ -18,6 +18,12 @@
     <param-value>etm.demo.webapp.javaee</param-value>
   </context-param>
 
+
+  <context-param>
+    <param-name>com.sun.faces.annotationScanPackages</param-name>
+    <param-value>etm.demo.webapp.javaee</param-value>
+  </context-param>
+
   <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
@@ -82,19 +88,23 @@
 
   <error-page>
     <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-    <location>/index.jsf</location>
+    <location>/index.html</location>
   </error-page>
 
   <error-page>
     <exception-type>javax.enterprise.context.NonexistentConversationException</exception-type>
-    <location>/index.jsf</location>
+    <location>/index.html</location>
   </error-page>
 
   <error-page>
     <exception-type>javax.enterprise.context.ContextNotActiveException</exception-type>
-    <location>/index.jsf</location>
+    <location>/index.html</location>
   </error-page>
 
+  <error-page>
+    <exception-type>javax.enterprise.inject.IllegalProductException</exception-type>
+    <location>/index.html</location>
+  </error-page>
 
 
 

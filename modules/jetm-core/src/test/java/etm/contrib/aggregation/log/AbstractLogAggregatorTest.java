@@ -38,6 +38,7 @@ import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
+import etm.core.monitor.FlatMonitor;
 import etm.core.monitor.NullMonitor;
 import etm.core.monitor.event.EtmMonitorEvent;
 import junit.framework.TestCase;
@@ -59,16 +60,18 @@ public class AbstractLogAggregatorTest extends TestCase {
    * the overall implementation works.
    */
   public void testFilter() {
-    EtmMonitor monitor = new NullMonitor();
+    EtmMonitor monitor = new FlatMonitor();
+    monitor.start();
+
     TestLogAggregator aggregator = new TestLogAggregator(new RootAggregator());
 
     aggregator.setFilterPattern("Action.+;ClassName;");
 
-    aggregator.add(monitor.createPoint("Action Foo"));
-    aggregator.add(monitor.createPoint("Action Bar"));
-    aggregator.add(monitor.createPoint("AnotherPoint"));
-    aggregator.add(monitor.createPoint("ClassName"));
-    aggregator.add(monitor.createPoint("Action Bar"));
+    aggregator.add(createCollectedPoint(monitor, "Action Foo"));
+    aggregator.add(createCollectedPoint(monitor, "Action Bar"));
+    aggregator.add(createCollectedPoint(monitor, "AnotherPoint"));
+    aggregator.add(createCollectedPoint(monitor, "ClassName"));
+    aggregator.add(createCollectedPoint(monitor, "Action Bar"));
 
     assertEquals(4, aggregator.points.size());
   }
@@ -79,17 +82,26 @@ public class AbstractLogAggregatorTest extends TestCase {
    * the overall implementation works.
    */
   public void testWithoutFilter() {
-    EtmMonitor monitor = new NullMonitor();
+    EtmMonitor monitor = new FlatMonitor();
+    monitor.start();
+
     TestLogAggregator aggregator = new TestLogAggregator(new RootAggregator());
 
-    aggregator.add(monitor.createPoint("Action Foo"));
-    aggregator.add(monitor.createPoint("Action Bar"));
-    aggregator.add(monitor.createPoint("AnotherPoint"));
-    aggregator.add(monitor.createPoint("ClassName"));
-    aggregator.add(monitor.createPoint("Action Bar"));
+    aggregator.add(createCollectedPoint(monitor, "Action Foo"));
+    aggregator.add(createCollectedPoint(monitor, "Action Bar"));
+    aggregator.add(createCollectedPoint(monitor, "AnotherPoint"));
+    aggregator.add(createCollectedPoint(monitor, "ClassName"));
+    aggregator.add(createCollectedPoint(monitor, "Action Bar"));
 
     assertEquals(5, aggregator.points.size());
   }
+
+  protected EtmPoint createCollectedPoint(EtmMonitor aMonitor, String aSymbolicName) {
+    EtmPoint point = aMonitor.createPoint(aSymbolicName);
+    point.collect();
+    return point;
+  }
+
 
   class TestLogAggregator extends AbstractLogAggregator {
     private List points = new ArrayList();
