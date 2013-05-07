@@ -63,13 +63,13 @@ public class OneMinuteTest {
 
     BusinessService service = new BusinessService();
 
-    //execute business logic
+    // execute business logic
     service.someMethod();
     service.someMethod();
     service.someMethod();
     service.nestedMethod();
 
-    //visualize results
+    // visualize results
     monitor.render(new SimpleTextRenderer());
 
     tearDown();
