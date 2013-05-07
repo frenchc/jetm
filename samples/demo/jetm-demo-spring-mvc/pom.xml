@@ -16,7 +16,7 @@
   <artifactId>jetm-demo-spring-mvc</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>JETM Spring MVC Demo</name>
+  <name>JETM Demo Application: Spring MVC Demo</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library - Spring MVC Demo</description>
 
