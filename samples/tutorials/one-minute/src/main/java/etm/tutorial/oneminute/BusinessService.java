@@ -37,8 +37,8 @@ import etm.core.monitor.EtmPoint;
 
 /**
  * Business service containing manually added measurement
- * points using a Static Etm Monitor instance provided
- * through {@link EtmManager}.
+ * points using a static EtmMonitor instance provided
+ * by {@link EtmManager}.
  *
  * @author void.fm
  * @version $Revision$
