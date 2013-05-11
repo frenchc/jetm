@@ -58,7 +58,7 @@
 <h4>Step 2: Create target RRD databases</h4>
 
 <p>
-  The RRD4j online intergration will record performance results into existing RRD databases. Therefore it is up to
+  The RRD4j online integration will record performance results into existing RRD databases. Therefore it is up to
   you to create those files before running an RRD4j enabled JETM runtime. The easiest way to create those files is
   using the command line tool described in
   <a href="rrd4j_offline_integration.html##rrd4j_db_create">RRD4j offline integration</a>.
@@ -79,7 +79,7 @@ java etm.contrib.rrd.rrd4j.Rrd4jMain create-db -t <i>highres</i> -d <i>/tmp/http
 
 <p>
   To enable RRD4j online recording you need to add the Rrd4jPlugin and enable notifications for newly recorded
-  performance results. The following JETM config exerpt uses
+  performance results. The following JETM config excerpt uses
   <a href="etm_manager_configuration.html">static EtmManger</a> configuration, nevertheless the same features can be
   actived in a <a href="spring_integration.html">Springframework based</a> environment or manually via EtmMonitor
   API.
