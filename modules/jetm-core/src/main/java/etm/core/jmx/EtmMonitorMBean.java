@@ -92,11 +92,12 @@ public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
     EtmMonitorMetaData etmMonitorMetaData = etmMonitor.getMetaData();
 
     AggregatorMetaData metaData = etmMonitorMetaData.getAggregatorMetaData();
-    String chain = metaData.getImplementationClass().getName();
+    StringBuffer chain = new StringBuffer(metaData.getImplementationClass().getName());
     metaData = metaData.getNestedMetaData();
 
     while (metaData != null) {
-      chain += "," + metaData.getImplementationClass().getName();
+      chain.append(",");
+      chain.append(metaData.getImplementationClass().getName());
       metaData = metaData.getNestedMetaData();
     }
 
@@ -106,8 +107,8 @@ public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
       ") ]";
 
     tabularType = new TabularType("performanceDetails",
-      "blubbler",
-      new CompositeType("etmPoint", "blabla",
+      "Some performance details",
+      new CompositeType("etmPoint", "An EtmPoint",
         new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"},
         new String[]{"EtmPoint name", "Number of measurements", "Average time (ms)", "Minimum time (ms)", "Maximum Time (ms)", "Total Time (ms)", "JMX ObjectName"},
         new OpenType[]{SimpleType.STRING, SimpleType.LONG, SimpleType.DOUBLE, SimpleType.DOUBLE, SimpleType.DOUBLE, SimpleType.DOUBLE, SimpleType.OBJECTNAME}),

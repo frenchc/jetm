@@ -44,6 +44,7 @@ class JmxSupport {
         case ',':
         case ';':
           chars[i] = '_';
+          break;
         default:
           // don't do anything
       }

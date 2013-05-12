@@ -141,7 +141,7 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
   }
 
 
-  class HtmlRenderer implements MeasurementRenderer {
+  static class HtmlRenderer implements MeasurementRenderer {
     private static final String TREE_SIGN = "|-";
     private static final String HEAD =
       "<table border=\"1\" cellpadding=\"5\" >\n" +
