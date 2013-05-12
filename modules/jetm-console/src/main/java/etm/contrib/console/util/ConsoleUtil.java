@@ -126,8 +126,8 @@ public class ConsoleUtil {
       }
     } else {
       try {
-        String key = new String(aTemp, aLastEnd + 1, aCurrentDelimiter - aLastEnd - 1);
-        String value = new String(aTemp, aCurrentDelimiter + 1, aIndex - aCurrentDelimiter - 1).trim();
+        String key = new String(aTemp, aLastEnd + 1, aCurrentDelimiter - aLastEnd - 1, HttpConsoleServer.DEFAULT_ENCODING);
+        String value = new String(aTemp, aCurrentDelimiter + 1, aIndex - aCurrentDelimiter - 1, HttpConsoleServer.DEFAULT_ENCODING).trim();
         aMap.put(URLDecoder.decode(key,HttpConsoleServer.DEFAULT_ENCODING),
                  URLDecoder.decode(value, HttpConsoleServer.DEFAULT_ENCODING));
       } catch (UnsupportedEncodingException e) {

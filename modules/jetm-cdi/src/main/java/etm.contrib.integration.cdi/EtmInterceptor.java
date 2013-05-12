@@ -47,7 +47,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Our CDI interceptor for public method monitoring.
+ * Our CDI interceptor for public method monitoring. Will be used for class and
+ * method level binding and supports both lifecycle and method interception.
  *
  * @author void.fm
  * @version $Revision: 3373 $
@@ -57,15 +58,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Measure
 public class EtmInterceptor implements Serializable {
 
-
-
-  private Map<Method, String> methodNameCache = new ConcurrentHashMap<Method, String>();
-  private Map<Class, String> classNameCache = new ConcurrentHashMap<Class, String>();
+  private transient Map<Method, String> methodNameCache = new ConcurrentHashMap<Method, String>();
+  private transient Map<Class, String> classNameCache = new ConcurrentHashMap<Class, String>();
 
   private Set<Class> proxyClasses = new HashSet<Class>();
   private static final String[] PROXY_CLASSES = {"javassist.util.proxy.ProxyObject","org.jboss.weld.bean.proxy.ProxyObject"};
-
-
 
   public EtmInterceptor() {
     for (String className : PROXY_CLASSES) {
@@ -110,6 +107,11 @@ public class EtmInterceptor implements Serializable {
   }
 
   protected String calculateMethodName(InvocationContext ctx) {
+    if (methodNameCache == null) {
+      // serialization issue
+      methodNameCache = new ConcurrentHashMap<Method, String>();
+    }
+
     Class targetClass = ctx.getTarget().getClass();
     Method method = ctx.getMethod();
 
@@ -139,6 +141,10 @@ public class EtmInterceptor implements Serializable {
   }
 
   protected String calculateClassName(Class clazz) {
+    if (classNameCache == null) {
+      // serialization issue
+      classNameCache = new ConcurrentHashMap<Class, String>();
+    }
     String className = classNameCache.get(clazz);
 
     if (className == null) {
