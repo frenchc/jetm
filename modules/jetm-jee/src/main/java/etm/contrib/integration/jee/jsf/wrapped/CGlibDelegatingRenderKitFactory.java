@@ -85,7 +85,7 @@ public class CGlibDelegatingRenderKitFactory extends RenderKitFactory {
   }
 
 
-  class RenderKitInterceptor implements MethodInterceptor {
+  static class RenderKitInterceptor implements MethodInterceptor {
     private RenderKit target;
     private Map<Renderer, Renderer> proxyCache = new ConcurrentHashMap<Renderer, Renderer>();
 
