@@ -60,6 +60,18 @@ public class Log {
     public AdapterFactory() {
       Class adapterClazz = DefaultLogAdapter.class;
 
+       // try slf4j first
+      try {
+        Class aClass = Class.forName("etm.core.util.Slf4jAdapter");
+        Method method = aClass.getMethod("isConfigured", new Class[]{});
+        Boolean available = (Boolean) method.invoke(null, new Object[]{});
+        if (available.booleanValue()) {
+          adapterClazz = aClass;
+        }
+      } catch (Throwable t) {
+        // ignore this one
+      }
+
       // try log4j first
       try {
         Class aClass = Class.forName("etm.core.util.Log4jAdapter");

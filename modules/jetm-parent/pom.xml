@@ -38,6 +38,7 @@
     <version.log4j>1.2.17</version.log4j>
     <version.commons.logging>1.1.1</version.commons.logging>
     <version.commons.logging.api>1.1</version.commons.logging.api>
+    <version.slf4j>1.7.2</version.slf4j>
 
     <version.junit>4.11</version.junit>
   </properties>
@@ -343,6 +344,13 @@
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>${version.commons.logging}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${version.slf4j}</version>
         <scope>provided</scope>
       </dependency>
 
