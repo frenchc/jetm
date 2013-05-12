@@ -56,27 +56,31 @@ public class ConsoleUtil {
   }
 
   public static String appendParameters(String url, Map parameters, boolean removeDetails) {
+    StringBuffer result = new StringBuffer(url);
+
     try {
       if (parameters != null && parameters.size() > 0) {
         if (url.indexOf('?') < 0) {
-          url = url + "?";
+          result.append("?");
         } else {
-          url = url + "&amp;";
+          result.append("&amp;");
         }
         for (Iterator iterator = parameters.keySet().iterator(); iterator.hasNext();) {
           String name = (String) iterator.next();
           if (removeDetails && "point".equals(name)) {
             continue;
           }
-          url = url + URLEncoder.encode(name, HttpConsoleServer.DEFAULT_ENCODING) + "="
-            + URLEncoder.encode((String) parameters.get(name), HttpConsoleServer.DEFAULT_ENCODING) + "&amp;";
+          result.append( URLEncoder.encode(name, HttpConsoleServer.DEFAULT_ENCODING));
+          result.append("=");
+          result.append(URLEncoder.encode((String) parameters.get(name), HttpConsoleServer.DEFAULT_ENCODING));
+          result.append("&amp;");
         }
 
         if (url.endsWith("&amp;")) {
-          url = url.substring(0, url.length() - 5);
+          result.delete(url.length() - 5, 5);
         }
       }
-      return url;
+      return result.toString();
     } catch (UnsupportedEncodingException e) {
       // will hopefully never happen since UTF-8 should be supported.
       throw new EtmException(e);
@@ -102,6 +106,8 @@ public class ConsoleUtil {
             lastEnd = index;
             break;
           }
+          default:
+            // ignored
         }
 
         index++;

@@ -40,7 +40,6 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -164,7 +163,7 @@ public class EtmInterceptor implements Serializable {
     return false;
   }
 
-  public void readObject(ObjectInputStream in) throws IOException,
+  private void readObject(ObjectInputStream in) throws IOException,
                                    ClassNotFoundException {
     in.defaultReadObject();
     // start with empty caches.
