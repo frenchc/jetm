@@ -73,7 +73,7 @@ import java.util.Set;
  */
 public class AbstractJmxRegistry extends JmxSupport implements AggregationStateListener, AggregationListener {
 
-  private static final LogAdapter log = Log.getLog(AbstractJmxRegistry.class);
+  private static final LogAdapter LOG = Log.getLog(AbstractJmxRegistry.class);
 
 
   public static final String DEFAULT_ETM_MONITOR_OBJECT_NAME = "etm.monitor:service=PerformanceMonitor";
@@ -155,10 +155,10 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
           isStopping = false;
 
         } else {
-          log.warn("Unable to locate a valid MBeanServer. Disable JMX support.");
+          LOG.warn("Unable to locate a valid MBeanServer. Disable JMX support.");
         }
       } catch (Exception e) {
-        log.error("Error while registering EtmMonitorMBean ", e);
+        LOG.error("Error while registering EtmMonitorMBean ", e);
       }
     }
 
@@ -172,7 +172,7 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
         deregisterPerformanceResults();
         mbeanServer.unregisterMBean(new ObjectName(monitorObjectName));
       } catch (Exception e) {
-        log.warn("Error while unregistering EtmMonitorMBean ", e);
+        LOG.warn("Error while unregistering EtmMonitorMBean ", e);
       }
     }
   }
@@ -191,7 +191,7 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
       try {
         registerMBean(mbeanServer, calculateObjectName(measurementDomain, aggregate), new EtmPointMBean(etmMonitor, aggregate), overwrite);
       } catch (JMException e) {
-        log.warn("Unable to register EtmPoint " + aggregate.getName(), e);
+        LOG.warn("Unable to register EtmPoint " + aggregate.getName(), e);
       }
     }
   }
@@ -205,7 +205,7 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
     try {
       registerMBean(mbeanServer, calculateObjectName(measurementDomain, aggregate), new EtmPointMBean(etmMonitor, aggregate), overwrite);
     } catch (JMException e) {
-      log.warn("Unable to register EtmPoint " + aggregate.getName(), e);
+      LOG.warn("Unable to register EtmPoint " + aggregate.getName(), e);
     }
   }
 
@@ -216,7 +216,7 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
     try {
       deregisterPerformanceResults();
     } catch (Exception e) {
-      log.warn("Error while deregistering all performance results ", e);
+      LOG.warn("Error while deregistering all performance results ", e);
     }
   }
 

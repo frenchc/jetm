@@ -51,7 +51,7 @@ import java.io.ObjectOutputStream;
  */
 public class FileSystemPersistenceBackend implements PersistenceBackend {
 
-  private static final LogAdapter log = Log.getLog(FileSystemPersistenceBackend.class);
+  private static final LogAdapter LOG = Log.getLog(FileSystemPersistenceBackend.class);
 
   private File path = new File(System.getProperty("java.io.tmpdir"));
   private String filename = "jetm-state.ser";
@@ -76,7 +76,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
           state = (PersistentEtmState) in.readObject();
         } catch (Exception e) {
           // ignored
-          log.warn("Error loading state from file " + file.getAbsolutePath(), e);
+          LOG.warn("Error loading state from file " + file.getAbsolutePath(), e);
         } finally {
           if (in != null) {
             try {
@@ -94,7 +94,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
   public void store(PersistentEtmState state) {
     if (!path.exists()) {
       if (!path.mkdirs()) {
-        log.warn("Unable to create destination path " + path.getAbsolutePath() + ". Aborting.");
+        LOG.warn("Unable to create destination path " + path.getAbsolutePath() + ". Aborting.");
         return;
       }
     }
@@ -103,7 +103,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
     if (destination.exists()) {
       backupFile(destination);
       if (!destination.delete()) {
-        log.warn("Unable to delete existing destination target " + destination.getAbsolutePath() + ". Aborting.");
+        LOG.warn("Unable to delete existing destination target " + destination.getAbsolutePath() + ". Aborting.");
       }
     }
 
@@ -114,7 +114,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
       out.writeObject(state);
     } catch (Exception e) {
       // ignored
-      log.warn("Error writing state to file " + destination.getAbsolutePath(), e);
+      LOG.warn("Error writing state to file " + destination.getAbsolutePath(), e);
     } finally {
       if (out != null) {
         try {
@@ -137,7 +137,7 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
       out = new ObjectOutputStream(new FileOutputStream(backup));
       out.writeObject(in.readObject());
     } catch (Exception e) {
-      log.warn("Error writing backup file " + aDest.getAbsolutePath(), e);
+      LOG.warn("Error writing backup file " + aDest.getAbsolutePath(), e);
     } finally {
       try {
         if (in != null) {

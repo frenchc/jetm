@@ -55,7 +55,7 @@ import java.net.URL;
  */
 
 public class EtmLifecycleAspect {
-  private static final LogAdapter log = Log.getLog(EtmLifecycleAspect.class);
+  private static final LogAdapter LOG = Log.getLog(EtmLifecycleAspect.class);
 
   private static final String DEFAULT_CONFIG_FILE = "jetm-config.xml";
 
@@ -68,7 +68,7 @@ public class EtmLifecycleAspect {
       BasicEtmConfigurator.configure(true);
       EtmManager.getEtmMonitor().start();
     } else {
-      log.warn("Etm subsystem already initialized. Ignoring init.");
+      LOG.warn("Etm subsystem already initialized. Ignoring init.");
     }
   }
 
@@ -127,7 +127,7 @@ public class EtmLifecycleAspect {
       XmlEtmConfigurator.configure(url);
       EtmManager.getEtmMonitor().start();
     } else {
-      log.warn("Etm subsystem already initialized. Ignoring init.");
+      LOG.warn("Etm subsystem already initialized. Ignoring init.");
     }
   }
   

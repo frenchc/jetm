@@ -19,7 +19,7 @@ import java.util.Hashtable;
  */
 
 class JmxSupport {
-  private static final LogAdapter log = Log.getLog(JmxSupport.class);
+  private static final LogAdapter LOG = Log.getLog(JmxSupport.class);
 
   protected void registerMBean(MBeanServer mbeanServer, ObjectName objectName, Object object, boolean overwrite) throws JMException {
     try {
@@ -29,7 +29,7 @@ class JmxSupport {
         mbeanServer.unregisterMBean(objectName);
         mbeanServer.registerMBean(object, objectName);
       } else {
-        log.warn("Error registering EtmMonitor MBean. An instance called " + objectName + " already exists.");
+        LOG.warn("Error registering EtmMonitor MBean. An instance called " + objectName + " already exists.");
       }
     }
   }

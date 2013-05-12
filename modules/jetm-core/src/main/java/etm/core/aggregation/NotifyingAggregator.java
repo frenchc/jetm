@@ -53,7 +53,7 @@ import etm.core.util.LogAdapter;
  */
 public class NotifyingAggregator implements Aggregator {
 
-  private static final LogAdapter log = Log.getLog(NotifyingAggregator.class);
+  private static final LogAdapter LOG = Log.getLog(NotifyingAggregator.class);
 
   private Aggregator delegate;
   private EtmMonitorContext ctx;
@@ -76,7 +76,7 @@ public class NotifyingAggregator implements Aggregator {
   }
 
   public void setFilterPattern(String pattern) {
-    log.warn("Filtering not supported yet.");
+    LOG.warn("Filtering not supported yet.");
   }
 
   public void add(EtmPoint point) {

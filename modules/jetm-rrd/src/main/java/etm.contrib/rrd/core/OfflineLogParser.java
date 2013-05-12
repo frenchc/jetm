@@ -57,7 +57,7 @@ import java.util.regex.Pattern;
  */
 public class OfflineLogParser {
 
-  private static final LogAdapter log = Log.getLog(OfflineLogParser.class);
+  private static final LogAdapter LOG = Log.getLog(OfflineLogParser.class);
 
 
   private static final String DEFAULT_SCAN_PATTERN = "^(.*)measurementPoint=<([\\w\\s\\d]*)>, parent=<([\\w\\s]*)>, transactionTime=<(\\d*[,.]\\d*)>, recordingTime=<(\\d*)>";
@@ -87,7 +87,7 @@ public class OfflineLogParser {
   }
 
   public void parse(File aFile) throws IOException {
-    log.info("Parsing " + aFile.getAbsolutePath());
+    LOG.info("Parsing " + aFile.getAbsolutePath());
     
     boolean checkDecimalDigit = true;
     int totalLines = 0;
@@ -113,7 +113,7 @@ public class OfflineLogParser {
             if (checkDecimalDigit) {
               DecimalFormatSymbols symbols = numberFormat.getDecimalFormatSymbols();
               if (matcher.group(4).indexOf(symbols.getDecimalSeparator()) < 0) {
-                log.warn("Possibly precision loss detected. Expected decimal separator '" +
+                LOG.warn("Possibly precision loss detected. Expected decimal separator '" +
                   symbols.getDecimalSeparator() +
                   "', but found " +
                   matcher.group(4) +
@@ -138,7 +138,7 @@ public class OfflineLogParser {
 
           }
         } catch (ParseException e) {
-          log.warn("Error reading line " + line, e);
+          LOG.warn("Error reading line " + line, e);
         }
       }
       for (int i = 0; i < destinations.size(); i++) {
@@ -149,7 +149,7 @@ public class OfflineLogParser {
     } finally {
       in.close();
     }
-    log.debug("Finished parsing " + aFile.getAbsolutePath() +
+    LOG.debug("Finished parsing " + aFile.getAbsolutePath() +
       ". Processed " + processedLines + " out of " + totalLines + " lines.");
   }
 }

@@ -53,7 +53,7 @@ import java.util.TimerTask;
  * @version $Revision$
  */
 public class BufferedTimedAggregator implements Aggregator {
-  private static final LogAdapter log = Log.getLog(BufferedTimedAggregator.class);
+  private static final LogAdapter LOG = Log.getLog(BufferedTimedAggregator.class);
 
 
   private static final String DESCRIPTION_PREFIX = "A time based buffering aggregator with a flush interval of ";
@@ -153,16 +153,16 @@ public class BufferedTimedAggregator implements Aggregator {
           if (t instanceof ThreadDeath) {
             started = false;
             cancel();
-            log.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            LOG.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
             throw (ThreadDeath) t;
           }
           if (t instanceof Error) {
             started = false;
             cancel();
-            log.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
+            LOG.warn("Error occured in BufferedTimedAggregator. Disable collection to prevent memory leak.");
             throw (Error) t;
           }
-          log.fatal("Error in aggregation buffer.", t);
+          LOG.fatal("Error in aggregation buffer.", t);
         }
       }
     }, sleepInterval, sleepInterval);

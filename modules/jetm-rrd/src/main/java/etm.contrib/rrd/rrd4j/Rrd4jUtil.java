@@ -73,7 +73,7 @@ public class Rrd4jUtil {
   public static final String INTERVALSTART_VARIABLE = "intervalstart";
   public static final String INTERVALEND_VARIABLE = "intervalend";
 
-  private static final LogAdapter log = Log.getLog(Rrd4jUtil.class);
+  private static final LogAdapter LOG = Log.getLog(Rrd4jUtil.class);
 
   private static Map templates = new HashMap();
 
@@ -186,7 +186,7 @@ public class Rrd4jUtil {
         RrdGraphDef graphDef = template.getRrdGraphDef();
         RrdGraphInfo info = new RrdGraph(graphDef).getRrdGraphInfo();
 
-        log.info("Created image " + info.getFilename() +
+        LOG.info("Created image " + info.getFilename() +
           " [" +
           info.getWidth() + "x" + info.getHeight() + ", " +
           info.getBytes().length + " bytes" +
@@ -241,7 +241,7 @@ public class Rrd4jUtil {
         RrdDb db = new RrdDb(rrdDef);
         db.close();
 
-        log.info("Created rrd db at " + rrdFile.getAbsolutePath() + " using template " + templateUrl + ".");
+        LOG.info("Created rrd db at " + rrdFile.getAbsolutePath() + " using template " + templateUrl + ".");
 
       } finally {
         try {
@@ -268,7 +268,7 @@ public class Rrd4jUtil {
     if (templates.containsKey(aTemplate)) {
 
       aTemplate = (String) templates.get(aTemplate);
-      log.debug("Using template " + aTemplate + " from classpath.");
+      LOG.debug("Using template " + aTemplate + " from classpath.");
     }
 
     ClassLoader loader = EtmMonitor.class.getClassLoader();

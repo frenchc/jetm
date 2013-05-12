@@ -93,7 +93,7 @@ import java.util.Timer;
 
 public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateListener {
 
-  private static final LogAdapter log = Log.getLog(EtmMonitor.class);
+  private static final LogAdapter LOG = Log.getLog(EtmMonitor.class);
 
   protected final String description;
   protected final ExecutionTimer timer;
@@ -165,7 +165,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       // in order to avoid negative side effects for
       // our business logic
     } catch (Exception e) {
-      log.warn("Caught exception within measurement code. ", e);
+      LOG.warn("Caught exception within measurement code. ", e);
     }
   }
 
@@ -188,7 +188,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       // in order to avoid negative side effects for
       // our business logic
     } catch (Exception e) {
-      log.warn("Caught exception within measurement code.", e);
+      LOG.warn("Caught exception within measurement code.", e);
     }
   }
 
@@ -245,11 +245,11 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     started = true;
     collecting = true;
 
-    log.info("JETM " + Version.getVersion() + " started.");
+    LOG.info("JETM " + Version.getVersion() + " started.");
   }
 
   public void stop() {
-    log.info("Shutting down JETM.");
+    LOG.info("Shutting down JETM.");
 
     if (!started) {
       collecting = false;
@@ -360,7 +360,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
           }
           etmPlugin.stop();
         } catch (Exception e) {
-          log.warn("Error while shutting down " + etmPlugin.getPluginMetaData(), e);
+          LOG.warn("Error while shutting down " + etmPlugin.getPluginMetaData(), e);
         }
       }
     }
@@ -384,7 +384,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
       }
       aEtmPlugin.start();
     } catch (Exception e) {
-      log.warn("Error starting plugin " + aEtmPlugin.getPluginMetaData() + ". Keep plugin disabled. ", e);
+      LOG.warn("Error starting plugin " + aEtmPlugin.getPluginMetaData() + ". Keep plugin disabled. ", e);
 
     }
   }
@@ -403,7 +403,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   }
 
   private void showMonitorNotStartedMessage() {
-    log.warn("Warning - Performance Monitoring currently disabled. " +
+    LOG.warn("Warning - Performance Monitoring currently disabled. " +
       "If you did not start the current EtmMonitor on purpose, " +
       "you may ignore this warning. Otherwhise ensure to call EtmMonitor.start() " +
       "at some point in your application.");

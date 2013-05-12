@@ -75,7 +75,7 @@ import java.util.Stack;
 public class HttpConsoleServer {
 
   public static final String DEFAULT_ENCODING = "UTF-8";
-  private static final LogAdapter log = Log.getLog(HttpConsoleServer.class);
+  private static final LogAdapter LOG = Log.getLog(HttpConsoleServer.class);
 
   public static final int DEFAULT_LISTEN_PORT = 40000;
   private static final int DEFAULT_WORKER_SIZE = 2;
@@ -156,7 +156,7 @@ public class HttpConsoleServer {
       listenerThread = new ListenerThread(socket);
       listenerThread.start();
 
-      log.info("Started JETM console server listening at " + socket.toString());
+      LOG.info("Started JETM console server listening at " + socket.toString());
     } catch (IOException e) {
       throw new ConsoleException(e);
     }
@@ -214,11 +214,11 @@ public class HttpConsoleServer {
           }
         } catch (Exception e) {
           if (shouldRun) {
-            log.warn("Error processing HTTP request", e);
+            LOG.warn("Error processing HTTP request", e);
           } else {
             // don't do anything. we are shutting down probably
-            // so there is no need to log the exception
-            log.debug("Error during shutdown" + e.toString());
+            // so there is no need to LOG the exception
+            LOG.debug("Error during shutdown" + e.toString());
 
           }
         }
@@ -289,7 +289,7 @@ public class HttpConsoleServer {
         } catch (InterruptedIOException e) {
           // ignored, just close socket
         } catch (Exception e) {
-          log.warn("Error processing HTTP request", e);
+          LOG.warn("Error processing HTTP request", e);
         } finally {
           returnWorker(this);
         }
@@ -392,12 +392,12 @@ public class HttpConsoleServer {
           }
         }
       } catch (Exception e) {
-        log.warn("Error processing HTTP request", e);
+        LOG.warn("Error processing HTTP request", e);
         action = error500;
       }
 
       StandaloneConsoleResponse consoleResponse = new StandaloneConsoleResponse(out);
-      log.debug("Processing " + action.getClass());
+      LOG.debug("Processing " + action.getClass());
       action.execute(consoleRequest, consoleResponse);
       consoleResponse.flush();
     }

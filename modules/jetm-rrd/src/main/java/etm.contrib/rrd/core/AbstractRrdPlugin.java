@@ -53,7 +53,7 @@ import java.util.List;
  */
 public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener {
 
-  private static final LogAdapter log = Log.getLog(AbstractRrdPlugin.class);
+  private static final LogAdapter LOG = Log.getLog(AbstractRrdPlugin.class);
 
 
   protected EtmMonitorContext ctx;
@@ -74,9 +74,9 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
       try {
         rrdDestination.start();
         dest.add(rrdDestination);
-        log.debug("Added RRD destination " + rrdDestination);
+        LOG.debug("Added RRD destination " + rrdDestination);
       } catch (Exception e) {
-        log.warn("Error activation RRD destination " + rrdDestination, e);
+        LOG.warn("Error activation RRD destination " + rrdDestination, e);
       }
     }
 

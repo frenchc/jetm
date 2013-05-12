@@ -50,14 +50,14 @@ import java.util.Hashtable;
  */
 public class EtmMonitorObjectFactory implements ObjectFactory {
 
-  private static final LogAdapter log = Log.getLog(EtmMonitorObjectFactory.class);
+  private static final LogAdapter LOG = Log.getLog(EtmMonitorObjectFactory.class);
 
   public Object getObjectInstance(Object obj, Name name, Context nameCtx, Hashtable environment) throws Exception {
     if (obj instanceof Reference) {
       Reference reference = (Reference) obj;
       String referenceName = (String) reference.get("location").getContent();
 
-      log.warn("Returning EtmMonitor " + referenceName + "for JNDI name " + name.toString());
+      LOG.warn("Returning EtmMonitor " + referenceName + "for JNDI name " + name.toString());
       return EtmMonitorRepository.getMonitor(referenceName);
     }
 

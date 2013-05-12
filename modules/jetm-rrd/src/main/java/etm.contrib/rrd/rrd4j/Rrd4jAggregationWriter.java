@@ -52,7 +52,7 @@ import java.util.Date;
  */
 public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
 
-  private static final LogAdapter log = Log.getLog(AbstractRrdExecutionWriter.class);
+  private static final LogAdapter LOG = Log.getLog(AbstractRrdExecutionWriter.class);
 
   private RrdDb db;
 
@@ -84,7 +84,7 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
 
     db = aDb;
 
-    log.debug("Using Rrd4j destination " + aDb.getPath() + " starting at " +
+    LOG.debug("Using Rrd4j destination " + aDb.getPath() + " starting at " +
       new Date(startInterval * 1000) + " with step " + increment + " seconds.");
   }
 
