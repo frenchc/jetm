@@ -267,7 +267,7 @@ public class QualifiedEtmExtension implements Extension {
 
           if (!name.equals(packageName) && name.startsWith(packageName) && !cache.containsKey(name)) {
             if (pkg.isAnnotationPresent(ApplyTo.class)) {
-               registerApplyToIfAppropriate(name, pkg.getAnnotation(ApplyTo.class));
+              registerApplyToIfAppropriate(name, pkg.getAnnotation(ApplyTo.class));
             } else {
               cache.put(name, annotation);
             }
@@ -290,17 +290,17 @@ public class QualifiedEtmExtension implements Extension {
 
   static class PublicMethodApplyToDelegatingAnnotatedType<T> extends DelegatingAnnotatedType<T> {
 
-    private Measure defaultMeasureAttribute;
+    private boolean initalized = false;
+    private Measure classLevelMeasurementAttribute;
 
     public PublicMethodApplyToDelegatingAnnotatedType(AnnotatedType<T> delegateType) {
       super(delegateType);
-      defaultMeasureAttribute = delegateType.getAnnotation(Measure.class);
     }
 
     protected AnnotatedMethod<? super T> processAnnotatedMethod(AnnotatedMethod<? super T> method) {
       // TODO
       String name = method.getJavaMember().getName();
-      if (defaultMeasureAttribute == null &&
+      if (getClassLevelMeasurementAttribute() == null &&
         !name.startsWith("get") && !name.startsWith("set") &&
         !name.startsWith("is") && !method.isAnnotationPresent(Measure.class)) {
         LOG.debug("Public Method Monitoring enabled for " + method.getJavaMember());
@@ -309,6 +309,19 @@ public class QualifiedEtmExtension implements Extension {
       } else {
         return method;
       }
+    }
+
+    public Measure getClassLevelMeasurementAttribute() {
+      if (!initalized) {
+        init();
+      }
+
+      return classLevelMeasurementAttribute;
+    }
+
+    private void init() {
+      classLevelMeasurementAttribute = getDelegate().getAnnotation(Measure.class);
+      initalized = true;
     }
   }
 }
