@@ -141,7 +141,7 @@ public class DefaultEventDispatcher implements EventDispatcher {
   }
 
 
-  class DispatchingRule {
+  static class DispatchingRule {
     private Method method;
     private Class listener;
 

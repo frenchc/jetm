@@ -258,7 +258,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     public void write(Writer writer, int totalWidth) throws IOException;
   }
 
-  class NestedEntry implements ColumnEntry {
+  static class NestedEntry implements ColumnEntry {
     private int nestingLevel;
     private String text;
 
@@ -289,7 +289,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
   }
 
-  class RightAlignedEntry implements ColumnEntry {
+  static class RightAlignedEntry implements ColumnEntry {
     private String text;
 
     public RightAlignedEntry(String aText) {
@@ -316,7 +316,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
   }
 
-  class CenteredEntry implements ColumnEntry {
+  static class CenteredEntry implements ColumnEntry {
     private String text;
 
     public CenteredEntry(String aText) {
@@ -337,14 +337,14 @@ public class SimpleTextRenderer implements MeasurementRenderer {
       } else {
         int remaining = totalWidth - text.length();
         int prefix;
-        int posfix;
-        if (remaining % 2 == 1) {
+        int postfix;
+        if (remaining % 2 != 0) {
           remaining++;
           prefix = remaining / 2;
-          posfix = prefix - 1;
+          postfix = prefix - 1;
         } else {
           prefix = remaining / 2;
-          posfix = prefix;
+          postfix = prefix;
         }
 
 
@@ -352,7 +352,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
           writer.write(' ');
         }
         writer.write(text);
-        for (int i = 0; i < posfix; i++) {
+        for (int i = 0; i < postfix; i++) {
           writer.write(' ');
         }
 
@@ -361,7 +361,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
   }
 
-  class SeparatorEntry implements ColumnEntry {
+  static class SeparatorEntry implements ColumnEntry {
 
     public int getCurrentLength() {
       return 0;
