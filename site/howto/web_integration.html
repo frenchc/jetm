@@ -16,7 +16,7 @@
   |
   <a href="../faq.html">FAQ</a>
   |
-  <a href="../@api@/index.html">JavaDoc</a>
+  <a href="../api/index.html">JavaDoc</a>
   |
   <a href="../files.html"><b>Download</b></a>
   |
@@ -46,7 +46,7 @@
 <p>
   First of all the JETM runtime has to be started. Therefore we attach JETM to the web application
   lifecycle using a <i>ServletContextListener</i>. The <a
-  href="../@api@/etm/contrib/integration/web/EtmMonitorContextListener.html">
+  href="../api/etm/contrib/integration/web/EtmMonitorContextListener.html">
   EtmMonitorContextListener</a> is a <i>ServletContextListener</i> implementation that starts and stops JETM at web
   application start and stop. It will use the EtmMonitor described in a file called <i>jetm-config.xml</i> that
   should be part of the web application classpath.
@@ -112,10 +112,10 @@
 <p>
   For high level performance monitoring JETM includes two HTTP servlet filters that may be used to record execution
   times of HTTP or SOAP requests. The class <a
-  href="../@api@/etm/contrib/integration/web/HttpRequestPerformanceFilter.html">
+  href="../api/etm/contrib/integration/web/HttpRequestPerformanceFilter.html">
   HttpRequestPerformanceFilter</a> will record HTTP GET and POST requests and use the request uri as name;
   the class <a
-  href="../@api@/etm/contrib/integration/web/SoapActionPerformanceFilter.html">SoapActionPerformanceFilter</a>
+  href="../api/etm/contrib/integration/web/SoapActionPerformanceFilter.html">SoapActionPerformanceFilter</a>
   can be used to record document/literal SOAP requests that provide a "SOAPAction" HTTP Header.
 </p>
 
@@ -175,7 +175,7 @@
   While this feature sounds convenient a hard coded filepath within a web.xml descriptor is often considered
   a design or programming error. Therefore the path to a jetm config file can be specified using
   a system property. Just write <i>jetm.config.filepath</i> as ant style property and its
-  value will be retrieved from {@link System#getProperty(String)} using the given name. Example:
+  value will be retrieved from System#getProperty(String) using the given name. Example:
 </p>
 
 <div class="code"><pre>
@@ -231,7 +231,7 @@
   |
   <a href="../faq.html">FAQ</a>
   |
-  <a href="../@api@/index.html">JavaDoc</a>
+  <a href="../api/index.html">JavaDoc</a>
   |
   <a href="../files.html"><b>Download</b></a>
   |

@@ -16,7 +16,7 @@
   |
   <a href="../faq.html">FAQ</a>
   |
-  <a href="../@api@/index.html">JavaDoc</a>
+  <a href="../api/index.html">JavaDoc</a>
   |
   <a href="../files.html"><b>Download</b></a>
   |
@@ -64,7 +64,7 @@
 
 <p>
   The example below shows the resulting code fragment that is also available
-  <a href="../@samples@/tutorial/one-minute/src/java/etm/tutorial/oneminute/BusinessService.java"><i>here</i></a>.
+  <a href="../samples/tutorial/one-minute/src/java/etm/tutorial/oneminute/BusinessService.java"><i>here</i></a>.
 </p>
 
 <div class="code"><pre><span class="java-keyword">public class</span> BusinessService {
@@ -106,7 +106,7 @@
 </pre>
 </div>
 
-<p>The method <a href="../@api@/etm/core/monitor/EtmMonitor.html#createPoint(java.lang.String)">createPoint()</a> is
+<p>The method <a href="../api/etm/core/monitor/EtmMonitor.html#createPoint(java.lang.String)">createPoint()</a> is
   used
   to retrieve a monitoring object and takes one arguments: a symbolic name for the code fragment to be monitored.
   The created EtmPoint is responsible to maintain and collect execution statistics. There are several ways to access
@@ -163,9 +163,9 @@
 
 <p>
   The class <a
-  href="../@samples@/tutorial/one-minute/src/java/etm/tutorial/oneminute/OneMinuteTest.java"><i>OneMinuteTest</i></a>
+  href="../samples/tutorial/one-minute/src/java/etm/tutorial/oneminute/OneMinuteTest.java"><i>OneMinuteTest</i></a>
   now executes BusinessService methods and renders the result using a
-  <a href="../@api@/etm/core/renderer/SimpleTextRenderer.html">SimpleTextRenderer</a>.
+  <a href="../api/etm/core/renderer/SimpleTextRenderer.html">SimpleTextRenderer</a>.
   This renderer writes aggregated performance results to Java standard-out using the default locale.
   Please note that there is setup and tear down code that initializes and stops performance monitoring.
 </p>
@@ -187,21 +187,21 @@
 <p>That's it! Well, almost. There are some optional features you may be interested in.</p>
 <h4>Step 4: (Optional) Alter runtime configuration</h4>
 
-An <a href="../@api@/etm/core/configuration/EtmManager.html">EtmManager</a> will always
+An <a href="../api/etm/core/configuration/EtmManager.html">EtmManager</a> will always
 return the default performance monitoring setup unless it's configured using an
-<a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a> or
-<a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>. Within this tutorial
+<a href="../api/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a> or
+<a href="../api/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>. Within this tutorial
 we demonstrate two BasicEtmConfigurator options.
 
 <h5>Enable execution path recording</h5>
 
 <p>
   In the example above <i>BasicEtmConfigurator.configure()</i> selects a <a
-  href="../@api@/etm/core/monitor/FlatMonitor.html">FlatMonitor</a> for measurement collection.
+  href="../api/etm/core/monitor/FlatMonitor.html">FlatMonitor</a> for measurement collection.
   Often this EtmMonitor provides enough details to understand the performance characteristics of your application.
   However it might be
   important to record execution paths as well. The so-called
-  <a href="../@api@/etm/core/monitor/NestedMonitor.html">NestedMonitor</a>
+  <a href="../api/etm/core/monitor/NestedMonitor.html">NestedMonitor</a>
   may be enabled with <i>BasicEtmConfigurator.configure(true)</i>.
 </p>
 
@@ -224,7 +224,7 @@ we demonstrate two BasicEtmConfigurator options.
 
 <p>
   By default EtmManager will record execution times using the best available
-  <a href="../@api@/etm/core/timer/ExecutionTimer.html">ExecutionTimer</a>.
+  <a href="../api/etm/core/timer/ExecutionTimer.html">ExecutionTimer</a>.
   Currently available measurement timers are JDK1.5 nano timer, Sun Misc HighRes Timer and System.currentTimeMillis.
   You may select a specific ExecutionTimer by providing an concrete timer instance to <i>BasicEtmConfigurator.configure()</i>.
 </p>
@@ -245,9 +245,9 @@ we demonstrate two BasicEtmConfigurator options.
 </div>
 
 
-<p>For more options see <a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a>
+<p>For more options see <a href="../api/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a>
   and
-  <a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a> Javadoc.</p>
+  <a href="../api/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a> Javadoc.</p>
 
 <p><b>Next: <a href="advanced_concepts.html">Advanced concepts.</a></b></p>
 
@@ -261,7 +261,7 @@ we demonstrate two BasicEtmConfigurator options.
   |
   <a href="../faq.html">FAQ</a>
   |
-  <a href="../@api@/index.html">JavaDoc</a>
+  <a href="../api/index.html">JavaDoc</a>
   |
   <a href="../files.html"><b>Download</b></a>
   |

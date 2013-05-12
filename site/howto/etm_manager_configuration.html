@@ -17,7 +17,7 @@
   |
   <a href="../faq.html">FAQ</a>
   |
-  <a href="../@api@/index.html">JavaDoc</a>
+  <a href="../api/index.html">JavaDoc</a>
   |
   <a href="../files.html"><b>Download</b></a>
   |
@@ -48,12 +48,12 @@
 <h4>Common concepts</h4>
 
 <p>
-  The class <a href="../@api@/etm/core/configuration/EtmManager.html">EtmManager</a> may be used
+  The class <a href="../api/etm/core/configuration/EtmManager.html">EtmManager</a> may be used
   to retrieve a previously configured EtmMonitor. As seen in <a href="../intro/basic_concepts.html">basic concepts</a>
   this behavior
   is pretty similar to the static Logger access provided by Log4J or similar
   tools. However an EtmManager will always return an instance of
-  <a href="../@api@/etm/core/monitor/NullMonitor.html">NullMonitor</a> unless it's configured
+  <a href="../api/etm/core/monitor/NullMonitor.html">NullMonitor</a> unless it's configured
   to provide a different implementation. JETM ships with two different configurator implementations
   called BasicEtmConfigurator and XmlEtmConfigurator to do so.
 </p>
@@ -67,7 +67,7 @@
 
 <p>
   Be aware that you need to execute the configuration process before calling
-  <a href="../@api@/etm/core/configuration/EtmManager.html#getEtmMonitor()">EtmManager.getEtmMonitor()</a>
+  <a href="../api/etm/core/configuration/EtmManager.html#getEtmMonitor()">EtmManager.getEtmMonitor()</a>
   for the first time. Otherwise performance measurements may create unexpected results.
 </p>
 
@@ -76,9 +76,9 @@
 
 <p>
   Within Java you may configure the EtmManager using the class
-  <a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a>. It provides methods
+  <a href="../api/etm/core/configuration/BasicEtmConfigurator.html">BasicEtmConfigurator</a>. It provides methods
   to specify the used EtmMonitor, ExecutionTimer and Aggregator chain. The following configuration examples
-  use the class <a href="../@samples@/tutorial/one-minute/src/java/etm/tutorial/oneminute/BusinessService.java"><i>BusinessService.java</i></a>
+  use the class <a href="../samples/tutorial/one-minute/src/java/etm/tutorial/oneminute/BusinessService.java"><i>BusinessService.java</i></a>
   introduced in <a href="../intro/one_minute_tutorial.html">one minute tutorial</a>.
 </p>
 
@@ -184,15 +184,15 @@
 </div>
 
 <p>For further configuration options see
-  <a href="../@api@/etm/core/configuration/BasicEtmConfigurator.html#configure()">BasicEtmConfigurator JavaDoc</a>.
+  <a href="../api/etm/core/configuration/BasicEtmConfigurator.html#configure()">BasicEtmConfigurator JavaDoc</a>.
 </p>
 
 <a name="xml_config"></a>
 <h4>Xml configuration</h4>
 
-<p>With the help of <a href="../@api@/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>
+<p>With the help of <a href="../api/etm/core/configuration/XmlEtmConfigurator.html">XmlEtmConfigurator</a>
   the EtmManager can be configured using an xml file that complies to a
-  <a href="../@dtd@/">JETM configuration DTD</a>. The configuration file allows you to specify
+  <a href="../dtd/">JETM configuration DTD</a>. The configuration file allows you to specify
   the EtmMonitor and ExecutionTimer by full qualified classname or type and the used aggregator chain that processes
   measurement results.
 </p>
@@ -236,7 +236,7 @@
 
 <p>It is possible to select a certain EtmMonitor implementation by specifying a full qualified
   classname or a type property. Currently supported types are <i>nested</i> (NestedMonitor),
-  <i>flat</i> (FlatMonitor) and <i>null</i> (NullMonitor). See <a href="../@api@/index.html">JavaDoc</a>
+  <i>flat</i> (FlatMonitor) and <i>null</i> (NullMonitor). See <a href="../api/index.html">JavaDoc</a>
   for further details.
 </p>
 
@@ -253,7 +253,7 @@
 
 <p>You can select an ExecutionTimer implementation by specifying a full qualified
   classname or a type property. Currently supported types are <i>default</i> (DefaultTimer),
-  <i>sun</i> (SunHighResTimer) and <i>jdk50</i> (Java15NanoTimer). See <a href="../@api@/index.html">JavaDoc</a>
+  <i>sun</i> (SunHighResTimer) and <i>jdk50</i> (Java15NanoTimer). See <a href="../api/index.html">JavaDoc</a>
   for further details.
 </p>
 
@@ -276,7 +276,7 @@
   The nested element <i>features</i> supports access to predefined JETM aggregation features. Currently it is
   possible to alter the buffering capabilities, enable aggregation persistence and raw data logging. For further details
   see nested elements <i>interval-buffer</i>, <i>threshold-buffer</i>,<i>persistence</i> and
-  <i>raw-data-log</i> in <a href="../@dtd@/jetm_config_1_2.dtd">JETM configuration DTD</a>.
+  <i>raw-data-log</i> in <a href="../dtd/jetm_config_1_2.dtd">JETM configuration DTD</a>.
 </p>
 
 <p>The following example buffers collected details for 5000 miliseconds before aggregation. Furthermore aggregated
@@ -304,7 +304,7 @@
   an unlimited number of <i>chain-element</i>s and one (optional) <i>chain-root</i> element. Every EtmPoint will be
   processed by the list of chain-elements in descending order and finally by the given chain-root aggregator. If there
   is no <i>chain-root</i> element it will default to
-  <a href="../@api@/etm/core/aggregation/RootAggregator.html">RootAggregator</a> automatically.
+  <a href="../api/etm/core/aggregation/RootAggregator.html">RootAggregator</a> automatically.
 </p>
 
 <p>
@@ -381,7 +381,7 @@
   |
   <a href="../faq.html">FAQ</a>
   |
-  <a href="../@api@/index.html">JavaDoc</a>
+  <a href="../api/index.html">JavaDoc</a>
   |
   <a href="../files.html"><b>Download</b></a>
   |
