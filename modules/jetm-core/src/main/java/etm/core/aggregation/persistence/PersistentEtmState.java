@@ -55,19 +55,19 @@ public class PersistentEtmState implements Externalizable {
   private Map aggregates;
 
   public Date getStartTime() {
-    return startTime;
+    return new Date(startTime.getTime());
   }
 
   public void setStartTime(Date aStartTime) {
-    startTime = aStartTime;
+    startTime = new Date(aStartTime.getTime());
   }
 
   public Date getLastResetTime() {
-    return lastResetTime;
+    return new Date(lastResetTime.getTime());
   }
 
   public void setLastResetTime(Date aLastResetTime) {
-    lastResetTime = aLastResetTime;
+    lastResetTime = new Date(aLastResetTime.getTime());
   }
 
   public Map getAggregates() {

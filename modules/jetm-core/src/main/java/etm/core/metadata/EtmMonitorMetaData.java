@@ -65,8 +65,8 @@ public class EtmMonitorMetaData implements Serializable {
     monitorDescription = aMonitorDescription;
     timerMetaData = aTimerMetaData;
     aggregatorMetaData = aAggregatorMetaData;
-    startTime = aStartTime;
-    lastResetTime = aLastReset;
+    startTime = new Date(aStartTime.getTime());
+    lastResetTime = new Date(aLastReset.getTime());
     pluginMetaData = aPluginMetaData;
     if (pluginMetaData == null) {
       pluginMetaData = new ArrayList();
@@ -100,7 +100,7 @@ public class EtmMonitorMetaData implements Serializable {
    */
 
   public Date getStartTime() {
-    return startTime;
+    return new Date(startTime.getTime());
   }
 
   /**
@@ -109,7 +109,7 @@ public class EtmMonitorMetaData implements Serializable {
    * @return Returns the last rest time.
    */
   public Date getLastResetTime() {
-    return lastResetTime;
+    return new Date(lastResetTime.getTime());
   }
 
   /**
