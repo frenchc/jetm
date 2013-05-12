@@ -39,6 +39,7 @@ import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.console.util.ResourceAccessor;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ import java.util.Map;
  * @author void.fm
  * @version $Revision$
  */
-public class ActionRegistry {
+public class ActionRegistry implements Serializable {
   private Map actions = new HashMap();
 
   public ActionRegistry(ResourceAccessor resourceAccessor, boolean expanded) {

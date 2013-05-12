@@ -33,6 +33,7 @@
 package etm.contrib.console;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * An action is used to create an HTTP console response.
@@ -40,7 +41,7 @@ import java.io.IOException;
  * @author void.fm
  * @version $Revision$
  */
-public interface ConsoleAction {
+public interface ConsoleAction extends Serializable {
 
   public void execute(ConsoleRequest request, ConsoleResponse response) throws IOException;
 
