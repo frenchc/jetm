@@ -53,7 +53,7 @@ public abstract class CollectionFactory {
   public static CollectionFactory getInstance() {
     if (collectionFactory == null) {
       try {
-        Class clazz = Class.forName("etm.core.util.collection.Java50CollectionFactory");
+        Class clazz = Class.forName("etm.core.util.collection.Java15CollectionFactory");
         collectionFactory = (CollectionFactory) clazz.newInstance();
       } catch (Throwable e) {
         collectionFactory = new DefaultCollectionFactory();
