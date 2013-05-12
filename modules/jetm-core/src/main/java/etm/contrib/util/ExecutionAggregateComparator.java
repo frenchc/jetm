@@ -34,6 +34,7 @@ package etm.contrib.util;
 
 import etm.core.aggregation.Aggregate;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -44,7 +45,7 @@ import java.util.Comparator;
  * @version $Revision$
  * @since 1.2.0
  */
-public class ExecutionAggregateComparator implements Comparator {
+public class ExecutionAggregateComparator implements Comparator, Serializable {
 
   public static final int TYPE_NAME = 1;
   public static final int TYPE_EXCECUTIONS = 2;

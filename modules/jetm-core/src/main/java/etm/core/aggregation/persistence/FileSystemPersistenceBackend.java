@@ -93,23 +93,28 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
 
   public void store(PersistentEtmState state) {
     if (!path.exists()) {
-      path.mkdirs();
+      if (!path.mkdirs()) {
+        log.warn("Unable to create destination path " + path.getAbsolutePath() + ". Aborting.");
+        return;
+      }
     }
 
-    File dest = new File(path, filename);
-    if (dest.exists()) {
-      backupFile(dest);
-      dest.delete();
+    File destination = new File(path, filename);
+    if (destination.exists()) {
+      backupFile(destination);
+      if (!destination.delete()) {
+        log.warn("Unable to delete existing destination target " + destination.getAbsolutePath() + ". Aborting.");
+      }
     }
 
     ObjectOutputStream out = null;
 
     try {
-      out = new ObjectOutputStream(new FileOutputStream(dest));
+      out = new ObjectOutputStream(new FileOutputStream(destination));
       out.writeObject(state);
     } catch (Exception e) {
       // ignored
-      log.warn("Error writing state to file " + dest.getAbsolutePath(), e);
+      log.warn("Error writing state to file " + destination.getAbsolutePath(), e);
     } finally {
       if (out != null) {
         try {

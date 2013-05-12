@@ -168,4 +168,14 @@ public abstract class AbstractLogAggregator implements Aggregator {
    */
   protected abstract void logMeasurement(EtmPoint aPoint);
 
+
+  /**
+   * Get the current monitor context.
+   *
+   * @since 1.3.0
+   * @return Returns the current monitor context.
+   */
+  public EtmMonitorContext getCtx() {
+    return ctx;
+  }
 }
