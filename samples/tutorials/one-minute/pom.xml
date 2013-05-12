@@ -11,7 +11,7 @@
     <relativePath>../../../modules/jetm-parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>fm.void.jetm</groupId>
+  <groupId>fm.void.jetm.samples</groupId>
   <artifactId>one-minute-tutorial</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <name>JETM Tutorials: One minute tutorial</name>
