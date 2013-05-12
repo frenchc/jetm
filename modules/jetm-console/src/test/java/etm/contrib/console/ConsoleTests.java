@@ -132,7 +132,7 @@ public abstract class ConsoleTests extends TestCase {
 
 
   protected String executeRequest(String request) throws Exception {
-    Socket socket = new Socket(InetAddress.getLoopbackAddress().getHostAddress(), HttpConsoleServer.DEFAULT_LISTEN_PORT);
+    Socket socket = new Socket(InetAddress.getLocalHost().getHostAddress(), HttpConsoleServer.DEFAULT_LISTEN_PORT);
     socket.setSoTimeout(30000);
     OutputStream outputStream = socket.getOutputStream();
     outputStream.write(("GET " + request + " HTTP/1.0\n").getBytes());
