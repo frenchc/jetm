@@ -105,7 +105,7 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
   }
 
 
-  class EtmApplication extends ApplicationWrapper {
+  static class EtmApplication extends ApplicationWrapper {
     private Application wrapped;
 
     EtmApplication(Application aWrapped) {

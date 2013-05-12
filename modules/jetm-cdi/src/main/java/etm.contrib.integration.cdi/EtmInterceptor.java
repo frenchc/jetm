@@ -39,6 +39,9 @@ import javax.annotation.PostConstruct;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -107,11 +110,6 @@ public class EtmInterceptor implements Serializable {
   }
 
   protected String calculateMethodName(InvocationContext ctx) {
-    if (methodNameCache == null) {
-      // serialization issue
-      methodNameCache = new ConcurrentHashMap<Method, String>();
-    }
-
     Class targetClass = ctx.getTarget().getClass();
     Method method = ctx.getMethod();
 
@@ -141,10 +139,6 @@ public class EtmInterceptor implements Serializable {
   }
 
   protected String calculateClassName(Class clazz) {
-    if (classNameCache == null) {
-      // serialization issue
-      classNameCache = new ConcurrentHashMap<Class, String>();
-    }
     String className = classNameCache.get(clazz);
 
     if (className == null) {
@@ -168,6 +162,15 @@ public class EtmInterceptor implements Serializable {
     }
 
     return false;
+  }
+
+  public void readObject(ObjectInputStream in) throws IOException,
+                                   ClassNotFoundException {
+    in.defaultReadObject();
+    // start with empty caches.
+    classNameCache = new ConcurrentHashMap<Class, String>();
+    methodNameCache = new ConcurrentHashMap<Method, String>();
+
   }
 
 }
