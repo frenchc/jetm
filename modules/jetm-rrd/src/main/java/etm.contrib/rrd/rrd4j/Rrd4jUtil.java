@@ -138,7 +138,10 @@ public class Rrd4jUtil {
     properties.put(IMAGE_DESTINATION_FILE_VARIABLE, destination.getAbsolutePath());
     File parentDir = destination.getParentFile();
     if (!parentDir.exists()) {
-      parentDir.mkdirs();
+      if (!parentDir.mkdirs()) {
+        LOG.warn("Unable to create directory " + parentDir.getAbsolutePath() + ". Aborting.");
+        return;
+      }
     }
 
     createGraph(templateUrl, intervalStart, intervalEnd, properties);
@@ -220,7 +223,9 @@ public class Rrd4jUtil {
 
     File parentDir = rrdFile.getParentFile();
     if (parentDir != null && !parentDir.exists()) {
-      parentDir.mkdirs();
+      if (!parentDir.mkdirs()) {
+        throw new EtmException("Unable to create rrd directory " + parentDir.getAbsolutePath());
+      }
     }
 
 
