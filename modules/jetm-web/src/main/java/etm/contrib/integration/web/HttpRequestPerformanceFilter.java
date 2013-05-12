@@ -57,6 +57,7 @@ import java.io.IOException;
 public class HttpRequestPerformanceFilter implements Filter {
 
   protected EtmMonitor etmMonitor;
+  private FilterConfig filterConfig;
 
   public void init(FilterConfig aFilterConfig) throws ServletException {
     etmMonitor = getEtmMonitor();
@@ -82,4 +83,7 @@ public class HttpRequestPerformanceFilter implements Filter {
     return EtmManager.getEtmMonitor();
   }
 
+  protected FilterConfig getFilterConfig() {
+    return filterConfig;
+  }
 }
