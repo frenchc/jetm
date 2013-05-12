@@ -126,7 +126,7 @@ public class CGlibDelegatingRenderKitFactory extends RenderKitFactory {
     }
   }
 
-  public class RenderEtmInterceptor implements MethodInterceptor {
+  public static class RenderEtmInterceptor implements MethodInterceptor {
     private Renderer target;
 
     public RenderEtmInterceptor(Renderer aTarget) {

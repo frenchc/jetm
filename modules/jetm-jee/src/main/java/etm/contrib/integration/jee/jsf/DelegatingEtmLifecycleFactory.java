@@ -82,7 +82,7 @@ public class DelegatingEtmLifecycleFactory extends LifecycleFactory {
     return delegate.getLifecycleIds();
   }
 
-  class InterceptedLifeCycle extends Lifecycle {
+  static class InterceptedLifeCycle extends Lifecycle {
 
     private Lifecycle delegate;
 

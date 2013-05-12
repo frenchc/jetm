@@ -57,7 +57,7 @@ public class DelegatingExceptionHandler extends ExceptionHandlerFactory {
     return new WrappingExceptionHandler(delegate.getExceptionHandler());
   }
 
-  class WrappingExceptionHandler extends ExceptionHandlerWrapper {
+  static class WrappingExceptionHandler extends ExceptionHandlerWrapper {
 
     private ExceptionHandler handler;
 

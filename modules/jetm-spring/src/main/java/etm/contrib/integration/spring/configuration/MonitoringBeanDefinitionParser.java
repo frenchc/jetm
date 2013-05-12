@@ -237,7 +237,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
    * Bean definition wrapper.
    *
    */
-  class ProxyHolder {
+  static class ProxyHolder {
     private String name;
     private AbstractBeanDefinition definition;
 

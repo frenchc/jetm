@@ -139,7 +139,7 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
 
   }
 
-  class EtmConverter implements Converter {
+  static class EtmConverter implements Converter {
 
     private Converter converter;
     private String asObjectName;
@@ -172,7 +172,7 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
     }
   }
 
-  class EtmValidator implements Validator, StateHolder {
+  static class EtmValidator implements Validator, StateHolder {
 
     private Validator validator;
     private String pointName;
@@ -199,17 +199,16 @@ public class DelegatingEtmApplicationFactory extends ApplicationFactory {
 
     @Override
     public Object saveState(FacesContext context) {
-      return null;  //To change body of implemented methods use File | Settings | File Templates.
+      return null;
     }
 
     @Override
     public void restoreState(FacesContext context, Object state) {
-      //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void setTransient(boolean newTransientValue) {
-      //To change body of implemented methods use File | Settings | File Templates.
+
     }
   }
 
