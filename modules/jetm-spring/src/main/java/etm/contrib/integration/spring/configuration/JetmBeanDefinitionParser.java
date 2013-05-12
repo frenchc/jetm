@@ -86,7 +86,7 @@ public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionPar
     Object[] parameters = new Object[3];
     parameters[0] = definition;
     parameters[1] = parserContext.getRegistry();
-    parameters[2] = new Boolean(parserContext.isNested());
+    parameters[2] = Boolean.valueOf(parserContext.isNested());
     return parameters;
   }
 

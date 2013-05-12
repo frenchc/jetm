@@ -147,7 +147,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
   }
 
-  class Results {
+  static class Results {
     private Column nameColumn = new Column("Measurement Point");
     private Column numberColumn = new Column("#");
     private Column avgColumn = new Column("Average");
@@ -228,7 +228,7 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
   }
 
-  class Column {
+  static class Column {
     private int currentMaxSize = 0;
 
     private List entries;
