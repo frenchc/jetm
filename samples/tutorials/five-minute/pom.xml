@@ -13,7 +13,7 @@
   </parent>
 
   <groupId>fm.void.jetm.samples</groupId>
-  <artifactId>five-minute</artifactId>
+  <artifactId>five-minute-tutorial</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <name>JETM Tutorials: Five minute tutorial</name>
   <url>http://jetm.void.fm</url>
