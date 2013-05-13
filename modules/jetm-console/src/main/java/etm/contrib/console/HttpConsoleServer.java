@@ -143,12 +143,14 @@ public class HttpConsoleServer {
     actionRegistry = new ActionRegistry(new ResourceAccessor(), expanded);
 
     // create our worker pool
-    workers = new Stack();
-    for (int i = 0; i < workerSize; i++) {
-      ConsoleWorker item = new ConsoleWorker("JETM HTTP Console Worker - " + (i + 1));
-      item.setDaemon(true);
-      item.start();
-      workers.push(item);
+    synchronized (this) {
+      workers = new Stack();
+      for (int i = 0; i < workerSize; i++) {
+        ConsoleWorker item = new ConsoleWorker("JETM HTTP Console Worker - " + (i + 1));
+        item.setDaemon(true);
+        item.start();
+        workers.push(item);
+      }
     }
 
     try {

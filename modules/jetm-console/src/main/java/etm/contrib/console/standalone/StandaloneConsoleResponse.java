@@ -190,7 +190,7 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
     return dateFormat.format(new Date());
   }
 
-  class HttpStatus {
+  static class HttpStatus {
     private int statusCode;
     private String description;
 

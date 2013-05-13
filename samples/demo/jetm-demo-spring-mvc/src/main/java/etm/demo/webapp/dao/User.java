@@ -96,19 +96,19 @@ public class User {
   }
 
   public Date getCreateDate() {
-    return createDate;
+    return new Date(createDate.getTime());
   }
 
   public void setCreateDate(Date aCreateDate) {
-    createDate = aCreateDate;
+    createDate = new Date(aCreateDate.getTime());
   }
 
   public Date getLastModifiedDate() {
-    return lastModifiedDate;
+    return new Date(lastModifiedDate.getTime());
   }
 
   public void setLastModifiedDate(Date aLastModifiedDate) {
-    lastModifiedDate = aLastModifiedDate;
+    lastModifiedDate = new Date(aLastModifiedDate.getTime());
   }
 
 

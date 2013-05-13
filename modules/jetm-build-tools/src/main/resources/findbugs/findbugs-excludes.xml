@@ -11,5 +11,8 @@
       <Bug code="IJU"/>
     </Not>
   </Match>
+  <Match>
+    <Package name="~etm\.core\.util\.collection\.EDU\.oswego\.cs\.dl\.util\.concurrent.*" />
+  </Match>
 
 </FindBugsFilter>
