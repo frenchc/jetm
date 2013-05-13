@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<project name="JETM Five Minute Tutorial" default="help" basedir=".">
+<project name="JETM Five Minute Tutorial" default="help" basedir="../../../modules/samples/tutorial/five-minute">
 
   <path id="jetm.classpath">
-    <fileset dir="lib" includes="**/*.jar"/>
-    <fileset dir="../.." includes="**/lib/*.jar"/>
+    <fileset dir="../../../modules/samples/tutorial/five-minute/lib" includes="**/*.jar"/>
+    <fileset dir="../../../modules/samples" includes="**/lib/*.jar"/>
   </path>
 
   <target name="help">

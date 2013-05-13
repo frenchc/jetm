@@ -43,6 +43,8 @@
     <module>samples/demo/jetm-demo-jee</module>
 
     <module>samples/tutorials/one-minute</module>
+    <module>samples/tutorials/five-minute</module>
+
     <!--<module>modules/jetm-samples-aop</module>-->
     <!--<module>modules/jetm-samples-tutorial-five-minute</module>-->
   </modules>
