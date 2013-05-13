@@ -25,6 +25,7 @@
 
 
   <modules>
+    <module>modules/jetm-build-tools</module>
     <module>modules/jetm-parent</module>
     <module>modules/jetm-core</module>
     <module>modules/jetm-console</module>
