@@ -32,9 +32,9 @@
 
 package etm.contrib.integration.cdi;
 
-import etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi.AbstractCdiBean;
-import etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi.DelegatingAnnotatedMethod;
-import etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi.DelegatingAnnotatedType;
+import etm.contrib.integration.cdi.common.spi.AbstractCdiBean;
+import etm.contrib.integration.cdi.common.spi.DelegatingAnnotatedMethod;
+import etm.contrib.integration.cdi.common.spi.DelegatingAnnotatedType;
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;
 import etm.core.configuration.EtmMonitorConfig;

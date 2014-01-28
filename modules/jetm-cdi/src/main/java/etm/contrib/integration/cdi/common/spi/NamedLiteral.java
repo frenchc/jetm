@@ -1,4 +1,4 @@
-package etm.contrib.integration.cdi.de.openknowledge.cdi.common.spi;
+package etm.contrib.integration.cdi.common.spi;
 
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
