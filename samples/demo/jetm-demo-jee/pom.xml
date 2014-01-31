@@ -22,7 +22,7 @@
   <description>The Java Execution Time Measurement Library - Java EE Demo</description>
 
   <properties>
-    <version.owb>1.2.0-SNAPSHOT</version.owb>
+    <version.owb>1.2.1</version.owb>
 
     <!--<version.weld>2.0.1-SNAPSHOT</version.weld>-->
     <!--<version.weld.api>2.0.Final</version.weld.api>-->

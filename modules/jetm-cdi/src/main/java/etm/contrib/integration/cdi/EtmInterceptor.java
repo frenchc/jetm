@@ -92,21 +92,21 @@ public class EtmInterceptor implements Serializable {
   }
 
 
-  @PostConstruct
-  public void measureCreate(InvocationContext ctx) {
-    Class aClass = ctx.getTarget().getClass();
-    String targetMethod = calculateClassName(aClass) + ":<PostConstruct>";
-
-    EtmPoint point = EtmManager.getEtmMonitor().createPoint(targetMethod);
-    try {
-      ctx.proceed();
-    } catch (Exception e) {
-      point.alterName(targetMethod + "[ " + e.getClass().getSimpleName() + "]");
-      throw new RuntimeException(e);
-    } finally {
-      point.collect();
-    }
-  }
+//  @PostConstruct
+//  public void measureCreate(InvocationContext ctx) {
+//    Class aClass = ctx.getTarget().getClass();
+//    String targetMethod = calculateClassName(aClass) + ":<PostConstruct>";
+//
+//    EtmPoint point = EtmManager.getEtmMonitor().createPoint(targetMethod);
+//    try {
+//      ctx.proceed();
+//    } catch (Exception e) {
+//      point.alterName(targetMethod + "[ " + e.getClass().getSimpleName() + "]");
+//      throw new RuntimeException(e);
+//    } finally {
+//      point.collect();
+//    }
+//  }
 
   protected String calculateMethodName(InvocationContext ctx) {
     Class targetClass = ctx.getTarget().getClass();
