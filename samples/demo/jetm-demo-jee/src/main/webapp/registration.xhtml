@@ -46,7 +46,7 @@
                   <h:outputLabel for="firstName" value="Firstname"/>
                 </td>
                 <td>
-                  <h:inputText id="firstName" value="#{registrationBean.firstName}" />
+                  <h:inputText id="firstName" value="#{registrationBean.firstName}" required="true" />
                   <v:errorPopup forDivId="firstName"
                                 forId="registration:firstName"
                                 forFullId=":registration:firstName"
@@ -59,7 +59,7 @@
                   <h:outputLabel for="lastName" value="Lastname"/>
                 </td>
                 <td>
-                  <h:inputText id="lastName" value="#{registrationBean.lastName}"/>
+                  <h:inputText id="lastName" value="#{registrationBean.lastName}" required="true"/>
                   <v:errorPopup forDivId="lastName"
                                 forId="registration:lastName"
                                 forFullId=":registration:lastName"
@@ -86,7 +86,7 @@
                 <td>
                   <h:panelGroup id="userNameGroup" layout="block">
 
-                    <h:inputText id="username" value="#{registrationBean.userName}">
+                    <h:inputText id="username" value="#{registrationBean.userName}" required="true">
                       <f:validator binding="#{usernameValidator}"/>
                       <f:ajax event="valueChange" render="userNameGroup" execute="@this"/>
                     </h:inputText>
@@ -131,13 +131,13 @@
 
               <tr>
                 <td></td>
-                <td><h:commandButton value="submit" action="#{registrationBean.register}"/></td>
+                <td><h:commandButton value="submit" action="#{registrationBean.registers}"/></td>
               </tr>
             </table>
           </h:form>
           <h:form id="login" style="display: none">
-            <h:inputText id="username" value="#{authenticationBean.username}" required="true"/>
-            <h:inputSecret id="password" value="#{authenticationBean.password}" required="true"/>
+            <h:inputText id="hiddenUserName" value="#{authenticationBean.username}" required="true"/>
+            <h:inputSecret id="hiddenPassword" value="#{authenticationBean.password}" required="true"/>
             <h:commandButton id="submit" value="Login" action="#{authenticationBean.authenticate}"/>
           </h:form>
         </div>
