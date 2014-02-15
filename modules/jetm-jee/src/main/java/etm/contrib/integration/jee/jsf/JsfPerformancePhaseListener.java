@@ -38,9 +38,11 @@ import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import java.util.Iterator;
 
 /**
  * A JSF phase listener that monitors overall request processing
@@ -78,10 +80,20 @@ public class JsfPerformancePhaseListener implements PhaseListener {
 
     // stop recording current phase time
     EtmPoint point = (EtmPoint) facesContext.getAttributes().get(CURRENT_PHASE_POINT);
+
     if (point != null) {
+      // alter name if we encounter an exception
+      Iterator<ExceptionQueuedEvent> it = facesContext.getExceptionHandler().getUnhandledExceptionQueuedEvents().iterator();
+      if (it.hasNext()) {
+        ExceptionQueuedEvent exceptionQueuedEvent = it.next();
+        point.alterName(point.getName() + " [" + exceptionQueuedEvent.getContext().getException().getClass().getSimpleName() + "]");
+      }
+
       point.collect();
       facesContext.getAttributes().remove(CURRENT_PHASE_POINT);
     }
+
+
   }
 
   public PhaseId getPhaseId() {
