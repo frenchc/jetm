@@ -381,8 +381,8 @@
       <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
     </repository>
     <repository>
-      <id>ok-repo</id>
-      <url>http://repo.openknowledge.de</url>
+      <id>jetm-repo</id>
+      <url>https://repository.openknowledge.de/jetm-libs</url>
     </repository>
 
   </repositories>
@@ -390,8 +390,14 @@
 
   <distributionManagement>
     <repository>
-      <id>ok-repo</id>
-      <url>scp://repo.openknowledge.de/www/repo/repository</url>
+      <id>jetm-repo</id>
+      <name>jetm-repo-releases</name>
+      <url>https://repository.openknowledge.de/jetm-libs</url>
     </repository>
+    <snapshotRepository>
+      <id>jetm-repo</id>
+      <name>jetm-repo-snapshots</name>
+      <url>https://repository.openknowledge.de/jetm-libs</url>
+    </snapshotRepository>
   </distributionManagement>
 </project>
