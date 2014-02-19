@@ -157,7 +157,6 @@
               <configuration>
                 <encoding>UTF-8</encoding>
                 <formats>
-                  <format>html</format>
                   <format>xml</format>
                 </formats>
               </configuration>
