@@ -7,13 +7,13 @@
   <parent>
     <groupId>fm.void.jetm</groupId>
     <artifactId>jetm-parent</artifactId>
-    <version>1.3.0-Beta2</version>
+    <version>1.3.0-SNAPSHOT</version>
     <relativePath>../../../modules/jetm-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>fm.void.jetm.samples</groupId>
   <artifactId>one-minute-tutorial</artifactId>
-  <version>1.3.0-Beta2</version>
+  <version>1.3.0-SNAPSHOT</version>
   <name>JETM Tutorials: One minute tutorial</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library - One minute tutorial</description>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm</artifactId>
-      <version>1.3.0-Beta2</version>
+      <version>1.3.0-SNAPSHOT</version>
     </dependency>
 
   </dependencies>
