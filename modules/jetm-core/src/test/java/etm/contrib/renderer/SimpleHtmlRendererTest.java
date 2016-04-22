@@ -37,6 +37,7 @@ import etm.core.TestExecutionAggregate;
 
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -118,7 +119,7 @@ public class SimpleHtmlRendererTest extends TestCase {
       "  <th>Total</th>\n" +
       " </tr>\n" +
       " <tr>\n" +
-      "  <td><div class=\"parentname\" >test1<div class=\"childname\" >test1Child1<div class=\"childname\" >test1Child1Child2</div><div class=\"childname\" >test1Child1Child1</div></div></div></td>\n" +
+      "  <td><div class=\"parentname\" >test1<div class=\"childname\" >test1Child1<div class=\"childname\" >test1Child1Child1</div><div class=\"childname\" >test1Child1Child2</div></div></div></td>\n" +
       "  <td><div class=\"parentmeasurement\" >10<div class=\"childmeasurement\" >20<div class=\"childmeasurement\" >20</div><div class=\"childmeasurement\" >20</div></div></div></td>\n" +
       "  <td><div class=\"parenttime\" >10.000<div class=\"childtime\" >10.000<div class=\"childtime\" >10.000</div><div class=\"childtime\" >10.000</div></div></div></td>\n" +
       "  <td><div class=\"parenttime\" >10.000<div class=\"childtime\" >50.000<div class=\"childtime\" >50.000</div><div class=\"childtime\" >50.000</div></div></div></td>\n" +
@@ -136,7 +137,7 @@ public class SimpleHtmlRendererTest extends TestCase {
       " <tr><td class=\"footer\" colspan=\"6\">All times in miliseconds. Measurements provided by <a href=\"http://jetm.void.fm\" target=\"_default\">JETM</a></td></tr>\n" +
       "</table>";
 
-    Map map = new HashMap();
+    Map map = new LinkedHashMap();
 
 
     TestExecutionAggregate agt1 = new TestExecutionAggregate("test1");
