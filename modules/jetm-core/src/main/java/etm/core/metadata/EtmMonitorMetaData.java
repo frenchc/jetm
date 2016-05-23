@@ -161,7 +161,7 @@ public class EtmMonitorMetaData implements Serializable {
   }
 
   public String toString() {
-    StringBuffer buffer = new StringBuffer("Monitor ");
+    StringBuilder buffer = new StringBuilder("Monitor ");
     buffer.append(monitorClazz);
     buffer.append(" (");
     buffer.append(monitorDescription);
