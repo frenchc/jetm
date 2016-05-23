@@ -87,15 +87,15 @@ public class StockDaoImpl implements StockDao {
 
 
   private void loadInitialStock() {
-    catalog.put(new Integer(1), new Item(1, "apples", new BigDecimal(2.99)));
-    catalog.put(new Integer(2), new Item(2, "oranges", new BigDecimal(1.49)));
-    catalog.put(new Integer(3), new Item(3, "bananas", new BigDecimal(1.99)));
-    catalog.put(new Integer(4), new Item(4, "grapes", new BigDecimal(2.49)));
+    catalog.put(new Integer(1), new Item(1, "apples", BigDecimal.valueOf(2.99)));
+    catalog.put(new Integer(2), new Item(2, "oranges", BigDecimal.valueOf(1.49)));
+    catalog.put(new Integer(3), new Item(3, "bananas", BigDecimal.valueOf(1.99)));
+    catalog.put(new Integer(4), new Item(4, "grapes", BigDecimal.valueOf(2.49)));
 
-    stock.put(new Integer(1), new StockItem((Item) catalog.get(new Integer(1)), 15));
-    stock.put(new Integer(2), new StockItem((Item) catalog.get(new Integer(2)), 5));
-    stock.put(new Integer(3), new StockItem((Item) catalog.get(new Integer(3)), 20));
-    stock.put(new Integer(4), new StockItem((Item) catalog.get(new Integer(4)), 11));
+    stock.put(new Integer(1), new StockItem((Item) catalog.get(Integer.valueOf(1)), 15));
+    stock.put(new Integer(2), new StockItem((Item) catalog.get(Integer.valueOf(2)), 5));
+    stock.put(new Integer(3), new StockItem((Item) catalog.get(Integer.valueOf(3)), 20));
+    stock.put(new Integer(4), new StockItem((Item) catalog.get(Integer.valueOf(4)), 11));
   }
 
 
