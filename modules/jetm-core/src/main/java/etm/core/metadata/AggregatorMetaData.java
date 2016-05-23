@@ -95,7 +95,7 @@ public class AggregatorMetaData implements Serializable {
   }
 
   public String toString() {
-    StringBuffer buffer = new StringBuffer("implementationClass=");
+    StringBuilder buffer = new StringBuilder("implementationClass=");
     buffer.append(implementationClass.getName());
     buffer.append(", description='");
     buffer.append(description);

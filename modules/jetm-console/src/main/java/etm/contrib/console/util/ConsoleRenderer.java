@@ -473,7 +473,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
   }
 
   protected String encodeHtml(String text) {
-    StringBuffer result = new StringBuffer();
+    StringBuilder result = new StringBuilder();
     char[] chars = text.toCharArray();
     for (int i = 0; i < chars.length; i++) {
       char c = chars[i];

@@ -56,7 +56,7 @@ public class ConsoleUtil {
   }
 
   public static String appendParameters(String url, Map parameters, boolean removeDetails) {
-    StringBuffer result = new StringBuffer(url);
+    StringBuilder result = new StringBuilder(url);
 
     try {
       if (parameters != null && parameters.size() > 0) {

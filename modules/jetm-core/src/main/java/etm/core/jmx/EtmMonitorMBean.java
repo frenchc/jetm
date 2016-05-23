@@ -92,7 +92,7 @@ public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
     EtmMonitorMetaData etmMonitorMetaData = etmMonitor.getMetaData();
 
     AggregatorMetaData metaData = etmMonitorMetaData.getAggregatorMetaData();
-    StringBuffer chain = new StringBuffer(metaData.getImplementationClass().getName());
+    StringBuilder chain = new StringBuilder(metaData.getImplementationClass().getName());
     metaData = metaData.getNestedMetaData();
 
     while (metaData != null) {
