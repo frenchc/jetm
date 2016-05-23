@@ -65,6 +65,9 @@ public class EtmMonitorFactory {
     "etm.core.timer.DefaultTimer"
   };
 
+  private EtmMonitorFactory() {
+  }
+
 
   public static EtmMonitor createEtmMonitor(EtmMonitorConfig monitorConfig) throws Exception {
     Object obj;
