@@ -365,10 +365,8 @@ public class HttpConsoleServer {
             if (aTemp[i] == ' ') {
               endOfRequestString = i;
               break;
-            } else if (aTemp[i] == '?') {
-              if (parameterStart == 0) {
-                parameterStart = i;
-              }
+            } else if (aTemp[i] == '?' && parameterStart == 0) {
+              parameterStart = i;
             }
           }
 

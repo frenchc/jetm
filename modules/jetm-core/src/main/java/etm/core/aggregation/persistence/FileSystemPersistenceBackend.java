@@ -68,22 +68,20 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
   public PersistentEtmState load() {
     PersistentEtmState state = null;
     File file = new File(path, filename);
-    if (file.exists()) {
-      if (file.canRead()) {
-        ObjectInputStream in = null;
-        try {
-          in = new ObjectInputStream(new FileInputStream(file));
-          state = (PersistentEtmState) in.readObject();
-        } catch (Exception e) {
-          // ignored
-          LOG.warn("Error loading state from file " + file.getAbsolutePath(), e);
-        } finally {
-          if (in != null) {
-            try {
-              in.close();
-            } catch (IOException e) {
-              // ignored
-            }
+    if (file.exists() && file.canRead()) {
+      ObjectInputStream in = null;
+      try {
+        in = new ObjectInputStream(new FileInputStream(file));
+        state = (PersistentEtmState) in.readObject();
+      } catch (Exception e) {
+        // ignored
+        LOG.warn("Error loading state from file " + file.getAbsolutePath(), e);
+      } finally {
+        if (in != null) {
+          try {
+            in.close();
+          } catch (IOException e) {
+            // ignored
           }
         }
       }
@@ -92,11 +90,9 @@ public class FileSystemPersistenceBackend implements PersistenceBackend {
   }
 
   public void store(PersistentEtmState state) {
-    if (!path.exists()) {
-      if (!path.mkdirs()) {
-        LOG.warn("Unable to create destination path " + path.getAbsolutePath() + ". Aborting.");
-        return;
-      }
+    if (!path.exists() && !path.mkdirs()) {
+      LOG.warn("Unable to create destination path " + path.getAbsolutePath() + ". Aborting.");
+      return;
     }
 
     File destination = new File(path, filename);

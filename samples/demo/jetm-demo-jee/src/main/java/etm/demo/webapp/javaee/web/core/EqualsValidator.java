@@ -55,25 +55,22 @@ public class EqualsValidator implements Validator {
     HtmlOutputLabel thisLabel = (HtmlOutputLabel) component.getAttributes().get("thisLabel");
 
 
-    if (compareToComponent != null) {
-      if (compareToComponent.isValid()) {
-        Object thisValue = value;
-        Object compareToValue = compareToComponent.getValue();
-        if (thisValue == null || !thisValue.equals(compareToValue)) {
-          String thisLabelText = thisComponent.getClientId(context);
-          String compareToLabelText = compareToComponent.getClientId(context);
-          if (compareToLabel != null) {
-            compareToLabelText = (String) compareToLabel.getValue();
-          }
-          if (thisLabel != null) {
-            thisLabelText = (String) thisLabel.getValue();
-          }
-
-          throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-            compareToLabelText + " does not match " + thisLabelText,
-            null));
-
+    if (compareToComponent != null && compareToComponent.isValid()) {
+      Object thisValue = value;
+      Object compareToValue = compareToComponent.getValue();
+      if (thisValue == null || !thisValue.equals(compareToValue)) {
+        String thisLabelText = thisComponent.getClientId(context);
+        String compareToLabelText = compareToComponent.getClientId(context);
+        if (compareToLabel != null) {
+          compareToLabelText = (String) compareToLabel.getValue();
         }
+        if (thisLabel != null) {
+          thisLabelText = (String) thisLabel.getValue();
+        }
+
+        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+          compareToLabelText + " does not match " + thisLabelText,
+          null));
       }
     }
   }
