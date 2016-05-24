@@ -158,7 +158,7 @@ public class Xml10EtmConfiguratorTest extends TestCase {
     EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
     List plugins = ((TestMonitor) etmMonitor).getPlugins();
 
-    assertTrue(plugins.size() > 0);
+    assertTrue(!plugins.isEmpty());
 
     EtmPlugin plugin = (EtmPlugin) plugins.get(0);
 

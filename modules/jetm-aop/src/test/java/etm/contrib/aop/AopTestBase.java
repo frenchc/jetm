@@ -81,7 +81,7 @@ public abstract class AopTestBase extends TestCase {
 
     etmMonitor.render(new MeasurementRenderer() {
       public void render(Map points) {
-        assertTrue("No measurement result found.", points.size() > 0);
+        assertTrue("No measurement result found.", !points.isEmpty());
         Aggregate topLevelBar = ((Aggregate) points.get("BarService::doBar"));
         assertTrue(topLevelBar.getTotal() > 0);
         assertTrue(topLevelBar.getMin() > 0);

@@ -238,7 +238,7 @@ public abstract class CommonMonitorTests extends TestCase {
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
         assertNotNull(points);
-        assertTrue(points.size() == 0);
+        assertTrue(points.isEmpty());
       }
     });
 
