@@ -144,7 +144,7 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
     if (mbeanServer == null) {
       try {
         ArrayList mbeanServers = MBeanServerFactory.findMBeanServer(mbeanServerName);
-        if (mbeanServers.size() > 0) {
+        if (!mbeanServers.isEmpty()) {
           mbeanServer = (MBeanServer) mbeanServers.get(0);
           ObjectName objectName = new ObjectName(monitorObjectName);
 

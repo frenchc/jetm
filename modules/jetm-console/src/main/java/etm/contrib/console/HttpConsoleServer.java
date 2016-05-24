@@ -179,7 +179,7 @@ public class HttpConsoleServer {
 
   protected ConsoleWorker getWorker() {
     synchronized (this) {
-      if (workers.size() > 0) {
+      if (!workers.isEmpty()) {
         return (ConsoleWorker) workers.pop();
       } else {
         return null;

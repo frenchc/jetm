@@ -110,7 +110,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
    * @return True for available childs, otherwise false.
    */
   public boolean hasChilds() {
-    return childs != null && childs.size() > 0;
+    return childs != null && !childs.isEmpty();
   }
 
   /**
@@ -140,7 +140,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
 
     ExecutionAggregate aggregate = getChild(current.getName());
 
-    if (newTree.size() == 0) {
+    if (newTree.isEmpty()) {
       aggregate.addTransaction(current);
     } else {
       aggregate.appendPath(newTree);

@@ -68,7 +68,7 @@ public class MonitoringBeanDefinitionParser extends JetmBeanDefinitionParser {
     Set registeredProxies = new HashSet();
 
     List signaturePattern = DomUtils.getChildElementsByTagName(aElement, "signature-pattern");
-    if (signaturePattern.size() > 0) {
+    if (!signaturePattern.isEmpty()) {
       throw new UnsupportedOperationException("Signature patterns currently not supported.");
     }
 

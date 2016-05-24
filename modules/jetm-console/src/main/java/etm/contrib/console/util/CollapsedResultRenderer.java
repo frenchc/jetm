@@ -75,7 +75,7 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
       response.write("<table>\n");
       writeTableHeader();
 
-      if (points.size() == 0) {
+      if (points.isEmpty()) {
         response.write(NO_RESULTS);
       } else {
 

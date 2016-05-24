@@ -117,7 +117,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
   private void addExtensions(BeanDefinitionBuilder aBuilder, Element aExtension, Element jmx) {
     List pluginConfigs = DomUtils.getChildElementsByTagName(aExtension, "plugin");
 
-    if (pluginConfigs.size() > 0) {
+    if (!pluginConfigs.isEmpty()) {
       List plugins = new ArrayList();
       for (int i = 0; i < pluginConfigs.size(); i++) {
 
@@ -133,7 +133,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         }
 
         List properties = DomUtils.getChildElementsByTagName(element, "property");
-        if (properties.size() > 0) {
+        if (!properties.isEmpty()) {
           for (int j = 0; j < properties.size(); j++) {
             Element aProperty = (Element) properties.get(j);
             addProperty(builder, aProperty);
@@ -196,7 +196,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
     chainBuilder = BeanDefinitionBuilder.rootBeanDefinition(rootClazz);
 
-    if (chainElements.size() > 0) {
+    if (!chainElements.isEmpty()) {
       for (int i = chainElements.size() - 1; i >= 0; i--) {
         Element chainElement = (Element) chainElements.get(i);
         String chainClassName = chainElement.getAttribute("class");
@@ -209,7 +209,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
         }
 
         List propertyElements = DomUtils.getChildElementsByTagName(chainElement, "property");
-        if (propertyElements.size() > 0) {
+        if (!propertyElements.isEmpty()) {
           for (int j = 0; j < propertyElements.size(); j++) {
             Element property = (Element) propertyElements.get(j);
             addProperty(nestedBuilder, property);

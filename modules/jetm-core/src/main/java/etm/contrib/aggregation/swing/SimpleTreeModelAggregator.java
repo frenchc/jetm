@@ -105,7 +105,7 @@ public class SimpleTreeModelAggregator extends DefaultTreeModel implements Aggre
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) getRoot();
 
 
-    while (path.size() != 0) {
+    while (!path.isEmpty()) {
       String currentString = (String) path.removeFirst();
       Enumeration childs = node.children();
       DefaultMutableTreeNode currentChild = null;
