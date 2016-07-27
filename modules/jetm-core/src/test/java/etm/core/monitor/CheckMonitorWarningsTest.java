@@ -65,8 +65,8 @@ public class CheckMonitorWarningsTest extends TestCase {
       point.collect();
 
       tmp.flush();
-      String s = new String(out.toByteArray(), Charset.defaultCharset());
-      assertTrue(s.indexOf("Warning - Performance Monitoring currently disabled.") > -1);
+      String s = new String(out.toByteArray(), Charset.defaultCharset().name());
+      assertTrue(s.contains("Warning - Performance Monitoring currently disabled."));
 
     } finally {
       System.setOut(writer);
@@ -89,8 +89,8 @@ public class CheckMonitorWarningsTest extends TestCase {
       point.collect();
 
       tmp.flush();
-      String s = new String(out.toByteArray(), Charset.defaultCharset());
-      assertTrue(s.indexOf("Warning - NullMonitor active. Performance results are discarded.") > -1);
+      String s = new String(out.toByteArray(), Charset.defaultCharset().name());
+      assertTrue(s.contains("Warning - NullMonitor active. Performance results are discarded."));
       etmMonitor.stop();
     } finally {
       System.setOut(writer);
