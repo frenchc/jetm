@@ -56,12 +56,15 @@ public class CheckMonitorWarningsTest extends TestCase {
   public void testEtmMonitorSupportWarning() throws Exception {
     EtmManager.reset();
 
-    PrintStream writer = System.out;
+    PrintStream outWriter = System.out;
+    PrintStream errorWriter = System.err;
 
     try {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       PrintStream tmp = new PrintStream(out);
       System.setOut(tmp);
+      System.setErr(tmp);
+
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
       EtmPoint point = etmMonitor.createPoint("test");
@@ -69,25 +72,30 @@ public class CheckMonitorWarningsTest extends TestCase {
 
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
-      LogManager.getLogManager().reset();
+
+//      LogManager.getLogManager().reset();
 
       assertThat (s, containsString("Warning - Performance Monitoring currently disabled."));
 
 
     } finally {
-      System.setOut(writer);
+      System.setOut(outWriter);
+      System.setErr(errorWriter);
+
     }
   }
 
   public void testNullMonitorWarning() throws Exception {
     EtmManager.reset();
 
-    PrintStream writer = System.out;
+    PrintStream outWriter = System.out;
+    PrintStream errorWriter = System.err;
 
     try {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       PrintStream tmp = new PrintStream(out);
       System.setOut(tmp);
+      System.setErr(tmp);
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
       etmMonitor.start();
@@ -98,13 +106,14 @@ public class CheckMonitorWarningsTest extends TestCase {
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
       etmMonitor.stop();
 
-      LogManager.getLogManager().reset();
+//      LogManager.getLogManager().reset();
 
       assertThat (s, containsString("Warning - NullMonitor active. Performance results are discarded."));
 
 
     } finally {
-      System.setOut(writer);
+      System.setOut(outWriter);
+      System.setErr(errorWriter);
     }
   }
 
