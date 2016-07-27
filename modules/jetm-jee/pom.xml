@@ -10,7 +10,6 @@
     <relativePath>../jetm-parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-jee</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -50,6 +49,10 @@
       <groupId>javax.faces</groupId>
       <artifactId>javax.faces-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
@@ -60,7 +63,6 @@
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
     </dependency>
-
 
     <dependency>
       <groupId>log4j</groupId>

@@ -15,6 +15,7 @@
 
     <version.springframework>3.2.2.RELEASE</version.springframework>
     <version.jsf.api>2.2-m12</version.jsf.api>
+    <version.jax-rs.api>2.0</version.jax-rs.api>
 
     <version.aopalliance>1.0</version.aopalliance>
     <version.aspectj>1.7.2</version.aspectj>
@@ -285,6 +286,12 @@
         <groupId>javax.faces</groupId>
         <artifactId>javax.faces-api</artifactId>
         <version>${version.jsf.api}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>javax.ws.rs-api</artifactId>
+        <version>${version.jax-rs.api}</version>
         <scope>provided</scope>
       </dependency>
 
