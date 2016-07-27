@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  * @see java.util.regex.Pattern
  */
 public class RegexEtmFilter implements EtmFilter {
-  protected final HashSet validNames;
+  protected final HashSet<String> validNames;
   protected Pattern[] pattern;
 
   /**
@@ -81,7 +81,7 @@ public class RegexEtmFilter implements EtmFilter {
       }
     }
 
-    validNames = new HashSet();
+    validNames = new HashSet<String>();
   }
 
   public boolean matches(EtmPoint aPoint) {
@@ -90,8 +90,8 @@ public class RegexEtmFilter implements EtmFilter {
       return true;
     }
 
-    for (int i = 0; i < pattern.length; i++) {
-      Matcher matcher = pattern[i].matcher(name);
+    for (Pattern aPattern : pattern) {
+      Matcher matcher = aPattern.matcher(name);
       if (matcher.matches()) {
         synchronized (validNames) {
           validNames.add(name);

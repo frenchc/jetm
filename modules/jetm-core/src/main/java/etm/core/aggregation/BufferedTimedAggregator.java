@@ -71,7 +71,7 @@ public class BufferedTimedAggregator implements Aggregator {
 
   private EtmMonitorContext ctx;
 
-  protected List nonCollectable = new ArrayList();
+  protected List<EtmPoint> nonCollectable = new ArrayList<EtmPoint>();
 
 
   private boolean started = false;
@@ -258,9 +258,9 @@ public class BufferedTimedAggregator implements Aggregator {
       }
 
       synchronized (delegate) {
-        Iterator it = nonCollectable.iterator();
+        Iterator<EtmPoint> it = nonCollectable.iterator();
         while(it.hasNext()) {
-          EtmPoint point = (EtmPoint) it.next();
+          EtmPoint point = it.next();
 
           if (point.isCollectable()) {
             delegate.add(point);

@@ -47,7 +47,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * An Aggregator that cumulates results, supports both nested and flat aggregation.
+ * An Aggregator that cummulates results, supports both nested and flat aggregation.
  *
  * @author void.fm
  * @version $Revision$
@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public class RootAggregator implements Aggregator {
 
-  protected Map aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
+  protected Map<String, ExecutionAggregate> aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
 
   protected EtmMonitorContext ctx;
 
@@ -67,7 +67,7 @@ public class RootAggregator implements Aggregator {
   }
 
   public void reset(String symbolicName) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(symbolicName);
+    ExecutionAggregate aggregate = aggregates.get(symbolicName);
     if (aggregate != null) {
       ctx.fireEvent(new PreRootResetEvent(aggregate, this));
       aggregate.reset();
@@ -109,7 +109,7 @@ public class RootAggregator implements Aggregator {
 
     // TODO check alternative strategy to improve performance
     // find tree root node
-    LinkedList path = new LinkedList();
+    LinkedList<EtmPoint> path = new LinkedList<EtmPoint>();
     path.add(point);
 
     EtmPoint rootNode = point.getParent();
@@ -118,14 +118,14 @@ public class RootAggregator implements Aggregator {
       rootNode = rootNode.getParent();
     }
 
-    rootNode = (EtmPoint) path.removeFirst();
+    rootNode = path.removeFirst();
 
     ExecutionAggregate aggregate = getAggregate(rootNode.getName());
     aggregate.appendPath(path);
   }
 
   protected ExecutionAggregate getAggregate(String aName) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(aName);
+    ExecutionAggregate aggregate = aggregates.get(aName);
     if (aggregate == null) {
       aggregate = new ExecutionAggregate(aName);
       aggregates.put(aName, aggregate);

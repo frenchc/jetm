@@ -91,7 +91,7 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin, AggregationList
    */
 
   public PluginMetaData getPluginMetaData() {
-    Map properties = new HashMap();
+    Map<String, String> properties = new HashMap<String, String>();
     properties.put("logName", logName);
 
     return new PluginMetaData(getClass(), description, properties);
@@ -116,7 +116,7 @@ public abstract class DumpOnShutDownPlugin implements EtmPlugin, AggregationList
     writer.write(lineSeparator);
 
     SimpleTextRenderer textRenderer = new SimpleTextRenderer(writer);
-    Map map = new HashMap();
+    Map<String, Aggregate> map = new HashMap<String, Aggregate>();
     map.put(aggregate.getName(), aggregate);
     textRenderer.render(map);
     logResetDetail(writer.toString());

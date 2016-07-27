@@ -70,7 +70,7 @@ public class BufferedThresholdAggregator implements Aggregator {
   protected BoundedBuffer buffer;
   protected EtmMonitorContext context;
 
-  protected List nonCollectable = new ArrayList();
+  protected List<EtmPoint> nonCollectable = new ArrayList<EtmPoint>();
 
   /**
    * Creates a new BufferedThresholdAggregator for the given
@@ -190,9 +190,9 @@ public class BufferedThresholdAggregator implements Aggregator {
 
     private void doFlush(EtmPoint[] aCurrent, int aLength) {
       synchronized (delegate) {
-        Iterator it = nonCollectable.iterator();
+        Iterator<EtmPoint> it = nonCollectable.iterator();
         while(it.hasNext()) {
-          EtmPoint point = (EtmPoint) it.next();
+          EtmPoint point = it.next();
 
           if (point.isCollectable()) {
             delegate.add(point);

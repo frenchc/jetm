@@ -61,5 +61,5 @@ public interface Aggregate {
 
   public boolean hasChilds();
 
-  public Map getChilds();
+  public Map<String, ? extends Aggregate> getChilds();
 }

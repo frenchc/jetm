@@ -44,7 +44,7 @@ import etm.core.util.collection.CollectionFactory;
 import java.util.Map;
 
 /**
- * The FlatAggregator creates a flat mesurement result representation. Nesting elements
+ * The FlatAggregator creates a flat measurement result representation. Nesting elements
  * will be ignored.
  *
  * @author void.fm
@@ -54,7 +54,7 @@ import java.util.Map;
 
 public class FlatAggregator implements Aggregator {
 
-  protected Map aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
+  protected Map<String, ExecutionAggregate> aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
   protected EtmMonitorContext ctx;
 
   public FlatAggregator() {
@@ -67,7 +67,7 @@ public class FlatAggregator implements Aggregator {
 
 
   public void reset(String symbolicName) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(symbolicName);
+    ExecutionAggregate aggregate = aggregates.get(symbolicName);
     if (aggregate != null) {
       aggregate.reset();
       ctx.fireEvent(new RootResetEvent(symbolicName, this));
@@ -107,7 +107,7 @@ public class FlatAggregator implements Aggregator {
   }
 
   protected ExecutionAggregate getAggregate(final String aName) {
-    ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(aName);
+    ExecutionAggregate aggregate = aggregates.get(aName);
     if (aggregate == null) {
       aggregate = new ExecutionAggregate(aName);
       aggregates.put(aName, aggregate);
