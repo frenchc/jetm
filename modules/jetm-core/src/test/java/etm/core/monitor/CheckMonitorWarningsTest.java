@@ -32,6 +32,9 @@
 
 package etm.core.monitor;
 
+import static com.sun.jmx.snmp.ThreadContext.contains;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import etm.core.configuration.EtmManager;
 import junit.framework.TestCase;
 
@@ -64,7 +67,7 @@ public class CheckMonitorWarningsTest extends TestCase {
 
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
-      assertTrue(s.contains("Warning - Performance Monitoring currently disabled."));
+      assertThat (s, contains("Warning - Performance Monitoring currently disabled."));
 
     } finally {
       System.setOut(writer);
@@ -88,7 +91,7 @@ public class CheckMonitorWarningsTest extends TestCase {
 
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
-      assertTrue(s.contains("Warning - NullMonitor active. Performance results are discarded."));
+      assertThat (s, contains("Warning - NullMonitor active. Performance results are discarded."));
       etmMonitor.stop();
     } finally {
       System.setOut(writer);
