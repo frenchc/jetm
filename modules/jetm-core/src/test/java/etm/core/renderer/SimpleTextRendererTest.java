@@ -33,7 +33,6 @@
 
 package etm.core.renderer;
 
-import etm.core.renderer.SimpleTextRenderer;
 import junit.framework.TestCase;
 import etm.core.TestExecutionAggregate;
 

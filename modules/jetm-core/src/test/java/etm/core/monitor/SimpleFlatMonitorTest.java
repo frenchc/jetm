@@ -33,8 +33,6 @@
 
 package etm.core.monitor;
 
-import etm.core.monitor.FlatMonitor;
-
 /**
  * Non threaded flat monitor  Just uses all common test cases for
  * monitors.

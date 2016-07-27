@@ -33,8 +33,6 @@
 package etm.core.monitor;
 
 import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayOutputStream;

@@ -32,8 +32,6 @@
 
 package etm.core.configuration;
 
-import etm.core.configuration.BasicEtmConfigurator;
-import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.FlatMonitor;

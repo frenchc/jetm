@@ -32,8 +32,6 @@
 
 package etm.core.aggregation;
 
-import etm.core.aggregation.Aggregate;
-import etm.core.aggregation.ExecutionAggregate;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;

@@ -35,9 +35,6 @@ package etm.core.monitor;
 
 import etm.core.aggregation.Aggregate;
 import etm.core.aggregation.ExecutionAggregate;
-import etm.core.monitor.EtmMonitor;
-import etm.core.monitor.EtmPoint;
-import etm.core.monitor.FlatMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
 import etm.core.TestHelper;
