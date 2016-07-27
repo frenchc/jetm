@@ -59,7 +59,7 @@ public class ConsoleUtil {
     StringBuilder result = new StringBuilder(url);
 
     try {
-      if (parameters != null && parameters.size() > 0) {
+      if (parameters != null && !parameters.isEmpty()) {
         if (url.indexOf('?') < 0) {
           result.append("?");
         } else {

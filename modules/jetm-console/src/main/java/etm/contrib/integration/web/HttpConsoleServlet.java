@@ -88,7 +88,7 @@ public class HttpConsoleServlet extends HttpServlet {
       actionName = requestUri.substring(i);
     }
 
-    if (actionName == null || actionName.length() == 0) {
+    if (actionName == null || actionName.isEmpty()) {
       actionName = "/";
     }
 

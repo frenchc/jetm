@@ -58,7 +58,7 @@ public class SpringEtmMonitorContextSupport {
       }
     } else {
       Map map = ctx.getBeansOfType(EtmMonitor.class);
-      if (map.size() > 0) {
+      if (!map.isEmpty()) {
         if (map.size() == 1) {
           return (EtmMonitor) map.values().iterator().next();
         } else {

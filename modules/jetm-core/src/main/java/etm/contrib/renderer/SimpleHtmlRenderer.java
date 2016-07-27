@@ -175,7 +175,7 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
     try {
       writer.write(HEAD.toCharArray());
 
-      if (points.size() == 0) {
+      if (points.isEmpty()) {
         writer.write(NO_RESULTS.toCharArray());
       } else {
         StringBuffer buffer = new StringBuffer();

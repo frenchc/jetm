@@ -79,7 +79,7 @@ public class Java14LogAdapter extends Logger implements LogAdapter {
 
     while(names.hasMoreElements()) {
       expectedNames.add(names.nextElement());
-      if (expectedNames.size() == 0) {
+      if (expectedNames.isEmpty()) {
         return true;
       }
     }
@@ -87,6 +87,6 @@ public class Java14LogAdapter extends Logger implements LogAdapter {
     expectedNames.remove("");
     expectedNames.remove("global");
 
-    return expectedNames.size() > 0;
+    return !expectedNames.isEmpty();
   }
 }
