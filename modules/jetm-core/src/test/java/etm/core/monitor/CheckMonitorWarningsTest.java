@@ -40,6 +40,7 @@ import junit.framework.TestCase;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.util.logging.LogManager;
 
 import etm.core.configuration.EtmManager;
 
@@ -68,7 +69,10 @@ public class CheckMonitorWarningsTest extends TestCase {
 
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
+      LogManager.getLogManager().reset();
+
       assertThat (s, containsString("Warning - Performance Monitoring currently disabled."));
+
 
     } finally {
       System.setOut(writer);
@@ -92,10 +96,16 @@ public class CheckMonitorWarningsTest extends TestCase {
 
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
-      assertThat (s, containsString("Warning - NullMonitor active. Performance results are discarded."));
       etmMonitor.stop();
+
+      LogManager.getLogManager().reset();
+
+      assertThat (s, containsString("Warning - NullMonitor active. Performance results are discarded."));
+
+
     } finally {
       System.setOut(writer);
     }
   }
+
 }
