@@ -73,7 +73,7 @@ public class MethodCallInterceptorTest extends TestCase {
 
       monitor.render(new MeasurementRenderer() {
         public void render(Map points) {
-          assertTrue(points.size() > 0);
+          assertTrue(!points.isEmpty());
           assertNotNull(points.get("FooService::doFoo"));
           assertNotNull(points.get("FooService::doFoo [Exception]"));
         }
