@@ -40,7 +40,6 @@ import junit.framework.TestCase;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
-import java.util.logging.LogManager;
 
 import etm.core.configuration.EtmManager;
 
@@ -60,6 +59,8 @@ public class CheckMonitorWarningsTest extends TestCase {
     PrintStream errorWriter = System.err;
 
     try {
+      System.setProperty("etm.core.util.jdk.logging.disabled", "true");
+
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       PrintStream tmp = new PrintStream(out);
       System.setOut(tmp);
@@ -73,15 +74,14 @@ public class CheckMonitorWarningsTest extends TestCase {
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
 
-//      LogManager.getLogManager().reset();
-
       assertThat (s, containsString("Warning - Performance Monitoring currently disabled."));
 
 
     } finally {
+      System.setProperty("etm.core.util.jdk.logging.disabled", "false");
+
       System.setOut(outWriter);
       System.setErr(errorWriter);
-
     }
   }
 
@@ -92,6 +92,8 @@ public class CheckMonitorWarningsTest extends TestCase {
     PrintStream errorWriter = System.err;
 
     try {
+      System.setProperty("etm.core.util.jdk.logging.disabled", "true");
+
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       PrintStream tmp = new PrintStream(out);
       System.setOut(tmp);
@@ -106,12 +108,11 @@ public class CheckMonitorWarningsTest extends TestCase {
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
       etmMonitor.stop();
 
-//      LogManager.getLogManager().reset();
-
       assertThat (s, containsString("Warning - NullMonitor active. Performance results are discarded."));
 
 
     } finally {
+      System.setProperty("etm.core.util.jdk.logging.disabled", "false");
       System.setOut(outWriter);
       System.setErr(errorWriter);
     }

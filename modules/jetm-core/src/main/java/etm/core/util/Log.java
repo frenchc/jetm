@@ -85,7 +85,7 @@ public class Log {
       }
 
       // fallback to java util logging?
-      if (DefaultLogAdapter.class.equals(adapterClazz)) {
+      if (DefaultLogAdapter.class.equals(adapterClazz) && Boolean.getBoolean("etm.core.util.jdk.logging.disabled")) {
         try {
           Class aClass = Class.forName("etm.core.util.Java14LogAdapter");
           Method method = aClass.getMethod("isConfigured", new Class[]{});
