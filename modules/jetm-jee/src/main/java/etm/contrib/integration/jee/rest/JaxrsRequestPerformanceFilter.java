@@ -37,18 +37,12 @@ import etm.core.monitor.EtmPoint;
 /**
  * A JAX-RS Filter that spans performance monitoring around HTTP requests.
  * Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
- * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link EtmMonitorContextListener}.
+ * to retrieve the currently active EtmMonitor.
  *
  * @author void.fm
  * @version $Revision$
  */
-/**
- * A JAX-RS Filter that spans performance monitoring around HTTP requests.
- * Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
- * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link EtmMonitorContextListener}.
- */
+
 @Provider
 public class JaxrsRequestPerformanceFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
