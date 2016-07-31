@@ -37,7 +37,6 @@ import etm.core.util.LogAdapter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -63,8 +62,8 @@ public class DefaultEventDispatcher implements EventDispatcher {
 
 
   public void register(EtmMonitorListener listener) {
-    for (Iterator iterator = listeners.keySet().iterator(); iterator.hasNext();) {
-      Class clazz = (Class) iterator.next();
+    for (Object o : listeners.keySet()) {
+      Class clazz = (Class) o;
       if (clazz.isAssignableFrom(listener.getClass())) {
         Set set = (Set) listeners.get(clazz);
         set.add(listener);
@@ -74,8 +73,8 @@ public class DefaultEventDispatcher implements EventDispatcher {
   }
 
   public void deregister(EtmMonitorListener listener) {
-    for (Iterator iterator = listeners.keySet().iterator(); iterator.hasNext();) {
-      Class clazz = (Class) iterator.next();
+    for (Object o : listeners.keySet()) {
+      Class clazz = (Class) o;
       if (clazz.isAssignableFrom(listener.getClass())) {
         Set set = (Set) listeners.get(clazz);
         set.remove(listener);
@@ -99,12 +98,11 @@ public class DefaultEventDispatcher implements EventDispatcher {
   }
 
   protected void sendEvent(Object[] aObjects, Method aMethod, EtmMonitorEvent aEvent) {
-    for (int i = 0; i < aObjects.length; i++) {
-      Object object = aObjects[i];
+    for (Object object : aObjects) {
       try {
-        aMethod.invoke(object, new Object[]{aEvent});
+        aMethod.invoke(object, aEvent);
       } catch (Exception e) {
-       LOG.warn("Unable to send event " + aEvent, e);
+        LOG.warn("Unable to send event " + aEvent, e);
       }
     }
   }
@@ -150,10 +148,9 @@ public class DefaultEventDispatcher implements EventDispatcher {
       listener = aListener;
 
       Method[] declaredMethods = listener.getDeclaredMethods();
-      for (int i = 0; i < declaredMethods.length; i++) {
-        Method declaredMethod = declaredMethods[i];
+      for (Method declaredMethod : declaredMethods) {
         if (aMethodName.equals(declaredMethod.getName()) &&
-          declaredMethod.getParameterTypes().length == 1) {
+            declaredMethod.getParameterTypes().length == 1) {
           method = declaredMethod;
           break;
         }

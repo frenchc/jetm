@@ -109,7 +109,7 @@ public class RootAggregator implements Aggregator {
 
     // TODO check alternative strategy to improve performance
     // find tree root node
-    LinkedList<EtmPoint> path = new LinkedList<EtmPoint>();
+    LinkedList<EtmPoint> path = new LinkedList<>();
     path.add(point);
 
     EtmPoint rootNode = point.getParent();

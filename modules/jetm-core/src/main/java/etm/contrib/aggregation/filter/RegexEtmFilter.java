@@ -81,7 +81,7 @@ public class RegexEtmFilter implements EtmFilter {
       }
     }
 
-    validNames = new HashSet<String>();
+    validNames = new HashSet<>();
   }
 
   public boolean matches(EtmPoint aPoint) {

@@ -54,7 +54,6 @@ import javax.management.MBeanServerFactory;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -186,8 +185,8 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
 
     PersistentEtmState persistentEtmState = event.getState();
     Map aggregates = persistentEtmState.getAggregates();
-    for (Iterator iterator = aggregates.values().iterator(); iterator.hasNext();) {
-      Aggregate aggregate = (Aggregate) iterator.next();
+    for (Object o : aggregates.values()) {
+      Aggregate aggregate = (Aggregate) o;
       try {
         registerMBean(mbeanServer, calculateObjectName(measurementDomain, aggregate), new EtmPointMBean(etmMonitor, aggregate), overwrite);
       } catch (JMException e) {
@@ -239,8 +238,8 @@ public class AbstractJmxRegistry extends JmxSupport implements AggregationStateL
   protected void deregisterPerformanceResults() throws MalformedObjectNameException, InstanceNotFoundException, MBeanRegistrationException {
     ObjectName objectName = new ObjectName(measurementDomain + ":*");
     Set set = mbeanServer.queryNames(objectName, null);
-    for (Iterator iterator = set.iterator(); iterator.hasNext();) {
-      ObjectName o = (ObjectName) iterator.next();
+    for (Object aSet : set) {
+      ObjectName o = (ObjectName) aSet;
       mbeanServer.unregisterMBean(o);
     }
   }

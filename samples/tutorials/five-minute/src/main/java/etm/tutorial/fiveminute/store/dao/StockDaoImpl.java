@@ -60,12 +60,12 @@ public class StockDaoImpl implements StockDao {
 
 
   public boolean addOrder(Item item, int quantity) throws UnknownArticleException {
-    StockItem stockItem = (StockItem) stock.get(new Integer(item.getId()));
+    StockItem stockItem = (StockItem) stock.get(item.getId());
     if (stockItem != null) {
       if (stockItem.getQuantity() >= quantity) {
         stockItem.decreaseQuantity(quantity);
         if (stockItem.getQuantity() == 0) {
-          stock.remove(new Integer(stockItem.getItem().getId()));
+          stock.remove(stockItem.getItem().getId());
         }
         return true;
       } else {
@@ -82,20 +82,20 @@ public class StockDaoImpl implements StockDao {
   }
 
   public Item getItem(int aItemId) {
-    return (Item) catalog.get(new Integer(aItemId));
+    return (Item) catalog.get(aItemId);
   }
 
 
   private void loadInitialStock() {
-    catalog.put(new Integer(1), new Item(1, "apples", BigDecimal.valueOf(2.99)));
-    catalog.put(new Integer(2), new Item(2, "oranges", BigDecimal.valueOf(1.49)));
-    catalog.put(new Integer(3), new Item(3, "bananas", BigDecimal.valueOf(1.99)));
-    catalog.put(new Integer(4), new Item(4, "grapes", BigDecimal.valueOf(2.49)));
+    catalog.put(1, new Item(1, "apples", BigDecimal.valueOf(2.99)));
+    catalog.put(2, new Item(2, "oranges", BigDecimal.valueOf(1.49)));
+    catalog.put(3, new Item(3, "bananas", BigDecimal.valueOf(1.99)));
+    catalog.put(4, new Item(4, "grapes", BigDecimal.valueOf(2.49)));
 
-    stock.put(new Integer(1), new StockItem((Item) catalog.get(Integer.valueOf(1)), 15));
-    stock.put(new Integer(2), new StockItem((Item) catalog.get(Integer.valueOf(2)), 5));
-    stock.put(new Integer(3), new StockItem((Item) catalog.get(Integer.valueOf(3)), 20));
-    stock.put(new Integer(4), new StockItem((Item) catalog.get(Integer.valueOf(4)), 11));
+    stock.put(1, new StockItem((Item) catalog.get(1), 15));
+    stock.put(2, new StockItem((Item) catalog.get(2), 5));
+    stock.put(3, new StockItem((Item) catalog.get(3), 20));
+    stock.put(4, new StockItem((Item) catalog.get(4), 11));
   }
 
 

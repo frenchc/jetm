@@ -38,7 +38,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 /**
  *
@@ -77,8 +76,8 @@ public class EtmTreeModel extends DefaultTreeModel {
     if (aggregate.hasChilds() && aggregate.getChilds().size() > aAggregationNode.getChildCount()) {
       // add missing child nodes recursivly
       Collection collection = aggregate.getChilds().values();
-      for (Iterator iterator = collection.iterator(); iterator.hasNext();) {
-        Aggregate potentialChild = (Aggregate) iterator.next();
+      for (Object aCollection : collection) {
+        Aggregate potentialChild = (Aggregate) aCollection;
         if (!aAggregationNode.contains(potentialChild.getName())) {
           AggregationNode child = new AggregationNode(potentialChild);
           insertNodeInto(child, aAggregationNode, aAggregationNode.getChildCount());

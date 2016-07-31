@@ -71,13 +71,9 @@ public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionPar
     Method method = getGenerateBeanNameMethod();
     try {
       Object[] parameters = getMethodParameters(definition, parserContext);
-      Object beanName = method.invoke((Object) null, parameters);
+      Object beanName = method.invoke(null, parameters);
       return beanName.toString();
-    } catch (IllegalArgumentException e) {
-      throw new IllegalStateException("Unable to invoke spring method via reflection.", e);
-    } catch (IllegalAccessException e) {
-      throw new IllegalStateException("Unable to invoke spring method via reflection.", e);
-    } catch (InvocationTargetException e) {
+    } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
       throw new IllegalStateException("Unable to invoke spring method via reflection.", e);
     }
   }
@@ -86,7 +82,7 @@ public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionPar
     Object[] parameters = new Object[3];
     parameters[0] = definition;
     parameters[1] = parserContext.getRegistry();
-    parameters[2] = Boolean.valueOf(parserContext.isNested());
+    parameters[2] = parserContext.isNested();
     return parameters;
   }
 
@@ -104,12 +100,13 @@ public abstract class JetmBeanDefinitionParser extends AbstractBeanDefinitionPar
 
   private Method getGenerateBeanNameMethodSinceSpring11() throws NoSuchMethodException {
     LOG.debug("Using BeanDefinitionReaderUtils.generateBeanName() method for spring < 2.5 and >= 1.1");
-    return BeanDefinitionReaderUtils.class.getMethod("generateBeanName", new Class[] {AbstractBeanDefinition.class, BeanDefinitionRegistry.class, Boolean.TYPE});
+    return BeanDefinitionReaderUtils.class.getMethod("generateBeanName", AbstractBeanDefinition.class, BeanDefinitionRegistry.class,
+                                                     Boolean.TYPE);
   }
 
   private Method getGenerateBeanNameMethodSinceSpring25() throws NoSuchMethodException {
     LOG.debug("Using BeanDefinitionReaderUtils.generateBeanName() method for spring >= 2.5");
-    return BeanDefinitionReaderUtils.class.getMethod("generateBeanName", new Class[] {BeanDefinition.class, BeanDefinitionRegistry.class, Boolean.TYPE});
+    return BeanDefinitionReaderUtils.class.getMethod("generateBeanName", BeanDefinition.class, BeanDefinitionRegistry.class, Boolean.TYPE);
   }
 
 }

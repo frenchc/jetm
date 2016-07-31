@@ -168,8 +168,8 @@ public class HttpConsoleServer {
     listenerThread.shutdown();
 
     synchronized (this) {
-      for (int i = 0; i < workers.size(); i++) {
-        ConsoleWorker worker = (ConsoleWorker) workers.get(i);
+      for (Object worker1 : workers) {
+        ConsoleWorker worker = (ConsoleWorker) worker1;
         worker.shouldStop();
       }
       workers.clear();

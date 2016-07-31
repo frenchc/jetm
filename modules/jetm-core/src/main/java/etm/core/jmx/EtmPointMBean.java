@@ -73,15 +73,15 @@ public class EtmPointMBean implements DynamicMBean {
 
   public Object getAttribute(String string) throws AttributeNotFoundException, MBeanException, ReflectionException {
     if ("measurements".equals(string)) {
-      return new Long(aggregate.getMeasurements());
+      return aggregate.getMeasurements();
     } else if ("total".equals(string)) {
-      return new Double(aggregate.getTotal());
+      return aggregate.getTotal();
     } else if ("min".equals(string)) {
-      return new Double(aggregate.getMin());
+      return aggregate.getMin();
     } else if ("max".equals(string)) {
-      return new Double(aggregate.getMax());
+      return aggregate.getMax();
     } else if ("average".equals(string)) {
-      return new Double(aggregate.getAverage());
+      return aggregate.getAverage();
     } else {
       throw new AttributeNotFoundException(string);
     }

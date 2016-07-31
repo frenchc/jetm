@@ -184,8 +184,8 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         StringBuffer buffer = new StringBuffer();
 
         TreeMap map = new TreeMap(points);
-        for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-          Aggregate point = (Aggregate) iterator.next();
+        for (Object o : map.values()) {
+          Aggregate point = (Aggregate) o;
 
           buffer.append(" <tr>\n");
           buffer.append("  <td align=\"left\">");
@@ -227,8 +227,8 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         int currentDepth = depth + 1;
 
         Map childs = aPoint.getChilds();
-        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          Aggregate child = (Aggregate) iterator.next();
+        for (Object o : childs.values()) {
+          Aggregate child = (Aggregate) o;
           writeNames(aBuffer, child, currentDepth);
         }
       }
@@ -244,8 +244,8 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
 
         int currentDepth = depth + 1;
 
-        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          Aggregate child = (Aggregate) iterator.next();
+        for (Object o : childs.values()) {
+          Aggregate child = (Aggregate) o;
           writeTotals(aBuffer, child, currentDepth);
         }
       }
@@ -260,8 +260,8 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         Map childs = aPoint.getChilds();
 
         int currentDepth = depth + 1;
-        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          Aggregate child = (Aggregate) iterator.next();
+        for (Object o : childs.values()) {
+          Aggregate child = (Aggregate) o;
           writeTime(aBuffer, child, currentDepth + 1);
         }
       }
@@ -278,8 +278,8 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         Map childs = aPoint.getChilds();
 
         int currentDepth = depth + 1;
-        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          Aggregate child = (Aggregate) iterator.next();
+        for (Object o : childs.values()) {
+          Aggregate child = (Aggregate) o;
           writeMinMax(aBuffer, child, currentDepth + 1);
         }
       }
@@ -294,8 +294,8 @@ public class ManagedEtmMonitor implements ManagedEtmMonitorMBean {
         Map childs = aPoint.getChilds();
 
         int currentDepth = depth + 1;
-        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          Aggregate child = (Aggregate) iterator.next();
+        for (Object o : childs.values()) {
+          Aggregate child = (Aggregate) o;
           writeMeasurements(aBuffer, child, currentDepth);
         }
       }

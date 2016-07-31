@@ -63,9 +63,9 @@ public class Log {
        // try slf4j first
       try {
         Class aClass = Class.forName("etm.core.util.Slf4jAdapter");
-        Method method = aClass.getMethod("isConfigured", new Class[]{});
-        Boolean available = (Boolean) method.invoke(null, new Object[]{});
-        if (available.booleanValue()) {
+        Method method = aClass.getMethod("isConfigured");
+        Boolean available = (Boolean) method.invoke(null);
+        if (available) {
           adapterClazz = aClass;
         }
       } catch (Throwable t) {
@@ -75,9 +75,9 @@ public class Log {
       // try log4j first
       try {
         Class aClass = Class.forName("etm.core.util.Log4jAdapter");
-        Method method = aClass.getMethod("isConfigured", new Class[]{});
-        Boolean available = (Boolean) method.invoke(null, new Object[]{});
-        if (available.booleanValue()) {
+        Method method = aClass.getMethod("isConfigured");
+        Boolean available = (Boolean) method.invoke(null);
+        if (available) {
           adapterClazz = aClass;
         }
       } catch (Throwable t) {
@@ -88,9 +88,9 @@ public class Log {
       if (DefaultLogAdapter.class.equals(adapterClazz) && Boolean.getBoolean("etm.core.util.jdk.logging.disabled")) {
         try {
           Class aClass = Class.forName("etm.core.util.Java14LogAdapter");
-          Method method = aClass.getMethod("isConfigured", new Class[]{});
-          Boolean available = (Boolean) method.invoke(null, new Object[]{});
-          if (available.booleanValue()) {
+          Method method = aClass.getMethod("isConfigured");
+          Boolean available = (Boolean) method.invoke(null);
+          if (available) {
             adapterClazz = aClass;
           }
         } catch (Throwable t) {
@@ -100,7 +100,7 @@ public class Log {
 
 
       try {
-        constructor = adapterClazz.getConstructor(new Class[]{Class.class});
+        constructor = adapterClazz.getConstructor(Class.class);
       } catch (NoSuchMethodException e) {
         throw new EtmException(e);
       }
@@ -108,7 +108,7 @@ public class Log {
 
     public LogAdapter getLog(Class aClazzName) {
       try {
-        return (LogAdapter) constructor.newInstance(new Object[]{aClazzName});
+        return (LogAdapter) constructor.newInstance(aClazzName);
       } catch (Exception e) {
         throw new EtmException(e);
       }

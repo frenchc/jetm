@@ -43,7 +43,6 @@ import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -123,8 +122,8 @@ public class OrderClient {
       }
     });
 
-    for (Iterator it = list.iterator(); it.hasNext();) {
-      StockItem stockItem = (StockItem) it.next();
+    for (Object aList : list) {
+      StockItem stockItem = (StockItem) aList;
       Item item = stockItem.getItem();
 
       System.out.print(" |  ");

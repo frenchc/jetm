@@ -35,7 +35,6 @@ package etm.core.metadata;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -149,9 +148,8 @@ public class EtmMonitorMetaData implements Serializable {
    * @since 1.3.0
    */
   public PluginMetaData getPluginMetaData(Class etmPlugin) {
-    Iterator it = pluginMetaData.iterator();
-    while (it.hasNext()) {
-      PluginMetaData next = (PluginMetaData) it.next();
+    for (Object aPluginMetaData : pluginMetaData) {
+      PluginMetaData next = (PluginMetaData) aPluginMetaData;
       if (next.getImplementationClass().equals(etmPlugin)) {
         return next;
       }
@@ -161,20 +159,19 @@ public class EtmMonitorMetaData implements Serializable {
   }
 
   public String toString() {
-    StringBuilder buffer = new StringBuilder("Monitor ");
-    buffer.append(monitorClazz);
-    buffer.append(" (");
-    buffer.append(monitorDescription);
-    buffer.append(")");
-    buffer.append(" start time ");
-    buffer.append(startTime);
-    buffer.append(System.getProperty("line.separator"));
-    buffer.append("Aggregator Chain [");
-    buffer.append(aggregatorMetaData.toString());
-    buffer.append("]");
-    buffer.append(System.getProperty("line.separator"));
-    buffer.append(timerMetaData.toString());
-    return buffer.toString();
+    String buffer = "Monitor " + monitorClazz +
+                    " (" +
+                    monitorDescription +
+                    ")" +
+                    " start time " +
+                    startTime +
+                    System.getProperty("line.separator") +
+                    "Aggregator Chain [" +
+                    aggregatorMetaData.toString() +
+                    "]" +
+                    System.getProperty("line.separator") +
+                    timerMetaData.toString();
+    return buffer;
   }
 
 }

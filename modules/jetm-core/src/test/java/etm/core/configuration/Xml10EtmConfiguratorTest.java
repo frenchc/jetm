@@ -86,13 +86,13 @@ public class Xml10EtmConfiguratorTest extends TestCase {
       }
     };
 
-    for (int i = 0; i < configurations.length; i++) {
-      URL url = locateResource((String) configurations[i][0]);
+    for (Object[] configuration : configurations) {
+      URL url = locateResource((String) configuration[0]);
       EtmManager.reset();
       XmlEtmConfigurator.configure(url);
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      assertEquals(configurations[i][1], etmMonitor.getClass());
+      assertEquals(configuration[1], etmMonitor.getClass());
     }
   }
 
@@ -107,13 +107,13 @@ public class Xml10EtmConfiguratorTest extends TestCase {
       }
     };
 
-    for (int i = 0; i < configurations.length; i++) {
-      URL url = locateResource((String) configurations[i][0]);
+    for (Object[] configuration : configurations) {
+      URL url = locateResource((String) configuration[0]);
       EtmManager.reset();
       XmlEtmConfigurator.configure(url);
 
       EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-      assertEquals(configurations[i][1], ((TestMonitor) etmMonitor).getExecutionTimer().getClass());
+      assertEquals(configuration[1], ((TestMonitor) etmMonitor).getExecutionTimer().getClass());
     }
   }
 

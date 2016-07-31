@@ -99,7 +99,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   protected final ExecutionTimer timer;
   protected final Aggregator aggregator;
 
-  protected List plugins;
+  protected List<EtmPlugin> plugins;
   private Timer scheduler;
   private EventDispatcher dispatcher;
 
@@ -288,7 +288,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
 
   public void addPlugin(EtmPlugin aEtmPlugin) {
     if (plugins == null) {
-      plugins = new ArrayList();
+      plugins = new ArrayList<>();
     }
 
     plugins.add(aEtmPlugin);
@@ -303,8 +303,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
     if (plugins != null) {
       throw new IllegalStateException("Unable to set a list of plugins after plugins exists.");
     }
-    for (int i = 0; i < newPlugins.size(); i++) {
-      EtmPlugin plugin = (EtmPlugin) newPlugins.get(i);
+    for (Object newPlugin : newPlugins) {
+      EtmPlugin plugin = (EtmPlugin) newPlugin;
       addPlugin(plugin);
     }
   }
@@ -352,8 +352,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   protected void shutdownPlugins() {
     if (plugins != null) {
 
-      for (int i = 0; i < plugins.size(); i++) {
-        EtmPlugin etmPlugin = (EtmPlugin) plugins.get(i);
+      for (EtmPlugin etmPlugin : plugins) {
         try {
           if (etmPlugin instanceof EtmMonitorListener) {
             dispatcher.deregister((EtmMonitorListener) etmPlugin);
@@ -369,8 +368,7 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   protected void startPlugins() {
     if (plugins != null) {
 
-      for (int i = 0; i < plugins.size(); i++) {
-        EtmPlugin etmPlugin = (EtmPlugin) plugins.get(i);
+      for (EtmPlugin etmPlugin : plugins) {
         startPlugin(etmPlugin);
       }
     }
@@ -392,8 +390,8 @@ public abstract class EtmMonitorSupport implements EtmMonitor, AggregationStateL
   private List getPluginMetaData() {
     if (plugins != null) {
       List metaData = new ArrayList(plugins.size());
-      for (int i = 0; i < plugins.size(); i++) {
-        metaData.add(((EtmPlugin) plugins.get(i)).getPluginMetaData());
+      for (Object plugin : plugins) {
+        metaData.add(((EtmPlugin) plugin).getPluginMetaData());
       }
 
       return metaData;

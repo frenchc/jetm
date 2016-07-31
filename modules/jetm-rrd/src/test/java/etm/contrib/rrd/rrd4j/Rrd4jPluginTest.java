@@ -72,7 +72,7 @@ public class Rrd4jPluginTest extends TestCase {
 
       tmpErr.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset());
-      assertTrue(s.indexOf("NotifyingAggregator") > -1);
+      assertTrue(s.contains("NotifyingAggregator"));
 
     } finally {
       System.setErr(writer);

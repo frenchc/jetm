@@ -111,14 +111,15 @@ public class HttpRequestPerformanceFilterTest extends TestCase {
       new InvocationHandler() {
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-          if (method.getName().equals("toString")) {
-            return HttpServletRequest.class.getName();
-          } else if (method.getName().equals("getRequestURI")) {
-            return "/test/testrequest";
-          } else if (method.getName().equals("getMethod")) {
-            return "POST";
-          } else {
-            return null;
+          switch (method.getName()) {
+            case "toString":
+              return HttpServletRequest.class.getName();
+            case "getRequestURI":
+              return "/test/testrequest";
+            case "getMethod":
+              return "POST";
+            default:
+              return null;
           }
         }
       });

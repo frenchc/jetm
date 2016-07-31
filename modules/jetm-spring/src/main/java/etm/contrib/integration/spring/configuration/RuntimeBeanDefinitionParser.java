@@ -55,7 +55,6 @@ import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -119,9 +118,9 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
     if (!pluginConfigs.isEmpty()) {
       List plugins = new ArrayList();
-      for (int i = 0; i < pluginConfigs.size(); i++) {
+      for (Object pluginConfig : pluginConfigs) {
 
-        Element element = (Element) pluginConfigs.get(i);
+        Element element = (Element) pluginConfig;
         String clazz = element.getAttribute("class");
 
         BeanDefinitionBuilder builder;
@@ -134,8 +133,8 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
         List properties = DomUtils.getChildElementsByTagName(element, "property");
         if (!properties.isEmpty()) {
-          for (int j = 0; j < properties.size(); j++) {
-            Element aProperty = (Element) properties.get(j);
+          for (Object property : properties) {
+            Element aProperty = (Element) property;
             addProperty(builder, aProperty);
           }
         }
@@ -210,8 +209,8 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
 
         List propertyElements = DomUtils.getChildElementsByTagName(chainElement, "property");
         if (!propertyElements.isEmpty()) {
-          for (int j = 0; j < propertyElements.size(); j++) {
-            Element property = (Element) propertyElements.get(j);
+          for (Object propertyElement : propertyElements) {
+            Element property = (Element) propertyElement;
             addProperty(nestedBuilder, property);
           }
         }
@@ -283,8 +282,8 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
           throw new FatalBeanException("Unable to locate persistence backend class " + className, e);
         }
         List properties = DomUtils.getChildElementsByTagName(genericBackend, "property");
-        for (Iterator iterator = properties.iterator(); iterator.hasNext();) {
-          Element element = (Element) iterator.next();
+        for (Object property : properties) {
+          Element element = (Element) property;
           addProperty(backendBuilder, element);
         }
       } else {

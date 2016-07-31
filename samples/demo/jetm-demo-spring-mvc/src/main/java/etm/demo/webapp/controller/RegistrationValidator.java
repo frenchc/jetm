@@ -35,7 +35,6 @@ package etm.demo.webapp.controller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
-import org.springframework.util.StringUtils;
 import etm.demo.webapp.service.UserManagementService;
 
 /**

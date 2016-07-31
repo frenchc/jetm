@@ -157,8 +157,8 @@ public class SimpleTextRenderer implements MeasurementRenderer {
 
     public Results(Map points) {
       Map map = new TreeMap(points);
-      for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-        Aggregate point = (Aggregate) iterator.next();
+      for (Object o : map.values()) {
+        Aggregate point = (Aggregate) o;
         addTopLevel(point);
       }
     }
@@ -173,8 +173,8 @@ public class SimpleTextRenderer implements MeasurementRenderer {
     }
 
     public void addNested(int nestingLevel, Map childs) {
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate point = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate point = (Aggregate) o;
         addLine(nestingLevel, point);
         if (point.hasChilds()) {
           addNested(nestingLevel + 1, point.getChilds());

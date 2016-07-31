@@ -104,11 +104,11 @@ public class EtmMonitorFactory {
 
 
   public static ExecutionTimer bestAvailableTimer() {
-    for (int i = 0; i < JETM_TIMER.length; i++) {
+    for (String aJETM_TIMER : JETM_TIMER) {
       try {
-        return (ExecutionTimer) instantiateClass(JETM_TIMER[i]);
+        return (ExecutionTimer) instantiateClass(aJETM_TIMER);
       } catch (Exception e) {
-        LOG.warn("Unable to instantiate execution timer '" + JETM_TIMER[i] + "'. Trying next. Cause:" + e.getMessage());
+        LOG.warn("Unable to instantiate execution timer '" + aJETM_TIMER + "'. Trying next. Cause:" + e.getMessage());
       } catch (Throwable e) {
         // for our implementation we get a NoSuchMethodError for JDK's < 5.0
         // therefore ignore, unless it's ThreadDeath
@@ -143,8 +143,8 @@ public class EtmMonitorFactory {
         for (int i = config.size() - 1; i >= 0; i--) {
           EtmAggregatorConfig etmAggregator = (EtmAggregatorConfig) config.get(i);
           try {
-            Constructor constructor = etmAggregator.getAggregatorClass().getConstructor(new Class[]{Aggregator.class});
-            current = (Aggregator) constructor.newInstance(new Object[]{current});
+            Constructor constructor = etmAggregator.getAggregatorClass().getConstructor(Aggregator.class);
+            current = (Aggregator) constructor.newInstance(current);
           } catch (NoSuchMethodException e) {
             throw new EtmConfigurationException("Nested aggregator does not have an constructor with type Aggregator.");
           }
@@ -167,8 +167,8 @@ public class EtmMonitorFactory {
   }
 
   private static void addPlugins(EtmMonitor aEtmMonitor, List aPluginConfig) throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
-    for (int i = 0; i < aPluginConfig.size(); i++) {
-      EtmPluginConfig etmPluginConfig = (EtmPluginConfig) aPluginConfig.get(i);
+    for (Object anAPluginConfig : aPluginConfig) {
+      EtmPluginConfig etmPluginConfig = (EtmPluginConfig) anAPluginConfig;
       Object obj = etmPluginConfig.getPluginClass().newInstance();
       if (etmPluginConfig.getProperties() != null) {
         setProperties(obj, etmPluginConfig.getProperties());
@@ -182,8 +182,7 @@ public class EtmMonitorFactory {
   private static void setProperties(Object obj, Map properties) throws IllegalAccessException, InvocationTargetException, ClassNotFoundException {
     // todo just improve  ;)
     Method[] methods = obj.getClass().getMethods();
-    for (int i = 0; i < methods.length; i++) {
-      Method method = methods[i];
+    for (Method method : methods) {
       String methodName = method.getName();
       if (methodName.startsWith("set") && methodName.length() >= 4) {
         String propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
@@ -193,26 +192,26 @@ public class EtmMonitorFactory {
           Class clazz = method.getParameterTypes()[0];
 
           if (int.class.isAssignableFrom(clazz)) {
-            method.invoke(obj, new Object[]{new Integer(Integer.parseInt((String) value))});
+            method.invoke(obj, Integer.parseInt((String) value));
           } else if (long.class.isAssignableFrom(clazz)) {
-            method.invoke(obj, new Object[]{new Long(Long.parseLong((String) value))});
+            method.invoke(obj, Long.parseLong((String) value));
           } else if (boolean.class.isAssignableFrom(clazz)) {
             if ("true".equals(value)) {
-              method.invoke(obj, new Object[]{Boolean.TRUE});
+              method.invoke(obj, Boolean.TRUE);
             } else if ("false".equals(value)) {
-              method.invoke(obj, new Object[]{Boolean.FALSE});
+              method.invoke(obj, Boolean.FALSE);
             }
           } else if (String.class.isAssignableFrom(clazz)) {
-            method.invoke(obj, new Object[]{value});
+            method.invoke(obj, value);
           } else if (Class.class.isAssignableFrom(clazz)) {
-            method.invoke(obj, new Object[]{Class.forName((String) value)});
+            method.invoke(obj, Class.forName((String) value));
           } else if (Map.class.isAssignableFrom(clazz)) {
             if (value instanceof Map) {
-              method.invoke(obj, new Object[]{value});
+              method.invoke(obj, value);
             }
           } else if (List.class.isAssignableFrom(clazz)) {
             if (value instanceof List) {
-              method.invoke(obj, new Object[]{value});
+              method.invoke(obj, value);
             }
           }
         }

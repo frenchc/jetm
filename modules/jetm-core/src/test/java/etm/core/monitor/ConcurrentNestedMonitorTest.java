@@ -100,8 +100,8 @@ public class ConcurrentNestedMonitorTest extends TestCase {
     final ExecutionAggregate nested1 = new ExecutionAggregate("nested" + testPointGroup1);
     final ExecutionAggregate nested2 = new ExecutionAggregate("nested" + testPointGroup2);
 
-    for (int i = 0; i < allPoints.size(); i++) {
-      EtmPoint point = (EtmPoint) allPoints.get(i);
+    for (Object allPoint : allPoints) {
+      EtmPoint point = (EtmPoint) allPoint;
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else if (point.getName().equals(testPointGroup2)) {

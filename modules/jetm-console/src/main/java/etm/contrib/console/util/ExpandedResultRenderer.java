@@ -46,8 +46,8 @@ public class ExpandedResultRenderer extends ConsoleRenderer {
       } else {
 
         Arrays.sort(values, comparator);
-        for (int i = 0; i < values.length; i++) {
-          SortedExecutionGraph graphSorted = new SortedExecutionGraph((Aggregate) values[i], comparator);
+        for (Object value : values) {
+          SortedExecutionGraph graphSorted = new SortedExecutionGraph((Aggregate) value, comparator);
 
           response.write(" <tr>\n");
           response.write("  <td>");

@@ -65,9 +65,7 @@ public class PropertySupport {
       }
       return obj;
 
-    } catch (InstantiationException e) {
-      throw new EtmException(e.getMessage());
-    } catch (IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException e) {
       throw new EtmException(e.getMessage());
     }
   }
@@ -76,8 +74,7 @@ public class PropertySupport {
     
     try {
       Method[] methods = aObj.getClass().getMethods();
-      for (int i = 0; i < methods.length; i++) {
-        Method method = methods[i];
+      for (Method method : methods) {
         String methodName = method.getName();
         if (methodName.startsWith("set") && methodName.length() >= 4 && method.getParameterTypes().length == 1) {
           String propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
@@ -88,37 +85,33 @@ public class PropertySupport {
             Class clazz = method.getParameterTypes()[0];
 
             if (int.class.isAssignableFrom(clazz)) {
-              method.invoke(aObj, new Object[]{new Integer(Integer.parseInt((String) value))});
+              method.invoke(aObj, Integer.parseInt((String) value));
             } else if (long.class.isAssignableFrom(clazz)) {
-              method.invoke(aObj, new Object[]{new Long(Long.parseLong((String) value))});
+              method.invoke(aObj, Long.parseLong((String) value));
             } else if (boolean.class.isAssignableFrom(clazz)) {
               if ("true".equals(value)) {
-                method.invoke(aObj, new Object[]{Boolean.TRUE});
+                method.invoke(aObj, Boolean.TRUE);
               } else if ("false".equals(value)) {
-                method.invoke(aObj, new Object[]{Boolean.FALSE});
+                method.invoke(aObj, Boolean.FALSE);
               }
             } else if (String.class.isAssignableFrom(clazz)) {
-              method.invoke(aObj, new Object[]{value});
+              method.invoke(aObj, value);
             } else if (Class.class.isAssignableFrom(clazz)) {
-              method.invoke(aObj, new Object[]{Class.forName((String) value)});
+              method.invoke(aObj, Class.forName((String) value));
             } else if (Map.class.isAssignableFrom(clazz)) {
               if (value instanceof Map) {
-                method.invoke(aObj, new Object[]{value});
+                method.invoke(aObj, value);
               }
             } else if (List.class.isAssignableFrom(clazz)) {
               if (value instanceof List) {
-                method.invoke(aObj, new Object[]{value});
+                method.invoke(aObj, value);
               }
             }
           }
         }
       }
     }
-    catch (IllegalAccessException e) {
-      throw new EtmException(e.getMessage());
-    } catch (InvocationTargetException e) {
-      throw new EtmException(e.getMessage());
-    } catch (ClassNotFoundException e) {
+    catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
       throw new EtmException(e.getMessage());
     }
   }

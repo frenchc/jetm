@@ -39,7 +39,6 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.FlatMonitor;
-import etm.core.monitor.NullMonitor;
 import etm.core.monitor.event.EtmMonitorEvent;
 import junit.framework.TestCase;
 

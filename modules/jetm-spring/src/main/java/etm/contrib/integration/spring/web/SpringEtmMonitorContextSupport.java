@@ -36,7 +36,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletException;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -62,9 +61,9 @@ public class SpringEtmMonitorContextSupport {
         if (map.size() == 1) {
           return (EtmMonitor) map.values().iterator().next();
         } else {
-          StringBuffer beanNames = new StringBuffer();
-          for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-            String beanName = (String) iterator.next();
+          StringBuilder beanNames = new StringBuilder();
+          for (Object o : map.keySet()) {
+            String beanName = (String) o;
             beanNames.append(beanName);
             beanNames.append(',');
           }

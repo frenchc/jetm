@@ -41,7 +41,6 @@ import etm.core.monitor.EtmMonitorContext;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import etm.core.renderer.MeasurementRenderer;
-import etm.core.timer.DefaultTimer;
 import etm.core.timer.ExecutionTimer;
 
 import java.util.ArrayList;

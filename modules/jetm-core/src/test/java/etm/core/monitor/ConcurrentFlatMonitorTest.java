@@ -94,8 +94,8 @@ public class ConcurrentFlatMonitorTest extends TestCase {
     final ExecutionAggregate group1 = new ExecutionAggregate(testPointGroup1);
     final ExecutionAggregate group2 = new ExecutionAggregate(testPointGroup2);
 
-    for (int i = 0; i < allPoints.size(); i++) {
-      EtmPoint point = (EtmPoint) allPoints.get(i);
+    for (Object allPoint : allPoints) {
+      EtmPoint point = (EtmPoint) allPoint;
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else {

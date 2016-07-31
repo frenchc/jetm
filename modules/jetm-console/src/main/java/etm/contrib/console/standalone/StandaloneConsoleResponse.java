@@ -46,7 +46,6 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -165,8 +164,8 @@ public class StandaloneConsoleResponse implements ConsoleResponse {
     destination.write(("Date: " + getRfc1123Date()).getBytes(HttpConsoleServer.DEFAULT_ENCODING));
     destination.write(LINEFEED);
 
-    for (Iterator iterator = headers.keySet().iterator(); iterator.hasNext();) {
-      String name = (String) iterator.next();
+    for (Object o : headers.keySet()) {
+      String name = (String) o;
       destination.write(name.getBytes(HttpConsoleServer.DEFAULT_ENCODING));
       destination.write(": ".getBytes(HttpConsoleServer.DEFAULT_ENCODING));
       destination.write(((String) (headers.get(name))).getBytes(HttpConsoleServer.DEFAULT_ENCODING));

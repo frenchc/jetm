@@ -48,7 +48,7 @@ public class DefaultTimer implements ExecutionTimer {
   private static final String DESCRIPTION = "Java VM System.currentTimeMillis()";
 
   public DefaultTimer() {
-    if (System.getProperty("os.name").indexOf("Win") >= 0) {
+    if (System.getProperty("os.name").contains("Win")) {
       System.err.println("Windows OS detected. Measurements lower than 10ms not supported by this platform.");
     }
   }

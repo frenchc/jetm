@@ -71,7 +71,7 @@ public class BufferedTimedAggregator implements Aggregator {
 
   private EtmMonitorContext ctx;
 
-  protected List<EtmPoint> nonCollectable = new ArrayList<EtmPoint>();
+  protected List<EtmPoint> nonCollectable = new ArrayList<>();
 
 
   private boolean started = false;

@@ -80,8 +80,8 @@ public class CollapsedResultRenderer extends ConsoleRenderer {
       } else {
 
         Arrays.sort(values, comparator);
-        for (int i = 0; i < values.length; i++) {
-          Aggregate point = (Aggregate) values[i];
+        for (Object value : values) {
+          Aggregate point = (Aggregate) value;
 
           response.write(" <tr>\n");
           response.write("  <td>");

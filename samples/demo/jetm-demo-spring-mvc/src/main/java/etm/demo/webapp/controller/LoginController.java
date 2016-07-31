@@ -37,9 +37,6 @@ import etm.demo.webapp.service.UserManagementService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author void.fm
  * @version $Revision$

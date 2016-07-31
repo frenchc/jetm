@@ -111,11 +111,11 @@ public class MeasurementPoint implements EtmPoint {
   }
 
   public long getStartTime() {
-    return startTime.longValue();
+    return startTime;
   }
 
   public long getEndTime() {
-    return endTime != null ? endTime.longValue() : 0L;
+    return endTime != null ? endTime : 0L;
   }
 
   public long getTicks() {
@@ -152,7 +152,7 @@ public class MeasurementPoint implements EtmPoint {
    */
 
   protected void setStartTime(long aStartTime) {
-    startTime = new Long(aStartTime);
+    startTime = aStartTime;
   }
 
   /**
@@ -162,7 +162,7 @@ public class MeasurementPoint implements EtmPoint {
    */
 
   protected void setEndTime(long aEndTime) {
-    endTime = new Long(aEndTime);
+    endTime = aEndTime;
   }
 
   /**
@@ -177,7 +177,7 @@ public class MeasurementPoint implements EtmPoint {
 
   public double getTransactionTime() {
     if (isCollected()) {
-      return ((double) ((endTime.longValue() - startTime.longValue()) * SECOND_MULTIPLIER)) / (double) ticks;
+      return ((double) ((endTime - startTime) * SECOND_MULTIPLIER)) / (double) ticks;
     } else {
       throw new IllegalStateException("EtmPoint not collected yet.");
     }

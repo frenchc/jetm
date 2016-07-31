@@ -65,7 +65,6 @@ import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 import java.io.StringWriter;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -199,21 +198,21 @@ public class EtmMonitorMBean extends JmxSupport implements DynamicMBean {
     final TabularDataSupport data = new TabularDataSupport(tabularType);
     etmMonitor.render(new MeasurementRenderer() {
       public void render(Map points) {
-        for (Iterator iterator = points.values().iterator(); iterator.hasNext();) {
-          Aggregate aggregate = (Aggregate) iterator.next();
+        for (Object o : points.values()) {
+          Aggregate aggregate = (Aggregate) o;
           try {
             data.put(new CompositeDataSupport(
-              tabularType.getRowType(),
-              new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"},
-              new Object[]{
-                aggregate.getName(),
-                new Long(aggregate.getMeasurements()),
-                new Double(aggregate.getAverage()),
-                new Double(aggregate.getMin()),
-                new Double(aggregate.getMax()),
-                new Double(aggregate.getTotal()),
-                calculateObjectName(measurementDomain, aggregate)
-              }));
+                tabularType.getRowType(),
+                new String[]{"name", "measurements", "average", "min", "max", "total", "objectname"},
+                new Object[]{
+                    aggregate.getName(),
+                    new Long(aggregate.getMeasurements()),
+                    new Double(aggregate.getAverage()),
+                    new Double(aggregate.getMin()),
+                    new Double(aggregate.getMax()),
+                    new Double(aggregate.getTotal()),
+                    calculateObjectName(measurementDomain, aggregate)
+                }));
           } catch (Exception e) {
             throw new EtmException(e);
           }

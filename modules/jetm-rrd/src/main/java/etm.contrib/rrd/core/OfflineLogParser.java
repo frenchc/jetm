@@ -94,11 +94,9 @@ public class OfflineLogParser {
     int processedLines = 0;
     Pattern regex = Pattern.compile(pattern);
 
-    BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(aFile), "UTF-8"));
-
-    try {
-      for (int i = 0; i < destinations.size(); i++) {
-        RrdDestination destination = (RrdDestination) destinations.get(i);
+    try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(aFile), "UTF-8"))) {
+      for (Object destination1 : destinations) {
+        RrdDestination destination = (RrdDestination) destination1;
         destination.start();
       }
 
@@ -114,23 +112,23 @@ public class OfflineLogParser {
               DecimalFormatSymbols symbols = numberFormat.getDecimalFormatSymbols();
               if (matcher.group(4).indexOf(symbols.getDecimalSeparator()) < 0) {
                 LOG.warn("Possibly precision loss detected. Expected decimal separator '" +
-                  symbols.getDecimalSeparator() +
-                  "', but found " +
-                  matcher.group(4) +
-                  ". Use -Duser.language and -Duser.region to adjust your locale to the logfile locale.");
+                         symbols.getDecimalSeparator() +
+                         "', but found " +
+                         matcher.group(4) +
+                         ". Use -Duser.language and -Duser.region to adjust your locale to the logfile locale.");
               }
               checkDecimalDigit = false;
             }
 
             processedLines++;
             OfflineExecution result = new OfflineExecution(
-              matcher.group(2),
-              matcher.group(3),
-              Long.parseLong(matcher.group(5)),
-              numberFormat.parse(matcher.group(4)).doubleValue()
+                matcher.group(2),
+                matcher.group(3),
+                Long.parseLong(matcher.group(5)),
+                numberFormat.parse(matcher.group(4)).doubleValue()
             );
-            for (int i = 0; i < destinations.size(); i++) {
-              RrdDestination destination = (RrdDestination) destinations.get(i);
+            for (Object destination1 : destinations) {
+              RrdDestination destination = (RrdDestination) destination1;
               if (destination.matches(result)) {
                 destination.write(result);
               }
@@ -141,13 +139,11 @@ public class OfflineLogParser {
           LOG.warn("Error reading line " + line, e);
         }
       }
-      for (int i = 0; i < destinations.size(); i++) {
-        RrdDestination destination = (RrdDestination) destinations.get(i);
+      for (Object destination1 : destinations) {
+        RrdDestination destination = (RrdDestination) destination1;
         destination.stop();
       }
 
-    } finally {
-      in.close();
     }
     LOG.debug("Finished parsing " + aFile.getAbsolutePath() +
       ". Processed " + processedLines + " out of " + totalLines + " lines.");

@@ -35,7 +35,6 @@ package etm.contrib.aop.spring;
 import etm.contrib.aop.aopalliance.EtmMethodCallInterceptor;
 import etm.core.monitor.EtmMonitor;
 import org.springframework.aop.TargetSource;
-import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.target.SingletonTargetSource;

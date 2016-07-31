@@ -35,7 +35,6 @@ package etm.contrib.integration.cdi;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmPoint;
 
-import javax.annotation.PostConstruct;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;

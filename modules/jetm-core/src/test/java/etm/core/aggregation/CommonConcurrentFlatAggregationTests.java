@@ -84,8 +84,8 @@ public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
 
     final ExecutionAggregate group1 = new ExecutionAggregate(testPointGroup1);
 
-    for (int i = 0; i < allPoints.size(); i++) {
-      EtmPoint point = (EtmPoint) allPoints.get(i);
+    for (Object allPoint : allPoints) {
+      EtmPoint point = (EtmPoint) allPoint;
       if (point.getName().equals(testPointGroup1)) {
         group1.addTransaction(point);
       } else {
@@ -156,12 +156,12 @@ public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
     } while (running > 0);
 
 
-    final Map aggregates = new HashMap();
+    final Map<String, ExecutionAggregate> aggregates = new HashMap<>();
 
-    for (int i = 0; i < allPoints.size(); i++) {
-      EtmPoint point = (EtmPoint) allPoints.get(i);
+    for (Object allPoint : allPoints) {
+      EtmPoint point = (EtmPoint) allPoint;
 
-      ExecutionAggregate aggregate = (ExecutionAggregate) aggregates.get(point.getName());
+      ExecutionAggregate aggregate = aggregates.get(point.getName());
       if (aggregate == null) {
         aggregate = new ExecutionAggregate(point.getName());
         aggregates.put(point.getName(), aggregate);
@@ -182,8 +182,8 @@ public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
 
         assertEquals(expectedExecutions, new TestHelper().countExecutions(points));
 
-        for (Iterator iterator = points.keySet().iterator(); iterator.hasNext();) {
-          String s = (String) iterator.next();
+        for (Object o : points.keySet()) {
+          String s = (String) o;
           Aggregate renderAggregate = (Aggregate) points.get(s);
           Aggregate actualAggregate = (Aggregate) aggregates.get(s);
 
@@ -203,7 +203,7 @@ public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
 
   class Runner extends Thread {
 
-    List list = new ArrayList();
+    List<EtmPoint> list = new ArrayList<>();
 
     private String testPointName;
     private int runs;

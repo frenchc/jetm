@@ -38,10 +38,8 @@ import etm.demo.webapp.service.UserManagementService;
 import etm.demo.webapp.service.UserExistsException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.validation.BindException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author void.fm

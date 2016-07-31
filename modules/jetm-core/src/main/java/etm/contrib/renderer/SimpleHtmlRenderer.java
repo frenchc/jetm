@@ -39,7 +39,6 @@ import etm.core.renderer.MeasurementRenderer;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.NumberFormat;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -181,8 +180,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
         StringBuffer buffer = new StringBuffer();
 
         TreeMap map = new TreeMap(points);
-        for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-          Aggregate point = (Aggregate) iterator.next();
+        for (Object o : map.values()) {
+          Aggregate point = (Aggregate) o;
 
           buffer.append(" <tr>\n");
           buffer.append("  <td>");
@@ -227,8 +226,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
       int currentDepth = depth + 1;
 
       Map childs = aPoint.getChilds();
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate child = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate child = (Aggregate) o;
         writeNames(aBuffer, child, currentDepth);
       }
     }
@@ -250,8 +249,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
 
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate child = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate child = (Aggregate) o;
         writeTotals(aBuffer, child, currentDepth);
       }
     }
@@ -272,8 +271,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
       Map childs = aPoint.getChilds();
 
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate child = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate child = (Aggregate) o;
         writeAverage(aBuffer, child, currentDepth + 1);
       }
     }
@@ -294,8 +293,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
       Map childs = aPoint.getChilds();
 
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate child = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate child = (Aggregate) o;
         writeMin(aBuffer, child, currentDepth + 1);
       }
     }
@@ -316,8 +315,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
       Map childs = aPoint.getChilds();
 
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate child = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate child = (Aggregate) o;
         writeMax(aBuffer, child, currentDepth + 1);
       }
     }
@@ -338,8 +337,8 @@ public class SimpleHtmlRenderer implements MeasurementRenderer {
       Map childs = aPoint.getChilds();
 
       int currentDepth = depth + 1;
-      for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-        Aggregate child = (Aggregate) iterator.next();
+      for (Object o : childs.values()) {
+        Aggregate child = (Aggregate) o;
         writeMeasurements(aBuffer, child, currentDepth);
       }
     }

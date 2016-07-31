@@ -68,9 +68,8 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
     doValidateChain();
     RrdDestination[] tmp = getDestinations();
 
-    List dest = new ArrayList();
-    for (int i = 0; i < tmp.length; i++) {
-      RrdDestination rrdDestination = tmp[i];
+    List<RrdDestination> dest = new ArrayList<>();
+    for (RrdDestination rrdDestination : tmp) {
       try {
         rrdDestination.start();
         dest.add(rrdDestination);
@@ -80,7 +79,7 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
       }
     }
 
-    destinations = (RrdDestination[]) dest.toArray(new RrdDestination[dest.size()]);
+    destinations = dest.toArray(new RrdDestination[dest.size()]);
   }
 
 
@@ -89,9 +88,9 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
     destinations = new RrdDestination[0];
 
     if (saved != null) {
-      for (int i = 0; i < saved.length; i++) {
-        if (saved[i] != null) {
-          saved[i].stop();
+      for (RrdDestination aSaved : saved) {
+        if (aSaved != null) {
+          aSaved.stop();
         }
       }
     }
@@ -99,8 +98,7 @@ public abstract class AbstractRrdPlugin implements EtmPlugin, CollectionListener
 
 
   public void onCollect(CollectEvent event) {
-    for (int i = 0; i < destinations.length; i++) {
-      RrdDestination destination = destinations[i];
+    for (RrdDestination destination : destinations) {
       if (destination.matches(event.getPoint())) {
         destination.write(event.getPoint());
       }

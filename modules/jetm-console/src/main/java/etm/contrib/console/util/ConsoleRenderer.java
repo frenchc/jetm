@@ -47,7 +47,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -365,8 +364,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
-        writeName((SortedExecutionGraph) iterator.next(), currentDepth);
+      for (Object o : aElement.getSortedChilds()) {
+        writeName((SortedExecutionGraph) o, currentDepth);
       }
     }
 
@@ -385,8 +384,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
-        writeTotals((SortedExecutionGraph) iterator.next(), currentDepth);
+      for (Object o : aElement.getSortedChilds()) {
+        writeTotals((SortedExecutionGraph) o, currentDepth);
       }
     }
     response.write("</div>");
@@ -404,8 +403,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
-        writeAverage((SortedExecutionGraph) iterator.next(), currentDepth);
+      for (Object o : aElement.getSortedChilds()) {
+        writeAverage((SortedExecutionGraph) o, currentDepth);
       }
     }
 
@@ -424,8 +423,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
-        writeMin((SortedExecutionGraph) iterator.next(), currentDepth);
+      for (Object o : aElement.getSortedChilds()) {
+        writeMin((SortedExecutionGraph) o, currentDepth);
       }
     }
 
@@ -444,8 +443,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
-        writeMax((SortedExecutionGraph) iterator.next(), currentDepth);
+      for (Object o : aElement.getSortedChilds()) {
+        writeMax((SortedExecutionGraph) o, currentDepth);
       }
     }
 
@@ -464,8 +463,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
     if (aElement.hasChilds()) {
       int currentDepth = depth + 1;
 
-      for (Iterator iterator = aElement.getSortedChilds().iterator(); iterator.hasNext();) {
-        writeMeasurements((SortedExecutionGraph) iterator.next(), currentDepth);
+      for (Object o : aElement.getSortedChilds()) {
+        writeMeasurements((SortedExecutionGraph) o, currentDepth);
       }
     }
 
@@ -475,9 +474,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
   protected String encodeHtml(String text) {
     StringBuilder result = new StringBuilder();
     char[] chars = text.toCharArray();
-    for (int i = 0; i < chars.length; i++) {
-      char c = chars[i];
-      switch(c) {
+    for (char c : chars) {
+      switch (c) {
         case '&':
           result.append("&amp;");
           break;
@@ -519,8 +517,8 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
       if (aAggregate.hasChilds()) {
         Map childs = aAggregate.getChilds();
         sortedChilds = new ArrayList();
-        for (Iterator iterator = childs.values().iterator(); iterator.hasNext();) {
-          SortedExecutionGraph child = new SortedExecutionGraph((Aggregate) iterator.next(), aComparator);
+        for (Object o : childs.values()) {
+          SortedExecutionGraph child = new SortedExecutionGraph((Aggregate) o, aComparator);
           sortedChilds.add(child);
         }
         Collections.sort(sortedChilds, aComparator);

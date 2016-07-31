@@ -39,7 +39,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -65,12 +64,12 @@ public class ConsoleUtil {
         } else {
           result.append("&amp;");
         }
-        for (Iterator iterator = parameters.keySet().iterator(); iterator.hasNext();) {
-          String name = (String) iterator.next();
+        for (Object o : parameters.keySet()) {
+          String name = (String) o;
           if (removeDetails && "point".equals(name)) {
             continue;
           }
-          result.append( URLEncoder.encode(name, HttpConsoleServer.DEFAULT_ENCODING));
+          result.append(URLEncoder.encode(name, HttpConsoleServer.DEFAULT_ENCODING));
           result.append("=");
           result.append(URLEncoder.encode((String) parameters.get(name), HttpConsoleServer.DEFAULT_ENCODING));
           result.append("&amp;");

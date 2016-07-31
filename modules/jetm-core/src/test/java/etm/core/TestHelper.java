@@ -35,7 +35,6 @@ package etm.core;
 import etm.core.aggregation.Aggregate;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -50,8 +49,8 @@ public class TestHelper {
   public int countExecutions(Map points)  {
     int counter = 0;
     Collection col = points.values();
-    for (Iterator iterator = col.iterator(); iterator.hasNext();) {
-      Aggregate aggregate = (Aggregate) iterator.next();
+    for (Object aCol : col) {
+      Aggregate aggregate = (Aggregate) aCol;
       counter += aggregate.getMeasurements();
       if (aggregate.hasChilds()) {
         counter += countExecutions(aggregate.getChilds());

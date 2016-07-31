@@ -70,7 +70,7 @@ public class BufferedThresholdAggregator implements Aggregator {
   protected BoundedBuffer buffer;
   protected EtmMonitorContext context;
 
-  protected List<EtmPoint> nonCollectable = new ArrayList<EtmPoint>();
+  protected List<EtmPoint> nonCollectable = new ArrayList<>();
 
   /**
    * Creates a new BufferedThresholdAggregator for the given

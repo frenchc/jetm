@@ -57,7 +57,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -161,8 +160,8 @@ public class Rrd4jUtil {
     if (properties == null) {
       properties = new HashMap();
     }
-    properties.put(INTERVALSTART_VARIABLE, new Long(intervalStart));
-    properties.put(INTERVALEND_VARIABLE, new Long(intervalEnd));
+    properties.put(INTERVALSTART_VARIABLE, intervalStart);
+    properties.put(INTERVALEND_VARIABLE, intervalEnd);
 
     createGraph(templateUrl, properties);
   }
@@ -291,16 +290,15 @@ public class Rrd4jUtil {
   }
 
   private void setProperties(XmlTemplate aTemplate, Map properties) {
-    Iterator it = properties.keySet().iterator();
-    while (it.hasNext()) {
-      String key = (String) it.next();
+    for (Object o : properties.keySet()) {
+      String key = (String) o;
       Object value = properties.get(key);
       if (value instanceof String) {
         aTemplate.setVariable(key, (String) value);
       } else if (value instanceof Calendar) {
         aTemplate.setVariable(key, (Calendar) value);
       } else if (value instanceof Long) {
-        aTemplate.setVariable(key, ((Long) value).longValue());
+        aTemplate.setVariable(key, (Long) value);
       } else if (value instanceof Date) {
         aTemplate.setVariable(key, (Date) value);
       } else {
@@ -321,8 +319,8 @@ public class Rrd4jUtil {
       Long end = (Long) properties.get("intervalend");
 
 
-      Date startDate = new Date(start.longValue() * 1000);
-      Date endDate = new Date(end.longValue() * 1000);
+      Date startDate = new Date(start * 1000);
+      Date endDate = new Date(end * 1000);
       properties.put("generatedstamp",
         "Monitoring period: " + format.format(startDate) + " - " + format.format(endDate) +
           " [Generated " + format.format(new Date()) + "]\\r");
