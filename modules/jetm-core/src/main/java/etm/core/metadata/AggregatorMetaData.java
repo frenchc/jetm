@@ -41,17 +41,17 @@ import java.io.Serializable;
  * @author void.fm
  * @version $Revision$
  */
-public class AggregatorMetaData implements Serializable {
-  private Class implementationClass;
+public class AggregatorMetaData<T> implements Serializable {
+  private Class<T> implementationClass;
   private String description;
   private boolean buffering;
   private AggregatorMetaData nestedMetaData;
 
-  public AggregatorMetaData(Class aClazz, String aDescription, boolean aBuffering) {
+  public AggregatorMetaData(Class<T> aClazz, String aDescription, boolean aBuffering) {
     this(aClazz, aDescription, aBuffering, null);
   }
 
-  public AggregatorMetaData(Class aClazz, String aDescription, boolean aBuffering, AggregatorMetaData aNestingAggregatorMetaData) {
+  public AggregatorMetaData(Class<T> aClazz, String aDescription, boolean aBuffering, AggregatorMetaData aNestingAggregatorMetaData) {
     implementationClass = aClazz;
     description = aDescription;
     buffering = aBuffering;
@@ -63,7 +63,7 @@ public class AggregatorMetaData implements Serializable {
    *
    * @return The class.
    */
-  public Class getImplementationClass() {
+  public Class<T> getImplementationClass() {
     return implementationClass;
   }
 

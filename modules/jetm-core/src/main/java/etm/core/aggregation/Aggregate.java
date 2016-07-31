@@ -32,7 +32,11 @@
 
 package etm.core.aggregation;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+
+import etm.core.monitor.EtmPoint;
 
 /**
  *
@@ -62,4 +66,10 @@ public interface Aggregate {
   public boolean hasChilds();
 
   public Map<String, ? extends Aggregate> getChilds();
+
+  void reset();
+
+  void addTransaction(EtmPoint point);
+
+  void appendPath(List<EtmPoint> path);
 }

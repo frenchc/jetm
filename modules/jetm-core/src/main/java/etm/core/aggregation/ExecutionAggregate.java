@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,7 +62,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
   private double total = 0.0;
 
   // we use late init
-  private Map childs;
+  private Map<String, Aggregate> childs;
 
 
   public ExecutionAggregate() {
@@ -99,7 +99,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
     return total;
   }
 
-  public Map getChilds() {
+  public Map<String, Aggregate> getChilds() {
     return childs;
   }
 
@@ -135,8 +135,8 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
    * @param newTree The tree to the measurement result.
    */
 
-  public void appendPath(LinkedList newTree) {
-    EtmPoint current = (EtmPoint) newTree.removeFirst();
+  public void appendPath(List<EtmPoint> newTree) {
+    EtmPoint current = newTree.remove(0);
 
     ExecutionAggregate aggregate = getChild(current.getName());
 
@@ -173,7 +173,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
 
   private ExecutionAggregate getChild(String aName) {
     if (childs == null) {
-      childs = new HashMap();
+      childs = new HashMap<>();
     }
 
     ExecutionAggregate aggregate = (ExecutionAggregate) childs.get(aName);
@@ -201,7 +201,7 @@ public class ExecutionAggregate implements Externalizable, Aggregate {
     min = in.readDouble();
     max = in.readDouble();
     total = in.readDouble();
-    childs = (Map) in.readObject();
+    childs = (Map<String, Aggregate>) in.readObject();
   }
 
   /**

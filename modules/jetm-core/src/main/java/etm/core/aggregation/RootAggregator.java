@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public class RootAggregator implements Aggregator {
 
-  protected Map<String, ExecutionAggregate> aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
+  protected Map<String, Aggregate> aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
 
   protected EtmMonitorContext ctx;
 
@@ -67,7 +67,7 @@ public class RootAggregator implements Aggregator {
   }
 
   public void reset(String symbolicName) {
-    ExecutionAggregate aggregate = aggregates.get(symbolicName);
+    Aggregate aggregate = aggregates.get(symbolicName);
     if (aggregate != null) {
       ctx.fireEvent(new PreRootResetEvent(aggregate, this));
       aggregate.reset();
@@ -102,7 +102,7 @@ public class RootAggregator implements Aggregator {
   public void add(EtmPoint point) {
     // shortcut for parent == null;
     if (point.getParent() == null) {
-      ExecutionAggregate aggregate = getAggregate(point.getName());
+      Aggregate aggregate = getAggregate(point.getName());
       aggregate.addTransaction(point);
       return;
     }
@@ -120,12 +120,12 @@ public class RootAggregator implements Aggregator {
 
     rootNode = path.removeFirst();
 
-    ExecutionAggregate aggregate = getAggregate(rootNode.getName());
+    Aggregate aggregate = getAggregate(rootNode.getName());
     aggregate.appendPath(path);
   }
 
-  protected ExecutionAggregate getAggregate(String aName) {
-    ExecutionAggregate aggregate = aggregates.get(aName);
+  protected Aggregate getAggregate(String aName) {
+    Aggregate aggregate = aggregates.get(aName);
     if (aggregate == null) {
       aggregate = new ExecutionAggregate(aName);
       aggregates.put(aName, aggregate);

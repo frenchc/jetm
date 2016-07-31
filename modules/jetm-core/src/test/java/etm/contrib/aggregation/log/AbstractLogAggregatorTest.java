@@ -103,7 +103,7 @@ public class AbstractLogAggregatorTest extends TestCase {
 
 
   class TestLogAggregator extends AbstractLogAggregator {
-    private List points = new ArrayList();
+    private List<EtmPoint> points = new ArrayList<>();
 
     public TestLogAggregator(Aggregator aAggregator) {
       super(aAggregator);

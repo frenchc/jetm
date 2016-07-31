@@ -54,7 +54,7 @@ import java.util.Map;
 
 public class FlatAggregator implements Aggregator {
 
-  protected Map<String, ExecutionAggregate> aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
+  protected Map<String, Aggregate> aggregates = CollectionFactory.getInstance().newConcurrentHashMapInstance();
   protected EtmMonitorContext ctx;
 
   public FlatAggregator() {
@@ -67,7 +67,7 @@ public class FlatAggregator implements Aggregator {
 
 
   public void reset(String symbolicName) {
-    ExecutionAggregate aggregate = aggregates.get(symbolicName);
+    Aggregate aggregate = aggregates.get(symbolicName);
     if (aggregate != null) {
       aggregate.reset();
       ctx.fireEvent(new RootResetEvent(symbolicName, this));
@@ -82,7 +82,7 @@ public class FlatAggregator implements Aggregator {
 
 
   public void add(EtmPoint point) {
-    ExecutionAggregate aggregate = getAggregate(point.getName());
+    Aggregate aggregate = getAggregate(point.getName());
     aggregate.addTransaction(point);
   }
 
@@ -106,8 +106,8 @@ public class FlatAggregator implements Aggregator {
     ctx = aCtx;
   }
 
-  protected ExecutionAggregate getAggregate(final String aName) {
-    ExecutionAggregate aggregate = aggregates.get(aName);
+  protected Aggregate getAggregate(final String aName) {
+    Aggregate aggregate = aggregates.get(aName);
     if (aggregate == null) {
       aggregate = new ExecutionAggregate(aName);
       aggregates.put(aName, aggregate);

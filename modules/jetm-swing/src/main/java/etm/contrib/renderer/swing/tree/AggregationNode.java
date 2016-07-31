@@ -49,7 +49,7 @@ import java.util.Set;
  */
 public class AggregationNode extends DefaultMutableTreeNode {
 
-  protected Set childSet = new HashSet();
+  protected Set<String> childSet = new HashSet<>();
 
   public AggregationNode(Aggregate aAggregate) {
     this(aAggregate, null);

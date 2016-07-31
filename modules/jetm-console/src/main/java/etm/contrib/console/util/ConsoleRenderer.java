@@ -37,6 +37,7 @@ import etm.contrib.console.ConsoleResponse;
 import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.util.ExecutionAggregateComparator;
 import etm.core.aggregation.Aggregate;
+import etm.core.monitor.EtmPoint;
 import etm.core.renderer.MeasurementRenderer;
 import etm.core.util.Version;
 
@@ -549,7 +550,7 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
       return aggregate.getTotal();
     }
 
-    public Map getChilds() {
+    public Map<String, ? extends Aggregate> getChilds() {
       return aggregate.getChilds();
     }
 
@@ -559,6 +560,21 @@ public abstract class ConsoleRenderer implements MeasurementRenderer {
 
     public boolean hasChilds() {
       return sortedChilds != null;
+    }
+
+    @Override
+    public void reset() {
+      aggregate.reset();
+    }
+
+    @Override
+    public void addTransaction(EtmPoint point) {
+      aggregate.addTransaction(point);
+    }
+
+    @Override
+    public void appendPath(List<EtmPoint> path) {
+      aggregate.appendPath(path);
     }
   }
 }

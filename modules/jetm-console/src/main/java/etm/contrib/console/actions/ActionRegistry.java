@@ -50,7 +50,7 @@ import java.util.Map;
  * @version $Revision$
  */
 public class ActionRegistry implements Serializable {
-  private Map actions = new HashMap();
+  private Map<String, ConsoleAction> actions = new HashMap<>();
 
   public ActionRegistry(ResourceAccessor resourceAccessor, boolean expanded) {
     if (expanded) {
@@ -92,7 +92,7 @@ public class ActionRegistry implements Serializable {
   }
 
   public ConsoleAction getAction(String action) {
-    return (ConsoleAction) actions.get(action);
+    return actions.get(action);
   }
 
   private void enableCollapsed() {

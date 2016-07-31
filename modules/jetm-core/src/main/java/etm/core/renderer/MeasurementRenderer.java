@@ -34,6 +34,8 @@ package etm.core.renderer;
 
 import java.util.Map;
 
+import etm.core.aggregation.Aggregate;
+
 /**
  * MeasurementRenderer instances are used to render currently available
  * aggregated performace results. A renderer has to implement a callback method
@@ -51,6 +53,6 @@ public interface MeasurementRenderer {
    *
    * @param points All available results in no particular order.
    */
-  public void render(Map points);
+  public void render(Map<String, Aggregate> points);
 
 }

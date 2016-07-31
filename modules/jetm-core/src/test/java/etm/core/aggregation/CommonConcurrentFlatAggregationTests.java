@@ -53,7 +53,7 @@ import java.util.Map;
 public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
   protected EtmMonitor monitor;
   private final Object lock = new Object();
-  private final List allPoints = new ArrayList();
+  private final List<EtmPoint> allPoints = new ArrayList<>();
   private int running;
 
   /**
@@ -176,16 +176,15 @@ public abstract class CommonConcurrentFlatAggregationTests extends TestCase {
     final int expectedExecutions = pointSize * threadSize * iterations;
 
     monitor.render(new MeasurementRenderer() {
-      public void render(Map points) {
+      public void render(Map<String, Aggregate> points) {
         assertNotNull(points);
         assertTrue(points.size() == pointSize);
 
         assertEquals(expectedExecutions, new TestHelper().countExecutions(points));
 
-        for (Object o : points.keySet()) {
-          String s = (String) o;
-          Aggregate renderAggregate = (Aggregate) points.get(s);
-          Aggregate actualAggregate = (Aggregate) aggregates.get(s);
+        for (String name : points.keySet()) {
+          Aggregate renderAggregate = points.get(name);
+          Aggregate actualAggregate = aggregates.get(name);
 
           assertNotNull(actualAggregate);
 

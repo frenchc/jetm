@@ -56,7 +56,7 @@ public class NestedAggregator extends FlatAggregator {
 
     // TODO check alternative strategy to improve performance
     // find tree root node
-    LinkedList path = new LinkedList();
+    LinkedList<EtmPoint> path = new LinkedList<>();
     path.add(point);
 
     EtmPoint rootNode = point.getParent();
@@ -65,9 +65,9 @@ public class NestedAggregator extends FlatAggregator {
       rootNode = rootNode.getParent();
     }
 
-    rootNode = (EtmPoint) path.removeFirst();
+    rootNode = path.removeFirst();
 
-    ExecutionAggregate aggregate = getAggregate(rootNode.getName());
+    Aggregate aggregate = getAggregate(rootNode.getName());
 
     aggregate.appendPath(path);
   }

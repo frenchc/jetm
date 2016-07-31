@@ -55,7 +55,7 @@ public class ConcurrentFlatMonitorTest extends TestCase {
   protected EtmMonitor monitor;
 
   private final Object lock = new Object();
-  private final List allPoints = new ArrayList();
+  private final List<EtmPoint> allPoints = new ArrayList<>();
   private int running;
 
   /**
@@ -150,7 +150,7 @@ public class ConcurrentFlatMonitorTest extends TestCase {
 
 
   class Runner extends Thread {
-    List list = new ArrayList();
+    List<EtmPoint> list = new ArrayList<>();
 
     private String testPointName;
     private int runs;
