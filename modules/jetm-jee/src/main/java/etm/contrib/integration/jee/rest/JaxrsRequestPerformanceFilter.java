@@ -37,20 +37,16 @@ import etm.core.monitor.EtmPoint;
 /**
  * A JAX-RS Filter that spans performance monitoring around HTTP requests.
  * Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
- * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link EtmMonitorContextListener}.
+ * to retrieve the currently active EtmMonitor.
  *
  * @author void.fm
  * @version $Revision$
  */
-/**
- * A JAX-RS Filter that spans performance monitoring around HTTP requests.
- * Uses {@link etm.core.configuration.EtmManager#getEtmMonitor()}
- * to retrieve the currently active EtmMonitor. Therefore it is recommended to use
- * this filter in conjunction with {@link EtmMonitorContextListener}.
- */
+
 @Provider
 public class JaxrsRequestPerformanceFilter implements ContainerRequestFilter, ContainerResponseFilter {
+
+  public static final String JETM_JAXRS_POINT = "jetm.jaxrs.point";
 
   @Context
   private HttpServletRequest request;
@@ -59,8 +55,6 @@ public class JaxrsRequestPerformanceFilter implements ContainerRequestFilter, Co
   private ResourceInfo resourceInfo;
 
   private final EtmMonitor etmMonitor;
-
-  private EtmPoint point;
 
   private String contextPath;
 
@@ -78,13 +72,30 @@ public class JaxrsRequestPerformanceFilter implements ContainerRequestFilter, Co
 
   @Override
   public void filter(ContainerRequestContext requestContext) throws IOException {
-    point = etmMonitor.createPoint("HTTP " + request.getMethod() + " request " + getPath());
+    EtmPoint point = etmMonitor.createPoint("HTTP " + request.getMethod() + " request " + getPath());
+    request.setAttribute(JETM_JAXRS_POINT, point);
   }
 
-  private String getPath() {
+
+
+  @Override
+  public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+    EtmPoint point = (EtmPoint) request.getAttribute(JETM_JAXRS_POINT);
+
+    if (point != null) {
+      point.collect();
+    }
+  }
+
+  protected EtmMonitor getEtmMonitor() {
+    return EtmManager.getEtmMonitor();
+  }
+
+
+  protected String getPath() {
     UriBuilder uriBuilder = UriBuilder
-      .fromPath(contextPath)
-      .path(servletPath);
+        .fromPath(contextPath)
+        .path(servletPath);
 
     Method resourceMethod = resourceInfo.getResourceMethod();
     if (resourceMethod.getDeclaringClass().isAnnotationPresent(Path.class)) {
@@ -97,16 +108,5 @@ public class JaxrsRequestPerformanceFilter implements ContainerRequestFilter, Co
     }
 
     return uriBuilder.toTemplate();
-  }
-
-  @Override
-  public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-    if (point != null) {
-      point.collect();
-    }
-  }
-
-  protected EtmMonitor getEtmMonitor() {
-    return EtmManager.getEtmMonitor();
   }
 }
