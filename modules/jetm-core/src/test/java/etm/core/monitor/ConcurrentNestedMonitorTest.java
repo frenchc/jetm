@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Concurrency tests for flat monitor.
+ * Concurrency tests for nested monitor.
  *
  * @author void.fm
  * @version $Revision$
@@ -55,10 +55,8 @@ public class ConcurrentNestedMonitorTest extends TestCase {
 
   protected EtmMonitor monitor;
 
-  private final Object lock = new Object();
+  private final LockObject lock = new LockObject();
   private final List allPoints = new ArrayList();
-
-  private int running;
 
   /**
    * tests two points with multiple threads.
@@ -90,8 +88,11 @@ public class ConcurrentNestedMonitorTest extends TestCase {
     do {
       synchronized (lock) {
         lock.wait();
+        if (!lock.isRunning()) {
+          break;
+        }
       }
-    } while (running > 0);
+    } while (true);
 
 
     final ExecutionAggregate group1 = new ExecutionAggregate(testPointGroup1);
@@ -114,9 +115,6 @@ public class ConcurrentNestedMonitorTest extends TestCase {
         fail("Unknown point " + point.getName());
       }
     }
-
-
-
 
     monitor.render(new MeasurementRenderer() {
       public void render(Map points) {
@@ -205,7 +203,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
     }
 
     public void run() {
-      running++;
+      lock.increase();
       try {
 
         while (runs > 0) {
@@ -229,12 +227,29 @@ public class ConcurrentNestedMonitorTest extends TestCase {
       synchronized (allPoints) {
         allPoints.addAll(list);
       }
-      running--;
+
       synchronized (lock) {
+        lock.decrease();
         lock.notifyAll();
       }
     }
 
   }
 
+
+  class LockObject {
+    private int instances;
+
+    public synchronized void increase() {
+      instances++;
+    }
+
+    public synchronized void decrease() {
+      instances--;
+    }
+
+    public synchronized boolean isRunning() {
+      return instances > 0;
+    }
+  }
 }
