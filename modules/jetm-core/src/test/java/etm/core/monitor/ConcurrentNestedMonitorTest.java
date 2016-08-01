@@ -94,6 +94,7 @@ public class ConcurrentNestedMonitorTest extends TestCase {
       }
     } while (true);
 
+    monitor.aggregate();
 
     final ExecutionAggregate group1 = new ExecutionAggregate(testPointGroup1);
     final ExecutionAggregate group2 = new ExecutionAggregate(testPointGroup2);
