@@ -60,7 +60,7 @@ public class OfflineLogParser {
   private static final LogAdapter LOG = Log.getLog(OfflineLogParser.class);
 
 
-  private static final String DEFAULT_SCAN_PATTERN = "^(.*)measurementPoint=<([\\w\\s\\d]*)>, parent=<([\\w\\s]*)>, transactionTime=<(\\d*[,.]\\d*)>, recordingTime=<(\\d*)>";
+  private static final String DEFAULT_SCAN_PATTERN = "^(.*)measurementPoint=<([\\w\\s\\d:\\.()-_]*)>, parent=<([\\w\\s\\d:\\.()-_]*)>, transactionTime=<(\\d*[,.]\\d*)>, recordingTime=<(\\d*)>";
   private String pattern = DEFAULT_SCAN_PATTERN;
 
   private List destinations;
