@@ -94,7 +94,7 @@ public class Rrd4jAggregationWriter extends AbstractRrdExecutionWriter {
 
 
   public void onFinish() {
-
+	  flushStatus();
   }
 
   protected long calculateTimestamp(EtmPoint measurement) {
