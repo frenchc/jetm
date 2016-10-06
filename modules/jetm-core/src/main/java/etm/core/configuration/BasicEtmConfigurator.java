@@ -58,6 +58,9 @@ import etm.core.timer.ExecutionTimer;
  */
 public class BasicEtmConfigurator {
 
+  private BasicEtmConfigurator() {
+  }
+
   /**
    *
    * Configures {@link EtmManager} to use a {@link FlatMonitor}

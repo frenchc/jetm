@@ -51,6 +51,9 @@ import java.util.Map;
 
 public class ConsoleUtil {
 
+  private ConsoleUtil() {
+  }
+
   public static String appendParameters(String url, Map parameters) {
     return appendParameters(url, parameters, false);
   }

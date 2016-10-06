@@ -47,6 +47,9 @@ import org.jboss.aop.joinpoint.Invocation;
  */
 public class JoinPointFactory {
 
+  private JoinPointFactory() {
+  }
+
   public static EtmJoinPoint create(MethodInvocation aMethodInvocation) {
     return new AopAllianceJoinPoint(aMethodInvocation);
   }

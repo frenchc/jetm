@@ -49,6 +49,9 @@ class EtmMonitorRepository {
 
   private static Map managedMonitors = new HashMap();
 
+  private EtmMonitorRepository() {
+  }
+
   public static void register(String reference, EtmMonitor aMonitor) {
     if (!managedMonitors.containsKey(reference)) {
       managedMonitors.put(reference, aMonitor);

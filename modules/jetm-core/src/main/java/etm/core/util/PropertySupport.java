@@ -48,6 +48,9 @@ import java.util.Map;
  */
 public class PropertySupport {
 
+  private PropertySupport() {
+  }
+
   public static Object create(String aClassName, Map properties) {
     try {
       return create(Class.forName(aClassName), properties);
