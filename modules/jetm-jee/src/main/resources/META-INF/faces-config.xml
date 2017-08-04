@@ -13,7 +13,6 @@
   <factory>
     <application-factory>etm.contrib.integration.jee.jsf.DelegatingEtmApplicationFactory</application-factory>
     <render-kit-factory>etm.contrib.integration.jee.jsf.DelegatingEtmRenderKitFactory</render-kit-factory>
-    <lifecycle-factory>etm.contrib.integration.jee.jsf.DelegatingEtmLifecycleFactory</lifecycle-factory>
   </factory>
 
   <lifecycle>
