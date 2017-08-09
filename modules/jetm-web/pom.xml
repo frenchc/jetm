@@ -8,13 +8,13 @@
   <parent>
     <groupId>fm.void.jetm</groupId>
     <artifactId>jetm-parent</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0-Beta4</version>
     <relativePath>../jetm-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-web</artifactId>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.3.0-Beta4</version>
   <packaging>jar</packaging>
   <name>JETM Web Support</name>
   <url>http://jetm.void.fm</url>
@@ -26,7 +26,7 @@
     <dependency>
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm</artifactId>
-      <version>1.3.0-SNAPSHOT</version>
+      <version>1.3.0-Beta4</version>
     </dependency>
 
     <dependency>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>fm.void.jetm</groupId>
       <artifactId>jetm</artifactId>
-      <version>1.3.0-SNAPSHOT</version>
+      <version>1.3.0-Beta4</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
