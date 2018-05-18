@@ -17,6 +17,4 @@ addons:
 jobs:
   include:
     - jdk: oraclejdk8
-      env:
-        - CONTAINER=wildfly
       script: mvn test -B sonar:sonar
