@@ -1,0 +1,22 @@
+language: java
+jdk:
+  - openjdk7
+  - openjdk8
+  - oraclejdk7
+
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+cache:
+    directories:
+        - $HOME/.m2
+
+addons:
+  sonarcloud:
+    organization: "ok"
+
+jobs:
+  include:
+    - jdk: oraclejdk8
+      env:
+        - CONTAINER=wildfly
+      script: mvn test -B sonar:sonar
