@@ -38,6 +38,10 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import etm.core.monitor.NestedMonitor;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.rrd4j.core.RrdDb;
 
 import java.io.ByteArrayOutputStream;
@@ -56,6 +60,11 @@ import java.util.List;
  */
 public class Rrd4jPluginTest extends TestCase {
 
+  @Override
+  protected void setUp() {
+    removeLog4jAppender();
+  }
+
   public void testMissingAggregator() {
     EtmMonitor monitor = new NestedMonitor();
 
@@ -72,7 +81,7 @@ public class Rrd4jPluginTest extends TestCase {
 
       tmpErr.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset());
-      assertTrue(s.indexOf("NotifyingAggregator") > -1);
+      assertTrue("missing aggregator",s.indexOf("NotifyingAggregator") > -1);
 
     } finally {
       System.setErr(writer);
@@ -127,4 +136,17 @@ public class Rrd4jPluginTest extends TestCase {
     }
   }
 
+  /**
+   * Removes all appender from the log4j2 logger.
+   *
+   * <p>Since version 2, log4j activates a default configuration if it does not find an explicit
+   * configuration at startup.  For the tests in this suite, it is necessary that no configuration
+   * is found. This method is used to delete all log appender before executing a test.
+   */
+  private void removeLog4jAppender() {
+    LoggerContext context = (LoggerContext) LogManager.getContext(false);
+    LoggerConfig config = context.getConfiguration().getLoggerConfig("loggerName");
+    config.getAppenders().keySet().forEach(config::removeAppender);
+    context.updateLoggers();
+  }
 }

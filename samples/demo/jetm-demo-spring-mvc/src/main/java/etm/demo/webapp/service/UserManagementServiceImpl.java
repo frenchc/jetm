@@ -40,7 +40,8 @@ import etm.demo.webapp.dao.NonUniqueObjectException;
  * @version $Revision$
  */
 public class UserManagementServiceImpl implements UserManagementService {
-  private UserDao userDao;
+
+  private final UserDao userDao;
 
   public UserManagementServiceImpl(UserDao aDao) {
     userDao = aDao;

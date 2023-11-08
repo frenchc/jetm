@@ -11,11 +11,11 @@
     <relativePath>../../../modules/jetm-parent/pom.xml</relativePath>
   </parent>
 
-
   <groupId>fm.void.jetm.demo</groupId>
   <artifactId>jetm-demo-spring-mvc</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <packaging>war</packaging>
+
   <name>JETM Demo Application: Spring MVC Demo</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library - Spring MVC Demo</description>
@@ -23,21 +23,18 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.25</version>
-
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
-          <webAppConfig>
+          <webApp>
             <contextPath>/jetm-spring-mvc</contextPath>
             <tempDirectory>${project.build.directory}/work</tempDirectory>
-
-          </webAppConfig>
+          </webApp>
           <stopKey>jetm-spring-mvc</stopKey>
           <stopPort>9999</stopPort>
         </configuration>
-
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -51,29 +48,21 @@
             </goals>
             <configuration>
               <target>
-
                 <zip destfile="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.zip"
                      basedir="${project.basedir}"
                      includes="pom.xml, src/**"/>
-
                 <tar destfile="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.tar"
                      basedir="${project.basedir}"
                      includes="pom.xml, src/**"/>
-
                 <gzip src="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.tar"
                       destfile="${project.build.directory}/${project.build.finalName}/jetm-spring-mvc-demo-src.tar.gz"/>
-
-
               </target>
             </configuration>
           </execution>
         </executions>
       </plugin>
-
-
     </plugins>
   </build>
-
 
   <dependencies>
     <dependency>
@@ -86,32 +75,16 @@
       <groupId>org.apache.geronimo.specs</groupId>
       <artifactId>geronimo-servlet_3.0_spec</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-validation_2.0_spec</artifactId>
+      <version>1.1</version>
+    </dependency>
 
-
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <scope>compile</scope>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
     </dependency>
 
     <dependency>
@@ -126,29 +99,27 @@
       <scope>compile</scope>
     </dependency>
 
-
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging-api</artifactId>
       <scope>compile</scope>
     </dependency>
 
+    <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

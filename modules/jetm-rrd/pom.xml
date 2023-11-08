@@ -11,15 +11,13 @@
     <relativePath>../jetm-parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-rrd</artifactId>
   <version>1.3.0-SNAPSHOT</version>
-
   <packaging>jar</packaging>
+
   <name>JETM RRD4J</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library rrd4j package</description>
-
 
   <dependencies>
     <dependency>
@@ -33,16 +31,16 @@
       <artifactId>rrd4j</artifactId>
     </dependency>
 
-
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
     </dependency>
 
+    <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

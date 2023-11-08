@@ -34,53 +34,85 @@ package etm.demo.webapp.controller;
 
 import etm.demo.webapp.dao.User;
 import etm.demo.webapp.service.MessagingService;
-import etm.demo.webapp.service.UserManagementService;
 import etm.demo.webapp.service.UserExistsException;
+import etm.demo.webapp.service.UserManagementService;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.validation.BindException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * @author void.fm
  * @version $Revision$
  */
-public class RegistrationController extends SimpleFormController {
+@Controller
+@RequestMapping({ "/showRegistration.action", "/registration.action" })
+public class RegistrationController {
 
-  private UserManagementService userManagementService;
-  private MessagingService messagingService;
+  private final UserManagementService userManagementService;
+  private final MessagingService messagingService;
+  private final Validator validator;
 
-  public RegistrationController(UserManagementService aUserManagementService, MessagingService aMessagingService) {
+  public RegistrationController(
+      UserManagementService aUserManagementService,
+      MessagingService aMessagingService,
+      @Qualifier("registrationValidator") Validator registrationValidator
+  ) {
     userManagementService = aUserManagementService;
     messagingService = aMessagingService;
+    validator = registrationValidator;
   }
 
+  @InitBinder("registration")
+  public void initBinder(WebDataBinder binder) {
+    binder.setValidator(validator);
+  }
 
-  protected ModelAndView onSubmit(Object object) throws Exception {
-    Registration registration = (Registration) object;
+  @RequestMapping(method = RequestMethod.GET)
+  public ModelAndView renderForm(
+      @ModelAttribute("registration") Registration registration
+  ) {
+    ModelAndView modelAndView = new ModelAndView("registrationForm");
+    modelAndView.addObject("registration", registration);
+    return modelAndView;
+  }
+
+  @RequestMapping(method = RequestMethod.POST)
+  public ModelAndView processForm(
+      @Valid @ModelAttribute("registration") Registration registration,
+      BindingResult result
+  ) {
+    if (result.hasErrors()) {
+      return new ModelAndView("registrationForm");
+    }
+
     try {
       User user = userManagementService.create(
-        registration.getFirstName(), registration.getLastName(),
-        registration.getUserName(), registration.getPassword(),
-        registration.getEmail());
+          registration.getFirstName(),
+          registration.getLastName(),
+          registration.getUserName(),
+          registration.getPassword(),
+          registration.getEmail()
+      );
 
       messagingService.sendMail(user, "registration");
 
-      ModelAndView view = new ModelAndView("private");
-      view.addObject("user", user);
-      return view;
+      ModelAndView modelAndView = new ModelAndView("private");
+      modelAndView.addObject("user", user);
+      return modelAndView;
     } catch (UserExistsException e) {
+      String errorMessage = "Username " + registration.getUserName() + " already exists.";
       ModelAndView modelAndView = new ModelAndView("registrationForm");
       modelAndView.addObject("registration", registration);
-      modelAndView.addObject("errorMessage", "Username " + registration.getUserName() + " already exists.");
+      modelAndView.addObject("errorMessage", errorMessage);
       return modelAndView;
     }
-  }
-
-
-  protected Object formBackingObject(HttpServletRequest httpServletRequest) throws Exception {
-    return new Registration();
   }
 }

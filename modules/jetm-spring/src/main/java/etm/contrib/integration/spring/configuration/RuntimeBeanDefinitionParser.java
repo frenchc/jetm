@@ -216,14 +216,14 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
           }
         }
 
-        nestedBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+        nestedBuilder.addConstructorArgValue(chainBuilder.getBeanDefinition());
         chainBuilder = nestedBuilder;
 
       }
     }
 
     // register our chain
-    aBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+    aBuilder.addConstructorArgValue(chainBuilder.getBeanDefinition());
   }
 
   private void buildChainFromFeatures(BeanDefinitionBuilder runtimeBuilder, Element aElement) {
@@ -352,19 +352,19 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     BeanDefinitionBuilder chainBuilder = aggregationRootBuilder;
 
     if (rawDataBuilder != null) {
-      rawDataBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+      rawDataBuilder.addConstructorArgValue(chainBuilder.getBeanDefinition());
       chainBuilder = rawDataBuilder;
     }
 
     if (notificationBuilder != null) {
-      notificationBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+      notificationBuilder.addConstructorArgValue(chainBuilder.getBeanDefinition());
       chainBuilder = notificationBuilder;
 
     }
-    bufferBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+    bufferBuilder.addConstructorArgValue(chainBuilder.getBeanDefinition());
     chainBuilder = bufferBuilder;
 
-    runtimeBuilder.addConstructorArg(chainBuilder.getBeanDefinition());
+    runtimeBuilder.addConstructorArgValue(chainBuilder.getBeanDefinition());
 
   }
 
@@ -382,7 +382,7 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     if ("jdk15".equals(aTimer)) {
       try {
         Class clazz = Class.forName("etm.core.timer.Java15NanoTimer");
-        builder.addConstructorArg(clazz.newInstance());
+        builder.addConstructorArgValue(clazz.newInstance());
       } catch (Exception e) {
         throw new FatalBeanException("Java15NanoTimer is not available for this platform. Please try 'sun' or " +
           "'default' instead.", e);
@@ -390,18 +390,18 @@ public class RuntimeBeanDefinitionParser extends JetmBeanDefinitionParser {
     } else if ("sun".equals(aTimer)) {
        try {
         Class clazz = Class.forName("etm.core.timer.SunHighResTimer. Please try 'jdk15' or 'default' instead.");
-        builder.addConstructorArg(clazz.newInstance());
+        builder.addConstructorArgValue(clazz.newInstance());
       } catch (Exception e) {
         throw new FatalBeanException("SunHighResTimer is not available for this platform.", e);
       }
     } else if ("default".equals(aTimer)) {
-      builder.addConstructorArg(new DefaultTimer());
+      builder.addConstructorArgValue(new DefaultTimer());
     } else if ("bestAvailable".equals(aTimer)) {
-      builder.addConstructorArg(EtmMonitorFactory.bestAvailableTimer());
+      builder.addConstructorArgValue(EtmMonitorFactory.bestAvailableTimer());
     } else {
       RootBeanDefinition timerBeanDefinition = new RootBeanDefinition();
       timerBeanDefinition.setBeanClassName(aTimer);
-      builder.addConstructorArg(timerBeanDefinition);
+      builder.addConstructorArgValue(timerBeanDefinition);
     }
   }
 }

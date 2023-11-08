@@ -32,11 +32,10 @@
 
 package etm.demo.webapp.controller;
 
-import org.springframework.validation.Validator;
+import etm.demo.webapp.service.UserManagementService;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
-import org.springframework.util.StringUtils;
-import etm.demo.webapp.service.UserManagementService;
+import org.springframework.validation.Validator;
 
 /**
  * @author void.fm
@@ -44,8 +43,7 @@ import etm.demo.webapp.service.UserManagementService;
  */
 public class RegistrationValidator implements Validator {
 
-  private UserManagementService userManagementService;
-
+  private final UserManagementService userManagementService;
 
   public RegistrationValidator(UserManagementService aUserManagementService) {
     userManagementService = aUserManagementService;
@@ -57,6 +55,7 @@ public class RegistrationValidator implements Validator {
 
   public void validate(Object object, Errors errors) {
     Registration registration = (Registration) object;
+
     ValidationUtils.rejectIfEmpty(errors, "firstName", "missing", null, "Firstname may not be empty.");
     ValidationUtils.rejectIfEmpty(errors, "lastName", "missing", null, "Lastname may not be empty.");
     ValidationUtils.rejectIfEmpty(errors, "email", "missing", null, "Email may not be empty.");
@@ -68,15 +67,14 @@ public class RegistrationValidator implements Validator {
       errors.reject("registration", "Fields may not be empty.");
     }
 
-    if (errors.getFieldErrorCount("userName") == 0 && !userManagementService.isUnusedUserName(registration.getUserName()))
-    {
+    if (errors.getFieldErrorCount("userName") == 0 && !userManagementService.isUnusedUserName(registration.getUserName())) {
       errors.reject("registration", "Username already in use.");
       errors.rejectValue("userName", "username.already.taken", null, "Username already in use.");
     }
 
     if (errors.getFieldErrorCount("password") == 0 &&
-      errors.getFieldErrorCount("passwordrepeat") == 0 &&
-      !registration.getPassword().equals(registration.getPasswordrepeat())) {
+        errors.getFieldErrorCount("passwordrepeat") == 0 &&
+        !registration.getPassword().equals(registration.getPasswordrepeat())) {
       errors.reject("registration", "Passwords do not match.");
 
       registration.setPassword(null);

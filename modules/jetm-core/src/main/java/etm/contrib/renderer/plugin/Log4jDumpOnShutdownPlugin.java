@@ -33,7 +33,8 @@
 package etm.contrib.renderer.plugin;
 
 import etm.core.renderer.SimpleTextRenderer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.StringWriter;
 
@@ -52,7 +53,7 @@ public class Log4jDumpOnShutdownPlugin extends DumpOnShutDownPlugin {
   }
 
   public void start() {
-    log = Logger.getLogger(logName);
+    log = LogManager.getLogger(logName);
   }
 
   public void stop() {

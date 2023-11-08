@@ -2,54 +2,27 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-                           http://jetm.void.fm/schema/jetm_spring_config_1_2 http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+          http://jetm.void.fm/schema/jetm_spring_config_1_2
+          http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd
+          http://www.springframework.org/schema/context
+          https://www.springframework.org/schema/context/spring-context.xsd">
 
+  <context:component-scan base-package="etm.demo.webapp" />
 
-  <!--
+  <bean id="registrationValidator"
+        class="etm.demo.webapp.controller.RegistrationValidator" />
 
-   Standard spring web support.
-  -->
-
-  <bean id="registrationController"
-        class="etm.demo.webapp.controller.RegistrationController"
-        autowire="constructor">
-    <property name="commandName" value="registration"/>
-    <property name="commandClass" value="etm.demo.webapp.controller.Registration"/>
-    <property name="formView" value="registrationForm"/>
-    <property name="successView" value="private"/>
-    <property name="validator">
-      <bean id="registrationValidator" class="etm.demo.webapp.controller.RegistrationValidator" autowire="constructor"/>
-    </property>
-  </bean>
-
-
-  <bean id="loginController" class="etm.demo.webapp.controller.LoginController" autowire="constructor">
-    <property name="sessionForm" value="false"/>
-    <property name="commandName" value="login"/>
-    <property name="commandClass" value="etm.demo.webapp.controller.Login"/>
-    <property name="formView" value="welcome"/>
-    <property name="successView" value="private"/>
-  </bean>
-
-  <bean id="consoleController" class="etm.demo.webapp.controller.ConsoleController"/>
-
-  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-    <property name="mappings">
-      <props>
-        <prop key="/welcome.action">loginController</prop>
-        <prop key="/login.action">loginController</prop>
-        <prop key="/showRegistration.action">registrationController</prop>
-        <prop key="/registration.action">registrationController</prop>
-      </props>
-    </property>
-  </bean>
+  <bean id="consoleController"
+        class="etm.demo.webapp.controller.ConsoleController" />
 
   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
     <property name="suffix" value=".jsp"/>
   </bean>
-
 
   <!--
     Measure method calls of these beans
@@ -57,6 +30,4 @@
   <jetm:monitoring>
     <jetm:bean-pattern>*Controller,*Validator</jetm:bean-pattern>
   </jetm:monitoring>
-
-
 </beans>
