@@ -34,37 +34,52 @@ package etm.demo.webapp.controller;
 
 import etm.demo.webapp.dao.User;
 import etm.demo.webapp.service.UserManagementService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author void.fm
  * @version $Revision$
  */
-public class LoginController extends SimpleFormController {
+@Controller
+@RequestMapping({ "/login.action", "/welcome.action" })
+public class LoginController {
 
-  private UserManagementService userManagementService;
+  private final UserManagementService userManagementService;
 
   public LoginController(UserManagementService aUserManagementService) {
     userManagementService = aUserManagementService;
   }
 
-  protected ModelAndView onSubmit(Object object) throws Exception {
-    Login login = (Login) object;
-    User user = userManagementService.authenticate(login.getUsername(), login.getPassword());
+  @RequestMapping(method = RequestMethod.GET)
+  public ModelAndView renderForm(
+      @ModelAttribute("login") Login login
+  ) {
+    ModelAndView modelAndView = new ModelAndView("welcome");
+    modelAndView.addObject("welcome", login);
+    return modelAndView;
+  }
+
+  @RequestMapping(method = RequestMethod.POST)
+  public ModelAndView processForm(
+      @ModelAttribute("login") Login login
+  ) {
+    User user = userManagementService.authenticate(
+        login.getUsername(),
+        login.getPassword()
+    );
+
     if (user != null) {
       ModelAndView view = new ModelAndView("private");
       view.addObject("user", user);
       return view;
     } else {
-
       ModelAndView view = new ModelAndView("welcome");
       view.addObject("login", login);
       return view;
     }
   }
-
 }

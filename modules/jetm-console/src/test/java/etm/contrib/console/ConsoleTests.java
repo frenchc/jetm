@@ -44,8 +44,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -60,14 +62,13 @@ public abstract class ConsoleTests extends TestCase {
   protected EtmMonitor monitor;
 
   public void testResultRendering() throws Exception {
-
     String serverResponse = executeRequest("/index");
 
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     StandaloneConsoleRequest request = new StandaloneConsoleRequest(monitor);
     ConsoleResponse testResponse = new ConsoleResponse() {
-      OutputStreamWriter writer = new OutputStreamWriter(out);
+      final OutputStreamWriter writer = new OutputStreamWriter(out);
 
       public void addHeader(String header, String value) {
       }
@@ -98,11 +99,10 @@ public abstract class ConsoleTests extends TestCase {
     );
     monitor.render(renderer);
 
-    String expected = new String(out.toByteArray(), "UTF-8");
+    String expected = new String(out.toByteArray(), StandardCharsets.UTF_8);
 
     String response = serverResponse.substring(serverResponse.indexOf("close") + 5).trim();
     // we compare rendered results only
-
 
     assertEquals(expected.substring(expected.indexOf("Begin results")), 
       response.substring(response.indexOf("Begin results")));
@@ -130,10 +130,12 @@ public abstract class ConsoleTests extends TestCase {
     assertTrue(monitor.isCollecting());
   }
 
-
   protected String executeRequest(String request) throws Exception {
-    Socket socket = new Socket(InetAddress.getLocalHost().getHostAddress(), HttpConsoleServer.DEFAULT_LISTEN_PORT);
-    socket.setSoTimeout(30000);
+    SocketAddress socketAddress = new InetSocketAddress("127.0.0.1", HttpConsoleServer.DEFAULT_LISTEN_PORT);
+    Socket socket = new Socket();
+
+    socket.connect(socketAddress, 3000 /* timeout in ms */);
+
     OutputStream outputStream = socket.getOutputStream();
     outputStream.write(("GET " + request + " HTTP/1.0\n").getBytes());
     outputStream.flush();
@@ -152,9 +154,6 @@ public abstract class ConsoleTests extends TestCase {
       socket.close();
     }
 
-    return new String(buffer, "UTF-8");
-
+    return new String(buffer, StandardCharsets.UTF_8);
   }
-
-
 }

@@ -32,25 +32,32 @@
 
 package etm.core.monitor;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-
+import etm.core.configuration.EtmManager;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
-import etm.core.configuration.EtmManager;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- *
  * Runs tests whether certain warnings are shown or not.
  *
  * @author void.fm
  * @version $Revision$
  */
 public class CheckMonitorWarningsTest extends TestCase {
+
+  @Override
+  protected void setUp() {
+    removeLog4jAppender();
+  }
 
   public void testEtmMonitorSupportWarning() throws Exception {
     EtmManager.reset();
@@ -74,9 +81,7 @@ public class CheckMonitorWarningsTest extends TestCase {
       tmp.flush();
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
 
-      assertThat (s, containsString("Warning - Performance Monitoring currently disabled."));
-
-
+      assertThat(s, containsString("Warning - Performance Monitoring currently disabled."));
     } finally {
       System.setProperty("etm.core.util.jdk.logging.disabled", "false");
 
@@ -108,9 +113,7 @@ public class CheckMonitorWarningsTest extends TestCase {
       String s = new String(out.toByteArray(), Charset.defaultCharset().name());
       etmMonitor.stop();
 
-      assertThat (s, containsString("Warning - NullMonitor active. Performance results are discarded."));
-
-
+      assertThat(s, containsString("Warning - NullMonitor active. Performance results are discarded."));
     } finally {
       System.setProperty("etm.core.util.jdk.logging.disabled", "false");
       System.setOut(outWriter);
@@ -118,4 +121,17 @@ public class CheckMonitorWarningsTest extends TestCase {
     }
   }
 
+  /**
+   * Removes all appender from the log4j2 logger.
+   *
+   * <p>Since version 2, log4j activates a default configuration if it does not find an explicit
+   * configuration at startup.  For the tests in this suite, it is necessary that no configuration
+   * is found. This method is used to delete all log appender before executing a test.
+   */
+  private void removeLog4jAppender() {
+    LoggerContext context = (LoggerContext) LogManager.getContext(false);
+    LoggerConfig config = context.getConfiguration().getLoggerConfig("loggerName");
+    config.getAppenders().keySet().forEach(config::removeAppender);
+    context.updateLoggers();
+  }
 }

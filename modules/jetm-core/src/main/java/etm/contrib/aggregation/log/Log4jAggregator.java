@@ -32,10 +32,12 @@
 
 package etm.contrib.aggregation.log;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import etm.core.aggregation.Aggregator;
 import etm.core.metadata.AggregatorMetaData;
 import etm.core.monitor.EtmPoint;
-import org.apache.log4j.Logger;
 
 /**
  * The Log4jAggregator uses Log4J logging
@@ -70,8 +72,7 @@ public class Log4jAggregator extends AbstractLogAggregator {
   }
 
   public void start() {
-    log = Logger.getLogger(logName);
+    log = LogManager.getLogger(logName);
     super.start();
   }
-
 }

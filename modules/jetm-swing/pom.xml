@@ -11,14 +11,13 @@
     <relativePath>../jetm-parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>fm.void.jetm</groupId>
   <artifactId>jetm-swing</artifactId>
   <version>1.3.0-SNAPSHOT</version>
   <packaging>jar</packaging>
+
   <name>JETM Swing Support (Experimental)</name>
   <url>http://jetm.void.fm</url>
   <description>The Java Execution Time Measurement Library swing support package</description>
-
 
   <dependencies>
     <dependency>
@@ -26,8 +25,5 @@
       <artifactId>jetm</artifactId>
       <version>1.3.0-SNAPSHOT</version>
     </dependency>
-
   </dependencies>
-
-
 </project>

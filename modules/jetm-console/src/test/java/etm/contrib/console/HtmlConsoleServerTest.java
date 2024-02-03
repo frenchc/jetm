@@ -47,7 +47,6 @@ public class HtmlConsoleServerTest extends ConsoleTests {
   protected void setUp() throws Exception {
     monitor = new NestedMonitor();
 
-
     httpConsoleServer = new HttpConsoleServer(monitor);
     httpConsoleServer.start();
 
@@ -59,7 +58,7 @@ public class HtmlConsoleServerTest extends ConsoleTests {
     Thread.sleep(100);
   }
 
-  protected void tearDown() throws Exception {
+  protected void tearDown() {
     if (httpConsoleServer != null) {
       httpConsoleServer.stop();
     }
@@ -67,5 +66,4 @@ public class HtmlConsoleServerTest extends ConsoleTests {
       monitor.stop();
     }
   }
-
 }

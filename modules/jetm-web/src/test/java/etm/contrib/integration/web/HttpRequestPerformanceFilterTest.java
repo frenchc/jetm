@@ -37,7 +37,8 @@ import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
 import etm.core.renderer.MeasurementRenderer;
 import junit.framework.TestCase;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -65,7 +66,7 @@ public class HttpRequestPerformanceFilterTest extends TestCase {
 
   public void setUp() throws Exception {
     EtmManager.reset();
-    BasicConfigurator.configure();
+    Configurator.initialize(new DefaultConfiguration());
     filter = new HttpRequestPerformanceFilter();
     filter.init(null);
     etmMonitor = EtmManager.getEtmMonitor();
@@ -122,6 +123,5 @@ public class HttpRequestPerformanceFilterTest extends TestCase {
           }
         }
       });
-
   }
 }

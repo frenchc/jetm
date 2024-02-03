@@ -31,10 +31,14 @@
  */
 package etm.core.util;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
-import java.util.Enumeration;
+import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -49,7 +53,7 @@ class Log4jAdapter implements LogAdapter {
   private Logger log;
 
   public Log4jAdapter(Class aClazz) {
-    log = Logger.getLogger(aClazz);
+    log = LogManager.getLogger(aClazz);
   }
 
   public void debug(String message) {
@@ -77,14 +81,19 @@ class Log4jAdapter implements LogAdapter {
   }
 
   public static boolean isConfigured() {
-    Enumeration appenders = Logger.getRoot().getAllAppenders();
-    if (appenders.hasMoreElements()) {
+    Logger logger = LogManager.getLogger();
+    Map<String, Appender> appenderMap =
+        ((org.apache.logging.log4j.core.Logger) logger).getAppenders();
+
+    if (!appenderMap.isEmpty()) {
       return true;
     } else {
-      Enumeration loggers = LogManager.getCurrentLoggers();
-      while (loggers.hasMoreElements()) {
-        Logger c = (Logger) loggers.nextElement();
-        if (c.getAllAppenders().hasMoreElements())
+      LoggerContext loggerContext =
+          (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
+      Collection<LoggerConfig> loggerConfigs = loggerContext.getConfiguration().getLoggers().values();
+
+      for (LoggerConfig loggerConfig : loggerConfigs) {
+        if (!loggerConfig.getAppenders().isEmpty())
           return true;
       }
     }

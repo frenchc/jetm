@@ -12,36 +12,37 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <version.springframework>3.2.2.RELEASE</version.springframework>
+    <version.java>1.8</version.java>
+    <maven.compiler.source>${version.java}</maven.compiler.source>
+    <maven.compiler.target>${version.java}</maven.compiler.target>
+
+    <version.springframework>5.2.25.RELEASE</version.springframework>
     <version.jsf.api>2.2-m12</version.jsf.api>
     <version.jax-rs.api>2.0</version.jax-rs.api>
 
     <version.aopalliance>1.0</version.aopalliance>
     <version.aspectj>1.7.2</version.aspectj>
     <version.aspectwerkz>2.0</version.aspectwerkz>
-    <version.jboss.aop>2.2.2.GA</version.jboss.aop>
     <version.cglib>2.2</version.cglib>
 
-
     <version.geronimo.specs.servlet>1.0</version.geronimo.specs.servlet>
-    <version.geronimo.specs.cdi>1.0</version.geronimo.specs.cdi>
+    <version.geronimo.specs.cdi>1.1</version.geronimo.specs.cdi>
     <version.geronimo.specs.atinject>1.0</version.geronimo.specs.atinject>
-    <version.geronimo.specs.interceptor>1.0</version.geronimo.specs.interceptor>
+    <version.geronimo.specs.interceptor>1.2</version.geronimo.specs.interceptor>
     <version.geronimo.specs.jpa>1.0</version.geronimo.specs.jpa>
     <version.geronimo.specs.jca>2.0.0</version.geronimo.specs.jca>
     <version.geronimo.specs.el>1.0.4</version.geronimo.specs.el>
 
-
-
     <version.rrd4j>2.1.1</version.rrd4j>
 
-    <version.log4j>1.2.17</version.log4j>
+    <version.log4j>2.22.0</version.log4j>
     <version.commons.logging>1.1.1</version.commons.logging>
     <version.commons.logging.api>1.1</version.commons.logging.api>
-    <version.slf4j>1.7.2</version.slf4j>
+    <version.slf4j>1.7.36</version.slf4j>
 
-    <version.junit>4.11</version.junit>
+    <version.junit>4.13.2</version.junit>
   </properties>
 
   <build>
@@ -83,11 +84,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -99,13 +95,17 @@
           <includes>
             <include>**/*Test.java</include>
           </includes>
-          <systemProperties>
-            <property>
-              <name>log4j.configuration</name>
-              <value>test-log4j.xml</value>
-            </property>
-          </systemProperties>
+          <systemPropertyVariables>
+            <log4j2.debug>false</log4j2.debug>
+            <!-- For the tests to work, log4j must not be configured. -->
+            <log4j2.configurationFile>non-existent-config-file.xml</log4j2.configurationFile>
+          </systemPropertyVariables>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.4.5</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -127,7 +127,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.0</version>
+        <version>3.12.1</version>
         <executions>
           <execution>
             <id>attach-descriptor</id>
@@ -136,47 +136,7 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <reportPlugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jxr-plugin</artifactId>
-              <version>2.3</version>
-            </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <version>2.7</version>
-              <configuration>
-                <encoding>UTF-8</encoding>
-              </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>cobertura-maven-plugin</artifactId>
-              <version>2.6</version>
-              <configuration>
-                <encoding>UTF-8</encoding>
-                <formats>
-                  <format>xml</format>
-                </formats>
-                <instrumentation>
-                  <excludes>
-                    <exclude>etm/core/util/collection/EDU/**/*.class</exclude>
-                    <exclude>etm/demo/**/*.class</exclude>
-                  </excludes>
-                </instrumentation>
-              </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>findbugs-maven-plugin</artifactId>
-              <version>2.5.2</version>
-            </plugin>
-          </reportPlugins>
-        </configuration>
       </plugin>
-
     </plugins>
 
     <pluginManagement>
@@ -206,12 +166,65 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>9.4.52.v20230823</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <doclint>accessibility,missing</doclint>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <formats>
+            <format>xml</format>
+          </formats>
+          <instrumentation>
+            <excludes>
+              <exclude>etm/core/util/collection/EDU/**/*.class</exclude>
+              <exclude>etm/demo/**/*.class</exclude>
+            </excludes>
+          </instrumentation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.5</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>${version.springframework}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
         <artifactId>geronimo-servlet_3.0_spec</artifactId>
@@ -227,13 +240,13 @@
 
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-interceptor_1.1_spec</artifactId>
+        <artifactId>geronimo-interceptor_1.2_spec</artifactId>
         <version>${version.geronimo.specs.interceptor}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-jcdi_1.0_spec</artifactId>
+        <artifactId>geronimo-jcdi_1.1_spec</artifactId>
         <version>${version.geronimo.specs.cdi}</version>
         <scope>provided</scope>
       </dependency>
@@ -275,12 +288,6 @@
         <version>${version.aspectwerkz}</version>
         <scope>provided</scope>
       </dependency>
-      <dependency>
-        <groupId>org.jboss.aop</groupId>
-        <artifactId>jboss-aop</artifactId>
-        <version>${version.jboss.aop}</version>
-        <scope>provided</scope>
-      </dependency>
 
       <dependency>
         <groupId>javax.faces</groupId>
@@ -292,43 +299,6 @@
         <groupId>javax.ws.rs</groupId>
         <artifactId>javax.ws.rs-api</artifactId>
         <version>${version.jax-rs.api}</version>
-        <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${version.springframework}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${version.springframework}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${version.springframework}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${version.springframework}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${version.springframework}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${version.springframework}</version>
         <scope>provided</scope>
       </dependency>
 
@@ -347,8 +317,8 @@
       </dependency>
 
       <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
         <version>${version.log4j}</version>
         <scope>provided</scope>
       </dependency>
@@ -381,12 +351,10 @@
     </dependencies>
   </dependencyManagement>
 
-
   <repositories>
-
     <repository>
       <id>central</id>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
     </repository>
     <repository>
       <id>JBoss Releases</id>
@@ -396,9 +364,7 @@
       <id>jetm-repo</id>
       <url>https://repository.openknowledge.de/jetm-libs</url>
     </repository>
-
   </repositories>
-
 
   <distributionManagement>
     <repository>

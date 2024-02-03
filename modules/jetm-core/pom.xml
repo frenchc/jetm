@@ -3,13 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fm.void.jetm</groupId>
-  <artifactId>jetm</artifactId>
-  <version>1.3.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>JETM Core</name>
-  <url>http://jetm.void.fm</url>
-  <description>The Java Execution Time Measurement Library core package</description>
 
   <parent>
     <groupId>fm.void.jetm</groupId>
@@ -18,6 +11,13 @@
     <relativePath>../jetm-parent/pom.xml</relativePath>
   </parent>
 
+  <artifactId>jetm</artifactId>
+  <version>1.3.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>JETM Core</name>
+  <url>http://jetm.void.fm</url>
+  <description>The Java Execution Time Measurement Library core package</description>
 
   <build>
     <plugins>
@@ -47,7 +47,6 @@
     </plugins>
   </build>
 
-
   <dependencies>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -55,18 +54,19 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
+    <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

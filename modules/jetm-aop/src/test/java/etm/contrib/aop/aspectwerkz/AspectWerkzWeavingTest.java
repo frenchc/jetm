@@ -34,7 +34,8 @@ package etm.contrib.aop.aspectwerkz;
 
 import etm.core.configuration.EtmManager;
 import junit.framework.TestCase;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
 /**
  * Tests AspectWerkz weaving.
@@ -45,10 +46,9 @@ import org.apache.log4j.BasicConfigurator;
 
 public class AspectWerkzWeavingTest extends TestCase {
 
-
   public void setUp() {
     EtmManager.reset();
-    BasicConfigurator.configure();
+    Configurator.initialize(new DefaultConfiguration());
     EtmManager.getEtmMonitor().start();
   }
 

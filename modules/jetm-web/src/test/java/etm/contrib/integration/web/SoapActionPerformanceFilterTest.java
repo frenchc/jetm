@@ -36,7 +36,8 @@ package etm.contrib.integration.web;
 import etm.core.aggregation.Aggregate;
 import etm.core.configuration.EtmManager;
 import etm.core.renderer.MeasurementRenderer;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -53,13 +54,12 @@ public class SoapActionPerformanceFilterTest extends HttpRequestPerformanceFilte
 
   public void setUp() throws Exception {
     EtmManager.reset();
-    BasicConfigurator.configure();
+    Configurator.initialize(new DefaultConfiguration());
     filter = new SoapActionPerformanceFilter();
     filter.init(null);
 
     etmMonitor = EtmManager.getEtmMonitor();
     etmMonitor.start();
-
   }
 
   public void tearDown() {
@@ -78,15 +78,12 @@ public class SoapActionPerformanceFilterTest extends HttpRequestPerformanceFilte
         assertEquals(15d, aggregate.getMin(), 0);
       }
     });
-
   }
-
 
   private ServletRequest getSoapActionRequest() throws Exception {
     return (ServletRequest) Proxy.newProxyInstance(getClass().getClassLoader(),
       new Class[]{HttpServletRequest.class},
       new InvocationHandler() {
-
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
           if (method.getName().equals("toString")) {
             return HttpServletRequest.class.getName();
@@ -97,6 +94,5 @@ public class SoapActionPerformanceFilterTest extends HttpRequestPerformanceFilte
           }
         }
       });
-
   }
 }

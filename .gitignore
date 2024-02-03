@@ -11,6 +11,7 @@
 *.ear
 *.iml
 .idea
+target/
 modules/jetm-aop/target/
 modules/jetm-build-tools/target/
 modules/jetm-cdi/target/
