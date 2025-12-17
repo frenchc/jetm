@@ -63,7 +63,7 @@
 
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
@@ -90,22 +90,22 @@
 
 
   <error-page>
-    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
     <location>/index.html</location>
   </error-page>
 
   <error-page>
-    <exception-type>javax.enterprise.context.NonexistentConversationException</exception-type>
+    <exception-type>jakarta.enterprise.context.NonexistentConversationException</exception-type>
     <location>/index.html</location>
   </error-page>
 
   <error-page>
-    <exception-type>javax.enterprise.context.ContextNotActiveException</exception-type>
+    <exception-type>jakarta.enterprise.context.ContextNotActiveException</exception-type>
     <location>/index.html</location>
   </error-page>
 
   <error-page>
-    <exception-type>javax.enterprise.inject.IllegalProductException</exception-type>
+    <exception-type>jakarta.enterprise.inject.IllegalProductException</exception-type>
     <location>/index.html</location>
   </error-page>
 

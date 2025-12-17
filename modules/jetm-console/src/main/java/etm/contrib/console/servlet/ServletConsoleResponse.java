@@ -37,7 +37,7 @@ import etm.contrib.console.HttpConsoleServer;
 import etm.contrib.console.util.ConsoleUtil;
 import etm.core.monitor.EtmException;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 

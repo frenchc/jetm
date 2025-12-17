@@ -151,7 +151,7 @@ public class EtmMonitorConfig {
 
   /**
    * Sets the timer type for the monitor. Supported values are
-   * <code>default</code> ({@link DefaultTimer}), <code>sun</code> ({@link etm.core.timer.SunHighResTimer})
+   * <code>default</code> ({@link DefaultTimer})
    * and <code>jdk50</code> ({@link etm.core.timer.Java15NanoTimer}) or valid Timer class name.
    *
    * @param timerType The timer type name.
@@ -161,12 +161,6 @@ public class EtmMonitorConfig {
   public void setTimerType(String timerType) {
     if ("default".equalsIgnoreCase(timerType)) {
       timerClass = DefaultTimer.class;
-    } else if ("sun".equalsIgnoreCase(timerType)) {
-      try {
-        timerClass = Class.forName("etm.core.timer.SunHighResTimer");
-      } catch (ClassNotFoundException e) {
-        throw new EtmConfigurationException("Sun HigRes Timer not available.");
-      }
     } else if ("jdk50".equalsIgnoreCase(timerType)) {
       try {
         timerClass = Class.forName("etm.core.timer.Java15NanoTimer");

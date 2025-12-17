@@ -54,11 +54,11 @@
               <value>Development</value>
             </systemProperty>
             <systemProperty>
-              <name>javax.el.ExpressionFactory</name>
+              <name>jakarta.el.ExpressionFactory</name>
               <value>de.odysseus.el.ExpressionFactoryImpl</value>
             </systemProperty>
             <systemProperty>
-              <name>javax.el.ignoreReturnType</name>
+              <name>jakarta.el.ignoreReturnType</name>
               <value>true</value>
             </systemProperty>
           </systemProperties>
@@ -203,10 +203,13 @@
 
 
     <dependency>
-      <groupId>com.sun.faces</groupId>
-      <artifactId>jsf-api</artifactId>
-      <version>${version.mojarra}</version>
-      <scope>provided</scope>
+      <groupId>jakarta.faces</groupId>
+      <artifactId>jakarta.faces-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
     </dependency>
 
 
@@ -224,30 +227,17 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-jcdi_1.1_spec</artifactId>
-      <version>${version.geronimo.specs.cdi}</version>
-      <scope>compile</scope>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
     </dependency>
 
-    <!--<dependency>-->
-      <!--<groupId>javax.enterprise</groupId>-->
-      <!--<artifactId>cdi-api</artifactId>-->
-      <!--<version>1.1</version>-->
-      <!--<scope>compile</scope>-->
-    <!--</dependency>-->
-
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-interceptor_1.2_spec</artifactId>
-      <version>${version.geronimo.specs.interceptor}</version>
-      <scope>compile</scope>
+      <groupId>jakarta.interceptor</groupId>
+      <artifactId>jakarta.interceptor-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-atinject_1.0_spec</artifactId>
-      <version>${version.geronimo.specs.atinject}</version>
-      <scope>compile</scope>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
     </dependency>
 
     <!-- comment out for owb -->

@@ -35,10 +35,10 @@ package etm.contrib.integration.cdi;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmPoint;
 
-import javax.annotation.PostConstruct;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
+import jakarta.annotation.PostConstruct;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.InvocationContext;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;

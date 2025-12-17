@@ -39,8 +39,8 @@ import etm.core.renderer.MeasurementRenderer;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

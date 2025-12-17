@@ -33,8 +33,7 @@ package etm.contrib.aop.spring;
 
 import etm.core.monitor.EtmMonitor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import etm.contrib.aop.AopTestBase;
 import etm.contrib.aop.resources.BarService;
 import etm.contrib.aop.resources.FooService;
@@ -53,7 +52,10 @@ public class ProxyFactoryBeanTest extends AopTestBase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    beanFactory = new XmlBeanFactory(new ClassPathResource("etm/contrib/aop/spring/factory-bean.xml"));
+    beanFactory = new DefaultListableBeanFactory();
+    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+    reader.loadBeanDefinitions("classpath:etm/contrib/aop/spring/factory-bean.xml");
+
     beanFactory.preInstantiateSingletons();
 
     etmMonitor = (EtmMonitor) beanFactory.getBean("etmMonitor");

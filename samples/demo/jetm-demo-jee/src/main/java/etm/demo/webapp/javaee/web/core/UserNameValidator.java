@@ -34,14 +34,14 @@ package etm.demo.webapp.javaee.web.core;
 
 import etm.demo.webapp.javaee.domain.user.UserRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.Validator;
+import jakarta.faces.validator.ValidatorException;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * @author void.fm

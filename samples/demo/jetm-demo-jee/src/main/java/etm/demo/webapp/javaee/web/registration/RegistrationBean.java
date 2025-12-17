@@ -36,13 +36,13 @@ import etm.demo.webapp.javaee.domain.user.NonUniqueUserNameException;
 import etm.demo.webapp.javaee.domain.user.UserManagementService;
 import etm.demo.webapp.javaee.web.core.Outcome;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /**
  *

@@ -33,8 +33,8 @@ package etm.demo.webapp.util;
 
 //import etm.contrib.rrd.rrd4j.Rrd4jUtil;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 //import java.io.File;
 //import java.net.URL;
 

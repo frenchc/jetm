@@ -39,16 +39,16 @@ import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
-import javax.faces.application.ApplicationWrapper;
-import javax.faces.component.StateHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ApplicationFactory;
+import jakarta.faces.application.ApplicationWrapper;
+import jakarta.faces.component.StateHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.validator.Validator;
+import jakarta.faces.validator.ValidatorException;
 
 /**
  * @author void.fm

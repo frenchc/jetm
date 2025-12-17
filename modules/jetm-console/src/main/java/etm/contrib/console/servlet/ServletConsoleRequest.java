@@ -35,7 +35,7 @@ package etm.contrib.console.servlet;
 import etm.contrib.console.ConsoleRequest;
 import etm.core.monitor.EtmMonitor;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;

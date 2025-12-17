@@ -60,7 +60,7 @@ public class Main {
           client.execute();
 
         } finally {
-          context.destroy();
+          context.stop();
           synchronized (lock) {
             lock.notifyAll();
           }

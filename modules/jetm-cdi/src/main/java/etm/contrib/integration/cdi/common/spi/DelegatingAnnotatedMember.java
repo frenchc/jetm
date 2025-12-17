@@ -1,9 +1,11 @@
 package etm.contrib.integration.cdi.common.spi;
 
-import javax.enterprise.inject.spi.AnnotatedMember;
-import javax.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.AnnotatedMember;
+import jakarta.enterprise.inject.spi.AnnotatedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * An implementation of {@link AnnotatedMember} that delegates and the superclass of various implementations
@@ -35,5 +37,10 @@ public class DelegatingAnnotatedMember<T, M extends Member> extends DelegatingAn
 
   public AnnotatedType<T> getDeclaringType() {
     return declaringType;
+  }
+
+  public <T extends Annotation> Set<T> getAnnotations(Class<T> aClass) {
+    // TODO
+    return Collections.emptySet();
   }
 }

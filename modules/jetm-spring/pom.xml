@@ -42,8 +42,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-servlet_3.0_spec</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
     </dependency>
 
     <dependency>

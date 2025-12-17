@@ -54,7 +54,6 @@
                 The type of timer to use. Either one of the predefined timers or full qualified classname can be
                 specified. Predefined are
                 jdk15 - etm.core.timer.Java15NanoTimer
-                sun - etm.core.timer.SunHighResTimer
                 default - etm.core.timer.DefaultTimer
                 bestAvailable - The best available timer
               </xsd:documentation>

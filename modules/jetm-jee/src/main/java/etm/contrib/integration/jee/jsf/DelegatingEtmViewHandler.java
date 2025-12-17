@@ -37,11 +37,11 @@ import etm.core.monitor.EtmPoint;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
-import javax.faces.FacesException;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewDeclarationLanguage;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewDeclarationLanguage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -144,6 +144,11 @@ public class DelegatingEtmViewHandler extends ViewHandler {
   }
 
   @Override
+  public String getWebsocketURL(FacesContext facesContext, String s) {
+    return delegate.getWebsocketURL(facesContext,s);
+  }
+
+  @Override
   public void renderView(FacesContext aFacesContext, UIViewRoot aUIViewRoot) throws IOException, FacesException {
     EtmPoint point = EtmManager.getEtmMonitor().createPoint("Render view " + aUIViewRoot.getViewId());
     try {
@@ -172,4 +177,6 @@ public class DelegatingEtmViewHandler extends ViewHandler {
       point.collect();
     }
   }
+
+
 }

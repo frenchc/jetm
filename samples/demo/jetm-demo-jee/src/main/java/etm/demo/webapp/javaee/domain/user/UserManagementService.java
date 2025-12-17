@@ -35,8 +35,8 @@ package etm.demo.webapp.javaee.domain.user;
 import etm.demo.webapp.javaee.core.qualifier.Registered;
 import etm.demo.webapp.javaee.core.stereotype.Service;
 
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 import java.io.Serializable;
 
 /**

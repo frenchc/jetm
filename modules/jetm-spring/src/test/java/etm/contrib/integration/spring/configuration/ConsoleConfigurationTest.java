@@ -44,7 +44,7 @@ public class ConsoleConfigurationTest extends ConfigurationTestCase {
     ClassPathXmlApplicationContext ctx = getContext("console-monitor-ref.xml");
     ctx.start();
 
-    ctx.destroy();
+    ctx.stop();
   }
 
   public void testMonitorAutowire() {
@@ -52,6 +52,6 @@ public class ConsoleConfigurationTest extends ConfigurationTestCase {
 
     ctx.start();
 
-    ctx.destroy();
+    ctx.stop();
   }
 }

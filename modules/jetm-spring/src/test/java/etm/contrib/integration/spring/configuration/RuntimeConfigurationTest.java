@@ -67,7 +67,7 @@ public class RuntimeConfigurationTest extends ConfigurationTestCase {
       assertEquals(DefaultTimer.class, etmMonitorMetaData.getTimerMetaData().getImplementationClass());
 
     } finally {
-      ctx.destroy();
+      ctx.stop();
     }
 
 

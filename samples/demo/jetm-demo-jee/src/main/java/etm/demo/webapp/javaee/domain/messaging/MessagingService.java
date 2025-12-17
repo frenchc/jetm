@@ -36,7 +36,7 @@ import etm.demo.webapp.javaee.core.qualifier.Registered;
 import etm.demo.webapp.javaee.core.stereotype.Service;
 import etm.demo.webapp.javaee.domain.user.User;
 
-import javax.enterprise.event.Observes;
+import jakarta.enterprise.event.Observes;
 
 /**
  *

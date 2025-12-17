@@ -1,7 +1,7 @@
 package etm.contrib.integration.cdi.common.spi;
 
-import javax.enterprise.inject.spi.AnnotatedMethod;
-import javax.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.AnnotatedMethod;
+import jakarta.enterprise.inject.spi.AnnotatedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 

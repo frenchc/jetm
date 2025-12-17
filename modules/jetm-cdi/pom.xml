@@ -26,24 +26,25 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-jpa_2.0_spec</artifactId>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-interceptor_1.2_spec</artifactId>
+      <groupId>jakarta.interceptor</groupId>
+      <artifactId>jakarta.interceptor-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-jcdi_1.1_spec</artifactId>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-atinject_1.0_spec</artifactId>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
     </dependency>
+
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-el_2.2_spec</artifactId>
+      <groupId>jakarta.el</groupId>
+      <artifactId>jakarta.el-api</artifactId>
     </dependency>
   </dependencies>
 

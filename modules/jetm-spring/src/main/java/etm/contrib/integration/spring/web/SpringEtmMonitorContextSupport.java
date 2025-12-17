@@ -35,7 +35,7 @@ import etm.core.monitor.EtmMonitor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 import java.util.Iterator;
 import java.util.Map;
 

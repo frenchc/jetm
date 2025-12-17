@@ -34,15 +34,12 @@ package etm.contrib.integration.jee.jsf;
 
 import etm.core.monitor.EtmPoint;
 
-import javax.el.MethodExpression;
-import javax.faces.component.ActionSource;
-import javax.faces.component.ActionSource2;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.ActionListener;
 
 /**
  * Renames request parent etm point to current executed action
@@ -64,18 +61,14 @@ public class NameInterceptingActionListener implements ActionListener {
     EtmPoint etmRootPoint =
       (EtmPoint) FacesContext.getCurrentInstance().getAttributes().get(EtmJsfPlugin.ROOT_ETM_POINT);
     if (etmRootPoint != null) {
-      MethodExpression methodExpression = null;
-      if (component instanceof ActionSource2) {
-        methodExpression = ((ActionSource2) component).getActionExpression();
-        if (methodExpression != null) {
-          etmRootPoint.alterName("JSF Action " + methodExpression.getExpressionString());
-        }
+      MethodExpression me = null;
+
+      if (component instanceof jakarta.faces.component.UICommand) {
+        me = ((jakarta.faces.component.UICommand) component).getActionExpression();
       }
-      if (methodExpression == null && component instanceof ActionSource) {
-        MethodBinding methodBinding = ((ActionSource) component).getAction();
-        if (methodBinding != null) {
-          etmRootPoint.alterName("JSF Action " + methodBinding.getExpressionString());
-        }
+
+      if (me != null) {
+        etmRootPoint.alterName("JSF Action " + me.getExpressionString());
       }
     }
 

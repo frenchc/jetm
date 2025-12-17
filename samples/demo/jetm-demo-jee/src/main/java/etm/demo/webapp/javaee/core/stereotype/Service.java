@@ -32,8 +32,8 @@
 
 package etm.demo.webapp.javaee.core.stereotype;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Stereotype;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Stereotype;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,12 +1,14 @@
 package etm.contrib.integration.cdi.common.spi;
 
-import javax.enterprise.inject.spi.AnnotatedCallable;
-import javax.enterprise.inject.spi.AnnotatedParameter;
-import javax.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.AnnotatedCallable;
+import jakarta.enterprise.inject.spi.AnnotatedParameter;
+import jakarta.enterprise.inject.spi.AnnotatedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This implementation can be used to modify the scanned annotations of a CDI bean during annotation-processing
@@ -59,5 +61,10 @@ public class DelegatingAnnotatedCallable<T, M extends Member> extends Delegating
 
   protected AnnotatedParameter<T> processAnnotatedParameter(AnnotatedParameter<T> annotatedParameter) {
     return annotatedParameter;
+  }
+
+  public <T extends Annotation> Set<T> getAnnotations(Class<T> aClass) {
+    // TODO:
+    return Collections.emptySet();
   }
 }

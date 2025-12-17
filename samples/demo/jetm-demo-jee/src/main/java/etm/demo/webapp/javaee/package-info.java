@@ -41,5 +41,5 @@ import etm.contrib.integration.cdi.ApplyTo;
 import etm.demo.webapp.javaee.core.stereotype.Repository;
 import etm.demo.webapp.javaee.core.stereotype.Service;
 
-import javax.enterprise.inject.Model;
-import javax.inject.Named;
+import jakarta.enterprise.inject.Model;
+import jakarta.inject.Named;

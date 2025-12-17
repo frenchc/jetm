@@ -54,7 +54,7 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
       String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
       assertEquals(2, monitors.length);
     } finally {
-      ctx.destroy();
+      ctx.stop();
     }
   }
 
@@ -69,7 +69,7 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
       String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
       assertEquals(1, monitors.length);
     } finally {
-      ctx.destroy();
+      ctx.stop();
     }
   }
 
@@ -90,7 +90,7 @@ public class MonitoringConfigurationTest extends ConfigurationTestCase {
       String[] monitors = ctx.getBeanNamesForType(EtmMonitor.class);
       assertEquals(1, monitors.length);
     } finally {
-      ctx.destroy();
+      ctx.stop();
     }
   }
 

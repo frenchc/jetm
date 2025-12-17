@@ -37,13 +37,13 @@ import etm.demo.webapp.javaee.domain.user.User;
 import etm.demo.webapp.javaee.domain.user.UserManagementService;
 import etm.demo.webapp.javaee.web.core.Outcome;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.validation.constraints.NotNull;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**

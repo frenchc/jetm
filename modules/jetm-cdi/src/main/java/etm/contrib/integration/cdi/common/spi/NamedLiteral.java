@@ -1,7 +1,7 @@
 package etm.contrib.integration.cdi.common.spi;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Named;
+import jakarta.enterprise.util.AnnotationLiteral;
+import jakarta.inject.Named;
 
 /**
  * A literal to instantiate the {@link Named} annotation.

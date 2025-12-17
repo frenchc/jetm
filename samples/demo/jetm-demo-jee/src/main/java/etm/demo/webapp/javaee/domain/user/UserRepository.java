@@ -33,8 +33,8 @@
 package etm.demo.webapp.javaee.domain.user;
 
 import etm.demo.webapp.javaee.core.stereotype.Repository;
+import jakarta.annotation.PostConstruct;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;

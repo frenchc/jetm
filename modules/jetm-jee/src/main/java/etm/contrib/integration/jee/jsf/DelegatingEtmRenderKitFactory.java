@@ -38,9 +38,9 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.util.Log;
 import etm.core.util.LogAdapter;
 
-import javax.faces.context.FacesContext;
-import javax.faces.render.RenderKit;
-import javax.faces.render.RenderKitFactory;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.RenderKit;
+import jakarta.faces.render.RenderKitFactory;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 

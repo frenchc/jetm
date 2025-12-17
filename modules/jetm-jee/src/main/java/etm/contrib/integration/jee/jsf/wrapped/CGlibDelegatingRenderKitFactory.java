@@ -38,11 +38,11 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.render.RenderKit;
-import javax.faces.render.RenderKitFactory;
-import javax.faces.render.Renderer;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.RenderKit;
+import jakarta.faces.render.RenderKitFactory;
+import jakarta.faces.render.Renderer;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;

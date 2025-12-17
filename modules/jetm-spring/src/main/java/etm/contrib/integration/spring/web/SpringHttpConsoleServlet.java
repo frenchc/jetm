@@ -37,7 +37,7 @@ import etm.core.monitor.EtmMonitor;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 /**
  * A servlet that provides access to aggregated performance statistics for etm.contrib.integration.spring managed EtmMonitor instances similar to
